@@ -2,11 +2,10 @@ package no.nav.foreldrepenger.common.domain;
 
 import static no.nav.foreldrepenger.common.util.StringUtil.partialMask;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 import lombok.Data;
+import no.nav.foreldrepenger.common.domain.felles.Kjønn;
 
 @Data
 public class Fødselsnummer {
@@ -14,13 +13,19 @@ public class Fødselsnummer {
     @JsonValue
     private final String fnr;
 
-    @JsonCreator
-    public Fødselsnummer(@JsonProperty("fnr") String fnr) {
+    public Fødselsnummer(String fnr) {
         this.fnr = fnr;
     }
 
     public static Fødselsnummer valueOf(String fnr) {
         return new Fødselsnummer(fnr);
+    }
+
+    public Kjønn kjønn() {
+        if (fnr != null & fnr.length() == 11) {
+            return Integer.valueOf(fnr.charAt(8)) % 2 == 0 ? Kjønn.K : Kjønn.M;
+        }
+        return Kjønn.U;
     }
 
     @Override

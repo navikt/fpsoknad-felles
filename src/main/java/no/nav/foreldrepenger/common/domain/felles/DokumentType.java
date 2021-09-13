@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.common.domain;
+package no.nav.foreldrepenger.common.domain.felles;
 
 public enum DokumentType {
 

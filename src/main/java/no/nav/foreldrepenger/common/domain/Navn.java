@@ -1,13 +1,15 @@
 package no.nav.foreldrepenger.common.domain;
 
-import static no.nav.foreldrepenger.common.util.StringUtil.join;
+import static no.nav.foreldrepenger.common.util.StringUtil.mask;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.google.common.base.Joiner;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode.Exclude;
+import no.nav.foreldrepenger.common.domain.felles.Kjønn;
 
 @Data
 @JsonPropertyOrder({ "fornavn", "mellomnavn", "etternavn", "kjønn" })
@@ -21,7 +23,7 @@ public class Navn {
 
     @JsonCreator
     public Navn(@JsonProperty("fornavn") String fornavn, @JsonProperty("mellomnavn") String mellomnavn,
-            @JsonProperty("etternavn") String etternavn, @JsonProperty("kjønn") Kjønn kjønn) {
+                @JsonProperty("etternavn") String etternavn, @JsonProperty("kjønn") Kjønn kjønn) {
         this.fornavn = fornavn;
         this.mellomnavn = mellomnavn;
         this.etternavn = etternavn;
@@ -29,6 +31,12 @@ public class Navn {
     }
 
     public String navn() {
-        return join(" ", fornavn, mellomnavn, etternavn);
+        return Joiner.on(' ').skipNulls().join(fornavn, mellomnavn, etternavn);
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + " [fornavn=" + fornavn + ", mellomnavn=" + mask(mellomnavn) + ", etternavn=" + mask(etternavn)
+                + ", kjønn=" + kjønn + "]";
     }
 }

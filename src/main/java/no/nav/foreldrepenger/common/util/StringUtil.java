@@ -1,16 +1,15 @@
 package no.nav.foreldrepenger.common.util;
 
 import static java.util.function.Predicate.not;
+import static no.nav.foreldrepenger.common.util.SpringBootUtils.isEmpty;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-import org.springframework.util.CollectionUtils;
+import com.google.common.base.Strings;
 
 public final class StringUtil {
     private static final int DEFAULT_LENGTH = 50;
@@ -25,7 +24,7 @@ public final class StringUtil {
     }
 
     public static String endelse(List<?> liste) {
-        if (CollectionUtils.isEmpty(liste)) {
+        if (isEmpty(liste)) {
             return "er";
         }
         return liste.size() == 1 ? "" : "er";
@@ -51,7 +50,7 @@ public final class StringUtil {
     }
 
     public static String partialMask(String value, int length) {
-        return (value != null) && (value.length() == length) ? padEnd(value.substring(0, length / 2 + length % 2), length, '*') : value;
+        return (value != null) && (value.length() == length) ? Strings.padEnd(value.substring(0, length / 2 + length % 2), length, '*') : value;
     }
 
     public static String mask(String value) {
@@ -68,27 +67,5 @@ public final class StringUtil {
         } catch (UnsupportedEncodingException e) {
             throw new IllegalArgumentException(e);
         }
-    }
-
-    private static String padEnd(String string, int minLength, char padChar) {
-        if (string.length() >= minLength) {
-            return string;
-        }
-        StringBuilder sb = new StringBuilder(minLength);
-        sb.append(string);
-        for (int i = string.length(); i < minLength; i++) {
-            sb.append(padChar);
-        }
-        return sb.toString();
-    }
-
-    public static String join(String... values) {
-        return join(',', values);
-    }
-
-    public static String join(Character separator, String... values) {
-        return Arrays.stream(values)
-                .filter(Objects::nonNull)
-                .collect(Collectors.joining(String.valueOf(separator)));
     }
 }
