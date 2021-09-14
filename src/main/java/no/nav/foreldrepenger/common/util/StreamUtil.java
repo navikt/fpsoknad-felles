@@ -1,7 +1,6 @@
 package no.nav.foreldrepenger.common.util;
 
-import static java.util.stream.Collectors.toList;
-import static org.springframework.util.CollectionUtils.isEmpty;
+import static no.nav.foreldrepenger.common.util.SpringBootUtils.isEmpty;
 
 import java.util.Collection;
 import java.util.List;
@@ -35,11 +34,7 @@ public final class StreamUtil {
     }
 
     public static <T> List<T> distinct(List<T> list) {
-        return safeStream(list).distinct().collect(toList());
-    }
-
-    public static <T> Predicate<T> not(Predicate<T> t) {
-        return t.negate();
+        return safeStream(list).distinct().toList();
     }
 
     public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
