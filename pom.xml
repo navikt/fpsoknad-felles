@@ -16,7 +16,13 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <jackson.version>2.12.5</jackson.version>
+        <xsd.location>${project.build.directory}/classes</xsd.location>
+        <jaxb.location>${project.build.directory}/classes/</jaxb.location>
+        <xsd.location>src/main/xsd</xsd.location>
+        <xjb.location>src/main/xjb</xjb.location>
+        <kontrakter.version>6.0.4</kontrakter.version>
     </properties>
 
     <scm>
@@ -103,6 +109,11 @@
             <artifactId>jakarta.xml.bind-api</artifactId>
             <version>2.3.3</version>
         </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-xjc</artifactId>
+            <version>2.3.5</version>
+        </dependency>
 
         <dependency>
             <groupId>org.glassfish</groupId>
@@ -124,6 +135,12 @@
             <artifactId>cxf-core</artifactId>
             <version>3.4.4</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
+            <version>1.9</version>
+        </dependency>
+
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
@@ -159,10 +176,20 @@
                         <parameters>true</parameters>
                         <source>${java.version}</source>
                         <target>${java.version}</target>
-                        <encoding>UTF-8</encoding>
                         <release>${java.version}</release>
+                        <fork>true</fork>
                         <compilerArgs>
                             <arg>--enable-preview</arg>
+                            <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>
+                            <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED</arg>
+                            <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED</arg>
+                            <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED</arg>
+                            <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED</arg>
+                            <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED</arg>
+                            <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>
+                            <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED</arg>
+                            <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>
+                            <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.jvm=ALL-UNNAMED</arg>
                         </compilerArgs>
                     </configuration>
                 </plugin>
@@ -183,6 +210,73 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
                     <version>3.2.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>3.2.0</version>
+                    <executions>
+                        <execution>
+                            <id>unpack</id>
+                            <phase>generate-sources</phase>
+                            <goals>
+                                <goal>unpack</goal>
+                            </goals>
+                            <configuration>
+                                <artifactItems>
+                                    <artifactItem>
+                                        <groupId>no.nav.foreldrepenger.kontrakter</groupId>
+                                        <artifactId>behandlingsprosess-vedtak-v1</artifactId>
+                                        <version>${kontrakter.version}</version>
+                                        <outputDirectory>${xsd.location}/behandlingsprosess-vedtak-v1</outputDirectory>
+                                        <includes>**\/*.xsd</includes>
+                                    </artifactItem>
+                                    <artifactItem>
+                                        <groupId>no.nav.foreldrepenger.kontrakter</groupId>
+                                        <artifactId>behandlingsprosess-vedtak-v2</artifactId>
+                                        <version>${kontrakter.version}</version>
+                                        <outputDirectory>${xsd.location}/behandlingsprosess-vedtak-v2</outputDirectory>
+                                        <includes>**\/*.xsd</includes>
+                                    </artifactItem>
+                                    <artifactItem>
+                                        <groupId>no.nav.foreldrepenger.kontrakter</groupId>
+                                        <artifactId>soeknad-v3</artifactId>
+                                        <version>${kontrakter.version}</version>
+                                        <outputDirectory>${xsd.location}/soeknad-v3</outputDirectory>
+                                        <includes>**\/*.xsd</includes>
+                                    </artifactItem>
+                                    <artifactItem>
+                                        <groupId>no.nav.foreldrepenger.kontrakter</groupId>
+                                        <artifactId>soeknad-v2</artifactId>
+                                        <version>${kontrakter.version}</version>
+                                        <outputDirectory>${xsd.location}/soeknad-v2</outputDirectory>
+                                        <includes>**\/*.xsd</includes>
+                                    </artifactItem>
+                                    <artifactItem>
+                                        <groupId>no.nav.foreldrepenger.kontrakter</groupId>
+                                        <artifactId>soeknad-v1</artifactId>
+                                        <version>${kontrakter.version}</version>
+                                        <outputDirectory>${xsd.location}/soeknad-v1</outputDirectory>
+                                        <includes>**\/*.xsd</includes>
+                                    </artifactItem>
+                                    <artifactItem>
+                                        <groupId>no.nav.foreldrepenger.kontrakter</groupId>
+                                        <artifactId>behandlingsprosess-vedtak-v2</artifactId>
+                                        <version>${kontrakter.version}</version>
+                                        <outputDirectory>${xsd.location}/behandlingsprosess-vedtak-v2</outputDirectory>
+                                        <includes>**\/*.xsd</includes>
+                                    </artifactItem>
+                                    <artifactItem>
+                                        <groupId>no.nav.foreldrepenger.kontrakter</groupId>
+                                        <artifactId>inntektsmelding-v1</artifactId>
+                                        <version>${kontrakter.version}</version>
+                                        <outputDirectory>${xsd.location}/inntektsmelding-v1</outputDirectory>
+                                        <includes>**\/*.xsd</includes>
+                                    </artifactItem>
+                                </artifactItems>
+                            </configuration>
+                        </execution>
+                    </executions>
                 </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
@@ -243,6 +337,99 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/classes</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${xsd.location}</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.jvnet.jaxb2.maven2</groupId>
+                <artifactId>maven-jaxb2-plugin</artifactId>
+                <version>0.14.0</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.glassfish.jaxb</groupId>
+                        <artifactId>jaxb-runtime</artifactId>
+                        <version>2.3.3</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <bindings>
+                        <binding>
+                            <fileset>
+                                <directory>${xjb.location}</directory>
+                                <includes>
+                                    <include>*.xjb</include>
+                                </includes>
+                            </fileset>
+                        </binding>
+                    </bindings>
+                    <extension>true</extension>
+                    <args>
+                        <arg>-no-header</arg>
+                        <arg>-npa</arg>
+                        <arg>-Xfluent-api</arg>
+                        <arg>-Xannotate</arg>
+                    </args>
+                    <schemas>
+                        <schema>
+                            <fileset>
+                                <directory>${xsd.location}</directory>
+                                <includes>
+                                    <include>**/*.xsd</include>
+                                </includes>
+                            </fileset>
+                        </schema>
+                    </schemas>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.jvnet.jaxb2_commons</groupId>
+                            <artifactId>jaxb2-basics</artifactId>
+                            <version>1.11.1</version>
+                        </plugin>
+                        <plugin>
+                            <groupId>org.jvnet.jaxb2_commons</groupId>
+                            <artifactId>jaxb2-basics-annotate</artifactId>
+                            <version>1.1.0</version>
+                        </plugin>
+                        <plugin>
+                            <groupId>net.java.dev.jaxb2-commons</groupId>
+                            <artifactId>jaxb-fluent-api</artifactId>
+                            <version>2.1.8</version>
+                        </plugin>
+                    </plugins>
+                </configuration>
             </plugin>
         </plugins>
     </build>
