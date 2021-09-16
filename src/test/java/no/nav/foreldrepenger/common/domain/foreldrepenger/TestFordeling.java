@@ -34,7 +34,7 @@ class TestFordeling {
                         FEDREKVOTE,
                         true, ARBEID_OG_UTDANNING, true, new ProsentAndel(75),
                         null),
-                new OppholdsPeriode(null, ukeDagNær(utsettelseStart),
+                new OppholdsPeriode(ukeDagNær(LocalDate.now().plusMonths(1)), ukeDagNær(utsettelseStart),
                         UTTAK_FEDREKVOTE_ANNEN_FORELDER, null),
                 new UtsettelsesPeriode(ukeDagNær(utsettelseStart),
                         ukeDagNær(LocalDate.now().plusMonths(3)), true, Collections.singletonList("222"),
