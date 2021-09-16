@@ -27,6 +27,7 @@ import no.nav.foreldrepenger.common.domain.foreldrepenger.Foreldrepenger;
 
 @Data
 //@Validated // TODO: fra spring
+@Valid
 @EqualsAndHashCode(exclude = "mottattdato")
 @JsonPropertyOrder({ "mottattdato", "søker", "ytelse", "begrunnelseForSenSøknad", "tilleggsopplysninger", "vedlegg" })
 public class Søknad {
