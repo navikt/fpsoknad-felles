@@ -41,12 +41,12 @@ public final class VedtakV2ESJAXBUtil extends AbstractJAXBUtil {
                 no.nav.vedtak.felles.xml.vedtak.ytelse.es.v2.ObjectFactory.class,
                 no.nav.vedtak.felles.xml.vedtak.vilkaarsgrunnlag.v2.ObjectFactory.class),
                 validateMarshalling, validateUnmarshalling,
-                "/behandlingsprosess-vedtak-v2/xsd/ytelse/ytelse-es-v2.xsd",
-                "/behandlingsprosess-vedtak-v2/xsd/vilkaarsgrunnlag/vilkaarsgrunnlag-es-v2.xsd",
-                "/behandlingsprosess-vedtak-v2/xsd/personopplysninger/personopplysninger-es-v2.xsd",
-                "/behandlingsprosess-vedtak-v2/xsd/personopplysninger/personopplysninger-dvh-es-v2.xsd",
-                "/behandlingsprosess-vedtak-v2/xsd/oppdrag/oppdrag-dvh-es-v2.xsd",
-                "/behandlingsprosess-vedtak-v2/xsd/beregningsgrunnlag/beregningsgrunnlag-es-v2.xsd",
-                "/behandlingsprosess-vedtak-v2/xsd/vedtak-v2.xsd");
+                "behandlingsprosess-vedtak-v2/xsd/ytelse/ytelse-es-v2.xsd",
+                "behandlingsprosess-vedtak-v2/xsd/vilkaarsgrunnlag/vilkaarsgrunnlag-es-v2.xsd",
+                "behandlingsprosess-vedtak-v2/xsd/personopplysninger/personopplysninger-es-v2.xsd",
+                "behandlingsprosess-vedtak-v2/xsd/personopplysninger/personopplysninger-dvh-es-v2.xsd",
+                "behandlingsprosess-vedtak-v2/xsd/oppdrag/oppdrag-dvh-es-v2.xsd",
+                "behandlingsprosess-vedtak-v2/xsd/beregningsgrunnlag/beregningsgrunnlag-es-v2.xsd",
+                "behandlingsprosess-vedtak-v2/xsd/vedtak-v2.xsd");
     }
 }

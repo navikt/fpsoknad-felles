@@ -33,10 +33,10 @@ public final class VedtakV1ESJAXBUtil extends AbstractJAXBUtil {
                 Vedtak.class,
                 PersonopplysningerEngangsstoenad.class, ObjectFactory.class),
                 validateMarshalling, validateUnmarshalling,
-                "/behandlingsprosess-vedtak-v1/xsd/ytelse/ytelse-v1.xsd",
-                "/behandlingsprosess-vedtak-v1/xsd/vilkaarsgrunnlag/vilkaarsgrunnlag-v1.xsd",
-                "/behandlingsprosess-vedtak-v1/xsd/personopplysninger/personopplysninger-v1.xsd",
-                "/behandlingsprosess-vedtak-v1/xsd/beregningsgrunnlag/beregningsgrunnlag-v1.xsd",
-                "/behandlingsprosess-vedtak-v1/xsd/vedtak-v1.xsd");
+                "behandlingsprosess-vedtak-v1/xsd/ytelse/ytelse-v1.xsd",
+                "behandlingsprosess-vedtak-v1/xsd/vilkaarsgrunnlag/vilkaarsgrunnlag-v1.xsd",
+                "behandlingsprosess-vedtak-v1/xsd/personopplysninger/personopplysninger-v1.xsd",
+                "behandlingsprosess-vedtak-v1/xsd/beregningsgrunnlag/beregningsgrunnlag-v1.xsd",
+                "behandlingsprosess-vedtak-v1/xsd/vedtak-v1.xsd");
     }
 }

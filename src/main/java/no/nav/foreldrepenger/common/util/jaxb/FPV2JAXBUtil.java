@@ -14,9 +14,9 @@ public final class FPV2JAXBUtil extends AbstractJAXBUtil {
                 no.nav.vedtak.felles.xml.soeknad.endringssoeknad.v2.ObjectFactory.class,
                 no.nav.vedtak.felles.xml.soeknad.v2.Soeknad.class),
                 validateMarshalling, validateUnmarshalling,
-                "/soeknad-v2/xsd/foreldrepenger/foreldrepenger-v2.xsd",
-                "/soeknad-v2/xsd/endringssoeknad/endringssoeknad-v2.xsd",
-                "/soeknad-v2/xsd/soeknad-v2.xsd");
+                "soeknad-v2/xsd/foreldrepenger/foreldrepenger-v2.xsd",
+                "soeknad-v2/xsd/endringssoeknad/endringssoeknad-v2.xsd",
+                "soeknad-v2/xsd/soeknad-v2.xsd");
     }
 
 }

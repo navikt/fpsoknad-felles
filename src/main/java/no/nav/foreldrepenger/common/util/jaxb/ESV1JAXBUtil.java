@@ -1,7 +1,7 @@
 package no.nav.foreldrepenger.common.util.jaxb;
 
-import no.nav.foreldrepenger.common.domain.engangsstønad.Engangsstønad;
 import no.nav.foreldrepenger.soeknadsskjema.engangsstoenad.v1.SoeknadsskjemaEngangsstoenad;
+import no.nav.vedtak.felles.xml.soeknad.engangsstoenad.v1.Engangsstønad;
 import no.nav.vedtak.felles.xml.soeknad.v1.Soeknad;
 
 public final class ESV1JAXBUtil extends AbstractJAXBUtil {

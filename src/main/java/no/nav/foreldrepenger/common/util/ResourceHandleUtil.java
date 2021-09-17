@@ -30,7 +30,6 @@ public class ResourceHandleUtil {
 
     public static InputStream getInputStreamFromResource(String fileName) {
         var inputStream = ResourceHandleUtil.class.getClassLoader().getResourceAsStream(fileName);
-
         if (inputStream == null) {
             throw new IllegalArgumentException("file not found! " + fileName);
         } else {
