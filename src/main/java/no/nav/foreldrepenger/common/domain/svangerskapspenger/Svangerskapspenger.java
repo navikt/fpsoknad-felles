@@ -3,6 +3,7 @@ package no.nav.foreldrepenger.common.domain.svangerskapspenger;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.annotation.Nullable;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -24,8 +25,7 @@ public class Svangerskapspenger extends Ytelse {
 
     @NotNull
     private final LocalDate termindato;
-    // TODO: Nullable fra spring
-    // @Nullable
+    @Nullable
     private final LocalDate fødselsdato;
     @Valid
     private final Medlemsskap medlemsskap;

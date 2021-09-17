@@ -36,5 +36,4 @@ target/*
 .DS_Store
 .factorypath
 /target/
-.java-version
 .flattened
