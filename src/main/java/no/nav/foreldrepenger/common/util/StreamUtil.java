@@ -23,14 +23,14 @@ public final class StreamUtil {
 
     public static <T> Stream<T> safeStream(List<T> list) {
         return Optional.ofNullable(list)
-                .orElseGet(List::of)
-                .stream();
+            .orElseGet(List::of)
+            .stream();
     }
 
     public static <T> Stream<T> safeStream(Collection<T> set) {
         return Optional.ofNullable(set)
-                .orElseGet(Set::of)
-                .stream();
+            .orElseGet(Set::of)
+            .stream();
     }
 
     public static <T> List<T> distinct(List<T> list) {
@@ -45,15 +45,15 @@ public final class StreamUtil {
     public static <T> T onlyElem(Set<T> set) {
         verifiser(set);
         return safeStream(verifiser(set))
-                .map(Optional::ofNullable)
-                .findFirst()
-                .orElseGet(Optional::empty)
-                .orElse(null);
+            .map(Optional::ofNullable)
+            .findFirst()
+            .orElseGet(Optional::empty)
+            .orElse(null);
     }
 
     private static <T> Collection<T> verifiser(Collection<T> collection) {
         if (!isEmpty(collection) && collection.size() != 1) {
-            LOG.warn("Mer en ett element i {}", collection);
+            LOG.trace("Mer en ett element i {}", collection);
         }
         return collection;
     }
@@ -61,9 +61,9 @@ public final class StreamUtil {
     public static <T> T onlyElem(List<T> list) {
         verifiser(list);
         return safeStream(list)
-                .map(Optional::ofNullable)
-                .findFirst()
-                .orElseGet(Optional::empty)
-                .orElse(null);
+            .map(Optional::ofNullable)
+            .findFirst()
+            .orElseGet(Optional::empty)
+            .orElse(null);
     }
 }

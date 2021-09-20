@@ -76,7 +76,6 @@ import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Virksomhet;
 import no.nav.vedtak.felles.xml.soeknad.v3.OmYtelse;
 import no.nav.vedtak.felles.xml.soeknad.v3.Soeknad;
 
-//@Component TODO Spring boot
 public class V3ForeldrepengerDomainMapper implements DomainMapper {
     private static final MapperEgenskaper EGENSKAPER = new MapperEgenskaper(V3, ENDRING_FORELDREPENGER,
             INITIELL_FORELDREPENGER);

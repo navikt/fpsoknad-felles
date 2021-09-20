@@ -40,7 +40,6 @@ import no.nav.vedtak.felles.xml.soeknad.svangerskapspenger.v1.Virksomhet;
 import no.nav.vedtak.felles.xml.soeknad.v3.OmYtelse;
 import no.nav.vedtak.felles.xml.soeknad.v3.Soeknad;
 
-//@Component TODO Spring boot
 public class V1SvangerskapspengerDomainMapper implements DomainMapper {
 
     private final SVPV1JAXBUtil jaxb;
