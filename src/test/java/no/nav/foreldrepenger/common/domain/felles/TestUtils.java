@@ -2,8 +2,8 @@ package no.nav.foreldrepenger.common.domain.felles;
 
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
-import static no.nav.foreldrepenger.common.domain.ResourceHandleUtil.bytesFra;
-import static no.nav.foreldrepenger.common.domain.ResourceHandleUtil.copyToString;
+import static no.nav.foreldrepenger.common.util.ResourceHandleUtil.bytesFra;
+import static no.nav.foreldrepenger.common.util.ResourceHandleUtil.copyToString;
 
 import java.io.IOException;
 import java.time.LocalDate;

@@ -4,7 +4,6 @@ import static com.google.common.collect.Lists.newArrayList;
 import static java.time.DayOfWeek.SATURDAY;
 import static java.time.DayOfWeek.SUNDAY;
 import static java.util.Arrays.asList;
-import static no.nav.foreldrepenger.common.domain.ResourceHandleUtil.bytesFra;
 import static no.nav.foreldrepenger.common.domain.felles.DokumentType.I000062;
 import static no.nav.foreldrepenger.common.domain.felles.DokumentType.I000063;
 import static no.nav.foreldrepenger.common.domain.felles.DokumentType.I500002;
@@ -14,6 +13,7 @@ import static no.nav.foreldrepenger.common.domain.felles.TestUtils.søker;
 import static no.nav.foreldrepenger.common.domain.felles.opptjening.Virksomhetstype.FISKE;
 import static no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.OmsorgsOvertakelsesÅrsak.SKAL_OVERTA_ALENE;
 import static no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.StønadskontoType.FEDREKVOTE;
+import static no.nav.foreldrepenger.common.util.ResourceHandleUtil.bytesFra;
 
 import java.time.LocalDate;
 import java.util.Arrays;
