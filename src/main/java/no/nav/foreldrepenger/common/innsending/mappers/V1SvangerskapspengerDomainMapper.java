@@ -175,7 +175,7 @@ public class V1SvangerskapspengerDomainMapper implements DomainMapper {
 
         if (forhold instanceof no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.Virksomhet virksomhet) {
             return new Virksomhet()
-                    .withIdentifikator(virksomhet.getOrgnr());
+                    .withIdentifikator(virksomhet.getOrgnr().orgnr());
         }
         if (forhold instanceof no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.PrivatArbeidsgiver privat) {
             return new PrivatArbeidsgiver()

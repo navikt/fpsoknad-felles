@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -27,6 +28,7 @@ public final class Omsorgsovertakelse extends RelasjonTilBarn {
         this(1, omsorgsovertakelsesdato, årsak, singletonList(fødselsdato), emptyList());
     }
 
+    @Builder
     @JsonCreator
     public Omsorgsovertakelse(int antallBarn,
             LocalDate omsorgsovertakelsesdato,

@@ -29,15 +29,15 @@ public enum Versjon {
     public static final Versjon DEFAULT_VERSJON = V3;
     public static final Versjon DEFAULT_SVP_VERSJON = V1;
 
-    private Versjon() {
+    Versjon() {
         this(emptyList());
     }
 
-    private Versjon(String... namespaces) {
+    Versjon(String... namespaces) {
         this(asList(namespaces));
     }
 
-    private Versjon(List<String> namespaces) {
+    Versjon(List<String> namespaces) {
         this.namespaces = namespaces;
     }
 
@@ -59,11 +59,11 @@ public enum Versjon {
         return Arrays.stream(values())
                 .filter(v -> v.namespaces.contains(ns))
                 .findFirst()
-                .orElse(ukjent(ns));
+                .orElseGet(() -> ukjent(ns));
     }
 
     private static Versjon ukjent(String namespace) {
-        LOG.warn("Fant ingen versjon for namespace {} blant {}", namespace, allNamespaces());
+        LOG.warn("Fant ingen versjon for namespace {} blavint {}", namespace, allNamespaces());
         return UKJENT;
     }
 

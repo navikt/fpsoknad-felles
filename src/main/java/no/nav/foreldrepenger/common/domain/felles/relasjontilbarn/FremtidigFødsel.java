@@ -7,18 +7,18 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import lombok.Value;
 import no.nav.foreldrepenger.common.domain.validation.annotations.PastOrToday;
 
-@Data
+@Value
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public final class FremtidigFødsel extends RelasjonTilBarn {
-    private final LocalDate terminDato;
+public class FremtidigFødsel extends RelasjonTilBarn {
+    LocalDate terminDato;
     @PastOrToday(nullable = true)
-    private final LocalDate utstedtDato;
+    LocalDate utstedtDato;
 
     public FremtidigFødsel(LocalDate terminDato, LocalDate utstedtDato) {
         this(1, terminDato, utstedtDato, emptyList());

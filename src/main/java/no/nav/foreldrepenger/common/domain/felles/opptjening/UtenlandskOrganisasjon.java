@@ -20,7 +20,6 @@ import no.nav.foreldrepenger.common.domain.felles.ÅpenPeriode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-
 public final class UtenlandskOrganisasjon extends EgenNæring {
 
     @Length(max = 100)

@@ -24,6 +24,7 @@ import com.google.common.collect.Lists;
 import com.neovisionaries.i18n.CountryCode;
 
 import no.nav.foreldrepenger.common.domain.Fødselsnummer;
+import no.nav.foreldrepenger.common.domain.Orgnummer;
 import no.nav.foreldrepenger.common.domain.Søknad;
 import no.nav.foreldrepenger.common.domain.Ytelse;
 import no.nav.foreldrepenger.common.domain.felles.DokumentType;
@@ -187,7 +188,7 @@ public class ForeldrepengerTestUtils {
     }
 
     private static Arbeidsforhold virksomhet() {
-        return new Virksomhet("888888888");
+        return new Virksomhet("999263550");
     }
 
     private static Arbeidsforhold privat() {
@@ -296,7 +297,7 @@ public class ForeldrepengerTestUtils {
                 .erNyOpprettet(true)
                 .næringsinntektBrutto(100_000)
                 .orgName("Norsk org")
-                .orgNummer("923609016")
+                .orgNummer(Orgnummer.valueOf("923609016"))
                 .virksomhetsTyper(Collections.singletonList(FISKE))
                 .beskrivelseEndring("Ting endrer seg i Norge også")
                 .nærRelasjon(true)

@@ -16,5 +16,5 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         @JsonSubTypes.Type(value = SelvstendigNæringsdrivende.class, name = "selvstendig"),
         @JsonSubTypes.Type(value = Frilanser.class, name = "frilanser")
 })
-public abstract class Arbeidsforhold {
+public abstract sealed class Arbeidsforhold permits Virksomhet, PrivatArbeidsgiver, SelvstendigNæringsdrivende, Frilanser {
 }

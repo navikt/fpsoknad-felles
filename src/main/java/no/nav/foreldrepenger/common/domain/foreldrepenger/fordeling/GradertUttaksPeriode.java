@@ -23,8 +23,8 @@ public final class GradertUttaksPeriode extends UttaksPeriode {
     private final Boolean frilans;
     private final Boolean selvstendig;
 
-    @Builder
     @JsonCreator
+    @Builder(builderMethodName = "GradertUttaksPeriodeBuilder")
     public GradertUttaksPeriode(@JsonProperty("fom") LocalDate fom, @JsonProperty("tom") LocalDate tom,
             @JsonProperty("UttaksperiodeType") StønadskontoType uttaksperiodeType,
             @JsonProperty("ønskerSamtidigUttak") boolean ønskerSamtidigUttak,

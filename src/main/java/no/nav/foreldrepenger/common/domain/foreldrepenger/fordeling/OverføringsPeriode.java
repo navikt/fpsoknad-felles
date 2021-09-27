@@ -5,18 +5,23 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonCreator;
+
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import lombok.Value;
 
-@Data
+@Value
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public final class OverføringsPeriode extends LukketPeriodeMedVedlegg {
+public class OverføringsPeriode extends LukketPeriodeMedVedlegg {
 
-    private final Overføringsårsak årsak;
-    private final StønadskontoType uttaksperiodeType;
+    Overføringsårsak årsak;
+    StønadskontoType uttaksperiodeType;
 
+    @Builder
+    @JsonCreator
     public OverføringsPeriode(LocalDate fom, LocalDate tom, @NotNull Overføringsårsak årsak,
             @NotNull StønadskontoType uttaksperiodeType, List<String> vedlegg) {
         super(fom, tom, vedlegg);

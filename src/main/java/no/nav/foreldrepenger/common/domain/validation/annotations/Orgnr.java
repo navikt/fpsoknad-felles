@@ -9,6 +9,10 @@ import javax.validation.Constraint;
 
 import no.nav.foreldrepenger.common.domain.validation.OrgnrValidator;
 
+/**
+ * @deprecated Istedenfor å bruke string som orgnummer, bruk klassen Orgnummer istedenfor
+ */
+@Deprecated(forRemoval = true)
 @Constraint(validatedBy = OrgnrValidator.class)
 @Target({ ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)

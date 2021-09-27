@@ -11,9 +11,10 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import lombok.Data;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import lombok.Value;
 import no.nav.foreldrepenger.common.domain.Søker;
 import no.nav.foreldrepenger.common.domain.Søknad;
 import no.nav.foreldrepenger.common.domain.felles.Vedlegg;
@@ -21,13 +22,13 @@ import no.nav.foreldrepenger.common.domain.felles.annenforelder.AnnenForelder;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.Fødsel;
 import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.Fordeling;
 
-@Data
+@Value
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class Endringssøknad extends Søknad {
 
     @NotNull
-    private final String saksnr;
+    String saksnr;
 
     public Endringssøknad(Søker søker, Fordeling fordeling, AnnenForelder annenForelder,
             Fødsel fødsel, Rettigheter rettigheter, String saksnr,
@@ -46,6 +47,7 @@ public class Endringssøknad extends Søknad {
         this(mottattDato, søker, fordeling, annenForelder, fødsel, rettigheter, saksnr, asList(vedlegg));
     }
 
+    @Builder(builderMethodName = "EndringssøkandsBuilder")
     @JsonCreator
     public Endringssøknad(@JsonProperty("mottattdato") LocalDate mottattDato,
             @JsonProperty("søker") Søker søker,

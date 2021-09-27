@@ -7,18 +7,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import no.nav.foreldrepenger.common.domain.validation.annotations.Orgnr;
+import no.nav.foreldrepenger.common.domain.Orgnummer;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class Virksomhet extends Arbeidsforhold {
+public final class Virksomhet extends Arbeidsforhold {
 
-    @Orgnr
     @NotNull
-    public final String orgnr;
+    public final Orgnummer orgnr;
+
+    public Virksomhet(String orgnr) {
+        this(new Orgnummer(orgnr));
+    }
 
     @JsonCreator
-    public Virksomhet(@JsonProperty("orgnr") String orgnr) {
+    public Virksomhet(@JsonProperty("orgnr") Orgnummer orgnr) {
         this.orgnr = orgnr;
     }
 

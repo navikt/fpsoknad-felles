@@ -11,7 +11,7 @@ import no.nav.foreldrepenger.common.domain.Fødselsnummer;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class PrivatArbeidsgiver extends Arbeidsforhold {
+public final class PrivatArbeidsgiver extends Arbeidsforhold {
 
     @NotNull
     public final Fødselsnummer fnr;

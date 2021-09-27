@@ -23,6 +23,7 @@ import com.neovisionaries.i18n.CountryCode;
 
 import no.nav.foreldrepenger.common.domain.AktørId;
 import no.nav.foreldrepenger.common.domain.BrukerRolle;
+import no.nav.foreldrepenger.common.domain.Orgnummer;
 import no.nav.foreldrepenger.common.domain.Søker;
 import no.nav.foreldrepenger.common.domain.Søknad;
 import no.nav.foreldrepenger.common.domain.felles.DokumentType;
@@ -359,7 +360,7 @@ public class V2ForeldrepengerXMLMapper extends AbstractXMLMapper {
                     .næringsinntektBrutto(norskOrg.getNaeringsinntektBrutto().longValue())
                     .nærRelasjon(norskOrg.isNaerRelasjon())
                     .orgName(norskOrg.getNavn())
-                    .orgNummer(norskOrg.getOrganisasjonsnummer())
+                    .orgNummer(Orgnummer.valueOf(norskOrg.getOrganisasjonsnummer()))
                     .periode(tilÅpenPeriode(norskOrg.getPeriode()))
                     .regnskapsførere(tilRegnskapsFørere(norskOrg.getRegnskapsfoerer()))
                     .virksomhetsTyper(tilVirksomhetsTyper(norskOrg.getVirksomhetstype()))

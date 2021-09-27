@@ -5,9 +5,11 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -26,6 +28,8 @@ public sealed class UtsettelsesPeriode extends LukketPeriodeMedVedlegg permits F
     private final List<String> virksomhetsnummer;
     private final MorsAktivitet morsAktivitetsType;
 
+    @JsonCreator
+    @Builder(builderMethodName = "UtsettelsesPeriodeBuilder")
     public UtsettelsesPeriode(LocalDate fom, LocalDate tom, boolean erArbeidstaker, List<String> virksomhetsnummer,
                               @NotNull UtsettelsesÅrsak årsak, @NotNull StønadskontoType uttaksperiodeType,
                               MorsAktivitet morsAktivitetsType,

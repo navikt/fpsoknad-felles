@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class SelvstendigNæringsdrivende extends Arbeidsforhold {
+public final class SelvstendigNæringsdrivende extends Arbeidsforhold {
     @NotNull
     private final String risikoFaktorer;
     @NotNull

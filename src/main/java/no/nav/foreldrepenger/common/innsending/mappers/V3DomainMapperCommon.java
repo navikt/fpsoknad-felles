@@ -202,7 +202,7 @@ final class V3DomainMapperCommon {
                 .withErVarigEndring(norskOrg.isErVarigEndring())
                 .withNaeringsinntektBrutto(BigInteger.valueOf(norskOrg.getNæringsinntektBrutto()))
                 .withNavn(norskOrg.getOrgName())
-                .withOrganisasjonsnummer(norskOrg.getOrgNummer())
+                .withOrganisasjonsnummer(norskOrg.getOrgNummer().orgnr())
                 .withPeriode(periodeFra(norskOrg.getPeriode()))
                 .withRegnskapsfoerer(regnskapsFørerFra(norskOrg.getRegnskapsførere()))
                 .withVirksomhetstype(virksomhetsTyperFra(norskOrg.getVirksomhetsTyper()))

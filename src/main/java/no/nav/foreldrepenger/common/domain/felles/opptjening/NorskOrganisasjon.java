@@ -8,23 +8,22 @@ import javax.validation.Valid;
 import org.hibernate.validator.constraints.Length;
 
 import lombok.Builder;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import lombok.Value;
+import no.nav.foreldrepenger.common.domain.Orgnummer;
 import no.nav.foreldrepenger.common.domain.felles.ProsentAndel;
 import no.nav.foreldrepenger.common.domain.felles.ÅpenPeriode;
-import no.nav.foreldrepenger.common.domain.validation.annotations.Orgnr;
 
-@Data
+@Value
 @Valid
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public final class NorskOrganisasjon extends EgenNæring {
+public class NorskOrganisasjon extends EgenNæring {
 
-    @Orgnr
-    private final String orgNummer;
+    Orgnummer orgNummer;
     @Length(max = 100)
-    private final String orgName;
+    String orgName;
 
     @Builder
     private NorskOrganisasjon(List<Virksomhetstype> virksomhetsTyper, ÅpenPeriode periode,
@@ -32,7 +31,7 @@ public final class NorskOrganisasjon extends EgenNæring {
             boolean erNyIArbeidslivet, long næringsinntektBrutto, LocalDate endringsDato, LocalDate oppstartsDato,
             String beskrivelseEndring, ProsentAndel stillingsprosent,
             List<String> vedlegg,
-            String orgNummer, String orgName) {
+            Orgnummer orgNummer, String orgName) {
         super(virksomhetsTyper, periode, nærRelasjon, regnskapsførere, erNyOpprettet,
                 erVarigEndring, erNyIArbeidslivet,
                 næringsinntektBrutto, endringsDato, oppstartsDato, beskrivelseEndring, stillingsprosent, vedlegg);

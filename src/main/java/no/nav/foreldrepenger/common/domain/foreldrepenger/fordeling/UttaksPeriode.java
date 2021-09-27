@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -34,6 +35,7 @@ public sealed class UttaksPeriode extends LukketPeriodeMedVedlegg permits Grader
     private final ProsentAndel samtidigUttakProsent;
 
     @JsonCreator
+    @Builder(builderMethodName = "UttaksPeriodeBuilder")
     public UttaksPeriode(@JsonProperty("fom") LocalDate fom, @JsonProperty("tom") LocalDate tom,
                          @JsonProperty("uttaksperiodeType") @NotNull StønadskontoType uttaksperiodeType,
                          @JsonProperty("ønskerSamtidigUttak") boolean ønskerSamtidigUttak,

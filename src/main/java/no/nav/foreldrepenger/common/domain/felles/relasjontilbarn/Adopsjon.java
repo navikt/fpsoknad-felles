@@ -8,24 +8,26 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import lombok.Data;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import lombok.Value;
 import no.nav.foreldrepenger.common.domain.validation.annotations.PastOrToday;
 
-@Data
+@Value
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public final class Adopsjon extends RelasjonTilBarn {
+public class Adopsjon extends RelasjonTilBarn {
 
     @NotNull(message = "{ytelse.relasjontilbarn.adopsjon.omsorggsovertakelsesdato.notnull}")
-    private final LocalDate omsorgsovertakelsesdato;
-    private final boolean ektefellesBarn;
-    private final boolean søkerAdopsjonAlene;
+    LocalDate omsorgsovertakelsesdato;
+    boolean ektefellesBarn;
+    boolean søkerAdopsjonAlene;
 
-    private final LocalDate ankomstDato;
-    private final List<@PastOrToday(message = "{ytelse.relasjontilbarn.adopsjon.fødselssdato.framtid}") LocalDate> fødselsdato;
+    LocalDate ankomstDato;
+    List<@PastOrToday(message = "{ytelse.relasjontilbarn.adopsjon.fødselssdato.framtid}") LocalDate> fødselsdato;
 
+    @Builder
     @JsonCreator
     public Adopsjon(@JsonProperty("antallBarn") int antallBarn,
             @JsonProperty("omsorgsovertakelsesdato") LocalDate omsorgsovertakelsesdato,

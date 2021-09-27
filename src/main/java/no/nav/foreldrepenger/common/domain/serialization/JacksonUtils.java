@@ -18,14 +18,14 @@ final class JacksonUtils {
 
     static ArrayNode arrayNode(JsonNode rootNode, String nodeName) {
         return Optional.ofNullable(rootNode.get(nodeName))
-                .filter(s -> s instanceof ArrayNode)
+                .filter(ArrayNode.class::isInstance)
                 .map(ArrayNode.class::cast)
                 .orElse(null);
     }
 
     static String textValue(JsonNode rootNode, String fieldName) {
         return Optional.ofNullable(rootNode.get(fieldName))
-                .filter(s -> s instanceof TextNode)
+                .filter(TextNode.class::isInstance)
                 .map(TextNode.class::cast)
                 .map(TextNode::textValue)
                 .orElse(null);
@@ -46,6 +46,20 @@ final class JacksonUtils {
             }
             if (entry instanceof DoubleNode d) {
                 return d.asDouble();
+            }
+        }
+        throw new UnexpectedInputException("Ukjent node type %s", rootNode.getClass().getSimpleName());
+    }
+
+    static String fromString(ObjectNode rootNode) {
+        var iterator = rootNode.fields();
+        while (iterator.hasNext()) {
+            JsonNode entry = iterator.next().getValue();
+            if (entry instanceof TextNode t) {
+                return t.asText();
+            }
+            if (entry instanceof IntNode i) {
+                return i.asText();
             }
         }
         throw new UnexpectedInputException("Ukjent node type %s", rootNode.getClass().getSimpleName());

@@ -17,6 +17,7 @@ import com.google.common.collect.Iterables;
 import com.neovisionaries.i18n.CountryCode;
 
 import no.nav.foreldrepenger.common.domain.BrukerRolle;
+import no.nav.foreldrepenger.common.domain.Orgnummer;
 import no.nav.foreldrepenger.common.domain.Søker;
 import no.nav.foreldrepenger.common.domain.felles.DokumentType;
 import no.nav.foreldrepenger.common.domain.felles.InnsendingsType;
@@ -245,7 +246,7 @@ public class V3XMLMapperCommon {
                 .næringsinntektBrutto(n.getNaeringsinntektBrutto().longValue())
                 .nærRelasjon(n.isNaerRelasjon())
                 .orgName(n.getNavn())
-                .orgNummer(n.getOrganisasjonsnummer())
+                .orgNummer(Orgnummer.valueOf(n.getOrganisasjonsnummer()))
                 .periode(tilÅpenPeriode(n.getPeriode()))
                 .regnskapsførere(tilRegnskapsFørere(n.getRegnskapsfoerer()))
                 .virksomhetsTyper(tilVirksomhetsTyper(n.getVirksomhetstype()))

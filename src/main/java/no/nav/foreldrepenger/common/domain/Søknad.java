@@ -18,6 +18,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import no.nav.foreldrepenger.common.domain.felles.PåkrevdVedlegg;
@@ -25,8 +28,10 @@ import no.nav.foreldrepenger.common.domain.felles.ValgfrittVedlegg;
 import no.nav.foreldrepenger.common.domain.felles.Vedlegg;
 import no.nav.foreldrepenger.common.domain.foreldrepenger.Foreldrepenger;
 
-@Data
 @Valid
+@Data
+@Builder
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
 @EqualsAndHashCode(exclude = "mottattdato")
 @JsonPropertyOrder({ "mottattdato", "søker", "ytelse", "begrunnelseForSenSøknad", "tilleggsopplysninger", "vedlegg" })
 public class Søknad {
