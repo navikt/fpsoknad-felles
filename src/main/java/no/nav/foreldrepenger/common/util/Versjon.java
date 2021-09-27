@@ -63,7 +63,7 @@ public enum Versjon {
     }
 
     private static Versjon ukjent(String namespace) {
-        LOG.warn("Fant ingen versjon for namespace {} blavint {}", namespace, allNamespaces());
+        LOG.warn("Fant ingen versjon for namespace {} blandt {}", namespace, allNamespaces());
         return UKJENT;
     }
 
