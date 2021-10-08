@@ -21,7 +21,7 @@
         <jaxb.location>${project.build.directory}/classes/</jaxb.location>
         <xsd.location>src/main/resources/xsd</xsd.location>
         <xjb.location>src/main/resources/xjb</xjb.location>
-        <jackson.version>2.12.5</jackson.version>
+        <jackson.version>2.13.0</jackson.version>
         <kontrakter.version>6.0.4</kontrakter.version>
     </properties>
 
