@@ -464,7 +464,7 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
 
     private AnnenForelderMedNorskIdent norskForelder(NorskForelder norskForelder) {
         return new AnnenForelderMedNorskIdent()
-                .withAktoerId(oppslag.aktørId(norskForelder.getFnr()).getId());
+                .withAktoerId(oppslag.aktørId(norskForelder.getFnr()).getValue());
     }
 
     private static SoekersRelasjonTilBarnet relasjonFra(RelasjonTilBarn relasjonTilBarn) {

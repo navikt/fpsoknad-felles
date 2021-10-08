@@ -5,16 +5,21 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Data;
 
 @Data
-public class AktørId {
+public class AktørId implements ArbeidsgiverIdentifikator {
 
     @JsonValue
-    private final String id;
+    private final String value;
 
     public AktørId(String id) {
-        this.id = id;
+        this.value = id;
     }
 
     public static AktørId valueOf(String id) {
         return new AktørId(id);
+    }
+
+    @Override
+    public String value() {
+        return value;
     }
 }

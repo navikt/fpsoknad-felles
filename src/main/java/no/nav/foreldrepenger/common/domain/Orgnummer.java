@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 import no.nav.foreldrepenger.common.domain.validation.OrgnrValidator;
 
-public record Orgnummer(@JsonValue String orgnr) {
+public record Orgnummer(@JsonValue String value) implements ArbeidsgiverIdentifikator{
 
     public static final String MAGIC = "342352362";
 
@@ -15,15 +15,15 @@ public record Orgnummer(@JsonValue String orgnr) {
 
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
     public Orgnummer {
-        if (!validator().isValid(orgnr, null)) {
-            throw new IllegalArgumentException(orgnr + " er ikke et gyldig organisasjonsnummer");
+        if (!validator().isValid(value, null)) {
+            throw new IllegalArgumentException(value + " er ikke et gyldig organisasjonsnummer");
         }
     }
 
     // For å bare ha @JsonValue på fields, og ikke getter...
     @Override
-    public String orgnr() {
-        return orgnr;
+    public String value() {
+        return value;
     }
 
     private OrgnrValidator validator() {
@@ -35,11 +35,11 @@ public record Orgnummer(@JsonValue String orgnr) {
     }
 
     public String maskert() {
-        return orgnr != null ? orgnr.substring(0, 5) + "****" : "<null>";
+        return value != null ? value.substring(0, 5) + "****" : "<null>";
     }
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + " [orgnr=" + partialMask(orgnr, 9) + "]";
+        return getClass().getSimpleName() + " [orgnr=" + partialMask(value, 9) + "]";
     }
 }

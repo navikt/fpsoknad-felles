@@ -163,7 +163,7 @@ public class V3EngangsstønadDomainMapper implements DomainMapper {
 
     private AnnenForelder norskForelderFra(NorskForelder norskForelder) {
         if (norskForelder.hasId()) {
-            return new AnnenForelderMedNorskIdent().withAktoerId(oppslag.aktørId(norskForelder.getFnr()).getId());
+            return new AnnenForelderMedNorskIdent().withAktoerId(oppslag.aktørId(norskForelder.getFnr()).getValue());
         }
         return null;
     }

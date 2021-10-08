@@ -202,7 +202,7 @@ final class V3DomainMapperCommon {
                 .withErVarigEndring(norskOrg.isErVarigEndring())
                 .withNaeringsinntektBrutto(BigInteger.valueOf(norskOrg.getNæringsinntektBrutto()))
                 .withNavn(norskOrg.getOrgName())
-                .withOrganisasjonsnummer(norskOrg.getOrgNummer().orgnr())
+                .withOrganisasjonsnummer(norskOrg.getOrgNummer().value())
                 .withPeriode(periodeFra(norskOrg.getPeriode()))
                 .withRegnskapsfoerer(regnskapsFørerFra(norskOrg.getRegnskapsførere()))
                 .withVirksomhetstype(virksomhetsTyperFra(norskOrg.getVirksomhetsTyper()))
@@ -292,7 +292,7 @@ final class V3DomainMapperCommon {
 
     static Bruker søkerFra(AktørId aktørId, Søker søker) {
         return new Bruker()
-                .withAktoerId(aktørId.getId())
+                .withAktoerId(aktørId.getValue())
                 .withSoeknadsrolle(brukerRolleFra(søker.getSøknadsRolle()));
     }
 

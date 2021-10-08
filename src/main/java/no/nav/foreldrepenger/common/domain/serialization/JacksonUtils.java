@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.node.TextNode;
 
 import no.nav.foreldrepenger.common.error.UnexpectedInputException;
 
-final class JacksonUtils {
+public final class JacksonUtils {
 
     private JacksonUtils() {
     }
@@ -51,7 +51,7 @@ final class JacksonUtils {
         throw new UnexpectedInputException("Ukjent node type %s", rootNode.getClass().getSimpleName());
     }
 
-    static String fromString(ObjectNode rootNode) {
+    public static String fromString(ObjectNode rootNode) {
         var iterator = rootNode.fields();
         while (iterator.hasNext()) {
             JsonNode entry = iterator.next().getValue();
