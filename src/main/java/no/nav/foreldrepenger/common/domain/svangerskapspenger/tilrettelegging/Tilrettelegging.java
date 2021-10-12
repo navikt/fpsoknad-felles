@@ -34,7 +34,7 @@ public abstract class Tilrettelegging {
     private final LocalDate behovForTilretteleggingFom;
     private final List<String> vedlegg;
 
-    protected Tilrettelegging(Arbeidsforhold arbeidsforhold, LocalDate behovForTilretteleggingFom, List<String> vedlegg) {
+    public Tilrettelegging(Arbeidsforhold arbeidsforhold, LocalDate behovForTilretteleggingFom, List<String> vedlegg) {
         this.arbeidsforhold = arbeidsforhold;
         this.behovForTilretteleggingFom = behovForTilretteleggingFom;
         this.vedlegg = Optional.ofNullable(vedlegg).orElse(emptyList());

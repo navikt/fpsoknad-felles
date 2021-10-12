@@ -34,12 +34,12 @@ public abstract class Vedlegg {
     private static final Logger LOG = LoggerFactory.getLogger(Vedlegg.class);
 
     private final VedleggMetaData metadata;
-    private final byte[] innhold;
+    private final byte[] vedlegg;
 
     @JsonCreator
-    protected Vedlegg(@JsonProperty("metadata") VedleggMetaData metadata, @JsonProperty("vedlegg") byte[] innhold) {
+    public Vedlegg(@JsonProperty("metadata") VedleggMetaData metadata, @JsonProperty("vedlegg") byte[] vedlegg) {
         this.metadata = metadata;
-        this.innhold = innhold;
+        this.vedlegg = vedlegg;
     }
 
     @JsonIgnore
@@ -79,13 +79,13 @@ public abstract class Vedlegg {
 
     @JsonIgnore
     public long getStørrelse() {
-        return Optional.ofNullable(innhold)
+        return Optional.ofNullable(vedlegg)
                 .map(v -> v.length)
                 .orElse(0);
     }
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "metadata=" + metadata + "vedlegg=" + limit(innhold, 50);
+        return getClass().getSimpleName() + "metadata=" + metadata + "vedlegg=" + limit(vedlegg, 50);
     }
 }

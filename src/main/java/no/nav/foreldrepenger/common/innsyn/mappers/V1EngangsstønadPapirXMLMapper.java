@@ -147,15 +147,15 @@ public class V1EngangsstønadPapirXMLMapper implements XMLSøknadMapper {
     }
 
     private static List<Utenlandsopphold> utenlandsOppholdFør(List<OppholdUtlandet> opphold, LocalDate søknadsDato) {
-        return utenlandsOpphold(opphold, før(søknadsDato));
+        return utenlandsOpphold(opphold, søknadsDato, før(søknadsDato));
     }
 
     private static List<Utenlandsopphold> utenlandsOppholdEtter(List<OppholdUtlandet> opphold, LocalDate søknadsDato) {
-        return utenlandsOpphold(opphold, etter(søknadsDato));
+        return utenlandsOpphold(opphold, søknadsDato, etter(søknadsDato));
     }
 
-    private static List<Utenlandsopphold> utenlandsOpphold(List<OppholdUtlandet> opphold,
-                                                           Predicate<? super OppholdUtlandet> predicate) {
+    private static List<Utenlandsopphold> utenlandsOpphold(List<OppholdUtlandet> opphold, LocalDate søknadsDato,
+            Predicate<? super OppholdUtlandet> predicate) {
         return safeStream(opphold)
                 .filter(predicate)
                 .map(u -> new Utenlandsopphold(tilLand(u.getLand()),

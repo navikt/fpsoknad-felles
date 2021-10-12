@@ -9,6 +9,7 @@ public interface DomainMapper extends Mappable {
 
     String KOSOVO = "XXK";
 
+    // TODO: Bruke SøknadEgenskap til noe som helst? Fjerne?
     String tilXML(Søknad søknad, AktørId søker, SøknadEgenskap egenskap);
 
     String tilXML(Endringssøknad endringssøknad, AktørId søker, SøknadEgenskap egenskap);

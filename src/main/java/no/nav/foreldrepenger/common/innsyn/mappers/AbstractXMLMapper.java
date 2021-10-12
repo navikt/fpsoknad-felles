@@ -5,7 +5,7 @@ import no.nav.foreldrepenger.common.oppslag.Oppslag;
 public abstract class AbstractXMLMapper implements XMLSøknadMapper {
     protected final Oppslag oppslag;
 
-    protected AbstractXMLMapper(Oppslag oppslag) {
+    public AbstractXMLMapper(Oppslag oppslag) {
         this.oppslag = oppslag;
     }
 

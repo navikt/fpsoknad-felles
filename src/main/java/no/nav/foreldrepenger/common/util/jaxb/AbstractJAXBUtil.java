@@ -41,7 +41,7 @@ public abstract class AbstractJAXBUtil {
     private final boolean validateMarshalling;
     private final boolean validateUnarshalling;
 
-    protected AbstractJAXBUtil(JAXBContext context, boolean validateMarhsalling,
+    public AbstractJAXBUtil(JAXBContext context, boolean validateMarhsalling,
             boolean validateUnmarshalling, String... xsds) {
         this.context = context;
         this.schema = schemaFra(xsds);
