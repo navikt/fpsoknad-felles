@@ -28,12 +28,7 @@ public class SøknadEgenskap {
     public static final SøknadEgenskap UKJENT = new SøknadEgenskap(Versjon.UKJENT, SøknadType.UKJENT);
 
     public static SøknadEgenskap of(SøknadType type) {
-        return new SøknadEgenskap(type);
-    }
-
-    @Deprecated
-    public SøknadEgenskap(SøknadType type) {
-        this(defaultVersjon(type), type);
+        return new SøknadEgenskap(defaultVersjon(type), type);
     }
 
     @JsonCreator

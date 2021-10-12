@@ -22,7 +22,7 @@ public class Fødselsnummer {
     }
 
     public Kjønn kjønn() {
-        if (fnr != null & fnr.length() == 11) {
+        if (fnr != null && fnr.length() == 11) {
             return Integer.valueOf(fnr.charAt(8)) % 2 == 0 ? Kjønn.K : Kjønn.M;
         }
         return Kjønn.U;

@@ -47,7 +47,7 @@ public abstract sealed class LukketPeriodeMedVedlegg
     protected final List<String> vedlegg;
 
     @JsonCreator
-    public LukketPeriodeMedVedlegg(@JsonProperty("fom") LocalDate fom, @JsonProperty("tom") LocalDate tom,
+    protected LukketPeriodeMedVedlegg(@JsonProperty("fom") LocalDate fom, @JsonProperty("tom") LocalDate tom,
                                    @JsonProperty("vedlegg") List<String> vedlegg) {
         this.fom = fom;
         this.tom = tom;

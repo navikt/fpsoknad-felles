@@ -52,7 +52,7 @@ public abstract sealed class EgenNæring permits NorskOrganisasjon,UtenlandskOrg
     private final List<String> vedlegg;
 
     @JsonCreator
-    public EgenNæring(
+    protected EgenNæring(
             @JsonProperty("virksomhetsType") List<Virksomhetstype> virksomhetsTyper,
             @JsonProperty("periode") ÅpenPeriode periode,
             @JsonProperty("nærRelasjon") boolean nærRelasjon,

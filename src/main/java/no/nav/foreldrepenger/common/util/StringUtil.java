@@ -2,7 +2,7 @@ package no.nav.foreldrepenger.common.util;
 
 import static java.util.function.Predicate.not;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
@@ -63,10 +63,6 @@ public final class StringUtil {
     }
 
     public static String encode(String string) {
-        try {
-            return Base64.getEncoder().encodeToString(string.getBytes("utf-8"));
-        } catch (UnsupportedEncodingException e) {
-            throw new IllegalArgumentException(e);
-        }
+        return Base64.getEncoder().encodeToString(string.getBytes(StandardCharsets.UTF_8));
     }
 }
