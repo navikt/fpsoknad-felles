@@ -15,6 +15,6 @@ public record Utenlandsopphold(@NotNull CountryCode land, LukketPeriode varighet
     }
 
     public LocalDate tom() {
-        return varighet.fom();
+        return varighet.tom();
     }
 }
