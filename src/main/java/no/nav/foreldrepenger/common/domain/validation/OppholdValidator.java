@@ -30,10 +30,10 @@ public class OppholdValidator implements ConstraintValidator<Opphold, List<Utenl
     public boolean isValid(List<Utenlandsopphold> alleOpphold, ConstraintValidatorContext context) {
 
         boolean valid = true;
-        List<Utenlandsopphold> copy = new ArrayList<>(alleOpphold);
+        var copy = new ArrayList<>(alleOpphold);
         while (!copy.isEmpty()) {
-            Utenlandsopphold opphold = copy.remove(0);
-            for (Utenlandsopphold o : copy) {
+            var opphold = copy.remove(0);
+            for (var o : copy) {
                 if (validerFortid(opphold)) {
                     LOG.debug("Periode {} er ikke utelukkende i fortiden", opphold);
                     errorMessageFortidFremtid(context, opphold, "er ikke utelukkende i fortiden");
