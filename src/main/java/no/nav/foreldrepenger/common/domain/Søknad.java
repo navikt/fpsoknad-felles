@@ -54,8 +54,7 @@ public class Søknad {
 
     @JsonCreator
     public Søknad(@JsonProperty("mottattdato") LocalDate mottattdato, @JsonProperty("søker") Søker søker,
-            @JsonProperty("ytelse") Ytelse ytelse,
-            @JsonProperty("vedlegg") List<Vedlegg> vedlegg) {
+                  @JsonProperty("ytelse") Ytelse ytelse, @JsonProperty("vedlegg") List<Vedlegg> vedlegg) {
         this.mottattdato = mottattdato;
         this.søker = søker;
         this.ytelse = ytelse;
