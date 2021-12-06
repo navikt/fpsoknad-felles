@@ -28,14 +28,10 @@ public class SøknadEgenskap {
     public static final SøknadEgenskap UKJENT = new SøknadEgenskap(Versjon.UKJENT, SøknadType.UKJENT);
 
     public static SøknadEgenskap of(SøknadType type) {
-        return new SøknadEgenskap(type);
+        return new SøknadEgenskap(defaultVersjon(type), type);
     }
 
-    @Deprecated
-    public SøknadEgenskap(SøknadType type) {
-        this(defaultVersjon(type), type);
-    }
-
+    //TODO: Hvorfor er det jackson annoteringer på denne?
     @JsonCreator
     public SøknadEgenskap(@JsonProperty("versjon") Versjon versjon, @JsonProperty("type") SøknadType type) {
         this.egenskap = Pair.of(versjon, type);

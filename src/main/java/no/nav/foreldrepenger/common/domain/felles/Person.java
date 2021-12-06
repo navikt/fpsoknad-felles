@@ -1,6 +1,7 @@
 package no.nav.foreldrepenger.common.domain.felles;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+import static java.util.Collections.emptySet;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -20,8 +21,8 @@ import no.nav.foreldrepenger.common.domain.Navn;
 import no.nav.foreldrepenger.common.oppslag.dkif.Målform;
 import no.nav.foreldrepenger.common.oppslag.pdl.dto.BarnDTO;
 
-@JsonInclude(NON_NULL)
 @Data
+@JsonInclude(NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Person {
     private final Fødselsnummer fnr;
@@ -36,18 +37,18 @@ public class Person {
 
     @JsonCreator
     public Person(@JsonProperty("fnr") Fødselsnummer fnr,
-            @JsonProperty("navn") Navn navn,
-            @JsonProperty("fødselsdato") LocalDate fødselsdato,
-            @JsonProperty("målform") String målform,
-            @JsonProperty("land") CountryCode land,
-            @JsonProperty("bankkonto") Bankkonto bankkonto, Set<BarnDTO> barn) {
+                  @JsonProperty("navn") Navn navn,
+                  @JsonProperty("fødselsdato") LocalDate fødselsdato,
+                  @JsonProperty("målform") String målform,
+                  @JsonProperty("land") CountryCode land,
+                  @JsonProperty("bankkonto") Bankkonto bankkonto, Set<BarnDTO> barn) {
         this.fnr = fnr;
         this.navn = navn;
         this.fødselsdato = fødselsdato;
         this.målform = Optional.ofNullable(målform).orElse(Målform.standard().name());
         this.land = Optional.ofNullable(land).orElse(CountryCode.NO);
         this.bankkonto = bankkonto;
-        this.barn = barn;
+        this.barn = Optional.ofNullable(barn).orElse(emptySet());
     }
 
     public String getFornavn() {
