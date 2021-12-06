@@ -10,7 +10,6 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -245,7 +244,7 @@ public class TestUtils {
         Person person = new Person(new Fødselsnummer("010101010101"), new Navn("Mor", "Mellommor", "Morsen", Kjønn.K),
                 LocalDate.now().minusYears(25), "NN",
                 CountryCode.NO,
-                new Bankkonto("2000.20.20000", "Store Fiskerbank"), Set.of());
+                new Bankkonto("2000.20.20000", "Store Fiskerbank"), null);
         person.setAktørId(new AktørId("42"));
         return person;
     }

@@ -19,6 +19,7 @@ import lombok.Data;
 @JsonPropertyOrder({ "tidligereOppholdsInfo", "framtidigOppholdsInfo" })
 public class Medlemsskap {
 
+    // TODO: Fjern arbeidSiste12 og custom mapper.. unødvendig kompleksitet
     @Valid
     private final TidligereOppholdsInformasjon tidligereOppholdsInfo;
     @Valid
