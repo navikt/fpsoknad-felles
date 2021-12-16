@@ -9,6 +9,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.Value;
@@ -40,6 +41,7 @@ public class Fødsel extends RelasjonTilBarn {
         this(antallBarn, singletonList(fødselsDato), termindato, emptyList());
     }
 
+    @Builder
     @JsonCreator
     public Fødsel(@JsonProperty("antallBarn") int antallBarn,
                   @JsonProperty("fødselsdato") List<LocalDate> fødselsdato,

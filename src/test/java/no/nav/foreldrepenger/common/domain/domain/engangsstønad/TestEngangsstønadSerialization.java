@@ -84,7 +84,7 @@ class TestEngangsstønadSerialization extends SerializationTestBase {
 
     @Test
     void testFnr() {
-        test(new Fødselsnummer("03016536325"), true);
+        test(new Fødselsnummer("22222233333"), true);
     }
 
     @Test

@@ -25,7 +25,7 @@ public class Frilans {
     private final boolean nyOppstartet;
     @Valid
     private final List<FrilansOppdrag> frilansOppdrag;
-    private final List<String> vedlegg;
+    private final List<String> vedlegg; // TODO: Har aldri blitt satt i foreldrepengeapi
 
     @JsonCreator
     public Frilans(@JsonProperty("periode") ÅpenPeriode periode,

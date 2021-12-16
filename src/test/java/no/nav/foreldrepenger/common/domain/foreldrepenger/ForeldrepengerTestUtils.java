@@ -134,7 +134,10 @@ public class ForeldrepengerTestUtils {
     }
 
     public static Søknad søknad(Ytelse ytelse, Vedlegg... vedlegg) {
-        return new Søknad(LocalDate.now(), TestUtils.søker(), ytelse, asList(vedlegg));
+        var søknad = new Søknad(LocalDate.now(), TestUtils.søker(), ytelse, asList(vedlegg));
+        søknad.setTilleggsopplysninger("Opplysninger av den kjente tilleggtypen");
+        søknad.setBegrunnelseForSenSøknad("Begrunner det ikke nie");
+        return søknad;
     }
 
     public static Endringssøknad endringssøknad(Versjon v, Vedlegg... vedlegg) {
@@ -147,7 +150,7 @@ public class ForeldrepengerTestUtils {
 
     private static String[] vedleggRefs(Vedlegg... vedlegg) {
         return Arrays.stream(vedlegg)
-                .map(s -> s.getId())
+                .map(Vedlegg::getId)
                 .toArray(String[]::new);
     }
 
@@ -305,17 +308,11 @@ public class ForeldrepengerTestUtils {
     }
 
     public static AnnenOpptjening annenOpptjening(Versjon v, String... vedleggRefs) {
-        switch (v) {
-            case V1:
-                return new AnnenOpptjening(AnnenOpptjeningType.VENTELØNN, åpenPeriode(),
-                        Arrays.asList(vedleggRefs));
-            case V2:
-            case V3:
-                return new AnnenOpptjening(AnnenOpptjeningType.VENTELØNN_VARTPENGER, åpenPeriode(),
-                        Arrays.asList(vedleggRefs));
-            default:
-                throw new IllegalArgumentException();
-        }
+        return switch (v) {
+            case V1 -> new AnnenOpptjening(AnnenOpptjeningType.VENTELØNN, åpenPeriode(), Arrays.asList(vedleggRefs));
+            case V2, V3 -> new AnnenOpptjening(AnnenOpptjeningType.VENTELØNN_VARTPENGER, åpenPeriode(), Arrays.asList(vedleggRefs));
+            default -> throw new IllegalArgumentException();
+        };
     }
 
     public static UtenlandskArbeidsforhold utenlandskArbeidsforhold(String... vedleggRefs) {
@@ -350,31 +347,27 @@ public class ForeldrepengerTestUtils {
     }
 
     public static UttaksPeriode gradertPeriode(Versjon v, String... vedleggRefs) {
-        switch (v) {
-            case V1:
-                return new GradertUttaksPeriode(ukeDagNær(LocalDate.now().plusMonths(4)), LocalDate.now().plusMonths(5),
-                        FEDREKVOTE,
-                        true, MorsAktivitet.ARBEID_OG_UTDANNING, true, new ProsentAndel(42d), new ProsentAndel(75),
-                        true, true,
-                        Collections.singletonList("22222222222"), null, null,
-                        Arrays.asList(vedleggRefs));
-            case V2:
-                return new GradertUttaksPeriode(ukeDagNær(LocalDate.now().plusMonths(4)), LocalDate.now().plusMonths(5),
-                        FEDREKVOTE,
-                        true, MorsAktivitet.ARBEID_OG_UTDANNING, true, new ProsentAndel(42d), new ProsentAndel(75),
-                        true, true,
-                        Collections.singletonList("22222222222"), null, null,
-                        Arrays.asList(vedleggRefs));
-            case V3:
-                return new GradertUttaksPeriode(ukeDagNær(LocalDate.now().plusMonths(4)), LocalDate.now().plusMonths(5),
-                        FEDREKVOTE,
-                        true, MorsAktivitet.ARBEID_OG_UTDANNING, true, new ProsentAndel(42d), new ProsentAndel(75),
-                        true, true,
-                        Collections.singletonList("22222222222"), true, true,
-                        Arrays.asList(vedleggRefs));
-            default:
-                throw new IllegalStateException(v.toString());
-        }
+        return switch (v) {
+            case V1 -> new GradertUttaksPeriode(ukeDagNær(LocalDate.now().plusMonths(4)), LocalDate.now().plusMonths(5),
+                    FEDREKVOTE,
+                    true, MorsAktivitet.ARBEID_OG_UTDANNING, true, new ProsentAndel(42d), new ProsentAndel(75),
+                    true, true,
+                    Collections.singletonList("22222222222"), null, null,
+                    Arrays.asList(vedleggRefs));
+            case V2 -> new GradertUttaksPeriode(ukeDagNær(LocalDate.now().plusMonths(4)), LocalDate.now().plusMonths(5),
+                    FEDREKVOTE,
+                    true, MorsAktivitet.ARBEID_OG_UTDANNING, true, new ProsentAndel(42d), new ProsentAndel(75),
+                    true, true,
+                    Collections.singletonList("22222222222"), null, null,
+                    Arrays.asList(vedleggRefs));
+            case V3 -> new GradertUttaksPeriode(ukeDagNær(LocalDate.now().plusMonths(4)), LocalDate.now().plusMonths(5),
+                    FEDREKVOTE,
+                    true, MorsAktivitet.ARBEID_OG_UTDANNING, true, new ProsentAndel(42d), new ProsentAndel(75),
+                    true, true,
+                    Collections.singletonList("22222222222"), true, true,
+                    Arrays.asList(vedleggRefs));
+            default -> throw new IllegalStateException(v.toString());
+        };
 
     }
 
@@ -427,13 +420,12 @@ public class ForeldrepengerTestUtils {
     public static LocalDate ukeDagNær(LocalDate dato) {
         LocalDate d = dato;
         while (!erUkedag(d)) {
-            d = d.minusDays(1);
+            d = d.plusDays(1); // TODO sjekk at dette ikke ødlegger neo. Minus dager er feil..
         }
         return d;
     }
 
     private static boolean erUkedag(LocalDate dato) {
         return !dato.getDayOfWeek().equals(SATURDAY) && !dato.getDayOfWeek().equals(SUNDAY);
-
     }
 }

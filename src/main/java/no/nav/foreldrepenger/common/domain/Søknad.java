@@ -37,7 +37,7 @@ import no.nav.foreldrepenger.common.domain.foreldrepenger.Foreldrepenger;
 public class Søknad {
 
     @NotNull
-    private final LocalDate mottattdato;
+    private LocalDate mottattdato;
     @Valid
     private final Søker søker;
     @Valid
