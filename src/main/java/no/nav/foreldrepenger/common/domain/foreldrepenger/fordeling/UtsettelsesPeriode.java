@@ -1,5 +1,8 @@
 package no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling;
 
+import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY;
+import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -8,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import lombok.Builder;
 import lombok.Data;
@@ -17,6 +21,7 @@ import lombok.ToString;
 @Data
 @ToString(callSuper = true, exclude = { "morsAktivitetsType", "virksomhetsnummer" })
 @EqualsAndHashCode(callSuper = true, exclude = { "morsAktivitetsType", "virksomhetsnummer" })
+@JsonTypeInfo(use = NAME, include = PROPERTY, property = "type")
 @JsonSubTypes({
         @Type(value = FriUtsettelsesPeriode.class, name = "fri")
 })

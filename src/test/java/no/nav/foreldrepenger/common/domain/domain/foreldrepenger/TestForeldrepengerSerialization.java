@@ -235,7 +235,7 @@ class TestForeldrepengerSerialization extends SerializationTestBase {
     void testEgenNæringUtenlandskOrganisasjon() throws Exception {
         assertEquals(CountryCode.UG, mapper.readValue(bytesFra("json/utenlandskOrg.json"), UtenlandskOrganisasjon.class).getRegistrertILand());
 
-        test(utenlandskEgenNæring(), false);
+        test(utenlandskEgenNæring(), true);
     }
 
     @Test
