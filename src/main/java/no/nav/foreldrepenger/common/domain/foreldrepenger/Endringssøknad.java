@@ -1,6 +1,5 @@
 package no.nav.foreldrepenger.common.domain.foreldrepenger;
 
-import static java.time.LocalDate.now;
 import static java.util.Arrays.asList;
 
 import java.time.LocalDate;
@@ -17,6 +16,7 @@ import lombok.ToString;
 import lombok.Value;
 import no.nav.foreldrepenger.common.domain.Søker;
 import no.nav.foreldrepenger.common.domain.Søknad;
+import no.nav.foreldrepenger.common.domain.Ytelse;
 import no.nav.foreldrepenger.common.domain.felles.Vedlegg;
 import no.nav.foreldrepenger.common.domain.felles.annenforelder.AnnenForelder;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.Fødsel;
@@ -30,10 +30,9 @@ public class Endringssøknad extends Søknad {
     @NotNull
     String saksnr;
 
-    public Endringssøknad(Søker søker, Fordeling fordeling, AnnenForelder annenForelder,
-            Fødsel fødsel, Rettigheter rettigheter, String saksnr,
-            Vedlegg... vedlegg) {
-        this(now(), søker, fordeling, annenForelder, fødsel, rettigheter, saksnr, vedlegg);
+    public Endringssøknad(String saksnr, LocalDate mottattdato, Søker søker, Ytelse ytelse, List<Vedlegg> vedlegg) {
+        super(mottattdato, søker, ytelse, vedlegg);
+        this.saksnr = saksnr;
     }
 
     public Endringssøknad(LocalDate mottattDato, Søker søker, Fordeling fordeling, String saksnr,
