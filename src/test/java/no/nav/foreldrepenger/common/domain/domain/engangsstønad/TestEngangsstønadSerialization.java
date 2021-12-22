@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import no.nav.foreldrepenger.common.domain.AktørId;
 import no.nav.foreldrepenger.common.domain.Fødselsnummer;
 import no.nav.foreldrepenger.common.domain.Kvittering;
-import no.nav.foreldrepenger.common.domain.LeveranseStatus;
 import no.nav.foreldrepenger.common.domain.domain.SerializationTestBase;
 import no.nav.foreldrepenger.common.domain.felles.TestUtils;
 import no.nav.foreldrepenger.common.domain.foreldrepenger.ForeldrepengerTestUtils;
@@ -23,7 +22,7 @@ class TestEngangsstønadSerialization extends SerializationTestBase {
 
     @Test
     void testKvittering() {
-        var kvittering = new Kvittering(LeveranseStatus.SENDT_OG_FORSØKT_BEHANDLET_FPSAK);
+        var kvittering = new Kvittering();
         kvittering.setJournalId("555");
         kvittering.setSaksNr("666");
         test(kvittering, false);
