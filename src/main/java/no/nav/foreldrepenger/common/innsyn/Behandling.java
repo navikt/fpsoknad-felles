@@ -6,7 +6,6 @@ import java.util.List;
 import lombok.Builder;
 import lombok.Data;
 import no.nav.foreldrepenger.common.domain.felles.BehandlingTema;
-import no.nav.foreldrepenger.common.innsyn.vedtak.Vedtak;
 
 @Data
 @Builder
@@ -21,6 +20,5 @@ public class Behandling {
     private final BehandlingResultat behandlingResultat;
     private final List<String> inntektsmeldinger;
     private final InnsynsSøknad søknad;
-    private final Vedtak vedtak;
 
 }
