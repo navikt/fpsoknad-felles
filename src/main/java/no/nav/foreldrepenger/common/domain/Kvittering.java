@@ -1,7 +1,6 @@
 package no.nav.foreldrepenger.common.domain;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
-import static no.nav.foreldrepenger.common.util.CounterRegistry.FAILED;
 import static no.nav.foreldrepenger.common.util.StringUtil.limit;
 
 import java.time.LocalDate;
@@ -55,27 +54,11 @@ public class Kvittering {
         return kvittering;
     }
 
-    public static Kvittering sendtOgForsøktBehandletKvittering(FPSakFordeltKvittering kvittering) {
-        LOG.info("Søknaden er motatt og forsøkt behandlet av FPSak, journalId er {}, saksnummer er {}",
-                kvittering.getJournalpostId(), kvittering.getSaksnummer());
-        FAILED.increment();
-        return kvittering(kvittering.getJournalpostId(), kvittering.getSaksnummer());
-    }
-
     public static Kvittering gosysKvittering(GosysKvittering gosysKvittering) {
         LOG.info("Søknaden er sendt til manuell behandling i Gosys, journalId er {}",
                 gosysKvittering.getJournalpostId());
-        return kvittering(gosysKvittering.getJournalpostId());
-    }
-
-    private static Kvittering kvittering(String journalId) {
-        return kvittering(journalId, null);
-    }
-
-    private static Kvittering kvittering(String journalId, String saksnr) {
         Kvittering kvittering = new Kvittering();
-        kvittering.setJournalId(journalId);
-        kvittering.setSaksNr(saksnr);
+        kvittering.setJournalId(gosysKvittering.getJournalpostId());
         return kvittering;
     }
 
