@@ -9,6 +9,8 @@ import static no.nav.foreldrepenger.common.domain.felles.TestUtils.termin;
 import static no.nav.foreldrepenger.common.domain.felles.TestUtils.ukjentForelder;
 import static no.nav.foreldrepenger.common.domain.felles.TestUtils.utenlandskForelder;
 
+import java.time.LocalDateTime;
+
 import org.junit.jupiter.api.Test;
 
 import no.nav.foreldrepenger.common.domain.AktørId;
@@ -22,9 +24,7 @@ class TestEngangsstønadSerialization extends SerializationTestBase {
 
     @Test
     void testKvittering() {
-        var kvittering = new Kvittering();
-        kvittering.setJournalId("555");
-        kvittering.setSaksNr("666");
+        var kvittering = new Kvittering(LocalDateTime.now(), "saksnummer", "pdf".getBytes(), "infoskrivPdf".getBytes());
         test(kvittering, false);
     }
 
