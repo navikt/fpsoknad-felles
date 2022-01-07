@@ -1,6 +1,6 @@
 package no.nav.foreldrepenger.common.util;
 
-import static no.nav.foreldrepenger.common.util.SpringBootUtils.isEmpty;
+import static org.apache.cxf.common.util.CollectionUtils.isEmpty;
 
 import java.util.Collection;
 import java.util.List;

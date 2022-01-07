@@ -1,8 +1,5 @@
 package no.nav.foreldrepenger.common.oppslag.dkif;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 
 public enum Målform {
@@ -12,8 +9,6 @@ public enum Målform {
     NN,
     EN,
     E;
-
-    private static final Logger LOG = LoggerFactory.getLogger(Målform.class);
 
     public static Målform standard() {
         return NB;

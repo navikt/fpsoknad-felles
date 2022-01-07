@@ -5,7 +5,7 @@ import static no.nav.foreldrepenger.common.domain.foreldrepenger.ForeldrepengerT
 
 import org.junit.jupiter.api.Test;
 
-import no.nav.foreldrepenger.common.domain.domain.SerializationTestBase;
+import no.nav.foreldrepenger.common.domain.util.SerializationTestBase;
 
 class TestSvangerskapsepengerSerialization extends SerializationTestBase {
 

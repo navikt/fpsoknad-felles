@@ -9,9 +9,9 @@ import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperComm
 import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.søkerFra;
 import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.vedleggFra;
 import static no.nav.foreldrepenger.common.util.Constants.UKJENT_KODEVERKSVERDI;
-import static no.nav.foreldrepenger.common.util.SpringBootUtils.isEmpty;
 import static no.nav.foreldrepenger.common.util.StreamUtil.safeStream;
 import static no.nav.foreldrepenger.common.util.Versjon.V3;
+import static org.apache.cxf.common.util.CollectionUtils.isEmpty;
 
 import java.util.List;
 import java.util.Optional;
