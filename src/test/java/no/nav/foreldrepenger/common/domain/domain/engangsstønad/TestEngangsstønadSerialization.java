@@ -16,9 +16,9 @@ import org.junit.jupiter.api.Test;
 import no.nav.foreldrepenger.common.domain.AktørId;
 import no.nav.foreldrepenger.common.domain.Fødselsnummer;
 import no.nav.foreldrepenger.common.domain.Kvittering;
-import no.nav.foreldrepenger.common.domain.domain.SerializationTestBase;
 import no.nav.foreldrepenger.common.domain.felles.TestUtils;
 import no.nav.foreldrepenger.common.domain.foreldrepenger.ForeldrepengerTestUtils;
+import no.nav.foreldrepenger.common.domain.util.SerializationTestBase;
 
 class TestEngangsstønadSerialization extends SerializationTestBase {
 

@@ -233,7 +233,7 @@ public class TestUtils {
     }
 
     public static Navn navnUtenMellomnavn() {
-        return new Navn("Mor", null, "Monsen", Kjønn.K);
+        return new Navn("Mor", null, "Monsen");
     }
 
     public static AnnenForelder ukjentForelder() {
@@ -241,11 +241,10 @@ public class TestUtils {
     }
 
     public static Person person() {
-        Person person = new Person(new Fødselsnummer("010101010101"), new Navn("Mor", "Mellommor", "Morsen", Kjønn.K),
-                LocalDate.now().minusYears(25), "NN",
-                CountryCode.NO,
+        Person person = new Person(AktørId.valueOf("42"), Fødselsnummer.valueOf("010101010101"),
+                LocalDate.now().minusYears(25), new Navn("Mor", "Mellommor", "Morsen"),
+                Kjønn.K, Målform.NN, CountryCode.NO,
                 new Bankkonto("2000.20.20000", "Store Fiskerbank"), null);
-        person.setAktørId(new AktørId("42"));
         return person;
     }
 

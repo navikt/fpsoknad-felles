@@ -33,7 +33,6 @@ import org.junit.jupiter.api.Test;
 
 import com.neovisionaries.i18n.CountryCode;
 
-import no.nav.foreldrepenger.common.domain.domain.SerializationTestBase;
 import no.nav.foreldrepenger.common.domain.felles.DokumentType;
 import no.nav.foreldrepenger.common.domain.felles.InnsendingsType;
 import no.nav.foreldrepenger.common.domain.felles.ProsentAndel;
@@ -47,6 +46,7 @@ import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.RelasjonTilBar
 import no.nav.foreldrepenger.common.domain.foreldrepenger.Dekningsgrad;
 import no.nav.foreldrepenger.common.domain.foreldrepenger.ForeldrepengerTestUtils;
 import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.StønadskontoType;
+import no.nav.foreldrepenger.common.domain.util.SerializationTestBase;
 import no.nav.foreldrepenger.common.innsending.foreldrepenger.FPSakFordeltKvittering;
 import no.nav.foreldrepenger.common.innsending.foreldrepenger.GosysKvittering;
 import no.nav.foreldrepenger.common.innsending.foreldrepenger.PendingKvittering;

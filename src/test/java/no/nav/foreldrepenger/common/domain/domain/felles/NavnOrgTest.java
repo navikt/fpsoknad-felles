@@ -9,15 +9,14 @@ import org.junit.jupiter.api.Test;
 
 import no.nav.foreldrepenger.common.domain.Navn;
 import no.nav.foreldrepenger.common.domain.Orgnummer;
-import no.nav.foreldrepenger.common.domain.domain.SerializationTestBase;
-import no.nav.foreldrepenger.common.domain.felles.Kjønn;
+import no.nav.foreldrepenger.common.domain.util.SerializationTestBase;
 
 class NavnOrgTest extends SerializationTestBase {
 
     @Test
     void navnEquals() {
-        var n = new Navn("Ole", "Mellomnavn", "Olsen", null);
-        var n1 = new Navn("Ole", "Mellomnavn", "Olsen", Kjønn.M);
+        var n = new Navn("Ole", "Mellomnavn", "Olsen");
+        var n1 = new Navn("Ole", "Mellomnavn", "Olsen");
         assertEquals(n, n1);
     }
 
