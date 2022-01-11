@@ -14,7 +14,8 @@ public enum StønadskontoType {
     MØDREKVOTE,
     FEDREKVOTE,
     FORELDREPENGER,
-    FORELDREPENGER_FØR_FØDSEL;
+    FORELDREPENGER_FØR_FØDSEL,
+    FORELDREPENGER_UTEN_AKTIVITET;
 
     private static final Logger LOG = LoggerFactory.getLogger(StønadskontoType.class);
 
