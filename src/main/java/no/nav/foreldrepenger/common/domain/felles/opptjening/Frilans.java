@@ -23,19 +23,22 @@ public class Frilans {
     private final ÅpenPeriode periode;
     private final boolean harInntektFraFosterhjem;
     private final boolean nyOppstartet;
+    private final boolean jobberFremdelesSomFrilans;
     @Valid
     private final List<FrilansOppdrag> frilansOppdrag;
     private final List<String> vedlegg; // TODO: Har aldri blitt satt i foreldrepengeapi
 
     @JsonCreator
     public Frilans(@JsonProperty("periode") ÅpenPeriode periode,
-            @JsonProperty("harInntektFraFosterhjem") boolean harInntektFraFosterhjem,
-            @JsonProperty("nyOppstartet") boolean nyOppstartet,
-            @JsonProperty("frilansOppdrag") List<FrilansOppdrag> frilansOppdrag,
-            @JsonProperty("vedlegg") List<String> vedlegg) {
+                   @JsonProperty("harInntektFraFosterhjem") boolean harInntektFraFosterhjem,
+                   @JsonProperty("nyOppstartet") boolean nyOppstartet,
+                   @JsonProperty("jobberFremdelesSomFrilans") boolean jobberFremdelesSomFrilans,
+                   @JsonProperty("frilansOppdrag") List<FrilansOppdrag> frilansOppdrag,
+                   @JsonProperty("vedlegg") List<String> vedlegg) {
         this.periode = periode;
         this.harInntektFraFosterhjem = harInntektFraFosterhjem;
         this.nyOppstartet = nyOppstartet;
+        this.jobberFremdelesSomFrilans = jobberFremdelesSomFrilans;
         this.frilansOppdrag = Optional.ofNullable(frilansOppdrag).orElse(emptyList());
         this.vedlegg = Optional.ofNullable(vedlegg).orElse(emptyList());
     }
