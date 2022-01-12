@@ -221,7 +221,7 @@ public class ForeldrepengerTestUtils {
     }
 
     private static Frilans frilans(String... vedleggRefs) {
-        return new Frilans(åpenPeriode(true), true, true,
+        return new Frilans(åpenPeriode(true), true, true, true,
                 List.of(
                         new FrilansOppdrag("fattern", åpenPeriode(true)),
                         new FrilansOppdrag(
