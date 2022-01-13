@@ -179,7 +179,7 @@ public class V1SvangerskapspengerDomainMapper implements DomainMapper {
         }
         if (forhold instanceof no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.PrivatArbeidsgiver privat) {
             return new PrivatArbeidsgiver()
-                    .withIdentifikator(privat.getFnr().getFnr());
+                    .withIdentifikator(privat.getFnr().value());
         }
 
         if (forhold instanceof no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.Frilanser frilanser) {

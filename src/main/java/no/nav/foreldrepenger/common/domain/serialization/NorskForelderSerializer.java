@@ -22,7 +22,7 @@ public class NorskForelderSerializer extends StdSerializer<NorskForelder> {
 
     @Override
     public void serialize(NorskForelder forelder, JsonGenerator gen, SerializerProvider provider) throws IOException {
-        gen.writeStringField("fnr", forelder.getFnr().getFnr());
+        gen.writeStringField("fnr", forelder.getFnr().value());
         gen.writeStringField("navn", forelder.getNavn());
     }
 

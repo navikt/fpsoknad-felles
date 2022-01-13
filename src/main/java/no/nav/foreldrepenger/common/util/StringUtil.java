@@ -2,7 +2,7 @@ package no.nav.foreldrepenger.common.util;
 
 import static java.util.function.Predicate.not;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
@@ -13,6 +13,7 @@ import org.apache.cxf.common.util.CollectionUtils;
 import com.google.common.base.Strings;
 
 public final class StringUtil {
+    private static final String DEFAULT_FLERTALL = "er";
     private static final int DEFAULT_LENGTH = 50;
 
     private StringUtil() {
@@ -42,6 +43,10 @@ public final class StringUtil {
             .orElse(tekst);
     }
 
+    public static String limit(byte[] bytes) {
+        return limit(bytes, DEFAULT_LENGTH);
+    }
+
     public static String limit(byte[] bytes, int max) {
         return limit(Arrays.toString(bytes), max);
     }
@@ -62,11 +67,18 @@ public final class StringUtil {
             .orElse("<null>");
     }
 
-    public static String encode(String string) {
-        try {
-            return Base64.getEncoder().encodeToString(string.getBytes("utf-8"));
-        } catch (UnsupportedEncodingException e) {
-            throw new IllegalArgumentException(e);
+    public static String flertall(int n) {
+        return flertall(n, DEFAULT_FLERTALL);
+    }
+
+    public static String flertall(int n, String flertall) {
+        if (n != 1) {
+            return flertall;
         }
+        return "";
+    }
+
+    public static String encode(String string) {
+        return Base64.getEncoder().encodeToString(string.getBytes(StandardCharsets.UTF_8));
     }
 }

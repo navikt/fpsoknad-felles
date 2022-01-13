@@ -22,13 +22,13 @@ class PersonSeraliseringDeseraliseringTest extends SerializationTestBase {
 
     @Test
     void PersonRoundTripTest() {
-        var annenPart = new AnnenPart(Fødselsnummer.valueOf("44444455555"), AktørId.valueOf("9944444455555"),
+        var annenPart = new AnnenPart(new Fødselsnummer("44444455555"), AktørId.valueOf("9944444455555"),
                 new Navn("Annen", "", "Part"), LocalDate.now().minusYears(20));
-        var barn = new Barn(Fødselsnummer.valueOf("33333344444"), LocalDate.now().minusMonths(1),
+        var barn = new Barn(new Fødselsnummer("33333344444"), LocalDate.now().minusMonths(1),
                 new Navn("Barn", "", "Barnason"), Kjønn.M, annenPart);
         var person = Person.builder()
                 .aktørId(AktørId.valueOf("9911111122222"))
-                .fnr(Fødselsnummer.valueOf("111111222222"))
+                .fnr(new Fødselsnummer("111111222222"))
                 .fødselsdato(LocalDate.now().minusYears(25))
                 .navn(new Navn("Ola", "Nord", "Mann"))
                 .kjønn(Kjønn.K)
