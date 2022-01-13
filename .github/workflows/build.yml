@@ -24,6 +24,7 @@ jobs:
           java-version: '17'
           check-latest: true
           cache: 'maven'
+
       - name: Bygg og  test
         shell: bash
         run: |
