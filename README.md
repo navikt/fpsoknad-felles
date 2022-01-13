@@ -7,3 +7,4 @@ Biblioteket inneholder:
 * Mapper fra JSON til XML søknadsobjekt (som sendes videre til fpfordel for journalføring),
 * Mappere fra XML til JSON søknadsobjekt for bruk i innsynsløsnignen, 
 * Utilities og søknadsbygger.
+
