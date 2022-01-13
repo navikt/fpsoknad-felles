@@ -5,7 +5,6 @@ import static java.util.Collections.singletonList;
 import static no.nav.foreldrepenger.common.util.ResourceHandleUtil.bytesFra;
 import static no.nav.foreldrepenger.common.util.ResourceHandleUtil.copyToString;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
@@ -241,14 +240,13 @@ public class TestUtils {
     }
 
     public static Person person() {
-        Person person = new Person(AktørId.valueOf("42"), Fødselsnummer.valueOf("010101010101"),
+        return new Person(AktørId.valueOf("42"), new Fødselsnummer("010101010101"),
                 LocalDate.now().minusYears(25), new Navn("Mor", "Mellommor", "Morsen"),
                 Kjønn.K, Målform.NN, CountryCode.NO,
                 new Bankkonto("2000.20.20000", "Store Fiskerbank"), null);
-        return person;
     }
 
-    public static String load(String file) throws IOException {
+    public static String load(String file) {
         return copyToString(file);
     }
 }
