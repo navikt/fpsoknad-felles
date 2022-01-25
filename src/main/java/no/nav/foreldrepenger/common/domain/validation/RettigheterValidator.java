@@ -10,7 +10,7 @@ public class RettigheterValidator implements ConstraintValidator<Rettighet, Rett
 
     @Override
     public boolean isValid(Rettigheter rettigheter, ConstraintValidatorContext ctx) {
-        if (!rettigheter.isHarAleneOmsorgForBarnet() && rettigheter.getDatoForAleneomsorg() != null) {
+        if (rettigheter.harAleneOmsorgForBarnet() && rettigheter.harAnnenForelderRett()) {
             return false;
         }
         return true;

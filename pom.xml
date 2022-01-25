@@ -28,7 +28,7 @@
         <xjb.location>src/main/resources/xjb</xjb.location>
 
         <jackson.version>2.13.1</jackson.version>
-        <kontrakter.version>6.0.4</kontrakter.version>
+        <kontrakter.version>6.1.4</kontrakter.version>
     </properties>
 
     <scm>

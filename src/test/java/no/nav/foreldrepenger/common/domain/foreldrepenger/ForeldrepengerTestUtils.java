@@ -395,7 +395,7 @@ public class ForeldrepengerTestUtils {
     }
 
     public static Rettigheter rettigheter() {
-        return new Rettigheter(true, true, true, LocalDate.now());
+        return new Rettigheter(true, true, true);
     }
 
     private static ValgfrittVedlegg opplastetVedlegg(String id, DokumentType type) {
