@@ -438,8 +438,9 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
     private static Rettigheter create(no.nav.foreldrepenger.common.domain.foreldrepenger.Rettigheter r) {
         return new Rettigheter()
                 .withHarOmsorgForBarnetIPeriodene(true)
-                .withHarAnnenForelderRett(r.isHarAnnenForelderRett())
-                .withHarAleneomsorgForBarnet(r.isHarAleneOmsorgForBarnet());
+                .withHarAnnenForelderRett(r.harAnnenForelderRett())
+                .withHarAleneomsorgForBarnet(r.harAleneOmsorgForBarnet())
+                .withHarMorUforetrygd(r.harMorUføretrygd());
     }
 
     private AnnenForelder annenForelderFra(
