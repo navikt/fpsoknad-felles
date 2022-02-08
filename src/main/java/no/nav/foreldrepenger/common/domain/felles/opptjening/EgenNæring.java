@@ -3,12 +3,14 @@ package no.nav.foreldrepenger.common.domain.felles.opptjening;
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY;
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
 import static java.util.Collections.emptyList;
+import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -47,9 +49,10 @@ public abstract sealed class EgenNæring permits NorskOrganisasjon,UtenlandskOrg
     private final LocalDate endringsDato;
     private final LocalDate oppstartsDato;
     @Length(max = 1000)
+    @Pattern(regexp = FRITEKST)
     private final String beskrivelseEndring;
     private final ProsentAndel stillingsprosent;
-    private final List<String> vedlegg;
+    private final List<@Pattern(regexp = FRITEKST) String> vedlegg;
 
     @JsonCreator
     public EgenNæring(

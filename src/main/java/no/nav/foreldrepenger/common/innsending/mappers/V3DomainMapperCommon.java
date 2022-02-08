@@ -320,12 +320,11 @@ final class V3DomainMapperCommon {
 
     private static Frilans create(no.nav.foreldrepenger.common.domain.felles.opptjening.Frilans frilans) {
         return new Frilans()
-                .withVedlegg(frilansVedleggFraIDs(frilans.getVedlegg()))
-                .withErNyoppstartet(frilans.isNyOppstartet())
-                .withHarInntektFraFosterhjem(frilans.isHarInntektFraFosterhjem())
-                .withNaerRelasjon(!CollectionUtils.isEmpty(frilans.getFrilansOppdrag()))
-                .withPeriode(periodeFra(frilans.getPeriode()))
-                .withFrilansoppdrag(frilansOppdragFra(frilans.getFrilansOppdrag()));
+                .withErNyoppstartet(frilans.nyOppstartet())
+                .withHarInntektFraFosterhjem(frilans.harInntektFraFosterhjem())
+                .withNaerRelasjon(!CollectionUtils.isEmpty(frilans.frilansOppdrag()))
+                .withPeriode(periodeFra(frilans.periode()))
+                .withFrilansoppdrag(frilansOppdragFra(frilans.frilansOppdrag()));
     }
 
     private static List<Frilansoppdrag> frilansOppdragFra(List<FrilansOppdrag> frilansOppdrag) {
@@ -344,12 +343,6 @@ final class V3DomainMapperCommon {
         return new Frilansoppdrag()
                 .withOppdragsgiver(oppdrag.oppdragsgiver())
                 .withPeriode(periodeFra(oppdrag.periode()));
-    }
-
-    private static List<JAXBElement<Object>> frilansVedleggFraIDs(List<String> vedlegg) {
-        return safeStream(vedlegg)
-                .map(s -> FP_FACTORY_V3.createFrilansVedlegg(new Vedlegg().withId(s)))
-                .toList();
     }
 
     private static List<JAXBElement<Object>> annenOpptjeningVedleggFra(List<String> vedlegg) {

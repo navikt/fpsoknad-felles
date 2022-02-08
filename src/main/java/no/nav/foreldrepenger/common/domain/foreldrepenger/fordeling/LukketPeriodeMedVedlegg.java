@@ -3,6 +3,7 @@ package no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling;
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY;
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
 import static java.util.Collections.emptyList;
+import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -44,7 +46,7 @@ public abstract sealed class LukketPeriodeMedVedlegg
     protected final LocalDate fom;
     @NotNull
     protected final LocalDate tom;
-    protected final List<String> vedlegg;
+    protected final List<@Pattern(regexp = FRITEKST) String> vedlegg;
 
     @JsonCreator
     public LukketPeriodeMedVedlegg(@JsonProperty("fom") LocalDate fom, @JsonProperty("tom") LocalDate tom,

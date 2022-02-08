@@ -1,9 +1,13 @@
 package no.nav.foreldrepenger.common.domain.felles.annenforelder;
 
+import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
+
 import java.util.Objects;
 import java.util.Optional;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -19,7 +23,9 @@ import no.nav.foreldrepenger.common.domain.Fødselsnummer;
 public final class NorskForelder extends AnnenForelder {
 
     @NotNull
+    @Valid
     private final Fødselsnummer fnr;
+    @Pattern(regexp = FRITEKST)
     private final String navn;
 
     public NorskForelder(Fødselsnummer fnr) {

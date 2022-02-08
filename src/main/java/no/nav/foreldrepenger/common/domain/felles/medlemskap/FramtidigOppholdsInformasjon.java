@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import no.nav.foreldrepenger.common.domain.validation.annotations.Opphold;
 
-@Valid
-public record FramtidigOppholdsInformasjon(@Opphold List<Utenlandsopphold> utenlandsOpphold) {
+public record FramtidigOppholdsInformasjon(@Valid @Opphold List<Utenlandsopphold> utenlandsOpphold) {
 
     public List<Utenlandsopphold> getUtenlandsOpphold() {
         return Optional.ofNullable(utenlandsOpphold).orElse(emptyList());

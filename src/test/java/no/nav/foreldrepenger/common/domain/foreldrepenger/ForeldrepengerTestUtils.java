@@ -217,22 +217,17 @@ public class ForeldrepengerTestUtils {
     public static Opptjening opptjening(Versjon v, String... vedleggRefs) {
         return new Opptjening(Collections.singletonList(utenlandskArbeidsforhold(vedleggRefs)),
                 egneNæringer(vedleggRefs),
-                andreOpptjeninger(v, vedleggRefs), frilans(vedleggRefs));
+                andreOpptjeninger(v, vedleggRefs), frilans());
     }
 
-    private static Frilans frilans(String... vedleggRefs) {
+    private static Frilans frilans() {
         return new Frilans(åpenPeriode(true), true, true, true,
                 List.of(
                         new FrilansOppdrag("fattern", åpenPeriode(true)),
                         new FrilansOppdrag(
                                 "den andre bror min og samtidig en fryktelig lang tekst som straks må bryte over til ny linje",
                                 åpenPeriode(true)),
-                        new FrilansOppdrag("\u202Darbeidsgiver\u00A0med " + "\u0141" + "tegn\tsom normali\uFFFDseres",
-                                åpenPeriode(true)),
-                        new FrilansOppdrag("den fjerde bror min med \u2e84\u2e87 tegn som ikke kan encodes",
-                                åpenPeriode(true)),
-                        new FrilansOppdrag("far min", åpenPeriode(true))),
-                Arrays.asList(vedleggRefs));
+                        new FrilansOppdrag("far min", åpenPeriode(true))));
 
     }
 
@@ -318,7 +313,7 @@ public class ForeldrepengerTestUtils {
     public static UtenlandskArbeidsforhold utenlandskArbeidsforhold(String... vedleggRefs) {
         return UtenlandskArbeidsforhold.builder()
                 .vedlegg(Arrays.asList(vedleggRefs))
-                .arbeidsgiverNavn("Brzeziński")
+                .arbeidsgiverNavn("Brzezánski")
                 .land(CountryCode.PL)
                 .periode(åpenPeriode()).build();
     }

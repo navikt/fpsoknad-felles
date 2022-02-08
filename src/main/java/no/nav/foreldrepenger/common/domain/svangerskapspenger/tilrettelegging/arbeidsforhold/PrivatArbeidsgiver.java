@@ -1,5 +1,6 @@
 package no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -14,6 +15,7 @@ import no.nav.foreldrepenger.common.domain.Fødselsnummer;
 public final class PrivatArbeidsgiver extends Arbeidsforhold {
 
     @NotNull
+    @Valid
     public final Fødselsnummer fnr;
 
     public PrivatArbeidsgiver(String fnr) {

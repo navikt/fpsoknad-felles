@@ -1,13 +1,16 @@
 package no.nav.foreldrepenger.common.domain;
 
+import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
 import static no.nav.foreldrepenger.common.util.StringUtil.partialMask;
+
+import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 import no.nav.foreldrepenger.common.domain.validation.OrgnrValidator;
 
-public record Orgnummer(@JsonValue String value) implements ArbeidsgiverIdentifikator{
+public record Orgnummer(@JsonValue @Pattern(regexp = FRITEKST) String value) implements ArbeidsgiverIdentifikator {
 
     public static final String MAGIC = "342352362";
 

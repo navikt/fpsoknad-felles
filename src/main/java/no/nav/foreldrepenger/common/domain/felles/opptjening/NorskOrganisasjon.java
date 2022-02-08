@@ -1,9 +1,12 @@
 package no.nav.foreldrepenger.common.domain.felles.opptjening;
 
+import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
+
 import java.time.LocalDate;
 import java.util.List;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -16,13 +19,14 @@ import no.nav.foreldrepenger.common.domain.felles.ProsentAndel;
 import no.nav.foreldrepenger.common.domain.felles.ÅpenPeriode;
 
 @Value
-@Valid
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class NorskOrganisasjon extends EgenNæring {
 
+    @Valid
     Orgnummer orgNummer;
     @Length(max = 100)
+    @Pattern(regexp = FRITEKST)
     String orgName;
 
     @Builder

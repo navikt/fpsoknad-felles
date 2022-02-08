@@ -1,11 +1,13 @@
 package no.nav.foreldrepenger.common.domain.foreldrepenger;
 
 import static java.util.Arrays.asList;
+import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
 
 import java.time.LocalDate;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -28,6 +30,7 @@ import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.Fordeling;
 public class Endringssøknad extends Søknad {
 
     @NotNull
+    @Pattern(regexp = FRITEKST)
     String saksnr;
 
     public Endringssøknad(String saksnr, LocalDate mottattdato, Søker søker, Ytelse ytelse, List<Vedlegg> vedlegg) {

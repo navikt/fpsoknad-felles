@@ -2,9 +2,12 @@ package no.nav.foreldrepenger.common.domain.felles.relasjontilbarn;
 
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
+import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
 
 import java.time.LocalDate;
 import java.util.List;
+
+import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 
@@ -21,6 +24,7 @@ public final class Omsorgsovertakelse extends RelasjonTilBarn {
     private final LocalDate omsorgsovertakelsesdato;
     private final OmsorgsOvertakelsesÅrsak årsak;
     private final List<LocalDate> fødselsdato;
+    @Pattern(regexp = FRITEKST)
     private String beskrivelse;
 
     public Omsorgsovertakelse(LocalDate omsorgsovertakelsesdato, OmsorgsOvertakelsesÅrsak årsak,

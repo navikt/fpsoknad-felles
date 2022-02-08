@@ -1,7 +1,10 @@
 package no.nav.foreldrepenger.common.domain.felles.annenforelder;
 
+import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import com.neovisionaries.i18n.CountryCode;
 
@@ -15,9 +18,11 @@ import lombok.ToString;
 public final class UtenlandskForelder extends AnnenForelder {
 
     @NotBlank
+    @Pattern(regexp = FRITEKST)
     private final String id;
     @NotNull
     private final CountryCode land;
+    @Pattern(regexp = FRITEKST)
     private final String navn;
 
     @Override

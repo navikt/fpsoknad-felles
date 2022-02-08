@@ -2,11 +2,13 @@ package no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling;
 
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY;
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
+import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
 
 import java.time.LocalDate;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -30,7 +32,7 @@ public sealed class UtsettelsesPeriode extends LukketPeriodeMedVedlegg permits F
     private final UtsettelsesÅrsak årsak;
     private final StønadskontoType uttaksperiodeType;
     private final boolean erArbeidstaker;
-    private final List<String> virksomhetsnummer;
+    private final List<@Pattern(regexp = FRITEKST) String> virksomhetsnummer;
     private final MorsAktivitet morsAktivitetsType;
 
     @JsonCreator

@@ -1,15 +1,18 @@
 package no.nav.foreldrepenger.common.domain;
 
+import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
 import static no.nav.foreldrepenger.common.util.StringUtil.partialMask;
 
 import java.util.Objects;
+
+import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 import no.nav.foreldrepenger.common.domain.felles.Kjønn;
 
-public record Fødselsnummer(@JsonValue String value) {
+public record Fødselsnummer(@Pattern(regexp = FRITEKST) @JsonValue String value) {
 
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
     public Fødselsnummer {
@@ -18,7 +21,7 @@ public record Fødselsnummer(@JsonValue String value) {
 
     public Kjønn kjønn() {
         if (value != null && value.length() == 11) {
-            return Integer.valueOf(value.charAt(8)) % 2 == 0 ? Kjønn.K : Kjønn.M;
+            return value.charAt(8) % 2 == 0 ? Kjønn.K : Kjønn.M;
         }
         return Kjønn.U;
     }
