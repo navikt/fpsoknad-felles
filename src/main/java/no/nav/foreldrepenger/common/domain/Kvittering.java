@@ -1,8 +1,11 @@
 package no.nav.foreldrepenger.common.domain;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
 
 import java.time.LocalDateTime;
+
+import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -12,6 +15,7 @@ import lombok.Value;
 @Value //Problemer med jackson og byte[] hvis man gjør om til record
 public class Kvittering {
     LocalDateTime mottattDato;
+    @Pattern(regexp = FRITEKST)
     String saksNr;
     byte[] pdf;
     byte[] infoskrivPdf;

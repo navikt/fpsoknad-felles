@@ -1,7 +1,11 @@
 package no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling;
 
+import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
+
 import java.time.LocalDate;
 import java.util.List;
+
+import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -18,7 +22,7 @@ import no.nav.foreldrepenger.common.domain.felles.ProsentAndel;
 public final class GradertUttaksPeriode extends UttaksPeriode {
     private final ProsentAndel arbeidstidProsent;
     private final boolean erArbeidstaker;
-    private final List<String> virksomhetsnummer;
+    private final List<@Pattern(regexp = FRITEKST) String> virksomhetsnummer;
     private final boolean arbeidsForholdSomskalGraderes;
     private final Boolean frilans;
     private final Boolean selvstendig;

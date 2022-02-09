@@ -2,6 +2,7 @@ package no.nav.foreldrepenger.common.domain;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
+import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
 import static no.nav.foreldrepenger.common.util.StreamUtil.safeStream;
 
 import java.time.LocalDate;
@@ -10,6 +11,7 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -28,7 +30,6 @@ import no.nav.foreldrepenger.common.domain.felles.ValgfrittVedlegg;
 import no.nav.foreldrepenger.common.domain.felles.Vedlegg;
 import no.nav.foreldrepenger.common.domain.foreldrepenger.Foreldrepenger;
 
-@Valid
 @Data
 @Builder
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
@@ -43,9 +44,12 @@ public class Søknad {
     @Valid
     private final Ytelse ytelse;
     @Length(max = 2000)
+    @Pattern(regexp = FRITEKST)
     private String begrunnelseForSenSøknad;
     @Length(max = 4000)
+    @Pattern(regexp = FRITEKST)
     private String tilleggsopplysninger;
+    @Valid
     private final List<Vedlegg> vedlegg;
 
     public Søknad(LocalDate mottattdato, Søker søker, Ytelse ytelse, Vedlegg... vedlegg) {

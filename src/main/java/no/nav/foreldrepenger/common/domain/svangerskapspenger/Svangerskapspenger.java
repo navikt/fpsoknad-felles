@@ -31,6 +31,7 @@ public class Svangerskapspenger extends Ytelse {
     private final Medlemsskap medlemsskap;
     @Valid
     private final Opptjening opptjening;
+    @Valid
     private final List<Tilrettelegging> tilrettelegging;
 
     @JsonCreator

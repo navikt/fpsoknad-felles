@@ -8,6 +8,8 @@ import static no.nav.foreldrepenger.common.util.StringUtil.limit;
 
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,6 +35,7 @@ public abstract class Vedlegg {
 
     private static final Logger LOG = LoggerFactory.getLogger(Vedlegg.class);
 
+    @Valid
     private final VedleggMetaData metadata;
     private final byte[] vedlegg;
 

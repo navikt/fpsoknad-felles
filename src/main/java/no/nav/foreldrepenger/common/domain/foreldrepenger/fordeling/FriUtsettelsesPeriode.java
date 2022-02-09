@@ -15,7 +15,7 @@ import lombok.Value;
 @Value
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public final class FriUtsettelsesPeriode extends UtsettelsesPeriode {
+public class FriUtsettelsesPeriode extends UtsettelsesPeriode {
 
     @JsonCreator
     @Builder(builderMethodName = "FriUtsettelsesPeriodeBuilder")

@@ -1,5 +1,9 @@
 package no.nav.foreldrepenger.common.domain;
 
+import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
+
+import javax.validation.constraints.Pattern;
+
 import com.fasterxml.jackson.annotation.JsonValue;
 
 import lombok.Data;
@@ -8,6 +12,7 @@ import lombok.Data;
 public class AktørId implements ArbeidsgiverIdentifikator {
 
     @JsonValue
+    @Pattern(regexp = FRITEKST)
     private final String value;
 
     public AktørId(String id) {

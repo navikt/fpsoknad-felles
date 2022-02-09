@@ -1,11 +1,14 @@
 package no.nav.foreldrepenger.common.domain.felles.opptjening;
 
 import static java.util.Collections.emptyList;
+import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
 
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -26,10 +29,12 @@ public class UtenlandskArbeidsforhold {
 
     private final CountryCode land;
     @Length(max = 100)
+    @Pattern(regexp = FRITEKST)
     private final String arbeidsgiverNavn;
     @NotNull
+    @Valid
     private final ÅpenPeriode periode;
-    private final List<String> vedlegg;
+    private final List<@Pattern(regexp = FRITEKST) String> vedlegg;
 
     @Builder
     @JsonCreator
