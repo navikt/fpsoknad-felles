@@ -5,10 +5,10 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-record Saksnummer(@JsonValue String value) {
+public record Saksnummer(@JsonValue String value) {
 
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
-    Saksnummer {
+    public Saksnummer {
         Objects.requireNonNull(value, "saksnummer kan ikke være null");
     }
 

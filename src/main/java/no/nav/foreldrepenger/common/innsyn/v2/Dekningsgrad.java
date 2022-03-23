@@ -1,6 +1,6 @@
 package no.nav.foreldrepenger.common.innsyn.v2;
 
-enum Dekningsgrad {
+public enum Dekningsgrad {
     ÅTTI, HUNDRE;
 
     public static Dekningsgrad valueOf(Integer value) {
