@@ -1,11 +1,11 @@
-package no.nav.foreldrepenger.common.domain.domain.svangerskapspenger;
+package no.nav.foreldrepenger.common.domain.svangerskapspenger;
 
 import static no.nav.foreldrepenger.common.domain.foreldrepenger.ForeldrepengerTestUtils.delvisTilrettelegging;
 import static no.nav.foreldrepenger.common.domain.foreldrepenger.ForeldrepengerTestUtils.svp;
 
 import org.junit.jupiter.api.Test;
 
-import no.nav.foreldrepenger.common.domain.util.SerializationTestBase;
+import no.nav.foreldrepenger.common.util.SerializationTestBase;
 
 class TestSvangerskapsepengerSerialization extends SerializationTestBase {
 

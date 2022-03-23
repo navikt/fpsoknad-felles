@@ -1,10 +1,8 @@
-package no.nav.foreldrepenger.common.domain.util;
+package no.nav.foreldrepenger.common.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
-
-import no.nav.foreldrepenger.common.util.StringUtil;
 
 class StringUtilTest {
 

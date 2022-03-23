@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.common.domain.util;
+package no.nav.foreldrepenger.common.util;
 
 import static no.nav.foreldrepenger.common.mapper.DefaultJsonMapper.MAPPER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
