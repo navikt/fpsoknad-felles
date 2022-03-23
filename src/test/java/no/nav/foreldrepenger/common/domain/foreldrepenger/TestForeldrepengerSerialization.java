@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.common.domain.domain.foreldrepenger;
+package no.nav.foreldrepenger.common.domain.foreldrepenger;
 
 import static no.nav.foreldrepenger.common.domain.felles.TestUtils.adopsjon;
 import static no.nav.foreldrepenger.common.domain.felles.TestUtils.person;
@@ -43,13 +43,11 @@ import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.Adopsjon;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.FremtidigFødsel;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.Fødsel;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.RelasjonTilBarn;
-import no.nav.foreldrepenger.common.domain.foreldrepenger.Dekningsgrad;
-import no.nav.foreldrepenger.common.domain.foreldrepenger.ForeldrepengerTestUtils;
 import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.StønadskontoType;
-import no.nav.foreldrepenger.common.domain.util.SerializationTestBase;
 import no.nav.foreldrepenger.common.innsending.foreldrepenger.FPSakFordeltKvittering;
 import no.nav.foreldrepenger.common.innsending.foreldrepenger.GosysKvittering;
 import no.nav.foreldrepenger.common.innsending.foreldrepenger.PendingKvittering;
+import no.nav.foreldrepenger.common.util.SerializationTestBase;
 
 
 class TestForeldrepengerSerialization extends SerializationTestBase {

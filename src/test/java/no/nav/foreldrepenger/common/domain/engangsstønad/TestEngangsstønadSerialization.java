@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.common.domain.domain.engangsstønad;
+package no.nav.foreldrepenger.common.domain.engangsstønad;
 
 import static no.nav.foreldrepenger.common.domain.felles.TestUtils.engangssøknad;
 import static no.nav.foreldrepenger.common.domain.felles.TestUtils.engangstønad;
@@ -18,7 +18,7 @@ import no.nav.foreldrepenger.common.domain.Fødselsnummer;
 import no.nav.foreldrepenger.common.domain.Kvittering;
 import no.nav.foreldrepenger.common.domain.felles.TestUtils;
 import no.nav.foreldrepenger.common.domain.foreldrepenger.ForeldrepengerTestUtils;
-import no.nav.foreldrepenger.common.domain.util.SerializationTestBase;
+import no.nav.foreldrepenger.common.util.SerializationTestBase;
 
 class TestEngangsstønadSerialization extends SerializationTestBase {
 

@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.common.domain.domain;
+package no.nav.foreldrepenger.common.domain;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -7,16 +7,12 @@ import org.junit.jupiter.api.Test;
 
 import com.neovisionaries.i18n.CountryCode;
 
-import no.nav.foreldrepenger.common.domain.AktørId;
-import no.nav.foreldrepenger.common.domain.Barn;
-import no.nav.foreldrepenger.common.domain.Fødselsnummer;
-import no.nav.foreldrepenger.common.domain.Navn;
 import no.nav.foreldrepenger.common.domain.felles.AnnenPart;
 import no.nav.foreldrepenger.common.domain.felles.Bankkonto;
 import no.nav.foreldrepenger.common.domain.felles.Kjønn;
 import no.nav.foreldrepenger.common.domain.felles.Person;
-import no.nav.foreldrepenger.common.domain.util.SerializationTestBase;
 import no.nav.foreldrepenger.common.oppslag.dkif.Målform;
+import no.nav.foreldrepenger.common.util.SerializationTestBase;
 
 class PersonSeraliseringDeseraliseringTest extends SerializationTestBase {
 
