@@ -1,6 +1,6 @@
 package no.nav.foreldrepenger.common.innsyn.v2;
 
-enum MorsAktivitet {
+public enum MorsAktivitet {
     ARBEID,
     UTDANNING,
     SAMTIDIGUTTAK,
