@@ -1,6 +1,6 @@
 package no.nav.foreldrepenger.common.innsyn.v2;
 
-enum UtsettelseÅrsak{
+public enum UtsettelseÅrsak{
     HV_ØVELSE,
     ARBEID,
     LOVBESTEMT_FERIE,
