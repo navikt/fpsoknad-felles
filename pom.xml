@@ -27,7 +27,7 @@
         <xsd.location>src/main/resources/xsd</xsd.location>
         <xjb.location>src/main/resources/xjb</xjb.location>
 
-        <jackson.version>2.13.2</jackson.version>
+        <jackson.version>2.13.2.20220324</jackson.version>
         <kontrakter.version>6.1.4</kontrakter.version>
     </properties>
 
