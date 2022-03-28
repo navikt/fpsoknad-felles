@@ -4,7 +4,7 @@ public class InputValideringRegex {
 
     private static final String BOKSTAVER_OG_TALL = "0-9a-zA-ZÁáĄąÂâĀāĂăßČčĆćÇçĎďĐđÐðĔĕÉéĘęĖėÈèËëÊêĒēĢģİiĮįÍíÎîÏïĪīĶķŁłŊŋŇňŃńŅņÑñÞþŠšŚśŞşŤťŦŧŢţŲųŪūÚúŮůÝýŽžŹźŻżÕõÔôÓóÖöÜüÄäŒœÆæØøÅå";
     private static final String FORVENTEDE_SPESIAL_TEGN_FRITEKST = " .…'\\-/\n%§\\!?@_()+:;,=\"&";
-    private static final String FORVENTEDE_SPESIAL_TEGN_JSON = "[\\\\]{}";
+    private static final String FORVENTEDE_SPESIAL_TEGN_JSON = "[\\]{}";
     private static final String START = "^[";
     private static final String SLUTT = "]*$";
 
