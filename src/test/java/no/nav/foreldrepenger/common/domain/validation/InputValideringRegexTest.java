@@ -14,7 +14,7 @@ class InputValideringRegexTest {
     void fritektsSkalVæreGyldigOgIkkeStoppesAvRegexen() {
         var tekst = """
                 En helt vanlig tekts med litt linje skift \n
-                litt tab \t og andre spesialtegn som ,.-_@41235()?...
+                litt tab \t og \\n andre spesialtegn som ,.-_@41235()?...
                 2+2=4 mens 3-1=2. WOW! öäåØÆÅÉÜéü?
                 """;
         assertThat(verifiser(FRITEKST, tekst)).isTrue();
@@ -53,7 +53,7 @@ class InputValideringRegexTest {
         var tekst = """
                 En helt vanlig tekts med litt linje skift \n
                 litt tab \t og andre spesialtegn som ,.-_@41235()?...
-                MEN... Ulovlig tegn: \\a
+                MEN... Ulovlig tegn: |
                 """;
         assertThat(verifiser(FRITEKST, tekst)).isFalse();
     }

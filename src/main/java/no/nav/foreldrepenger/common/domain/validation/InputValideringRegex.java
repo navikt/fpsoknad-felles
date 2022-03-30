@@ -5,7 +5,7 @@ public class InputValideringRegex {
     private static final String START = "^[";
     private static final String BOKSTAVER_OG_TALL = "0-9a-zA-ZÁáĄąÂâĀāĂăßČčĆćÇçĎďĐđÐðĔĕÉéĘęĖėÈèËëÊêĒēĢģİiĮįÍíÎîÏïĪīĶķŁłŊŋŇňŃńŅņÑñÞþŠšŚśŞşŤťŦŧŢţŲųŪūÚúŮůÝýŽžŹźŻżÕõÔôÓóÖöÜüÄäŒœÆæØøÅå";
     // Følgende tegn må escapes med \\ i Java hvis de skal tillates (ellers kan de ha en annen betydning): <([{\\^-=$!|]})?*+.>
-    private static final String FORVENTEDE_SPESIAL_TEGN_FRITEKST = " …'/%§&@_:;," + "\\.\\!\\?\\(\\)\\+\\=\\-\\–\\*\"\n\t"; // TODO: Tillat backslash '\' ?
+    private static final String FORVENTEDE_SPESIAL_TEGN_FRITEKST = " …'/%§&@_:;," + "\\.\\!\\?\\(\\)\\+\\=\\-\\–\\*\"\r\n\t\\\\";
     private static final String FORVENTEDE_SPESIAL_TEGN_JSON = "\\[\\{\\}\\]";
     private static final String SLUTT = "]*$";
 
