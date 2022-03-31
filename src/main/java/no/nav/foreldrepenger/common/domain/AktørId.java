@@ -1,6 +1,6 @@
 package no.nav.foreldrepenger.common.domain;
 
-import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
+import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.BARE_TALL;
 
 import javax.validation.constraints.Pattern;
 
@@ -12,7 +12,7 @@ import lombok.Data;
 public class AktørId implements ArbeidsgiverIdentifikator {
 
     @JsonValue
-    @Pattern(regexp = FRITEKST)
+    @Pattern(regexp = BARE_TALL)
     private final String value;
 
     public AktørId(String id) {
