@@ -1,12 +1,13 @@
 package no.nav.foreldrepenger.common.domain.felles.opptjening;
 
 public enum AnnenOpptjeningType {
-    LØNN_UNDER_UTDANNING,
+    ETTERLØNN_SLUTTPAKKE,
     ETTERLØNN_ARBEIDSGIVER,
+    JOBB_I_UTLANDET,
+    LØNN_UNDER_UTDANNING,
     MILITÆR_ELLER_SIVILTJENESTE,
-    VENTELØNN,
-    VARTPENGER,
     SLUTTPAKKE,
     VENTELØNN_VARTPENGER,
-    ETTERLØNN_SLUTTPAKKE;
+    VENTELØNN,
+    VARTPENGER
 }
