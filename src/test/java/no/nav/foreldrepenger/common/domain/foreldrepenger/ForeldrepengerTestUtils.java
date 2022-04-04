@@ -4,6 +4,7 @@ import static com.google.common.collect.Lists.newArrayList;
 import static java.time.DayOfWeek.SATURDAY;
 import static java.time.DayOfWeek.SUNDAY;
 import static java.util.Arrays.asList;
+import static no.nav.foreldrepenger.common.domain.Orgnummer.MAGIC;
 import static no.nav.foreldrepenger.common.domain.felles.DokumentType.I000062;
 import static no.nav.foreldrepenger.common.domain.felles.DokumentType.I000063;
 import static no.nav.foreldrepenger.common.domain.felles.DokumentType.I500002;
@@ -78,7 +79,7 @@ import no.nav.foreldrepenger.common.util.Versjon;
 
 public class ForeldrepengerTestUtils {
 
-    public static final Fødselsnummer NORSK_FORELDER_FNR = new Fødselsnummer("01010111111");
+    public static final Fødselsnummer NORSK_FORELDER_FNR = new Fødselsnummer("11111111111");
     public static final String ID142 = "V142";
     public static final String ID143 = "V143";
     public static final String ID144 = "V144";
@@ -191,11 +192,11 @@ public class ForeldrepengerTestUtils {
     }
 
     private static Arbeidsforhold virksomhet() {
-        return new Virksomhet("999263550");
+        return new Virksomhet(MAGIC);
     }
 
     private static Arbeidsforhold privat() {
-        return new PrivatArbeidsgiver("01010111111");
+        return new PrivatArbeidsgiver("11111111111");
     }
 
     private static Arbeidsforhold frilanser() {
@@ -271,7 +272,7 @@ public class ForeldrepengerTestUtils {
                 .vedlegg(Arrays.asList(vedleggRefs))
                 .registrertILand(CountryCode.UG)
                 .periode(åpenPeriode())
-                .regnskapsførere(List.of(new Regnskapsfører("Rein Åge Skapsfører", "+4746929061")))
+                .regnskapsførere(List.of(new Regnskapsfører("Rein Åge Skapsfører", "+4799999999")))
                 .erNyOpprettet(true)
                 .erVarigEndring(true)
                 .erNyIArbeidslivet(false)
@@ -288,14 +289,14 @@ public class ForeldrepengerTestUtils {
         return NorskOrganisasjon.builder()
                 .vedlegg(Arrays.asList(vedleggRefs))
                 .periode(åpenPeriode())
-                .regnskapsførere(Collections.singletonList(new Regnskapsfører("Rein Åge Kapsfører", "+4746929061")))
+                .regnskapsførere(Collections.singletonList(new Regnskapsfører("Rein Åge Kapsfører", "+4799999999")))
                 .erNyOpprettet(true)
                 .erVarigEndring(true)
                 .erNyIArbeidslivet(true)
                 .erNyOpprettet(true)
                 .næringsinntektBrutto(100_000)
                 .orgName("Norsk org")
-                .orgNummer(Orgnummer.valueOf("923609016"))
+                .orgNummer(Orgnummer.MAGIC_ORG)
                 .virksomhetsTyper(Collections.singletonList(FISKE))
                 .beskrivelseEndring("Ting endrer seg i Norge også")
                 .nærRelasjon(true)

@@ -228,7 +228,7 @@ public class TestUtils {
     }
 
     static Fødselsnummer fnr() {
-        return new Fødselsnummer("01010111111");
+        return new Fødselsnummer("11111111111");
     }
 
     public static Navn navnUtenMellomnavn() {
@@ -240,7 +240,7 @@ public class TestUtils {
     }
 
     public static Person person() {
-        return new Person(AktørId.valueOf("42"), new Fødselsnummer("010101010101"),
+        return new Person(AktørId.valueOf("42"), new Fødselsnummer("11111111111"),
                 LocalDate.now().minusYears(25), new Navn("Mor", "Mellommor", "Morsen"),
                 Kjønn.K, Målform.NN, CountryCode.NO,
                 new Bankkonto("2000.20.20000", "Store Fiskerbank"), null);

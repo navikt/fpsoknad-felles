@@ -10,7 +10,7 @@
 	"regnskapsførere": [
 		{
 			"navn": "Rein Åge Skapsfører",
-			"telefon": "+4746929061"
+			"telefon": "+4799999999"
 		}
 	],
 	"erNyOpprettet": true,
@@ -18,7 +18,7 @@
 	"erNyIArbeidslivet": false,
 	"næringsinntektBrutto": 100000,
 	"endringsDato": "2018-11-15",
-	"beskrivelseEndring": "Shit happens",
+	"beskrivelseEndring": "en Endring",
 	"orgName": "Utenlandsk org",
 	"arbeidsland": "UG"
 }
