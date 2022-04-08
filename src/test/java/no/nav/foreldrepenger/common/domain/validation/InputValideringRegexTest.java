@@ -25,6 +25,12 @@ class InputValideringRegexTest {
     }
 
     @Test
+    void verifsierGyldigFritekst() {
+        var tekst = "godtar litt forskjellige ´'`´''§€§§";
+        assertThat(verifiser(FRITEKST, tekst)).isTrue();
+    }
+
+    @Test
     void orgnummerRegexTillaterBareTallOgSkalHaLengde9() {
         assertThat(verifiser(ORGNUMMER, "123456789")).isTrue();
         assertThat(verifiser(ORGNUMMER, "123456789123")).isFalse();
