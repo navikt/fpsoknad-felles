@@ -33,7 +33,7 @@ class UttaksplanSerliseringRoundtripTest {
     @Test
     void uttaksplanUtenPerioderRoundtripSeraliseringTest() throws IOException {
         var grunnlag = getGrunnlag();
-        var uttaksplanUtenPerioder = new Uttaksplan(grunnlag, List.of());
+        var uttaksplanUtenPerioder = new UttaksplanDto(grunnlag, List.of());
         test(uttaksplanUtenPerioder);
     }
 
@@ -41,12 +41,12 @@ class UttaksplanSerliseringRoundtripTest {
     void uttaksplanMedPerioderRoundtripSeraliseringTest() throws IOException {
         var uttaksperiode = getUttaksPeriode();
         var grunnlag = getGrunnlag();
-        var uttaksplanUtenPerioder = new Uttaksplan(grunnlag, List.of(uttaksperiode, uttaksperiode));
+        var uttaksplanUtenPerioder = new UttaksplanDto(grunnlag, List.of(uttaksperiode, uttaksperiode));
         test(uttaksplanUtenPerioder);
     }
 
-    private SøknadsGrunnlag getGrunnlag() {
-        return new SøknadsGrunnlag(
+    private SøknadsGrunnlagDto getGrunnlag() {
+        return new SøknadsGrunnlagDto(
                 null,
                 LocalDate.now(),
                 null,
@@ -61,8 +61,8 @@ class UttaksplanSerliseringRoundtripTest {
                 true);
     }
 
-    private UttaksPeriode getUttaksPeriode() {
-        return new UttaksPeriode(
+    private UttaksPeriodeDto getUttaksPeriode() {
+        return new UttaksPeriodeDto(
                 Oppholdsårsak.UTTAK_FEDREKVOTE_ANNEN_FORELDER,
                 Overføringsårsak.ALENEOMSORG,
                 GraderingAvslagÅrsak.AVSLAG_PGA_100_PROSENT_ARBEID,
@@ -83,7 +83,7 @@ class UttaksplanSerliseringRoundtripTest {
                 true,
                 0,
                 UttakArbeidType.FRILANS,
-                new ArbeidsgiverInfo("123", "Privat Arbeidsgiver", ArbeidsgiverType.PRIVAT),
+                new ArbeidsgiverInfoDto("123", "Privat Arbeidsgiver", ArbeidsgiverType.PRIVAT),
                 "ÅRSAK");
     }
 

@@ -5,9 +5,9 @@ import static java.util.Collections.emptyList;
 import java.util.List;
 import java.util.Optional;
 
-public record Uttaksplan(SøknadsGrunnlag grunnlag, List<UttaksPeriode> perioder) {
+public record UttaksplanDto(SøknadsGrunnlagDto grunnlag, List<UttaksPeriodeDto> perioder) {
 
-    public Uttaksplan {
+    public UttaksplanDto {
         perioder = Optional.ofNullable(perioder).orElse(emptyList());
     }
 }
