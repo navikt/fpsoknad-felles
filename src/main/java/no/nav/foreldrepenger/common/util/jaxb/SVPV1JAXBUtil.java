@@ -16,8 +16,8 @@ public final class SVPV1JAXBUtil extends AbstractJAXBUtil {
                 no.nav.vedtak.felles.xml.soeknad.svangerskapspenger.v1.ObjectFactory.class,
                 no.nav.vedtak.felles.xml.soeknad.v3.Soeknad.class),
                 validateMarshalling, validateUnmarshalling,
-                "soeknad-v3/xsd/svangerskapspenger/svangerskapspenger-v1.xsd",
-                "soeknad-v3/xsd/soeknad-v3.xsd");
+                "xsd/soeknad-v3/xsd/svangerskapspenger/svangerskapspenger-v1.xsd",
+                "xsd/soeknad-v3/xsd/soeknad-v3.xsd");
     }
 
 }

@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.common.domain.foreldrepenger;
+package no.nav.foreldrepenger.common.util;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static java.time.DayOfWeek.SATURDAY;
@@ -54,6 +54,10 @@ import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.FremtidigFøds
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.Fødsel;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.Omsorgsovertakelse;
 import no.nav.foreldrepenger.common.domain.felles.ÅpenPeriode;
+import no.nav.foreldrepenger.common.domain.foreldrepenger.Dekningsgrad;
+import no.nav.foreldrepenger.common.domain.foreldrepenger.Endringssøknad;
+import no.nav.foreldrepenger.common.domain.foreldrepenger.Foreldrepenger;
+import no.nav.foreldrepenger.common.domain.foreldrepenger.Rettigheter;
 import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.Fordeling;
 import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.GradertUttaksPeriode;
 import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.LukketPeriodeMedVedlegg;
@@ -75,7 +79,6 @@ import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.ar
 import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.Frilanser;
 import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.PrivatArbeidsgiver;
 import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.Virksomhet;
-import no.nav.foreldrepenger.common.util.Versjon;
 
 public class ForeldrepengerTestUtils {
 
@@ -88,19 +91,40 @@ public class ForeldrepengerTestUtils {
             TestUtils.valgfrittVedlegg(ID142, InnsendingsType.LASTET_OPP),
             TestUtils.valgfrittVedlegg(ID143, InnsendingsType.LASTET_OPP));
     public static final ValgfrittVedlegg VEDLEGG1 = opplastetVedlegg(ID142, I500002);
-    public static final ValgfrittVedlegg V2 = opplastetVedlegg(ID143, I500005);
-    public static final ValgfrittVedlegg V3 = opplastetVedlegg(ID144, I000062);
+    public static final ValgfrittVedlegg VEDLEGG2 = opplastetVedlegg(ID143, I500005);
+    public static final ValgfrittVedlegg VEDLEGG3 = opplastetVedlegg(ID144, I000062);
 
     private static final ValgfrittVedlegg IKKE_OPPLASTETV1 = ikkeOpplastet(ID142, I000063);
     private static final ValgfrittVedlegg IKKE_OPPLASTETV2 = ikkeOpplastet(ID143, I000063);
 
-    public static Søknad foreldrepengeSøknad(Versjon v) {
-        return new Søknad(LocalDate.now(), TestUtils.søker(), foreldrepenger(v, false), VEDLEGG1);
+    public static Søknad foreldrepengeSøknad() {
+        return new Søknad(LocalDate.now(), TestUtils.søker(), foreldrepenger(false), VEDLEGG1);
     }
 
-    public static Søknad foreldrepengeSøknadUtenVedlegg(Versjon v) {
-        return new Søknad(LocalDate.now(), TestUtils.søker(), foreldrepenger(v, false));
+    public static Søknad foreldrepengeSøknadUtenVedlegg() {
+        return new Søknad(LocalDate.now(), TestUtils.søker(), foreldrepenger(false));
     }
+
+    public static Søknad foreldrepengesøknadMedEttVedlegg() {
+        return foreldrepengesøknad(false, VEDLEGG1);
+    }
+
+    public static Søknad foreldrepengesøknadMedEttOpplastetEttIkkeOpplastetVedlegg() {
+        return foreldrepengesøknad(false, VEDLEGG1, IKKE_OPPLASTETV2);
+    }
+
+    public static Søknad foreldrepengesøknadMedToVedlegg(Versjon v) {
+        return foreldrepengesøknad(false, VEDLEGG1, VEDLEGG2);
+    }
+
+    public static Søknad foreldrepengesøknadMedEttIkkeOpplastedVedlegg(boolean utland) {
+        return foreldrepengesøknad(utland, IKKE_OPPLASTETV1);
+    }
+
+    public static Søknad foreldrepengesøknad(boolean utland, Vedlegg... vedlegg) {
+        return søknad(foreldrepenger(utland, vedleggRefs(vedlegg)), vedlegg);
+    }
+
 
     public static Søknad svp() {
         return svp(true);
@@ -114,25 +138,15 @@ public class ForeldrepengerTestUtils {
 
     }
 
-    public static Søknad søknadMedEttVedlegg(Versjon v) {
-        return søknad(v, false, VEDLEGG1);
+    public static Svangerskapspenger svangerskapspenger(String... vedleggRefs) {
+        return Svangerskapspenger.builder()
+                .termindato(LocalDate.now().plusMonths(1))
+                .medlemsskap(medlemsskap())
+                .opptjening(opptjening())
+                .tilrettelegging(tilrettelegging(vedleggRefs))
+                .build();
     }
 
-    public static Søknad søknadMedEttOpplastetEttIkkeOpplastetVedlegg(Versjon v) {
-        return søknad(v, false, VEDLEGG1, IKKE_OPPLASTETV2);
-    }
-
-    public static Søknad søknadMedToVedlegg(Versjon v) {
-        return søknad(v, false, VEDLEGG1, V2);
-    }
-
-    public static Søknad søknadMedEttIkkeOpplastedVedlegg(Versjon v, boolean utland) {
-        return søknad(v, utland, IKKE_OPPLASTETV1);
-    }
-
-    public static Søknad søknad(Versjon v, boolean utland, Vedlegg... vedlegg) {
-        return søknad(foreldrepenger(v, utland, vedleggRefs(vedlegg)), vedlegg);
-    }
 
     public static Søknad søknad(Ytelse ytelse, Vedlegg... vedlegg) {
         var søknad = new Søknad(LocalDate.now(), TestUtils.søker(), ytelse, asList(vedlegg));
@@ -141,12 +155,12 @@ public class ForeldrepengerTestUtils {
         return søknad;
     }
 
-    public static Endringssøknad endringssøknad(Versjon v, Vedlegg... vedlegg) {
+    public static Endringssøknad endringssøknad(Vedlegg... vedlegg) {
         return new Endringssøknad(LocalDate.now(), søker(),
-                fordeling(v, vedleggRefs(vedlegg)), norskForelder(),
+                fordeling(vedleggRefs(vedlegg)), norskForelder(),
                 fødsel(),
                 rettigheter(),
-                "42" + v.name().toLowerCase(), vedlegg);
+                "42V3", vedlegg);
     }
 
     private static String[] vedleggRefs(Vedlegg... vedlegg) {
@@ -157,15 +171,6 @@ public class ForeldrepengerTestUtils {
 
     public static Ettersending ettersending() {
         return new Ettersending(EttersendingsType.foreldrepenger, "42", TO_VEDLEGG);
-    }
-
-    public static Svangerskapspenger svangerskapspenger(String... vedleggRefs) {
-        return Svangerskapspenger.builder()
-                .termindato(LocalDate.now().plusMonths(1))
-                .medlemsskap(medlemsskap())
-                .opptjening(opptjening(Versjon.V3))
-                .tilrettelegging(tilrettelegging(vedleggRefs))
-                .build();
     }
 
     private static List<Tilrettelegging> tilrettelegging(String... vedleggRefs) {
@@ -186,9 +191,7 @@ public class ForeldrepengerTestUtils {
     }
 
     private static Tilrettelegging helTilrettelegging(String... vedleggRefs) {
-        return new HelTilrettelegging(virksomhet(), LocalDate.now().plusMonths(1), LocalDate.now().plusMonths(2),
-                asList(vedleggRefs));
-
+        return new HelTilrettelegging(virksomhet(), LocalDate.now().plusMonths(1), LocalDate.now().plusMonths(2), asList(vedleggRefs));
     }
 
     private static Arbeidsforhold virksomhet() {
@@ -203,37 +206,36 @@ public class ForeldrepengerTestUtils {
         return new Frilanser("risiko", "tiltak");
     }
 
-    public static Foreldrepenger foreldrepenger(Versjon v, boolean utland, String... vedleggRefs) {
+    public static Foreldrepenger foreldrepenger(boolean utland, String... vedleggRefs) {
         return Foreldrepenger.builder()
                 .rettigheter(rettigheter())
                 .annenForelder(norskForelder())
                 .dekningsgrad(Dekningsgrad.GRAD100)
-                .fordeling(fordeling(v, vedleggRefs))
-                .opptjening(opptjening(v, vedleggRefs))
+                .fordeling(fordeling(vedleggRefs))
+                .opptjening(opptjening(vedleggRefs))
                 .relasjonTilBarn(termin())
                 .medlemsskap(medlemsskap(utland))
                 .build();
     }
 
-    public static Opptjening opptjening(Versjon v, String... vedleggRefs) {
+    public static Opptjening opptjening(String... vedleggRefs) {
         return new Opptjening(Collections.singletonList(utenlandskArbeidsforhold(vedleggRefs)),
                 egneNæringer(vedleggRefs),
-                andreOpptjeninger(v, vedleggRefs), frilans());
+                andreOpptjeninger(vedleggRefs), frilans());
     }
 
     private static Frilans frilans() {
         return new Frilans(åpenPeriode(true), true, true, true,
-                List.of(
-                        new FrilansOppdrag("fattern", åpenPeriode(true)),
+                List.of(new FrilansOppdrag("fattern", åpenPeriode(true)),
                         new FrilansOppdrag(
                                 "den andre bror min og samtidig en fryktelig lang tekst som straks må bryte over til ny linje",
                                 åpenPeriode(true)),
-                        new FrilansOppdrag("far min", åpenPeriode(true))));
-
+                        new FrilansOppdrag("far min", åpenPeriode(true))
+                ));
     }
 
-    private static List<AnnenOpptjening> andreOpptjeninger(Versjon v, String... vedleggRefs) {
-        return List.of(annenOpptjening(v, vedleggRefs));
+    private static List<AnnenOpptjening> andreOpptjeninger(String... vedleggRefs) {
+        return List.of(annenOpptjening(vedleggRefs));
     }
 
     private static List<EgenNæring> egneNæringer(String... vedleggRefs) {
@@ -258,7 +260,6 @@ public class ForeldrepengerTestUtils {
     }
 
     public static ÅpenPeriode åpenPeriode(boolean end) {
-
         return end ? new ÅpenPeriode(LocalDate.now().minusMonths(5), LocalDate.now())
                 : new ÅpenPeriode(LocalDate.now().minusMonths(5));
     }
@@ -303,12 +304,8 @@ public class ForeldrepengerTestUtils {
                 .endringsDato(LocalDate.now()).build();
     }
 
-    public static AnnenOpptjening annenOpptjening(Versjon v, String... vedleggRefs) {
-        return switch (v) {
-            case V1 -> new AnnenOpptjening(AnnenOpptjeningType.VENTELØNN, åpenPeriode(), Arrays.asList(vedleggRefs));
-            case V2, V3 -> new AnnenOpptjening(AnnenOpptjeningType.VENTELØNN_VARTPENGER, åpenPeriode(), Arrays.asList(vedleggRefs));
-            default -> throw new IllegalArgumentException();
-        };
+    public static AnnenOpptjening annenOpptjening(String... vedleggRefs) {
+        return new AnnenOpptjening(AnnenOpptjeningType.VENTELØNN_VARTPENGER, åpenPeriode(), Arrays.asList(vedleggRefs));
     }
 
     public static UtenlandskArbeidsforhold utenlandskArbeidsforhold(String... vedleggRefs) {
@@ -319,13 +316,13 @@ public class ForeldrepengerTestUtils {
                 .periode(åpenPeriode()).build();
     }
 
-    public static List<LukketPeriodeMedVedlegg> perioder(Versjon v, String... vedleggRefs) {
+    public static List<LukketPeriodeMedVedlegg> perioder(String... vedleggRefs) {
         return newArrayList(
                 oppholdsPeriode(vedleggRefs),
                 overføringsPeriode(vedleggRefs),
                 utsettelsesPeriode(vedleggRefs),
                 uttaksPeriode(vedleggRefs),
-                gradertPeriode(v, vedleggRefs));
+                gradertPeriode(vedleggRefs));
     }
 
     public static FremtidigFødsel termin() {
@@ -338,33 +335,16 @@ public class ForeldrepengerTestUtils {
 
     public static UttaksPeriode uttaksPeriode(String... vedleggRefs) {
         return new UttaksPeriode(ukeDagNær(LocalDate.now().plusMonths(3)), ukeDagNær(LocalDate.now().plusMonths(4)),
-                FEDREKVOTE,
-                true, MorsAktivitet.ARBEID_OG_UTDANNING, true, new ProsentAndel(75), Arrays.asList(vedleggRefs));
+                FEDREKVOTE, true, MorsAktivitet.ARBEID_OG_UTDANNING, true,
+                new ProsentAndel(75), Arrays.asList(vedleggRefs));
     }
 
-    public static UttaksPeriode gradertPeriode(Versjon v, String... vedleggRefs) {
-        return switch (v) {
-            case V1 -> new GradertUttaksPeriode(ukeDagNær(LocalDate.now().plusMonths(4)), LocalDate.now().plusMonths(5),
-                    FEDREKVOTE,
-                    true, MorsAktivitet.ARBEID_OG_UTDANNING, true, new ProsentAndel(42d), new ProsentAndel(75),
-                    true, true,
-                    Collections.singletonList("22222222222"), null, null,
-                    Arrays.asList(vedleggRefs));
-            case V2 -> new GradertUttaksPeriode(ukeDagNær(LocalDate.now().plusMonths(4)), LocalDate.now().plusMonths(5),
-                    FEDREKVOTE,
-                    true, MorsAktivitet.ARBEID_OG_UTDANNING, true, new ProsentAndel(42d), new ProsentAndel(75),
-                    true, true,
-                    Collections.singletonList("22222222222"), null, null,
-                    Arrays.asList(vedleggRefs));
-            case V3 -> new GradertUttaksPeriode(ukeDagNær(LocalDate.now().plusMonths(4)), LocalDate.now().plusMonths(5),
-                    FEDREKVOTE,
-                    true, MorsAktivitet.ARBEID_OG_UTDANNING, true, new ProsentAndel(42d), new ProsentAndel(75),
-                    true, true,
-                    Collections.singletonList("22222222222"), true, true,
-                    Arrays.asList(vedleggRefs));
-            default -> throw new IllegalStateException(v.toString());
-        };
-
+    public static UttaksPeriode gradertPeriode(String... vedleggRefs) {
+        return new GradertUttaksPeriode(ukeDagNær(LocalDate.now().plusMonths(4)), LocalDate.now().plusMonths(5), FEDREKVOTE,
+                true, MorsAktivitet.ARBEID_OG_UTDANNING, true, new ProsentAndel(42d), new ProsentAndel(75),
+                true, true,
+                Collections.singletonList("22222222222"), true, true,
+                Arrays.asList(vedleggRefs));
     }
 
     public static OverføringsPeriode overføringsPeriode(String... vedleggRefs) {
@@ -383,15 +363,14 @@ public class ForeldrepengerTestUtils {
                 ukeDagNær(LocalDate.now().plusMonths(3)), true, Collections.singletonList("222"),
                 UtsettelsesÅrsak.INSTITUSJONSOPPHOLD_BARNET, StønadskontoType.FEDREKVOTE, null,
                 Arrays.asList(vedleggRefs));
-
     }
 
-    public static Fordeling fordeling(Versjon v, String... vedleggRefs) {
-        return new Fordeling(true, Overføringsårsak.IKKE_RETT_ANNEN_FORELDER, perioder(v, vedleggRefs));
+    public static Fordeling fordeling(String... vedleggRefs) {
+        return new Fordeling(true, Overføringsårsak.IKKE_RETT_ANNEN_FORELDER, perioder(vedleggRefs));
     }
 
     public static Rettigheter rettigheter() {
-        return new Rettigheter(true, true, true);
+        return new Rettigheter(true, true, true, false);
     }
 
     private static ValgfrittVedlegg opplastetVedlegg(String id, DokumentType type) {
@@ -416,7 +395,7 @@ public class ForeldrepengerTestUtils {
     public static LocalDate ukeDagNær(LocalDate dato) {
         LocalDate d = dato;
         while (!erUkedag(d)) {
-            d = d.plusDays(1); // TODO sjekk at dette ikke ødlegger neo. Minus dager er feil..
+            d = d.plusDays(1);
         }
         return d;
     }

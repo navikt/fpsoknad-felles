@@ -9,7 +9,8 @@ public enum MorsAktivitet {
     INNLAGT,
     ARBEID_OG_UTDANNING,
     SAMTIDIGUTTAK("morsaktivitet.samtidig"),
-    UFØRE;
+    UFØRE,
+    IKKE_OPPGITT;
 
     private final String key;
 

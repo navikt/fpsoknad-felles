@@ -12,6 +12,6 @@ public final class ESV3JAXBUtil extends AbstractJAXBUtil {
     public ESV3JAXBUtil(boolean validateMarshalling, boolean validateUnmarshalling) {
         super(contextFra(Soeknad.class, Engangsstønad.class),
                 validateMarshalling, validateUnmarshalling,
-                "soeknad-v3/xsd/engangsstoenad/engangsstoenad-v3.xsd");
+                "xsd/soeknad-v3/xsd/engangsstoenad/engangsstoenad-v3.xsd");
     }
 }

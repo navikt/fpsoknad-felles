@@ -1,7 +1,7 @@
 package no.nav.foreldrepenger.common.domain.svangerskapspenger;
 
-import static no.nav.foreldrepenger.common.domain.foreldrepenger.ForeldrepengerTestUtils.delvisTilrettelegging;
-import static no.nav.foreldrepenger.common.domain.foreldrepenger.ForeldrepengerTestUtils.svp;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.delvisTilrettelegging;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.svp;
 
 import org.junit.jupiter.api.Test;
 

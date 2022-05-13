@@ -13,6 +13,6 @@ public final class ESV2JAXBUtil extends AbstractJAXBUtil {
     public ESV2JAXBUtil(boolean validateMarshalling, boolean validateUnmarshalling) {
         super(contextFra(Soeknad.class, Engangsstønad.class),
                 validateMarshalling, validateUnmarshalling,
-                "soeknad-v2/xsd/engangsstoenad/engangsstoenad-v2.xsd");
+                "xsd/soeknad-v2/xsd/engangsstoenad/engangsstoenad-v2.xsd");
     }
 }

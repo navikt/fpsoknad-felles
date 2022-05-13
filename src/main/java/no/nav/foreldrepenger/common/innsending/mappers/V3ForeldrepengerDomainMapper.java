@@ -77,9 +77,8 @@ import no.nav.vedtak.felles.xml.soeknad.v3.OmYtelse;
 import no.nav.vedtak.felles.xml.soeknad.v3.Soeknad;
 
 public class V3ForeldrepengerDomainMapper implements DomainMapper {
-    private static final MapperEgenskaper EGENSKAPER = new MapperEgenskaper(V3, ENDRING_FORELDREPENGER,
-            INITIELL_FORELDREPENGER);
-    private static final FPV3JAXBUtil JAXB = new FPV3JAXBUtil();
+    private static final MapperEgenskaper EGENSKAPER = new MapperEgenskaper(V3, ENDRING_FORELDREPENGER, INITIELL_FORELDREPENGER);
+    protected static final FPV3JAXBUtil JAXB = new FPV3JAXBUtil();
     private static final no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.ObjectFactory FP_FACTORY_V3 = new no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.ObjectFactory();
     private static final no.nav.vedtak.felles.xml.soeknad.felles.v3.ObjectFactory FELLES_FACTORY_V3 = new no.nav.vedtak.felles.xml.soeknad.felles.v3.ObjectFactory();
     private static final no.nav.vedtak.felles.xml.soeknad.v3.ObjectFactory SØKNAD_FACTORY_V3 = new no.nav.vedtak.felles.xml.soeknad.v3.ObjectFactory();
@@ -106,7 +105,7 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
         return JAXB.marshal(SØKNAD_FACTORY_V3.createSoeknad(tilModell(endringssøknad, søker)));
     }
 
-    private Soeknad tilModell(Søknad søknad, AktørId søker) {
+    protected Soeknad tilModell(Søknad søknad, AktørId søker) {
         return new Soeknad()
                 .withSprakvalg(målformFra(søknad.getSøker()))
                 .withAndreVedlegg(vedleggFra(søknad.getFrivilligeVedlegg()))
@@ -134,17 +133,19 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
                 .withSaksnummer(endringssøknad.getSaksnr()));
     }
 
-    private JAXBElement<Foreldrepenger> foreldrepengerFra(
-            no.nav.foreldrepenger.common.domain.foreldrepenger.Foreldrepenger ytelse) {
-        return FP_FACTORY_V3.createForeldrepenger(new Foreldrepenger()
+    private JAXBElement<Foreldrepenger> foreldrepengerFra(no.nav.foreldrepenger.common.domain.foreldrepenger.Foreldrepenger ytelse) {
+        return FP_FACTORY_V3.createForeldrepenger(tilForeldrepenger(ytelse));
+    }
+
+    protected Foreldrepenger tilForeldrepenger(no.nav.foreldrepenger.common.domain.foreldrepenger.Foreldrepenger ytelse) {
+        return new Foreldrepenger()
                 .withDekningsgrad(dekningsgradFra(ytelse.getDekningsgrad()))
                 .withMedlemskap(medlemsskapFra(ytelse.getMedlemsskap(), ytelse.getRelasjonTilBarn().relasjonsDato()))
                 .withOpptjening(opptjeningFra(ytelse.getOpptjening()))
                 .withFordeling(fordelingFra(ytelse.getFordeling()))
-                .withRettigheter(
-                        rettigheterFra(ytelse.getRettigheter(), erAnnenForelderUkjent(ytelse.getAnnenForelder())))
+                .withRettigheter(rettigheterFra(ytelse.getRettigheter(), erAnnenForelderUkjent(ytelse.getAnnenForelder())))
                 .withAnnenForelder(annenForelderFra(ytelse.getAnnenForelder()))
-                .withRelasjonTilBarnet(relasjonFra(ytelse.getRelasjonTilBarn())));
+                .withRelasjonTilBarnet(relasjonFra(ytelse.getRelasjonTilBarn()));
     }
 
     private static OmYtelse ytelseFra(Endringssøknad endringssøknad) {
@@ -152,24 +153,21 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
     }
 
     private OmYtelse ytelseFra(Søknad søknad) {
-        return new OmYtelse()
-                .withAny(JAXB.marshalToElement(
-                        foreldrepengerFra(no.nav.foreldrepenger.common.domain.foreldrepenger.Foreldrepenger.class
-                                .cast(søknad.getYtelse()))));
+        return new OmYtelse().withAny(JAXB.marshalToElement(
+                foreldrepengerFra((no.nav.foreldrepenger.common.domain.foreldrepenger.Foreldrepenger) søknad.getYtelse())));
     }
 
     private static Fordeling fordelingFra(Endringssøknad endringssøknad) {
-        return fordelingFra(no.nav.foreldrepenger.common.domain.foreldrepenger.Foreldrepenger.class
-                .cast(endringssøknad.getYtelse()).getFordeling());
+        return fordelingFra(
+                ((no.nav.foreldrepenger.common.domain.foreldrepenger.Foreldrepenger) endringssøknad.getYtelse()).getFordeling()
+        );
     }
 
-    private static boolean erAnnenForelderUkjent(
-            no.nav.foreldrepenger.common.domain.felles.annenforelder.AnnenForelder annenForelder) {
+    private static boolean erAnnenForelderUkjent(no.nav.foreldrepenger.common.domain.felles.annenforelder.AnnenForelder annenForelder) {
         return annenForelder instanceof no.nav.foreldrepenger.common.domain.felles.annenforelder.UkjentForelder;
     }
 
-    private static Dekningsgrad dekningsgradFra(
-            no.nav.foreldrepenger.common.domain.foreldrepenger.Dekningsgrad dekningsgrad) {
+    private static Dekningsgrad dekningsgradFra(no.nav.foreldrepenger.common.domain.foreldrepenger.Dekningsgrad dekningsgrad) {
         return Optional.ofNullable(dekningsgrad)
                 .map(no.nav.foreldrepenger.common.domain.foreldrepenger.Dekningsgrad::kode)
                 .map(V3ForeldrepengerDomainMapper::dekningsgradFra)
@@ -182,8 +180,7 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
         return dekningsgrad.withKodeverk(dekningsgrad.getKodeverk());
     }
 
-    private static Fordeling fordelingFra(
-            no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.Fordeling fordeling) {
+    private static Fordeling fordelingFra(no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.Fordeling fordeling) {
         return Optional.ofNullable(fordeling)
                 .map(V3ForeldrepengerDomainMapper::create)
                 .orElse(null);
@@ -440,7 +437,8 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
                 .withHarOmsorgForBarnetIPeriodene(true)
                 .withHarAnnenForelderRett(r.harAnnenForelderRett())
                 .withHarAleneomsorgForBarnet(r.harAleneOmsorgForBarnet())
-                .withHarMorUforetrygd(r.harMorUføretrygd());
+                .withHarMorUforetrygd(r.harMorUføretrygd())
+                .withHarMorForeldrepengerEOS(r.harMorForeldrepengerEØS());
     }
 
     private AnnenForelder annenForelderFra(

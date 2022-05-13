@@ -2,28 +2,27 @@ package no.nav.foreldrepenger.common.domain.foreldrepenger;
 
 import static no.nav.foreldrepenger.common.domain.felles.TestUtils.adopsjon;
 import static no.nav.foreldrepenger.common.domain.felles.TestUtils.person;
-import static no.nav.foreldrepenger.common.domain.foreldrepenger.ForeldrepengerTestUtils.annenOpptjening;
-import static no.nav.foreldrepenger.common.domain.foreldrepenger.ForeldrepengerTestUtils.endringssøknad;
-import static no.nav.foreldrepenger.common.domain.foreldrepenger.ForeldrepengerTestUtils.ettersending;
-import static no.nav.foreldrepenger.common.domain.foreldrepenger.ForeldrepengerTestUtils.fordeling;
-import static no.nav.foreldrepenger.common.domain.foreldrepenger.ForeldrepengerTestUtils.foreldrepenger;
-import static no.nav.foreldrepenger.common.domain.foreldrepenger.ForeldrepengerTestUtils.gradertPeriode;
-import static no.nav.foreldrepenger.common.domain.foreldrepenger.ForeldrepengerTestUtils.norskEgenNæring;
-import static no.nav.foreldrepenger.common.domain.foreldrepenger.ForeldrepengerTestUtils.norskForelder;
-import static no.nav.foreldrepenger.common.domain.foreldrepenger.ForeldrepengerTestUtils.omsorgsovertakelse;
-import static no.nav.foreldrepenger.common.domain.foreldrepenger.ForeldrepengerTestUtils.oppholdsPeriode;
-import static no.nav.foreldrepenger.common.domain.foreldrepenger.ForeldrepengerTestUtils.opptjening;
-import static no.nav.foreldrepenger.common.domain.foreldrepenger.ForeldrepengerTestUtils.overføringsPeriode;
-import static no.nav.foreldrepenger.common.domain.foreldrepenger.ForeldrepengerTestUtils.rettigheter;
-import static no.nav.foreldrepenger.common.domain.foreldrepenger.ForeldrepengerTestUtils.termin;
-import static no.nav.foreldrepenger.common.domain.foreldrepenger.ForeldrepengerTestUtils.utenlandskArbeidsforhold;
-import static no.nav.foreldrepenger.common.domain.foreldrepenger.ForeldrepengerTestUtils.utenlandskEgenNæring;
-import static no.nav.foreldrepenger.common.domain.foreldrepenger.ForeldrepengerTestUtils.utenlandskForelder;
-import static no.nav.foreldrepenger.common.domain.foreldrepenger.ForeldrepengerTestUtils.utsettelsesPeriode;
-import static no.nav.foreldrepenger.common.domain.foreldrepenger.ForeldrepengerTestUtils.uttaksPeriode;
-import static no.nav.foreldrepenger.common.domain.foreldrepenger.ForeldrepengerTestUtils.åpenPeriode;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.annenOpptjening;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.endringssøknad;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.ettersending;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.fordeling;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.foreldrepenger;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.gradertPeriode;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.norskEgenNæring;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.norskForelder;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.omsorgsovertakelse;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.oppholdsPeriode;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.opptjening;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.overføringsPeriode;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.rettigheter;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.termin;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.utenlandskArbeidsforhold;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.utenlandskEgenNæring;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.utenlandskForelder;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.utsettelsesPeriode;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.uttaksPeriode;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.åpenPeriode;
 import static no.nav.foreldrepenger.common.util.ResourceHandleUtil.bytesFra;
-import static no.nav.foreldrepenger.common.util.Versjon.DEFAULT_VERSJON;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.Duration;
@@ -47,6 +46,7 @@ import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.Stønadskont
 import no.nav.foreldrepenger.common.innsending.foreldrepenger.FPSakFordeltKvittering;
 import no.nav.foreldrepenger.common.innsending.foreldrepenger.GosysKvittering;
 import no.nav.foreldrepenger.common.innsending.foreldrepenger.PendingKvittering;
+import no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils;
 import no.nav.foreldrepenger.common.util.SerializationTestBase;
 
 
@@ -99,22 +99,22 @@ class TestForeldrepengerSerialization extends SerializationTestBase {
 
     @Test
     void testEndringssøknad() {
-        test(endringssøknad(DEFAULT_VERSJON), false);
+        test(endringssøknad(), false);
     }
 
     @Test
     void testForeldrepenger() {
-        test(foreldrepenger(DEFAULT_VERSJON, false), true);
+        test(foreldrepenger(false), true);
     }
 
     @Test
     void testSøknad() {
-        test(ForeldrepengerTestUtils.søknadMedEttIkkeOpplastedVedlegg(DEFAULT_VERSJON, false), true);
+        test(ForeldrepengerTestUtils.foreldrepengesøknadMedEttIkkeOpplastedVedlegg(false), true);
     }
 
     @Test
     void testOpptjening() {
-        test(opptjening(DEFAULT_VERSJON));
+        test(opptjening());
     }
 
     @Test
@@ -131,17 +131,6 @@ class TestForeldrepengerSerialization extends SerializationTestBase {
     void testStønadskontoType() {
         test(StønadskontoType.IKKE_SATT, false);
     }
-
-    // TODO: Fjerne dette?
-//    @Test
-//    void testSøknadMetadata() {
-//        test(new SøknadMetadata(new SøknadEgenskap(Versjon.V1, SøknadType.INITIELL_FORELDREPENGER), "42"), true);
-//    }
-//
-//    @Test
-//    void testSøknadInspeksjon() throws JsonProcessingException {
-//        test(new SøknadEgenskap(Versjon.V1, SøknadType.INITIELL_FORELDREPENGER), false);
-//    }
 
     @Test
     void testVedleggMetadata() {
@@ -160,8 +149,7 @@ class TestForeldrepengerSerialization extends SerializationTestBase {
 
     @Test
     void testFordeling() {
-        test(fordeling(DEFAULT_VERSJON), false);
-
+        test(fordeling(), false);
     }
 
     @Test
@@ -171,7 +159,7 @@ class TestForeldrepengerSerialization extends SerializationTestBase {
 
     @Test
     void testGradertPeriode() {
-        test(gradertPeriode(DEFAULT_VERSJON), false);
+        test(gradertPeriode(), false);
     }
 
     @Test
@@ -211,7 +199,7 @@ class TestForeldrepengerSerialization extends SerializationTestBase {
 
     @Test
     void testAnnenOpptjening() {
-        test(annenOpptjening(DEFAULT_VERSJON));
+        test(annenOpptjening());
     }
 
     @Test

@@ -9,7 +9,7 @@
     version="2.0">
 
     <jaxb:bindings
-        schemaLocation="../xsd/dokmot/v1/engangsstoenad-dokmot-v1.xsd"
+        schemaLocation="../xsd/dokmot/v1/xsd/engangsstoenad-dokmot-v1.xsd"
         node="/xsd:schema">
         <jaxb:bindings
             node="xs:complexType[@name='SoeknadsskjemaEngangsstoenad']">

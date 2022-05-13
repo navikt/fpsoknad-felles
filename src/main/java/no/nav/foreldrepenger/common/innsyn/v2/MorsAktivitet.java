@@ -9,5 +9,6 @@ public enum MorsAktivitet {
     TRENGER_HJELP,
     INNLAGT,
     ARBEID_OG_UTDANNING,
-    UFØRE
+    UFØRE,
+    IKKE_OPPGITT
 }
