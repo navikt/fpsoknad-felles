@@ -11,6 +11,7 @@ import static no.nav.foreldrepenger.common.domain.felles.DokumentType.I500002;
 import static no.nav.foreldrepenger.common.domain.felles.DokumentType.I500005;
 import static no.nav.foreldrepenger.common.domain.felles.TestUtils.medlemsskap;
 import static no.nav.foreldrepenger.common.domain.felles.TestUtils.søker;
+import static no.nav.foreldrepenger.common.domain.felles.TestUtils.valgfrittVedlegg;
 import static no.nav.foreldrepenger.common.domain.felles.opptjening.Virksomhetstype.FISKE;
 import static no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.OmsorgsOvertakelsesÅrsak.SKAL_OVERTA_ALENE;
 import static no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.StønadskontoType.FEDREKVOTE;
@@ -88,8 +89,8 @@ public class ForeldrepengerTestUtils {
     public static final String ID144 = "V144";
 
     public static final List<Vedlegg> TO_VEDLEGG = newArrayList(
-            TestUtils.valgfrittVedlegg(ID142, InnsendingsType.LASTET_OPP),
-            TestUtils.valgfrittVedlegg(ID143, InnsendingsType.LASTET_OPP));
+            valgfrittVedlegg(ID142, InnsendingsType.LASTET_OPP),
+            valgfrittVedlegg(ID143, InnsendingsType.LASTET_OPP));
     public static final ValgfrittVedlegg VEDLEGG1 = opplastetVedlegg(ID142, I500002);
     public static final ValgfrittVedlegg VEDLEGG2 = opplastetVedlegg(ID143, I500005);
     public static final ValgfrittVedlegg VEDLEGG3 = opplastetVedlegg(ID144, I000062);
@@ -113,7 +114,7 @@ public class ForeldrepengerTestUtils {
         return foreldrepengesøknad(false, VEDLEGG1, IKKE_OPPLASTETV2);
     }
 
-    public static Søknad foreldrepengesøknadMedToVedlegg(Versjon v) {
+    public static Søknad foreldrepengesøknadMedToVedlegg() {
         return foreldrepengesøknad(false, VEDLEGG1, VEDLEGG2);
     }
 
@@ -147,20 +148,19 @@ public class ForeldrepengerTestUtils {
                 .build();
     }
 
-
-    public static Søknad søknad(Ytelse ytelse, Vedlegg... vedlegg) {
-        var søknad = new Søknad(LocalDate.now(), TestUtils.søker(), ytelse, asList(vedlegg));
-        søknad.setTilleggsopplysninger("Opplysninger av den kjente tilleggtypen");
-        søknad.setBegrunnelseForSenSøknad("Begrunner det ikke nie");
-        return søknad;
-    }
-
     public static Endringssøknad endringssøknad(Vedlegg... vedlegg) {
         return new Endringssøknad(LocalDate.now(), søker(),
                 fordeling(vedleggRefs(vedlegg)), norskForelder(),
                 fødsel(),
                 rettigheter(),
                 "42V3", vedlegg);
+    }
+
+    public static Søknad søknad(Ytelse ytelse, Vedlegg... vedlegg) {
+        var søknad = new Søknad(LocalDate.now(), TestUtils.søker(), ytelse, asList(vedlegg));
+        søknad.setTilleggsopplysninger("Opplysninger av den kjente tilleggtypen");
+        søknad.setBegrunnelseForSenSøknad("Begrunner det ikke nie");
+        return søknad;
     }
 
     private static String[] vedleggRefs(Vedlegg... vedlegg) {
@@ -199,7 +199,7 @@ public class ForeldrepengerTestUtils {
     }
 
     private static Arbeidsforhold privat() {
-        return new PrivatArbeidsgiver("11111111111");
+        return new PrivatArbeidsgiver(NORSK_FORELDER_FNR.value());
     }
 
     private static Arbeidsforhold frilanser() {

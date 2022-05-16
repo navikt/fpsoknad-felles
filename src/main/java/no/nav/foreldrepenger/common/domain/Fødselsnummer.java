@@ -1,7 +1,7 @@
 package no.nav.foreldrepenger.common.domain;
 
 import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
-import static no.nav.foreldrepenger.common.util.StringUtil.partialMask;
+import static no.nav.foreldrepenger.common.util.StringUtil.mask;
 
 import java.util.Objects;
 
@@ -33,6 +33,6 @@ public record Fødselsnummer(@Pattern(regexp = FRITEKST) @JsonValue String value
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + " [fnr=" + partialMask(value) + "]";
+        return getClass().getSimpleName() + " [fnr=" + mask(value) + "]";
     }
 }
