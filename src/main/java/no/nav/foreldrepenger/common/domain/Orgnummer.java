@@ -1,7 +1,7 @@
 package no.nav.foreldrepenger.common.domain;
 
 import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
-import static no.nav.foreldrepenger.common.util.StringUtil.partialMask;
+import static no.nav.foreldrepenger.common.util.StringUtil.mask;
 
 import javax.validation.constraints.Pattern;
 
@@ -43,6 +43,6 @@ public record Orgnummer(@JsonValue @Pattern(regexp = FRITEKST) String value) imp
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + " [orgnr=" + partialMask(value, 9) + "]";
+        return getClass().getSimpleName() + " [orgnr=" + mask(value) + "]";
     }
 }
