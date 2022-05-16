@@ -8,7 +8,6 @@ public enum MorsAktivitet {
     TRENGER_HJELP("morsaktivitet.sykdom"),
     INNLAGT,
     ARBEID_OG_UTDANNING,
-    SAMTIDIGUTTAK("morsaktivitet.samtidig"),
     UFØRE,
     IKKE_OPPGITT;
 

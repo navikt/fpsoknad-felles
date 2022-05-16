@@ -78,7 +78,7 @@ import no.nav.vedtak.felles.xml.soeknad.v3.Soeknad;
 
 public class V3ForeldrepengerDomainMapper implements DomainMapper {
     private static final MapperEgenskaper EGENSKAPER = new MapperEgenskaper(V3, ENDRING_FORELDREPENGER, INITIELL_FORELDREPENGER);
-    protected static final FPV3JAXBUtil JAXB = new FPV3JAXBUtil();
+    private static final FPV3JAXBUtil JAXB = new FPV3JAXBUtil();
     private static final no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.ObjectFactory FP_FACTORY_V3 = new no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.ObjectFactory();
     private static final no.nav.vedtak.felles.xml.soeknad.felles.v3.ObjectFactory FELLES_FACTORY_V3 = new no.nav.vedtak.felles.xml.soeknad.felles.v3.ObjectFactory();
     private static final no.nav.vedtak.felles.xml.soeknad.v3.ObjectFactory SØKNAD_FACTORY_V3 = new no.nav.vedtak.felles.xml.soeknad.v3.ObjectFactory();
