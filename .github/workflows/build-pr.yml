@@ -23,7 +23,6 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: '17'
-          check-latest: true
           cache: 'maven'
       - name: Build med sonar analyse
         if: github.actor != 'dependabot[bot]'

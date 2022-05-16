@@ -17,6 +17,6 @@ public final class V1VarselJAXBUtil extends AbstractJAXBUtil {
     public V1VarselJAXBUtil(boolean validateMarshalling, boolean validateUnmarshalling) {
         super(contextFra(Varsel.class, ObjectFactory.class),
                 validateMarshalling, validateUnmarshalling,
-                "varseltjeneste/xsd/varsel-v1.xsd");
+                "xsd/varseltjeneste/xsd/varsel-v1.xsd");
     }
 }

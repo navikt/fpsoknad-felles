@@ -17,7 +17,6 @@ public final class ESV1JAXBUtil extends AbstractJAXBUtil {
 
     public ESV1JAXBUtil(boolean validateMarshalling, boolean validateUnmarshalling) {
         super(contextFra(SoeknadsskjemaEngangsstoenad.class, Soeknad.class, Engangsstønad.class),
-                validateMarshalling, validateUnmarshalling,
-                "dokmot/v1/engangsstoenad-dokmot-v1.xsd");
+                validateMarshalling, validateUnmarshalling, "xsd/dokmot/v1/xsd/engangsstoenad-dokmot-v1.xsd");
     }
 }

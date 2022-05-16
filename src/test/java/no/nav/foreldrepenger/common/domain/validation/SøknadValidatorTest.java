@@ -3,7 +3,7 @@ package no.nav.foreldrepenger.common.domain.validation;
 import static no.nav.foreldrepenger.common.domain.felles.TestUtils.engangssøknad;
 import static no.nav.foreldrepenger.common.domain.felles.TestUtils.fødsel;
 import static no.nav.foreldrepenger.common.domain.felles.TestUtils.nå;
-import static no.nav.foreldrepenger.common.domain.foreldrepenger.ForeldrepengerTestUtils.svp;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.svp;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import javax.validation.Validation;
