@@ -1,6 +1,7 @@
 package no.nav.foreldrepenger.common.domain;
 
 import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.BARE_TALL;
+import static no.nav.foreldrepenger.common.util.StringUtil.mask;
 
 import javax.validation.constraints.Pattern;
 
@@ -26,5 +27,10 @@ public class AktørId implements ArbeidsgiverIdentifikator {
     @Override
     public String value() {
         return value;
+    }
+
+    @Override
+    public String toString() {
+        return "AktørId{" + "value='" + mask(value) + '\'' + '}';
     }
 }

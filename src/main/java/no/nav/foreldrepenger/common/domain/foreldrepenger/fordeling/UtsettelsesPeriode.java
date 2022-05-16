@@ -21,7 +21,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 @Data
-@ToString(callSuper = true, exclude = { "morsAktivitetsType", "virksomhetsnummer" })
+@ToString(callSuper = true, exclude = "virksomhetsnummer")
 @EqualsAndHashCode(callSuper = true, exclude = { "morsAktivitetsType", "virksomhetsnummer" })
 @JsonTypeInfo(use = NAME, include = PROPERTY, property = "type")
 @JsonSubTypes({

@@ -38,7 +38,7 @@ public record Orgnummer(@JsonValue @Pattern(regexp = FRITEKST) String value) imp
     }
 
     public String maskert() {
-        return value != null ? value.substring(0, 5) + "****" : "<null>";
+        return value != null ? mask(value) : "<null>";
     }
 
     @Override
