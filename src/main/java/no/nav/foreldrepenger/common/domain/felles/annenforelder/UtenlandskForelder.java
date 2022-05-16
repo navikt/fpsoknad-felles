@@ -1,6 +1,7 @@
 package no.nav.foreldrepenger.common.domain.felles.annenforelder;
 
 import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
+import static no.nav.foreldrepenger.common.util.StringUtil.mask;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -10,11 +11,9 @@ import com.neovisionaries.i18n.CountryCode;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
 public final class UtenlandskForelder extends AnnenForelder {
 
     @NotBlank
@@ -28,5 +27,10 @@ public final class UtenlandskForelder extends AnnenForelder {
     @Override
     public boolean hasId() {
         return id != null;
+    }
+
+    @Override
+    public String toString() {
+        return "UtenlandskForelder{" + "id='" + mask(id) + '\'' + ", land=" + land + ", navn='" + mask(navn) + '\'' + "} " + super.toString();
     }
 }
