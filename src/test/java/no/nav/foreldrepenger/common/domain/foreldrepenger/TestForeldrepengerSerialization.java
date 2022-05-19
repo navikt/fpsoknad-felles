@@ -59,18 +59,23 @@ class TestForeldrepengerSerialization extends SerializationTestBase {
     }
 
     @Test
-    void testProsentAndel() throws Exception {
+    void testProsentAndel() {
         ProsentAndel orig = new ProsentAndel(40.0);
         ProsentAndel orig1 = new ProsentAndel(40d);
-        test(orig, false);
+        test(orig, true);
         test(orig1, false);
-        assertEquals(orig, mapper.readValue("{ \"prosent\" : 40}", ProsentAndel.class));
-        assertEquals(orig, mapper.readValue("{ \"prosent\" : 40.0}", ProsentAndel.class));
-        orig = new ProsentAndel(40d);
-        test(orig, false);
-        assertEquals(orig, mapper.readValue("{ \"prosent\" : 40}", ProsentAndel.class));
-        assertEquals(orig, mapper.readValue("{ \"prosent\" : 40.0}", ProsentAndel.class));
+    }
 
+    private record ProsentKlasse(ProsentAndel prosent) {
+    }
+
+    @Test
+    void testProsentAndelIKlasseRoundtripTest() throws Exception {
+        var orig = new ProsentKlasse(new ProsentAndel(40d));
+        assertEquals(orig, mapper.readValue("{ \"prosent\" : 40 }", ProsentKlasse.class));
+        assertEquals(orig, mapper.readValue("{ \"prosent\" : 40.0 }", ProsentKlasse.class));
+        assertEquals(orig, mapper.readValue("{ \"prosent\" : \"40\" }", ProsentKlasse.class));
+        assertEquals(orig, mapper.readValue("{ \"prosent\" : \"40.0\" }", ProsentKlasse.class));
     }
 
     @Test

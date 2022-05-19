@@ -15,8 +15,8 @@ class TestSvangerskapsepengerSerialization extends SerializationTestBase {
     }
 
     @Test
-    void testTilrettelegging() {
-        test(delvisTilrettelegging(), false);
+    void roundtripTestDelvisTilrettelegging() {
+        test(delvisTilrettelegging(), true);
     }
 
 
