@@ -12,6 +12,7 @@ import java.util.stream.Stream;
 import javax.validation.Valid;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.neovisionaries.i18n.CountryCode;
 
@@ -25,6 +26,16 @@ public record Medlemsskap(@Valid @Opphold(fortid = true) @JsonAlias("utenlandsop
                        @Valid List<Utenlandsopphold> framtidigUtenlandsopphold) {
         this.tidligereUtenlandsopphold = Optional.ofNullable(tidligereUtenlandsopphold).orElse(emptyList());
         this.framtidigUtenlandsopphold = Optional.ofNullable(framtidigUtenlandsopphold).orElse(emptyList());
+    }
+
+    @JsonIgnore
+    public boolean isNorgeNeste12() {
+        return framtidigUtenlandsopphold.isEmpty();
+    }
+
+    @JsonIgnore
+    public boolean isBoddINorge() {
+        return tidligereUtenlandsopphold.isEmpty();
     }
 
     public boolean varUtenlands(LocalDate dato) {
