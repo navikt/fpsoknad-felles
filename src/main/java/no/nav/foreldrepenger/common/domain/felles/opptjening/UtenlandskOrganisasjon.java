@@ -10,7 +10,6 @@ import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Length;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
 import com.neovisionaries.i18n.CountryCode;
 
 import lombok.Builder;
@@ -28,7 +27,6 @@ public final class UtenlandskOrganisasjon extends EgenNæring {
     @Length(max = 100)
     @Pattern(regexp = FRITEKST)
     private final String orgName;
-    @JsonAlias("arbeidsland")
     @NotNull
     private final CountryCode registrertILand;
 

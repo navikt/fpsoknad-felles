@@ -11,7 +11,6 @@ import java.util.stream.Stream;
 
 import javax.validation.Valid;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.neovisionaries.i18n.CountryCode;
@@ -19,7 +18,7 @@ import com.neovisionaries.i18n.CountryCode;
 import no.nav.foreldrepenger.common.domain.validation.annotations.Opphold;
 
 @JsonPropertyOrder({ "tidligereUtenlandsopphold", "framtidigUtenlandsopphold" })
-public record Medlemsskap(@Valid @Opphold(fortid = true) @JsonAlias("utenlandsopphold") List<Utenlandsopphold> tidligereUtenlandsopphold,// TODO: Fjerne alias etter expand contract
+public record Medlemsskap(@Valid @Opphold(fortid = true)List<Utenlandsopphold> tidligereUtenlandsopphold,
                           @Valid @Opphold List<Utenlandsopphold> framtidigUtenlandsopphold) {
 
     public Medlemsskap(@Valid List<Utenlandsopphold> tidligereUtenlandsopphold,

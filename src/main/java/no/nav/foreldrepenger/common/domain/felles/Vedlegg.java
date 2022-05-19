@@ -51,11 +51,10 @@ public abstract class Vedlegg {
 
     @JsonIgnore
     public InnsendingsType getInnsendingsType() {
-        InnsendingsType type = metadata.innsendingsType();
+        var type = metadata.innsendingsType();
         if (getStørrelse() == 0) {
             if (!SEND_SENERE.equals(type) && type != null) {
-                LOG.warn("Feil innsendingstype {} for {}, ingen vedlegg, setter type til SEND_SENERE", type,
-                        metadata.dokumentType());
+                LOG.warn("Feil innsendingstype {} for {}, ingen vedlegg, setter type til SEND_SENERE", type, metadata.dokumentType());
             }
             return SEND_SENERE;
         }
