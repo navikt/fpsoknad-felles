@@ -31,8 +31,7 @@ public sealed class UtsettelsesPeriode extends LukketPeriodeMedVedlegg permits F
 
     @NotNull
     private final UtsettelsesÅrsak årsak;
-    @NotNull
-    private final StønadskontoType uttaksperiodeType;
+    private final StønadskontoType uttaksperiodeType; // TODO: Tror denne alltid er null. Fjern senere
     private final boolean erArbeidstaker;
     private final List<@Pattern(regexp = FRITEKST) String> virksomhetsnummer;
     private final MorsAktivitet morsAktivitetsType;

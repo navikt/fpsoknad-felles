@@ -10,7 +10,6 @@ import java.util.Optional;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 import lombok.Builder;
@@ -36,7 +35,7 @@ public final class GradertUttaksPeriode extends UttaksPeriode {
     public GradertUttaksPeriode(LocalDate fom,
                                 LocalDate tom,
                                 List<String> vedlegg,
-                                @JsonAlias("UttaksperiodeType") StønadskontoType uttaksperiodeType, // TODO: Fjern alias etter ferdig expand
+                                StønadskontoType uttaksperiodeType,
                                 boolean ønskerSamtidigUttak,
                                 MorsAktivitet morsAktivitetsType,
                                 boolean ønskerFlerbarnsdager,
