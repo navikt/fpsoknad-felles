@@ -25,15 +25,11 @@ import no.nav.foreldrepenger.common.domain.felles.annenforelder.AnnenForelder;
 import no.nav.foreldrepenger.common.domain.felles.annenforelder.NorskForelder;
 import no.nav.foreldrepenger.common.domain.felles.annenforelder.UkjentForelder;
 import no.nav.foreldrepenger.common.domain.felles.annenforelder.UtenlandskForelder;
-import no.nav.foreldrepenger.common.domain.felles.medlemskap.ArbeidsInformasjon;
-import no.nav.foreldrepenger.common.domain.felles.medlemskap.FramtidigOppholdsInformasjon;
 import no.nav.foreldrepenger.common.domain.felles.medlemskap.Medlemsskap;
-import no.nav.foreldrepenger.common.domain.felles.medlemskap.TidligereOppholdsInformasjon;
 import no.nav.foreldrepenger.common.domain.felles.medlemskap.Utenlandsopphold;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.Adopsjon;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.FremtidigFødsel;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.Fødsel;
-import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.OmsorgsOvertakelsesÅrsak;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.Omsorgsovertakelse;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.RelasjonTilBarn;
 import no.nav.foreldrepenger.common.oppslag.dkif.Målform;
@@ -47,34 +43,30 @@ public class TestUtils {
     }
 
     public static Søknad engangssøknad(boolean utland) {
-        return engangssøknad(utland, termin(), norskForelder());
+        return engangssøknad(utland, termin());
     }
 
     public static Søknad engangssøknad(RelasjonTilBarn relasjon, boolean utland) {
-        return engangssøknad(utland, relasjon, norskForelder());
+        return engangssøknad(utland, relasjon);
     }
 
     public static Søknad engangssøknad(RelasjonTilBarn relasjon) {
-        return engangssøknad(false, relasjon, norskForelder());
+        return engangssøknad(false, relasjon);
     }
 
     public static Søknad engangssøknad(Vedlegg... vedlegg) {
-        return engangssøknad(true, termin(), norskForelder(), vedlegg);
+        return engangssøknad(true, termin(), vedlegg);
     }
 
-    public static Søknad engangssøknad(boolean utland, RelasjonTilBarn relasjon, AnnenForelder annenForelder,
-            Vedlegg... vedlegg) {
-        Søknad s = new Søknad(LocalDate.now(), søker(), engangstønad(utland, relasjon, annenForelder), vedlegg);
+    public static Søknad engangssøknad(boolean utland, RelasjonTilBarn relasjon, Vedlegg... vedlegg) {
+        var s = new Søknad(LocalDate.now(), søker(), engangstønad(utland, relasjon), vedlegg);
         s.setBegrunnelseForSenSøknad("Glemte hele ungen");
         s.setTilleggsopplysninger("Intet å tilføye");
         return s;
     }
 
-    public static Engangsstønad engangstønad(boolean utland, RelasjonTilBarn relasjon,
-            AnnenForelder annenForelder) {
-        Engangsstønad stønad = new Engangsstønad(medlemsskap(utland), relasjon);
-        stønad.setAnnenForelder(annenForelder);
-        return stønad;
+    public static Engangsstønad engangstønad(boolean utland, RelasjonTilBarn relasjon) {
+        return new Engangsstønad(medlemsskap(utland), relasjon);
     }
 
     public static Utenlandsopphold utenlandsopphold() {
@@ -100,24 +92,21 @@ public class TestUtils {
         return new Medlemsskap(tidligereOppHoldINorge(), framtidigOppholdINorge());
     }
 
-    static TidligereOppholdsInformasjon tidligereOppHoldIUtlandet() {
+    static List<Utenlandsopphold> tidligereOppHoldIUtlandet() {
         List<Utenlandsopphold> utenlandOpphold = new ArrayList<>();
         utenlandOpphold.add(new Utenlandsopphold(CountryCode.AT,
                 new LukketPeriode(LocalDate.now().minusYears(1), LocalDate.now().minusMonths(6).minusDays(1))));
         utenlandOpphold.add(new Utenlandsopphold(CountryCode.FI,
                 new LukketPeriode(LocalDate.now().minusMonths(6), LocalDate.now())));
-        return new TidligereOppholdsInformasjon(ArbeidsInformasjon.ARBEIDET_I_UTLANDET, utenlandOpphold);
+        return utenlandOpphold;
     }
 
-    static TidligereOppholdsInformasjon tidligereOppHoldINorge() {
-        return new TidligereOppholdsInformasjon(ArbeidsInformasjon.ARBEIDET_I_NORGE, emptyList());
+    static List<Utenlandsopphold> tidligereOppHoldINorge() {
+        return emptyList();
     }
 
     public static Omsorgsovertakelse omsorgsovertakelse() {
-        Omsorgsovertakelse overtakelse = new Omsorgsovertakelse(nå(), OmsorgsOvertakelsesÅrsak.SKAL_OVERTA_ALENE,
-                forrigeMåned());
-        overtakelse.setBeskrivelse("dette er en beskrivelse");
-        return overtakelse;
+        return new Omsorgsovertakelse(nå(), forrigeMåned());
     }
 
     public static PåkrevdVedlegg påkrevdVedlegg(String id) {
@@ -147,26 +136,24 @@ public class TestUtils {
     }
 
     public static RelasjonTilBarn fødsel(LocalDate date) {
-        return new Fødsel(date);
+        return Fødsel.builder()
+                .antallBarn(1)
+                .termindato(date)
+                .fødselsdato(singletonList(date))
+                .build();
     }
 
-    public static FramtidigOppholdsInformasjon framtidigOppHoldIUtlandet() {
+    public static List<Utenlandsopphold> framtidigOppHoldIUtlandet() {
         List<Utenlandsopphold> opphold = new ArrayList<>();
         opphold.add(new Utenlandsopphold(CountryCode.GR,
                 new LukketPeriode(LocalDate.now(), LocalDate.now().plusMonths(6))));
-        opphold.add(new Utenlandsopphold(CountryCode.GR,
-                new LukketPeriode(LocalDate.now(), LocalDate.now().plusMonths(6))));
-        opphold.add(new Utenlandsopphold(CountryCode.GR,
-                new LukketPeriode(LocalDate.now(), LocalDate.now().plusMonths(6))));
-        opphold.add(new Utenlandsopphold(CountryCode.GR,
-                new LukketPeriode(LocalDate.now(), LocalDate.now().plusMonths(6))));
         opphold.add(new Utenlandsopphold(CountryCode.DE,
-                new LukketPeriode(LocalDate.now().plusMonths(6).plusDays(1), LocalDate.now().plusYears(1))));
-        return new FramtidigOppholdsInformasjon(opphold);
+                new LukketPeriode(LocalDate.now().plusYears(1), LocalDate.now().plusYears(1).plusMonths(6))));
+        return opphold;
     }
 
-    public static FramtidigOppholdsInformasjon framtidigOppholdINorge() {
-        return new FramtidigOppholdsInformasjon(emptyList());
+    public static List<Utenlandsopphold> framtidigOppholdINorge() {
+        return emptyList();
     }
 
     public static String serialize(Object obj, boolean print, ObjectMapper mapper) {

@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import no.nav.foreldrepenger.common.error.UnexpectedInputException;
 
+// TODO: Forenkle denne..
 public enum Dekningsgrad {
 
     GRAD80(80),

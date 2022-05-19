@@ -9,12 +9,14 @@ import javax.validation.constraints.Pattern;
 
 import com.neovisionaries.i18n.CountryCode;
 
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-@Data
-@EqualsAndHashCode(callSuper = true)
-public final class UtenlandskForelder extends AnnenForelder {
+@Getter
+@RequiredArgsConstructor
+@EqualsAndHashCode
+public final class UtenlandskForelder implements AnnenForelder {
 
     @NotBlank
     @Pattern(regexp = FRITEKST)

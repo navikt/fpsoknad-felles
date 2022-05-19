@@ -11,27 +11,15 @@ import javax.validation.Valid;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Builder;
-import lombok.Data;
 
-@Data
 @Builder
-public class Fordeling {
-
-    private final boolean erAnnenForelderInformert;
-    private final Overføringsårsak ønskerKvoteOverført;
-    @Valid
-    private final List<LukketPeriodeMedVedlegg> perioder;
+public record Fordeling(boolean erAnnenForelderInformert, @Valid List<LukketPeriodeMedVedlegg> perioder) {
 
     @JsonCreator
-    public Fordeling(@JsonProperty("erAnnenForelderInformert") boolean erAnnenForelderInformert,
-            @JsonProperty("årsak") Overføringsårsak årsak,
-            @JsonProperty("perioder") List<LukketPeriodeMedVedlegg> perioder) {
-        this.erAnnenForelderInformert = erAnnenForelderInformert;
-        this.ønskerKvoteOverført = årsak;
-        this.perioder = Optional.ofNullable(perioder).orElse(emptyList());
+    public Fordeling {
+        perioder = Optional.ofNullable(perioder).orElse(emptyList());
     }
 
     @JsonIgnore

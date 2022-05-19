@@ -15,17 +15,15 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
+@Getter
 @EqualsAndHashCode(exclude = { "vedlegg" })
-
-@Data
 @JsonTypeInfo(use = NAME, include = PROPERTY, property = "type")
 @JsonSubTypes({
         @Type(value = ValgfrittVedlegg.class, name = "valgfritt"),
@@ -40,31 +38,30 @@ public abstract class Vedlegg {
     private final byte[] vedlegg;
 
     @JsonCreator
-    public Vedlegg(@JsonProperty("metadata") VedleggMetaData metadata, @JsonProperty("vedlegg") byte[] vedlegg) {
+    protected Vedlegg(VedleggMetaData metadata, byte[] vedlegg) {
         this.metadata = metadata;
         this.vedlegg = vedlegg;
     }
 
     @JsonIgnore
     public String getBeskrivelse() {
-        return Optional.ofNullable(metadata.getBeskrivelse())
+        return Optional.ofNullable(metadata.beskrivelse())
                 .orElse(getDokumentType().getBeskrivelse());
     }
 
     @JsonIgnore
     public InnsendingsType getInnsendingsType() {
-        InnsendingsType type = metadata.getInnsendingsType();
+        InnsendingsType type = metadata.innsendingsType();
         if (getStørrelse() == 0) {
             if (!SEND_SENERE.equals(type) && type != null) {
                 LOG.warn("Feil innsendingstype {} for {}, ingen vedlegg, setter type til SEND_SENERE", type,
-                        metadata.getDokumentType());
+                        metadata.dokumentType());
             }
             return SEND_SENERE;
         }
         if (type == null) {
-            LOG.info(
-                    "Innsendingstype for {} er ikke satt, setter til {}, siden vi har vedlegg med størrelse {}",
-                    metadata.getDokumentType(), LASTET_OPP, getStørrelse());
+            LOG.info("Innsendingstype for {} er ikke satt, setter til {}, siden vi har vedlegg med størrelse {}",
+                    metadata.dokumentType(), LASTET_OPP, getStørrelse());
             return LASTET_OPP;
         }
         return type;
@@ -72,12 +69,12 @@ public abstract class Vedlegg {
 
     @JsonIgnore
     public String getId() {
-        return metadata.getId();
+        return metadata.id();
     }
 
     @JsonIgnore
     public DokumentType getDokumentType() {
-        return metadata.getDokumentType();
+        return metadata.dokumentType();
     }
 
     @JsonIgnore

@@ -7,6 +7,8 @@ import java.time.LocalDate;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.validation.Valid;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -22,29 +24,21 @@ import no.nav.foreldrepenger.common.oppslag.dkif.Målform;
 
 @JsonInclude(NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record Person(AktørId aktørId,
-                     Fødselsnummer fnr,
+public record Person(@Valid AktørId aktørId,
+                     @Valid Fødselsnummer fnr,
                      LocalDate fødselsdato,
-                     Navn navn,
-                     Kjønn kjønn,
-                     Målform målform,
+                     @Valid Navn navn,
+                     @Valid Kjønn kjønn,
+                     @Valid Målform målform,
                      CountryCode land,
-                     Bankkonto bankkonto,
-                     Set<Barn> barn) {
-
+                     @Valid Bankkonto bankkonto,
+                     @Valid Set<Barn> barn) {
     @Builder
     @JsonCreator
-    public Person(AktørId aktørId, Fødselsnummer fnr, LocalDate fødselsdato, Navn navn, Kjønn kjønn, Målform målform,
-                  CountryCode land, Bankkonto bankkonto, Set<Barn> barn) {
-        this.aktørId = aktørId;
-        this.fnr = fnr;
-        this.fødselsdato = fødselsdato;
-        this.navn = navn;
-        this.kjønn = kjønn;
-        this.målform = Optional.ofNullable(målform).orElse(Målform.standard());
-        this.land = Optional.ofNullable(land).orElse(CountryCode.NO);
-        this.bankkonto = bankkonto;
-        this.barn = Optional.ofNullable(barn).orElse(emptySet());
+    public Person {
+        målform = Optional.ofNullable(målform).orElse(Målform.standard());
+        land = Optional.ofNullable(land).orElse(CountryCode.NO);
+        barn = Optional.ofNullable(barn).orElse(emptySet());
     }
 
     @JsonIgnore

@@ -7,33 +7,21 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Builder;
-import lombok.Data;
 
-@Data
-@Builder
-public class Opptjening {
+public record Opptjening(@Valid @JsonAlias("arbeidsforhold") List<UtenlandskArbeidsforhold> utenlandskArbeidsforhold, // TODO: Fjern alias etter expand contract done
+                         @Valid List<EgenNæring> egenNæring,
+                         @Valid List<AnnenOpptjening> annenOpptjening,
+                         @Valid Frilans frilans) {
 
-    @Valid
-    private final List<UtenlandskArbeidsforhold> utenlandskArbeidsforhold;
-    @Valid
-    private final List<EgenNæring> egenNæring;
-    @Valid
-    private final List<AnnenOpptjening> annenOpptjening;
-    @Valid
-    private final Frilans frilans;
-
+    @Builder
     @JsonCreator
-    public Opptjening(@JsonProperty("arbeidsforhold") List<UtenlandskArbeidsforhold> utenlandskArbeidsforhold,
-            @JsonProperty("egenNæring") List<EgenNæring> egenNæring,
-            @JsonProperty("annenOpptjening") List<AnnenOpptjening> annenOpptjening,
-            @JsonProperty("frilans") Frilans frilans) {
-        this.utenlandskArbeidsforhold = Optional.ofNullable(utenlandskArbeidsforhold).orElse(emptyList());
-        this.egenNæring = Optional.ofNullable(egenNæring).orElse(emptyList());
-        this.annenOpptjening = Optional.ofNullable(annenOpptjening).orElse(emptyList());
-        this.frilans = frilans;
+    public Opptjening {
+        utenlandskArbeidsforhold = Optional.ofNullable(utenlandskArbeidsforhold).orElse(emptyList());
+        egenNæring = Optional.ofNullable(egenNæring).orElse(emptyList());
+        annenOpptjening = Optional.ofNullable(annenOpptjening).orElse(emptyList());
     }
 }

@@ -90,7 +90,7 @@ public class Søknad {
     @JsonIgnore
     public LocalDate getFørsteUttaksdag() {
         if (ytelse instanceof Foreldrepenger fp) {
-            return fp.getFordeling().getFørsteUttaksdag();
+            return fp.fordeling().getFørsteUttaksdag();
         }
         return null;
     }

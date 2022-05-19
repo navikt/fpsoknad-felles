@@ -1,6 +1,7 @@
 package no.nav.foreldrepenger.common.domain.felles.medlemskap;
 
 import static com.neovisionaries.i18n.CountryCode.NO;
+import static java.util.Collections.emptyList;
 import static no.nav.foreldrepenger.common.util.StreamUtil.safeStream;
 
 import java.time.LocalDate;
@@ -10,20 +11,21 @@ import java.util.stream.Stream;
 
 import javax.validation.Valid;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.neovisionaries.i18n.CountryCode;
 
-import lombok.Data;
+import no.nav.foreldrepenger.common.domain.validation.annotations.Opphold;
 
-@Data
-@JsonPropertyOrder({ "tidligereOppholdsInfo", "framtidigOppholdsInfo" })
-public class Medlemsskap {
+@JsonPropertyOrder({ "tidligereUtenlandsopphold", "framtidigUtenlandsopphold" })
+public record Medlemsskap(@Valid @Opphold(fortid = true) @JsonAlias("utenlandsopphold") List<Utenlandsopphold> tidligereUtenlandsopphold,// TODO: Fjerne alias etter expand contract
+                          @Valid @Opphold List<Utenlandsopphold> framtidigUtenlandsopphold) {
 
-    // TODO: Fjern arbeidSiste12 og custom mapper.. unødvendig kompleksitet
-    @Valid
-    private final TidligereOppholdsInformasjon tidligereOppholdsInfo;
-    @Valid
-    private final FramtidigOppholdsInformasjon framtidigOppholdsInfo;
+    public Medlemsskap(@Valid List<Utenlandsopphold> tidligereUtenlandsopphold,
+                       @Valid List<Utenlandsopphold> framtidigUtenlandsopphold) {
+        this.tidligereUtenlandsopphold = Optional.ofNullable(tidligereUtenlandsopphold).orElse(emptyList());
+        this.framtidigUtenlandsopphold = Optional.ofNullable(framtidigUtenlandsopphold).orElse(emptyList());
+    }
 
     public boolean varUtenlands(LocalDate dato) {
         return !varINorge(dato);
@@ -49,8 +51,8 @@ public class Medlemsskap {
 
     public List<Utenlandsopphold> utenlandsOpphold() {
         return Stream
-                .concat(safeStream(tidligereOppholdsInfo.getUtenlandsOpphold()),
-                        safeStream(framtidigOppholdsInfo.getUtenlandsOpphold()))
+                .concat(safeStream(tidligereUtenlandsopphold),
+                        safeStream(framtidigUtenlandsopphold))
                 .toList();
     }
 }

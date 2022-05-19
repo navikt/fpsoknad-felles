@@ -5,16 +5,6 @@ import static no.nav.foreldrepenger.common.domain.validation.InputValideringRege
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
-@Data
-@EqualsAndHashCode(callSuper = false)
-public final class Frilanser extends Arbeidsforhold {
-    @NotNull
-    @Pattern(regexp = FRITEKST)
-    private final String risikoFaktorer;
-    @NotNull
-    @Pattern(regexp = FRITEKST)
-    private final String tilretteleggingstiltak;
+public record Frilanser(@NotNull @Pattern(regexp = FRITEKST) String risikoFaktorer,
+                        @NotNull @Pattern(regexp = FRITEKST) String tilretteleggingstiltak) implements Arbeidsforhold {
 }

@@ -1,50 +1,30 @@
 package no.nav.foreldrepenger.common.domain.svangerskapspenger;
 
+import static java.util.Collections.emptyList;
+
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import javax.annotation.Nullable;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import no.nav.foreldrepenger.common.domain.Ytelse;
 import no.nav.foreldrepenger.common.domain.felles.medlemskap.Medlemsskap;
 import no.nav.foreldrepenger.common.domain.felles.opptjening.Opptjening;
 import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.Tilrettelegging;
 
-@Data
-@EqualsAndHashCode(callSuper = true)
 @Builder
-public class Svangerskapspenger extends Ytelse {
-
-    @NotNull
-    private final LocalDate termindato;
-    @Nullable
-    private final LocalDate fødselsdato;
-    @Valid
-    private final Medlemsskap medlemsskap;
-    @Valid
-    private final Opptjening opptjening;
-    @Valid
-    private final List<Tilrettelegging> tilrettelegging;
-
+public record Svangerskapspenger(LocalDate termindato,
+                                 @Nullable LocalDate fødselsdato,
+                                 Medlemsskap medlemsskap,
+                                 Opptjening opptjening,
+                                 List<Tilrettelegging> tilrettelegging) implements Ytelse {
     @JsonCreator
-    public Svangerskapspenger(@JsonProperty("termindato") LocalDate termindato,
-            @JsonProperty("fødselsdato") LocalDate fødselsdato,
-            @JsonProperty("medlemsskap") Medlemsskap medlemsskap,
-            @JsonProperty("opptjening") Opptjening opptjening,
-            @JsonProperty("tilrettelegging") List<Tilrettelegging> tilrettelegging) {
-        this.termindato = termindato;
-        this.fødselsdato = fødselsdato;
-        this.medlemsskap = medlemsskap;
-        this.opptjening = opptjening;
-        this.tilrettelegging = tilrettelegging;
+    public Svangerskapspenger {
+        tilrettelegging = Optional.ofNullable(tilrettelegging).orElse(emptyList());
     }
 
 }

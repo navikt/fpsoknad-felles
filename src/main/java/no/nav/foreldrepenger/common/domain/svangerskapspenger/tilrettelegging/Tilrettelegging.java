@@ -16,12 +16,12 @@ import javax.validation.constraints.Pattern;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.ToString;
 import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.Arbeidsforhold;
 
-@Data
+@Getter
 @EqualsAndHashCode(exclude = { "vedlegg" })
 @ToString(exclude = { "vedlegg" })
 @JsonTypeInfo(use = NAME, include = PROPERTY, property = "type")
@@ -38,7 +38,7 @@ public abstract class Tilrettelegging {
     private final LocalDate behovForTilretteleggingFom;
     private final List<@Pattern(regexp = FRITEKST) String> vedlegg;
 
-    public Tilrettelegging(Arbeidsforhold arbeidsforhold, LocalDate behovForTilretteleggingFom, List<String> vedlegg) {
+    protected Tilrettelegging(Arbeidsforhold arbeidsforhold, LocalDate behovForTilretteleggingFom, List<String> vedlegg) {
         this.arbeidsforhold = arbeidsforhold;
         this.behovForTilretteleggingFom = behovForTilretteleggingFom;
         this.vedlegg = Optional.ofNullable(vedlegg).orElse(emptyList());

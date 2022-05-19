@@ -83,21 +83,19 @@ public class V1SvangerskapspengerDomainMapper implements DomainMapper {
     }
 
     private OmYtelse ytelseFra(Søknad søknad) {
-        var ytelse = no.nav.foreldrepenger.common.domain.svangerskapspenger.Svangerskapspenger.class
-                .cast(søknad.getYtelse());
-        return new OmYtelse()
-                .withAny(jaxb.marshalToElement(svangerskapspengerFra(ytelse)));
+        var ytelse = (no.nav.foreldrepenger.common.domain.svangerskapspenger.Svangerskapspenger) søknad.getYtelse();
+        return new OmYtelse().withAny(jaxb.marshalToElement(svangerskapspengerFra(ytelse)));
     }
 
     private static JAXBElement<Svangerskapspenger> svangerskapspengerFra(
             no.nav.foreldrepenger.common.domain.svangerskapspenger.Svangerskapspenger ytelse) {
         return SVP_FACTORY_V1.createSvangerskapspenger(new Svangerskapspenger()
-                .withTermindato(ytelse.getTermindato())
-                .withFødselsdato(ytelse.getFødselsdato())
-                .withOpptjening(opptjeningFra(ytelse.getOpptjening()))
-                .withTilretteleggingListe(tilretteleggingFra(ytelse.getTilrettelegging()))
-                .withMedlemskap(medlemsskapFra(ytelse.getMedlemsskap(),
-                        relasjonsDatoFra(ytelse.getTermindato(), ytelse.getFødselsdato()))));
+                .withTermindato(ytelse.termindato())
+                .withFødselsdato(ytelse.fødselsdato())
+                .withOpptjening(opptjeningFra(ytelse.opptjening()))
+                .withTilretteleggingListe(tilretteleggingFra(ytelse.tilrettelegging()))
+                .withMedlemskap(medlemsskapFra(ytelse.medlemsskap(),
+                        relasjonsDatoFra(ytelse.termindato(), ytelse.fødselsdato()))));
     }
 
     private static TilretteleggingListe tilretteleggingFra(
@@ -160,7 +158,7 @@ public class V1SvangerskapspengerDomainMapper implements DomainMapper {
 
     private static double prosentFra(ProsentAndel prosent) {
         return Optional.ofNullable(prosent)
-                .map(ProsentAndel::getProsent)
+                .map(ProsentAndel::prosent)
                 .orElse(0d);
     }
 
@@ -175,23 +173,23 @@ public class V1SvangerskapspengerDomainMapper implements DomainMapper {
 
         if (forhold instanceof no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.Virksomhet virksomhet) {
             return new Virksomhet()
-                    .withIdentifikator(virksomhet.getOrgnr().value());
+                    .withIdentifikator(virksomhet.orgnr().value());
         }
         if (forhold instanceof no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.PrivatArbeidsgiver privat) {
             return new PrivatArbeidsgiver()
-                    .withIdentifikator(privat.getFnr().value());
+                    .withIdentifikator(privat.fnr().value());
         }
 
         if (forhold instanceof no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.Frilanser frilanser) {
             return new Frilanser()
-                    .withOpplysningerOmTilretteleggingstiltak(frilanser.getTilretteleggingstiltak())
-                    .withOpplysningerOmRisikofaktorer(frilanser.getRisikoFaktorer());
+                    .withOpplysningerOmTilretteleggingstiltak(frilanser.tilretteleggingstiltak())
+                    .withOpplysningerOmRisikofaktorer(frilanser.risikoFaktorer());
         }
 
         if (forhold instanceof no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.SelvstendigNæringsdrivende selvstendig) {
             return new SelvstendigNæringsdrivende()
-                    .withOpplysningerOmTilretteleggingstiltak(selvstendig.getTilretteleggingstiltak())
-                    .withOpplysningerOmRisikofaktorer(selvstendig.getRisikoFaktorer());
+                    .withOpplysningerOmTilretteleggingstiltak(selvstendig.tilretteleggingstiltak())
+                    .withOpplysningerOmRisikofaktorer(selvstendig.risikoFaktorer());
         }
 
         throw new UnexpectedInputException("Ukjent arbeidsforhold %s", forhold.getClass().getSimpleName());

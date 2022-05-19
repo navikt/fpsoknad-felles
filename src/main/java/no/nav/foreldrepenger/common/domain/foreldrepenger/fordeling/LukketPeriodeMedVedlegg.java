@@ -15,18 +15,17 @@ import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.ToString;
 import no.nav.foreldrepenger.common.domain.validation.annotations.LukketPeriode;
 
-@Data
+@Getter
 @EqualsAndHashCode(exclude = { "vedlegg" })
 @ToString(exclude = { "vedlegg" })
 @LukketPeriode
@@ -38,19 +37,17 @@ import no.nav.foreldrepenger.common.domain.validation.annotations.LukketPeriode;
         @Type(value = OppholdsPeriode.class, name = "opphold"),
         @Type(value = UtsettelsesPeriode.class, name = "utsettelse")
 })
-public abstract sealed class LukketPeriodeMedVedlegg
-        implements Comparable<LukketPeriodeMedVedlegg>permits OverføringsPeriode,OppholdsPeriode,UtsettelsesPeriode,UttaksPeriode
-{
+public abstract sealed class LukketPeriodeMedVedlegg implements Comparable<LukketPeriodeMedVedlegg>
+        permits OverføringsPeriode,OppholdsPeriode,UtsettelsesPeriode,UttaksPeriode {
 
     @NotNull
-    protected final LocalDate fom;
+    private final LocalDate fom;
     @NotNull
-    protected final LocalDate tom;
-    protected final List<@Pattern(regexp = FRITEKST) String> vedlegg;
+    private final LocalDate tom;
+    private final List<@Pattern(regexp = FRITEKST) String> vedlegg;
 
     @JsonCreator
-    public LukketPeriodeMedVedlegg(@JsonProperty("fom") LocalDate fom, @JsonProperty("tom") LocalDate tom,
-                                   @JsonProperty("vedlegg") List<String> vedlegg) {
+    protected LukketPeriodeMedVedlegg(LocalDate fom, LocalDate tom, List<String> vedlegg) {
         this.fom = fom;
         this.tom = tom;
         this.vedlegg = Optional.ofNullable(vedlegg).orElse(emptyList());

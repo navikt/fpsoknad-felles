@@ -15,29 +15,27 @@ import javax.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.ToString;
 import no.nav.foreldrepenger.common.domain.felles.ProsentAndel;
 import no.nav.foreldrepenger.common.domain.felles.ÅpenPeriode;
 
-@Data
+@Getter
+@ToString(exclude = "vedlegg")
+@EqualsAndHashCode(exclude = "vedlegg")
 @JsonTypeInfo(use = NAME, include = PROPERTY, property = "type")
 @JsonSubTypes({
         @Type(value = NorskOrganisasjon.class, name = "norsk"),
         @Type(value = UtenlandskOrganisasjon.class, name = "utenlandsk")
 })
-
-@ToString(exclude = "vedlegg")
-@EqualsAndHashCode(exclude = "vedlegg")
 public abstract sealed class EgenNæring permits NorskOrganisasjon,UtenlandskOrganisasjon {
-
     private final List<Virksomhetstype> virksomhetsTyper;
+    @Valid
     private final ÅpenPeriode periode;
     private final boolean nærRelasjon;
     @Valid
@@ -51,31 +49,31 @@ public abstract sealed class EgenNæring permits NorskOrganisasjon,UtenlandskOrg
     @Length(max = 1000)
     @Pattern(regexp = FRITEKST)
     private final String beskrivelseEndring;
+    @Valid
     private final ProsentAndel stillingsprosent;
     private final List<@Pattern(regexp = FRITEKST) String> vedlegg;
 
     @JsonCreator
-    public EgenNæring(
-            @JsonProperty("virksomhetsType") List<Virksomhetstype> virksomhetsTyper,
-            @JsonProperty("periode") ÅpenPeriode periode,
-            @JsonProperty("nærRelasjon") boolean nærRelasjon,
-            @JsonProperty("regnskapsførere") List<Regnskapsfører> regnskapsførere,
-            @JsonProperty("erNyOpprettet") boolean erNyOpprettet,
-            @JsonProperty("erVarigEndring") boolean erVarigEndring,
-            @JsonProperty("erNyIArbeidslivet") boolean erNyIArbeidslivet,
-            @JsonProperty("næringsinntektBrutto") long næringsinntektBrutto,
-            @JsonProperty("endringsDato") LocalDate endringsDato,
-            @JsonProperty("oppstartsDato") LocalDate oppstartsDato,
-            @JsonProperty("beskrivelseEndring") String beskrivelseEndring,
-            @JsonProperty("stillingsprosent") ProsentAndel stillingsprosent,
-            @JsonProperty("vedlegg") List<String> vedlegg) {
+    protected EgenNæring(List<Virksomhetstype> virksomhetsTyper,
+                      ÅpenPeriode periode,
+                      boolean nærRelasjon,
+                      List<Regnskapsfører> regnskapsførere,
+                      boolean erNyOpprettet,
+                      boolean erVarigEndring,
+                      boolean erNyIArbeidslivet,
+                      long næringsinntektBrutto,
+                      LocalDate endringsDato,
+                      LocalDate oppstartsDato,
+                      String beskrivelseEndring,
+                      ProsentAndel stillingsprosent,
+                      List<String> vedlegg) {
         this.virksomhetsTyper = virksomhetsTyper;
         this.periode = periode;
         this.nærRelasjon = nærRelasjon;
         this.regnskapsførere = regnskapsførere;
         this.erNyOpprettet = erNyOpprettet;
-        this.erNyIArbeidslivet = erNyIArbeidslivet;
         this.erVarigEndring = erVarigEndring;
+        this.erNyIArbeidslivet = erNyIArbeidslivet;
         this.næringsinntektBrutto = næringsinntektBrutto;
         this.endringsDato = endringsDato;
         this.oppstartsDato = oppstartsDato;

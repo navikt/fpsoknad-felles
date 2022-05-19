@@ -1,7 +1,7 @@
 package no.nav.foreldrepenger.common.domain.foreldrepenger;
 
 import static java.util.Arrays.asList;
-import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
+import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.BARE_TALL;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -14,8 +14,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.ToString;
-import lombok.Value;
 import no.nav.foreldrepenger.common.domain.Søker;
 import no.nav.foreldrepenger.common.domain.Søknad;
 import no.nav.foreldrepenger.common.domain.Ytelse;
@@ -24,14 +24,14 @@ import no.nav.foreldrepenger.common.domain.felles.annenforelder.AnnenForelder;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.Fødsel;
 import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.Fordeling;
 
-@Value
+@Getter
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class Endringssøknad extends Søknad {
+public final class Endringssøknad extends Søknad {
 
     @NotNull
-    @Pattern(regexp = FRITEKST)
-    String saksnr;
+    @Pattern(regexp = BARE_TALL)
+    private final String saksnr;
 
     public Endringssøknad(String saksnr, LocalDate mottattdato, Søker søker, Ytelse ytelse, List<Vedlegg> vedlegg) {
         super(mottattdato, søker, ytelse, vedlegg);
@@ -49,8 +49,8 @@ public class Endringssøknad extends Søknad {
         this(mottattDato, søker, fordeling, annenForelder, fødsel, rettigheter, saksnr, asList(vedlegg));
     }
 
-    @Builder(builderMethodName = "EndringssøkandsBuilder")
     @JsonCreator
+    @Builder(builderMethodName = "EndringssøkandsBuilder")
     public Endringssøknad(@JsonProperty("mottattdato") LocalDate mottattDato,
             @JsonProperty("søker") Søker søker,
             @JsonProperty("fordeling") Fordeling fordeling,

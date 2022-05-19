@@ -9,21 +9,23 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.ToString;
-import lombok.Value;
 
-@Value
+@Getter
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class OverføringsPeriode extends LukketPeriodeMedVedlegg {
+public final class OverføringsPeriode extends LukketPeriodeMedVedlegg {
 
-    Overføringsårsak årsak;
-    StønadskontoType uttaksperiodeType;
+    @NotNull
+    private final Overføringsårsak årsak;
+    @NotNull
+    private final StønadskontoType uttaksperiodeType;
 
     @Builder
     @JsonCreator
-    public OverføringsPeriode(LocalDate fom, LocalDate tom, @NotNull Overføringsårsak årsak,
-            @NotNull StønadskontoType uttaksperiodeType, List<String> vedlegg) {
+    public OverføringsPeriode(LocalDate fom, LocalDate tom, Overføringsårsak årsak,
+            StønadskontoType uttaksperiodeType, List<String> vedlegg) {
         super(fom, tom, vedlegg);
         this.årsak = årsak;
         this.uttaksperiodeType = uttaksperiodeType;

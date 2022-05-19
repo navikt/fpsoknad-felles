@@ -4,7 +4,8 @@ import static com.google.common.collect.Lists.newArrayList;
 import static java.time.DayOfWeek.SATURDAY;
 import static java.time.DayOfWeek.SUNDAY;
 import static java.util.Arrays.asList;
-import static no.nav.foreldrepenger.common.domain.Orgnummer.MAGIC;
+import static java.util.Collections.singletonList;
+import static no.nav.foreldrepenger.common.domain.Orgnummer.MAGIC_ORG;
 import static no.nav.foreldrepenger.common.domain.felles.DokumentType.I000062;
 import static no.nav.foreldrepenger.common.domain.felles.DokumentType.I000063;
 import static no.nav.foreldrepenger.common.domain.felles.DokumentType.I500002;
@@ -13,7 +14,6 @@ import static no.nav.foreldrepenger.common.domain.felles.TestUtils.medlemsskap;
 import static no.nav.foreldrepenger.common.domain.felles.TestUtils.søker;
 import static no.nav.foreldrepenger.common.domain.felles.TestUtils.valgfrittVedlegg;
 import static no.nav.foreldrepenger.common.domain.felles.opptjening.Virksomhetstype.FISKE;
-import static no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.OmsorgsOvertakelsesÅrsak.SKAL_OVERTA_ALENE;
 import static no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.StønadskontoType.FEDREKVOTE;
 import static no.nav.foreldrepenger.common.util.ResourceHandleUtil.bytesFra;
 
@@ -26,7 +26,6 @@ import com.google.common.collect.Lists;
 import com.neovisionaries.i18n.CountryCode;
 
 import no.nav.foreldrepenger.common.domain.Fødselsnummer;
-import no.nav.foreldrepenger.common.domain.Orgnummer;
 import no.nav.foreldrepenger.common.domain.Søknad;
 import no.nav.foreldrepenger.common.domain.Ytelse;
 import no.nav.foreldrepenger.common.domain.felles.DokumentType;
@@ -170,7 +169,7 @@ public class ForeldrepengerTestUtils {
     }
 
     public static Ettersending ettersending() {
-        return new Ettersending(EttersendingsType.foreldrepenger, "42", TO_VEDLEGG);
+        return new Ettersending("42", EttersendingsType.foreldrepenger, TO_VEDLEGG, null);
     }
 
     private static List<Tilrettelegging> tilrettelegging(String... vedleggRefs) {
@@ -187,7 +186,7 @@ public class ForeldrepengerTestUtils {
 
     public static Tilrettelegging delvisTilrettelegging(String... vedleggRefs) {
         return new DelvisTilrettelegging(privat(), LocalDate.now().plusMonths(1), LocalDate.now().plusMonths(2),
-                new ProsentAndel(77), asList(vedleggRefs));
+                new ProsentAndel(77d), asList(vedleggRefs));
     }
 
     private static Tilrettelegging helTilrettelegging(String... vedleggRefs) {
@@ -195,11 +194,11 @@ public class ForeldrepengerTestUtils {
     }
 
     private static Arbeidsforhold virksomhet() {
-        return new Virksomhet(MAGIC);
+        return new Virksomhet(MAGIC_ORG);
     }
 
     private static Arbeidsforhold privat() {
-        return new PrivatArbeidsgiver(NORSK_FORELDER_FNR.value());
+        return new PrivatArbeidsgiver(NORSK_FORELDER_FNR);
     }
 
     private static Arbeidsforhold frilanser() {
@@ -265,7 +264,7 @@ public class ForeldrepengerTestUtils {
     }
 
     public static Omsorgsovertakelse omsorgsovertakelse() {
-        return new Omsorgsovertakelse(LocalDate.now(), SKAL_OVERTA_ALENE, LocalDate.now());
+        return new Omsorgsovertakelse(LocalDate.now(), LocalDate.now());
     }
 
     public static UtenlandskOrganisasjon utenlandskEgenNæring(String... vedleggRefs) {
@@ -297,7 +296,7 @@ public class ForeldrepengerTestUtils {
                 .erNyOpprettet(true)
                 .næringsinntektBrutto(100_000)
                 .orgName("Norsk org")
-                .orgNummer(Orgnummer.MAGIC_ORG)
+                .orgNummer(MAGIC_ORG)
                 .virksomhetsTyper(Collections.singletonList(FISKE))
                 .beskrivelseEndring("Ting endrer seg i Norge også")
                 .nærRelasjon(true)
@@ -330,21 +329,54 @@ public class ForeldrepengerTestUtils {
     }
 
     public static Fødsel fødsel() {
-        return new Fødsel(LocalDate.now().minusMonths(2));
+        return Fødsel.builder()
+                .antallBarn(1)
+                .fødselsdato(singletonList(LocalDate.now().minusMonths(2)))
+                .build();
+    }
+
+    public static UttaksPeriode uttaksPeriode(LocalDate fom, LocalDate tom) {
+        return UttaksPeriode.UttaksPeriodeBuilder()
+                .fom(fom)
+                .tom(tom)
+                .uttaksperiodeType(FEDREKVOTE)
+                .ønskerSamtidigUttak(true)
+                .morsAktivitetsType(MorsAktivitet.ARBEID)
+                .ønskerFlerbarnsdager(true)
+                .samtidigUttakProsent(new ProsentAndel(100.0d))
+                .vedlegg(List.of())
+                .build();
     }
 
     public static UttaksPeriode uttaksPeriode(String... vedleggRefs) {
-        return new UttaksPeriode(ukeDagNær(LocalDate.now().plusMonths(3)), ukeDagNær(LocalDate.now().plusMonths(4)),
-                FEDREKVOTE, true, MorsAktivitet.ARBEID_OG_UTDANNING, true,
-                new ProsentAndel(75), Arrays.asList(vedleggRefs));
+        return UttaksPeriode.UttaksPeriodeBuilder()
+                .fom(ukeDagNær(LocalDate.now().plusMonths(3)))
+                .tom(ukeDagNær(LocalDate.now().plusMonths(4)))
+                .uttaksperiodeType(FEDREKVOTE)
+                .ønskerSamtidigUttak(true)
+                .morsAktivitetsType(MorsAktivitet.ARBEID_OG_UTDANNING)
+                .ønskerFlerbarnsdager(true)
+                .samtidigUttakProsent(new ProsentAndel(42d))
+                .vedlegg(asList(vedleggRefs))
+                .build();
     }
 
     public static UttaksPeriode gradertPeriode(String... vedleggRefs) {
-        return new GradertUttaksPeriode(ukeDagNær(LocalDate.now().plusMonths(4)), LocalDate.now().plusMonths(5), FEDREKVOTE,
-                true, MorsAktivitet.ARBEID_OG_UTDANNING, true, new ProsentAndel(42d), new ProsentAndel(75),
-                true, true,
-                Collections.singletonList("22222222222"), true, true,
-                Arrays.asList(vedleggRefs));
+        return GradertUttaksPeriode.GradertUttaksPeriodeBuilder()
+                .fom(ukeDagNær(LocalDate.now().plusMonths(4)))
+                .tom(LocalDate.now().plusMonths(5))
+                .uttaksperiodeType(FEDREKVOTE)
+                .ønskerSamtidigUttak(true)
+                .morsAktivitetsType(MorsAktivitet.ARBEID_OG_UTDANNING)
+                .ønskerFlerbarnsdager(true)
+                .arbeidstidProsent(new ProsentAndel(75d))
+                .erArbeidstaker(true)
+                .arbeidsForholdSomskalGraderes(true)
+                .virksomhetsnummer(Collections.singletonList("22222222222"))
+                .frilans(true)
+                .selvstendig(true)
+                .vedlegg(Arrays.asList(vedleggRefs))
+                .build();
     }
 
     public static OverføringsPeriode overføringsPeriode(String... vedleggRefs) {
@@ -366,7 +398,7 @@ public class ForeldrepengerTestUtils {
     }
 
     public static Fordeling fordeling(String... vedleggRefs) {
-        return new Fordeling(true, Overføringsårsak.IKKE_RETT_ANNEN_FORELDER, perioder(vedleggRefs));
+        return new Fordeling(true, perioder(vedleggRefs));
     }
 
     public static Rettigheter rettigheter() {

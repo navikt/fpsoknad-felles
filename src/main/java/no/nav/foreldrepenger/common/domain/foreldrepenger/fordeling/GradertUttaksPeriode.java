@@ -1,25 +1,29 @@
 package no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling;
 
+import static java.util.Collections.emptyList;
 import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Builder;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.ToString;
 import no.nav.foreldrepenger.common.domain.felles.ProsentAndel;
 
-@Data
+@Getter
 @EqualsAndHashCode(callSuper = true, exclude = { "virksomhetsnummer" })
 @ToString(callSuper = true, exclude = { "virksomhetsnummer" })
 public final class GradertUttaksPeriode extends UttaksPeriode {
+    @Valid
     private final ProsentAndel arbeidstidProsent;
     private final boolean erArbeidstaker;
     private final List<@Pattern(regexp = FRITEKST) String> virksomhetsnummer;
@@ -29,24 +33,25 @@ public final class GradertUttaksPeriode extends UttaksPeriode {
 
     @JsonCreator
     @Builder(builderMethodName = "GradertUttaksPeriodeBuilder")
-    public GradertUttaksPeriode(@JsonProperty("fom") LocalDate fom, @JsonProperty("tom") LocalDate tom,
-            @JsonProperty("UttaksperiodeType") StønadskontoType uttaksperiodeType,
-            @JsonProperty("ønskerSamtidigUttak") boolean ønskerSamtidigUttak,
-            @JsonProperty("morsAktivitetsType") MorsAktivitet morsAktivitetsType,
-            @JsonProperty("ønskerFlerbarnsdager") boolean ønskerFlerbarnsdager,
-            @JsonProperty("samtidigUttakProsent") ProsentAndel samtidigUttakProsent,
-            @JsonProperty("arbeidstidProsent") ProsentAndel arbeidstidProsent,
-            @JsonProperty("erArbeidstaker") boolean erArbeidstaker,
-            @JsonProperty("arbeidsForholdSomskalGraderes") boolean arbeidsForholdSomskalGraderes,
-            @JsonProperty("virksomhetsnummer") List<String> virksomhetsnummer,
-            @JsonProperty("frilans") Boolean frilans,
-            @JsonProperty("selvstendig") Boolean selvstendig,
-            @JsonProperty("vedlegg") List<String> vedlegg) {
-        super(fom, tom, uttaksperiodeType, ønskerSamtidigUttak, morsAktivitetsType, ønskerFlerbarnsdager,
-                samtidigUttakProsent, vedlegg);
+    public GradertUttaksPeriode(LocalDate fom,
+                                LocalDate tom,
+                                List<String> vedlegg,
+                                @JsonAlias("UttaksperiodeType") StønadskontoType uttaksperiodeType, // TODO: Fjern alias etter ferdig expand
+                                boolean ønskerSamtidigUttak,
+                                MorsAktivitet morsAktivitetsType,
+                                boolean ønskerFlerbarnsdager,
+                                ProsentAndel samtidigUttakProsent,
+                                ProsentAndel arbeidstidProsent,
+                                boolean erArbeidstaker,
+                                List<String> virksomhetsnummer,
+                                boolean arbeidsForholdSomskalGraderes,
+                                Boolean frilans,
+                                Boolean selvstendig) {
+        super(fom, tom, vedlegg, uttaksperiodeType, ønskerSamtidigUttak, morsAktivitetsType, ønskerFlerbarnsdager,
+                samtidigUttakProsent);
         this.arbeidstidProsent = arbeidstidProsent;
         this.erArbeidstaker = erArbeidstaker;
-        this.virksomhetsnummer = virksomhetsnummer;
+        this.virksomhetsnummer = Optional.ofNullable(virksomhetsnummer).orElse(emptyList());
         this.arbeidsForholdSomskalGraderes = arbeidsForholdSomskalGraderes;
         this.frilans = frilans;
         this.selvstendig = selvstendig;

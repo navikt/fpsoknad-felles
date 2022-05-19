@@ -139,13 +139,13 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
 
     protected Foreldrepenger tilForeldrepenger(no.nav.foreldrepenger.common.domain.foreldrepenger.Foreldrepenger ytelse) {
         return new Foreldrepenger()
-                .withDekningsgrad(dekningsgradFra(ytelse.getDekningsgrad()))
-                .withMedlemskap(medlemsskapFra(ytelse.getMedlemsskap(), ytelse.getRelasjonTilBarn().relasjonsDato()))
-                .withOpptjening(opptjeningFra(ytelse.getOpptjening()))
-                .withFordeling(fordelingFra(ytelse.getFordeling()))
-                .withRettigheter(rettigheterFra(ytelse.getRettigheter(), erAnnenForelderUkjent(ytelse.getAnnenForelder())))
-                .withAnnenForelder(annenForelderFra(ytelse.getAnnenForelder()))
-                .withRelasjonTilBarnet(relasjonFra(ytelse.getRelasjonTilBarn()));
+                .withDekningsgrad(dekningsgradFra(ytelse.dekningsgrad()))
+                .withMedlemskap(medlemsskapFra(ytelse.medlemsskap(), ytelse.relasjonTilBarn().relasjonsDato()))
+                .withOpptjening(opptjeningFra(ytelse.opptjening()))
+                .withFordeling(fordelingFra(ytelse.fordeling()))
+                .withRettigheter(rettigheterFra(ytelse.rettigheter(), erAnnenForelderUkjent(ytelse.annenForelder())))
+                .withAnnenForelder(annenForelderFra(ytelse.annenForelder()))
+                .withRelasjonTilBarnet(relasjonFra(ytelse.relasjonTilBarn()));
     }
 
     private static OmYtelse ytelseFra(Endringssøknad endringssøknad) {
@@ -159,7 +159,7 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
 
     private static Fordeling fordelingFra(Endringssøknad endringssøknad) {
         return fordelingFra(
-                ((no.nav.foreldrepenger.common.domain.foreldrepenger.Foreldrepenger) endringssøknad.getYtelse()).getFordeling()
+                ((no.nav.foreldrepenger.common.domain.foreldrepenger.Foreldrepenger) endringssøknad.getYtelse()).fordeling()
         );
     }
 
@@ -188,9 +188,9 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
 
     private static Fordeling create(no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.Fordeling fordeling) {
         return new Fordeling()
-                .withPerioder(perioderFra(fordeling.getPerioder()))
-                .withOenskerKvoteOverfoert(valgfriOverføringsÅrsakFra(fordeling.getØnskerKvoteOverført()))
-                .withAnnenForelderErInformert(fordeling.isErAnnenForelderInformert());
+                .withPerioder(perioderFra(fordeling.perioder()))
+                .withOenskerKvoteOverfoert(overføringsÅrsakFra(UKJENT_KODEVERKSVERDI))
+                .withAnnenForelderErInformert(fordeling.erAnnenForelderInformert());
     }
 
     private static List<no.nav.vedtak.felles.xml.soeknad.uttak.v3.LukketPeriodeMedVedlegg> perioderFra(
@@ -287,8 +287,8 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
                 .withArbeidsgiver(arbeidsgiverFra(g.getVirksomhetsnummer()))
                 .withArbeidsforholdSomSkalGraderes(g.isArbeidsForholdSomskalGraderes())
                 .withVedlegg(lukketPeriodeVedleggFra(g.getVedlegg()));
-        Optional.ofNullable(g.getFrilans()).ifPresent(p -> gradering.setErFrilanser(p.booleanValue()));
-        Optional.ofNullable(g.getSelvstendig()).ifPresent(p -> gradering.setErSelvstNæringsdrivende(p.booleanValue()));
+        Optional.ofNullable(g.getFrilans()).ifPresent(gradering::setErFrilanser);
+        Optional.ofNullable(g.getSelvstendig()).ifPresent(gradering::setErSelvstNæringsdrivende);
         return g.isØnskerSamtidigUttak()
                 ? gradering.withSamtidigUttakProsent(prosentFra(g.getSamtidigUttakProsent()))
                 : gradering;
@@ -308,7 +308,7 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
 
     private static double prosentFra(ProsentAndel prosent) {
         return Optional.ofNullable(prosent)
-                .map(ProsentAndel::getProsent)
+                .map(ProsentAndel::prosent)
                 .orElse(0d);
     }
 
@@ -404,13 +404,6 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
                 .orElseThrow(() -> new UnexpectedInputException("Oppholdsårsak må være satt"));
     }
 
-    private static Overfoeringsaarsaker valgfriOverføringsÅrsakFra(Overføringsårsak årsak) {
-        return Optional.ofNullable(årsak)
-                .map(Overføringsårsak::name)
-                .map(V3ForeldrepengerDomainMapper::overføringsÅrsakFra)
-                .orElse(overføringsÅrsakFra(UKJENT_KODEVERKSVERDI));
-    }
-
     private static Overfoeringsaarsaker overføringsÅrsakFra(String årsak) {
         var overføringsÅrsak = new Overfoeringsaarsaker().withKode(årsak);
         return overføringsÅrsak.withKodeverk(overføringsÅrsak.getKodeverk());
@@ -463,7 +456,7 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
 
     private AnnenForelderMedNorskIdent norskForelder(NorskForelder norskForelder) {
         return new AnnenForelderMedNorskIdent()
-                .withAktoerId(oppslag.aktørId(norskForelder.getFnr()).getValue());
+                .withAktoerId(oppslag.aktørId(norskForelder.getFnr()).value());
     }
 
     private static SoekersRelasjonTilBarnet relasjonFra(RelasjonTilBarn relasjonTilBarn) {
