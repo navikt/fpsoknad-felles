@@ -21,6 +21,9 @@ public record VedleggMetaData(@Length(max = 2000) @Pattern(regexp = FRITEKST) St
 
     @JsonCreator
     public VedleggMetaData {
-        beskrivelse = Optional.ofNullable(beskrivelse).orElse(dokumentType.getBeskrivelse());
+        beskrivelse = Optional.ofNullable(beskrivelse)
+                .orElse(Optional.ofNullable(dokumentType)
+                        .map(DokumentType::getBeskrivelse)
+                        .orElse(null));
     }
 }

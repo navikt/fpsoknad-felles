@@ -7,12 +7,11 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 import lombok.Builder;
 
-public record Opptjening(@Valid @JsonAlias("arbeidsforhold") List<UtenlandskArbeidsforhold> utenlandskArbeidsforhold, // TODO: Fjern alias etter expand contract done
+public record Opptjening(@Valid List<UtenlandskArbeidsforhold> utenlandskArbeidsforhold,
                          @Valid List<EgenNæring> egenNæring,
                          @Valid List<AnnenOpptjening> annenOpptjening,
                          @Valid Frilans frilans) {

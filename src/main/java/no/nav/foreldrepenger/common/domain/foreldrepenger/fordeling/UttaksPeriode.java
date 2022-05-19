@@ -6,7 +6,6 @@ import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
@@ -26,7 +25,6 @@ import no.nav.foreldrepenger.common.domain.felles.ProsentAndel;
         @Type(value = GradertUttaksPeriode.class, name = "gradert")
 })
 public sealed class UttaksPeriode extends LukketPeriodeMedVedlegg permits GradertUttaksPeriode {
-    @JsonAlias("UttaksperiodeType") // TODO: Fjern alias etter ferdig expand
     private final StønadskontoType uttaksperiodeType;
     private final boolean ønskerSamtidigUttak;
     private final MorsAktivitet morsAktivitetsType;
