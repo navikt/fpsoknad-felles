@@ -32,7 +32,7 @@ class SøknadValidatorTest {
     void skalIkkeFøreTilValideringsfeilNårFødselsdatoErNull() {
         var svp = svp();
         assertThat(svp.getYtelse()).isInstanceOf(Svangerskapspenger.class);
-        assertThat(((Svangerskapspenger) svp.getYtelse()).getFødselsdato()).isNull();
+        assertThat(((Svangerskapspenger) svp.getYtelse()).fødselsdato()).isNull();
         assertThat(validator.validate(svp())).isEmpty();
     }
 

@@ -85,10 +85,10 @@ final class V3DomainMapperCommon {
     static Opptjening opptjeningFra(
             no.nav.foreldrepenger.common.domain.felles.opptjening.Opptjening opptjening) {
         return new Opptjening()
-                .withUtenlandskArbeidsforhold(utenlandskeArbeidsforholdFra(opptjening.getUtenlandskArbeidsforhold()))
-                .withFrilans(frilansFra(opptjening.getFrilans()))
-                .withEgenNaering(egneNæringerFra(opptjening.getEgenNæring()))
-                .withAnnenOpptjening(andreOpptjeningerFra(opptjening.getAnnenOpptjening()));
+                .withUtenlandskArbeidsforhold(utenlandskeArbeidsforholdFra(opptjening.utenlandskArbeidsforhold()))
+                .withFrilans(frilansFra(opptjening.frilans()))
+                .withEgenNaering(egneNæringerFra(opptjening.egenNæring()))
+                .withAnnenOpptjening(andreOpptjeningerFra(opptjening.annenOpptjening()));
     }
 
     static Medlemskap medlemsskapFra(Medlemsskap ms, LocalDate relasjonsDato) {
@@ -106,11 +106,11 @@ final class V3DomainMapperCommon {
     }
 
     private static boolean oppholdINorgeSiste12(Medlemsskap ms) {
-        return ms.getTidligereOppholdsInfo().getUtenlandsOpphold().isEmpty();
+        return ms.tidligereUtenlandsopphold().isEmpty();
     }
 
     private static boolean oppholdINorgeNeste12(Medlemsskap ms) {
-        return ms.getFramtidigOppholdsInfo().getUtenlandsOpphold().isEmpty();
+        return ms.framtidigUtenlandsopphold().isEmpty();
     }
 
     private static List<OppholdUtlandet> oppholdUtlandetFra(Medlemsskap ms) {
@@ -237,9 +237,9 @@ final class V3DomainMapperCommon {
 
     private static AnnenOpptjening create(no.nav.foreldrepenger.common.domain.felles.opptjening.AnnenOpptjening annen) {
         return new AnnenOpptjening()
-                .withVedlegg(annenOpptjeningVedleggFra(annen.getVedlegg()))
-                .withType(annenOpptjeningTypeFra(annen.getType()))
-                .withPeriode(periodeFra(annen.getPeriode()));
+                .withVedlegg(annenOpptjeningVedleggFra(annen.vedlegg()))
+                .withType(annenOpptjeningTypeFra(annen.type()))
+                .withPeriode(periodeFra(annen.periode()));
     }
 
     private static AnnenOpptjeningTyper annenOpptjeningTypeFra(AnnenOpptjeningType type) {
@@ -292,7 +292,7 @@ final class V3DomainMapperCommon {
 
     static Bruker søkerFra(AktørId aktørId, Søker søker) {
         return new Bruker()
-                .withAktoerId(aktørId.getValue())
+                .withAktoerId(aktørId.value())
                 .withSoeknadsrolle(brukerRolleFra(søker.getSøknadsRolle()));
     }
 

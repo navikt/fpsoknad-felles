@@ -14,34 +14,30 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.neovisionaries.i18n.CountryCode;
 
 import lombok.Builder;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.ToString;
 import no.nav.foreldrepenger.common.domain.felles.ProsentAndel;
 import no.nav.foreldrepenger.common.domain.felles.ÅpenPeriode;
 
-@Data
-@EqualsAndHashCode(callSuper = true)
+@Getter
 @ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 public final class UtenlandskOrganisasjon extends EgenNæring {
 
     @Length(max = 100)
     @Pattern(regexp = FRITEKST)
-    private String orgName;
+    private final String orgName;
     @JsonAlias("arbeidsland")
     @NotNull
     private final CountryCode registrertILand;
 
     @Builder
-    private UtenlandskOrganisasjon(
-            CountryCode registrertILand,
-            List<Virksomhetstype> virksomhetsTyper, ÅpenPeriode periode,
+    private UtenlandskOrganisasjon(CountryCode registrertILand, List<Virksomhetstype> virksomhetsTyper, ÅpenPeriode periode,
             boolean nærRelasjon, List<Regnskapsfører> regnskapsførere, boolean erNyOpprettet, boolean erVarigEndring,
             boolean erNyIArbeidslivet, long næringsinntektBrutto, LocalDate endringsDato, LocalDate oppstartsDato,
-            String beskrivelseEndring, ProsentAndel stillingsprosent,
-            List<String> vedlegg, String orgName) {
-        super(virksomhetsTyper, periode, nærRelasjon, regnskapsførere, erNyOpprettet,
-                erVarigEndring, erNyIArbeidslivet,
+            String beskrivelseEndring, ProsentAndel stillingsprosent, List<String> vedlegg, String orgName) {
+        super(virksomhetsTyper, periode, nærRelasjon, regnskapsførere, erNyOpprettet, erVarigEndring, erNyIArbeidslivet,
                 næringsinntektBrutto, endringsDato, oppstartsDato, beskrivelseEndring, stillingsprosent, vedlegg);
         this.orgName = orgName;
         this.registrertILand = registrertILand;

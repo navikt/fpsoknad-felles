@@ -5,21 +5,12 @@ import static no.nav.foreldrepenger.common.util.StringUtil.mask;
 
 import javax.validation.constraints.Pattern;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-import lombok.Data;
+public record AktørId(@JsonValue @Pattern(regexp = BARE_TALL) String value) implements ArbeidsgiverIdentifikator {
 
-@Data
-public class AktørId implements ArbeidsgiverIdentifikator {
-
-    @JsonValue
-    @Pattern(regexp = BARE_TALL)
-    private final String value;
-
-    public AktørId(String id) {
-        this.value = id;
-    }
-
+    @JsonCreator
     public static AktørId valueOf(String id) {
         return new AktørId(id);
     }

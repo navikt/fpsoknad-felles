@@ -1,7 +1,6 @@
 package no.nav.foreldrepenger.common.innsending.mappers;
 
 import static no.nav.foreldrepenger.common.innsending.SøknadType.INITIELL_ENGANGSSTØNAD;
-import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.landFra;
 import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.medlemsskapFra;
 import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.målformFra;
 import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.søkerFra;
@@ -17,9 +16,6 @@ import no.nav.foreldrepenger.common.domain.AktørId;
 import no.nav.foreldrepenger.common.domain.Søknad;
 import no.nav.foreldrepenger.common.domain.engangsstønad.Engangsstønad;
 import no.nav.foreldrepenger.common.domain.felles.Vedlegg;
-import no.nav.foreldrepenger.common.domain.felles.annenforelder.NorskForelder;
-import no.nav.foreldrepenger.common.domain.felles.annenforelder.UkjentForelder;
-import no.nav.foreldrepenger.common.domain.felles.annenforelder.UtenlandskForelder;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.Adopsjon;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.FremtidigFødsel;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.Fødsel;
@@ -29,9 +25,6 @@ import no.nav.foreldrepenger.common.error.UnexpectedInputException;
 import no.nav.foreldrepenger.common.innsyn.SøknadEgenskap;
 import no.nav.foreldrepenger.common.oppslag.Oppslag;
 import no.nav.foreldrepenger.common.util.jaxb.ESV3JAXBUtil;
-import no.nav.vedtak.felles.xml.soeknad.felles.v3.AnnenForelder;
-import no.nav.vedtak.felles.xml.soeknad.felles.v3.AnnenForelderMedNorskIdent;
-import no.nav.vedtak.felles.xml.soeknad.felles.v3.AnnenForelderUtenNorskIdent;
 import no.nav.vedtak.felles.xml.soeknad.felles.v3.Foedsel;
 import no.nav.vedtak.felles.xml.soeknad.felles.v3.SoekersRelasjonTilBarnet;
 import no.nav.vedtak.felles.xml.soeknad.felles.v3.Termin;
@@ -81,15 +74,14 @@ public class V3EngangsstønadDomainMapper implements DomainMapper {
 
     private OmYtelse engangsstønadFra(Søknad søknad) {
         return new OmYtelse().withAny(JAXB
-                .marshalToElement(engangsstønadFra(Engangsstønad.class.cast(søknad.getYtelse()), søknad.getVedlegg())));
+                .marshalToElement(engangsstønadFra((Engangsstønad) søknad.getYtelse(), søknad.getVedlegg())));
     }
 
     private JAXBElement<no.nav.vedtak.felles.xml.soeknad.engangsstoenad.v3.Engangsstønad> engangsstønadFra(
             Engangsstønad es, List<Vedlegg> vedlegg) {
         return ES_FACTORY_V3.createEngangsstønad(new no.nav.vedtak.felles.xml.soeknad.engangsstoenad.v3.Engangsstønad()
-                .withMedlemskap(medlemsskapFra(es.getMedlemsskap(), es.getRelasjonTilBarn().relasjonsDato()))
-                .withSoekersRelasjonTilBarnet(relasjonFra(es.getRelasjonTilBarn(), vedlegg))
-                .withAnnenForelder(annenForelderFra(es.getAnnenForelder())));
+                .withMedlemskap(medlemsskapFra(es.medlemsskap(), es.relasjonTilBarn().relasjonsDato()))
+                .withSoekersRelasjonTilBarnet(relasjonFra(es.relasjonTilBarn(), vedlegg)));
     }
 
     private static SoekersRelasjonTilBarnet relasjonFra(RelasjonTilBarn relasjon, List<Vedlegg> vedlegg) {
@@ -136,40 +128,6 @@ public class V3EngangsstønadDomainMapper implements DomainMapper {
                 .map(s -> FELLES_FACTORY_V3.createSoekersRelasjonTilBarnetVedlegg(
                         new no.nav.vedtak.felles.xml.soeknad.felles.v3.Vedlegg().withId(s)))
                 .toList();
-    }
-
-    private AnnenForelder annenForelderFra(
-            no.nav.foreldrepenger.common.domain.felles.annenforelder.AnnenForelder annenForelder) {
-        if (annenForelder == null) {
-            return null;
-        }
-        if (annenForelder instanceof UkjentForelder) {
-            return ukjentForelder();
-        }
-        if (annenForelder instanceof NorskForelder n) {
-            return norskForelderFra(n);
-        }
-        if (annenForelder instanceof UtenlandskForelder u) {
-            return utenlandskForelderFra(u);
-        }
-        throw new UnexpectedInputException("Ukjent annen forelder %s", annenForelder.getClass().getSimpleName());
-    }
-
-    private static AnnenForelder utenlandskForelderFra(UtenlandskForelder utenlandskFar) {
-        return new AnnenForelderUtenNorskIdent()
-                .withUtenlandskPersonidentifikator(utenlandskFar.getId())
-                .withLand(landFra(utenlandskFar.getLand()));
-    }
-
-    private AnnenForelder norskForelderFra(NorskForelder norskForelder) {
-        if (norskForelder.hasId()) {
-            return new AnnenForelderMedNorskIdent().withAktoerId(oppslag.aktørId(norskForelder.getFnr()).getValue());
-        }
-        return null;
-    }
-
-    private static AnnenForelder ukjentForelder() {
-        return new no.nav.vedtak.felles.xml.soeknad.felles.v3.UkjentForelder();
     }
 
     @Override

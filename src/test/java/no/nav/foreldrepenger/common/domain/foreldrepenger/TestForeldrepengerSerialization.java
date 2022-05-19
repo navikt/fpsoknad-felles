@@ -1,5 +1,6 @@
 package no.nav.foreldrepenger.common.domain.foreldrepenger;
 
+import static java.util.Collections.singletonList;
 import static no.nav.foreldrepenger.common.domain.felles.TestUtils.adopsjon;
 import static no.nav.foreldrepenger.common.domain.felles.TestUtils.person;
 import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.annenOpptjening;
@@ -58,18 +59,23 @@ class TestForeldrepengerSerialization extends SerializationTestBase {
     }
 
     @Test
-    void testProsentAndel() throws Exception {
+    void testProsentAndel() {
         ProsentAndel orig = new ProsentAndel(40.0);
-        ProsentAndel orig1 = new ProsentAndel(40);
-        test(orig, false);
+        ProsentAndel orig1 = new ProsentAndel(40d);
+        test(orig, true);
         test(orig1, false);
-        assertEquals(orig, mapper.readValue("{ \"p1\" : 40}", ProsentAndel.class));
-        assertEquals(orig, mapper.readValue("{ \"p2\" : 40.0}", ProsentAndel.class));
-        orig = new ProsentAndel(40);
-        test(orig, false);
-        assertEquals(orig, mapper.readValue("{ \"p1\" : 40}", ProsentAndel.class));
-        assertEquals(orig, mapper.readValue("{ \"p2\" : 40.0}", ProsentAndel.class));
+    }
 
+    private record ProsentKlasse(ProsentAndel prosent) {
+    }
+
+    @Test
+    void testProsentAndelIKlasseRoundtripTest() throws Exception {
+        var orig = new ProsentKlasse(new ProsentAndel(40d));
+        assertEquals(orig, mapper.readValue("{ \"prosent\" : 40 }", ProsentKlasse.class));
+        assertEquals(orig, mapper.readValue("{ \"prosent\" : 40.0 }", ProsentKlasse.class));
+        assertEquals(orig, mapper.readValue("{ \"prosent\" : \"40\" }", ProsentKlasse.class));
+        assertEquals(orig, mapper.readValue("{ \"prosent\" : \"40.0\" }", ProsentKlasse.class));
     }
 
     @Test
@@ -159,7 +165,7 @@ class TestForeldrepengerSerialization extends SerializationTestBase {
 
     @Test
     void testGradertPeriode() {
-        test(gradertPeriode(), false);
+        test(gradertPeriode(), true);
     }
 
     @Test
@@ -209,7 +215,11 @@ class TestForeldrepengerSerialization extends SerializationTestBase {
 
     @Test
     void relasjonTilBarn() {
-        RelasjonTilBarn f = new Fødsel(LocalDate.now());
+        RelasjonTilBarn f = Fødsel.builder()
+                .antallBarn(1)
+                .fødselsdato(singletonList(LocalDate.now()))
+                .build();
+
         test(f, true);
         f = new FremtidigFødsel(LocalDate.now(), LocalDate.now());
         test(f, true);
@@ -226,7 +236,7 @@ class TestForeldrepengerSerialization extends SerializationTestBase {
 
     @Test
     void testEgenNæringNorskorganisasjon() {
-        test(norskEgenNæring());
+        test(norskEgenNæring(), true);
     }
 
 

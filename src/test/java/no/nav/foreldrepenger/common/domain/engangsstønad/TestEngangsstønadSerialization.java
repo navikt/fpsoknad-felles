@@ -3,6 +3,7 @@ package no.nav.foreldrepenger.common.domain.engangsstønad;
 import static no.nav.foreldrepenger.common.domain.felles.TestUtils.engangssøknad;
 import static no.nav.foreldrepenger.common.domain.felles.TestUtils.engangstønad;
 import static no.nav.foreldrepenger.common.domain.felles.TestUtils.fødsel;
+import static no.nav.foreldrepenger.common.domain.felles.TestUtils.medlemsskap;
 import static no.nav.foreldrepenger.common.domain.felles.TestUtils.norskForelder;
 import static no.nav.foreldrepenger.common.domain.felles.TestUtils.påkrevdVedlegg;
 import static no.nav.foreldrepenger.common.domain.felles.TestUtils.termin;
@@ -35,25 +36,24 @@ class TestEngangsstønadSerialization extends SerializationTestBase {
 
     @Test
     void testSøknadNorge() {
-        var engangssøknad = engangssøknad(false, fødsel(), norskForelder(),
-                påkrevdVedlegg(ForeldrepengerTestUtils.ID142));
+        var engangssøknad = engangssøknad(false, fødsel(), påkrevdVedlegg(ForeldrepengerTestUtils.ID142));
         test(engangssøknad, false);
     }
 
     @Test
     void testEngangsstønadNorge() {
-        var engangstønad = engangstønad(false, termin(), norskForelder());
+        var engangstønad = engangstønad(false, termin());
         test(engangstønad, false);
     }
 
     @Test
     void testEngangsstønadUtland() {
-        test(TestUtils.engangstønad(true, termin(), utenlandskForelder()), false);
+        test(TestUtils.engangstønad(true, termin()), false);
     }
 
     @Test
     void testEngangsstønadUkjentFar() {
-        test(engangstønad(true, termin(), ukjentForelder()), false);
+        test(engangstønad(true, termin()), false);
     }
 
     @Test
@@ -103,12 +103,12 @@ class TestEngangsstønadSerialization extends SerializationTestBase {
 
     @Test
     void testFremtidigOppholdNorge() {
-        test(TestUtils.framtidigOppholdINorge(), false);
+        test(medlemsskap(false), false);
     }
 
     @Test
     void testFremtidigOppholdUtland() {
-        test(TestUtils.framtidigOppHoldIUtlandet(), false);
+        test(medlemsskap(true), false);
     }
 
     @Test

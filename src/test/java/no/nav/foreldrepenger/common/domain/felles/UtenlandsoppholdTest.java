@@ -9,10 +9,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import no.nav.foreldrepenger.common.domain.felles.medlemskap.ArbeidsInformasjon;
-import no.nav.foreldrepenger.common.domain.felles.medlemskap.FramtidigOppholdsInformasjon;
 import no.nav.foreldrepenger.common.domain.felles.medlemskap.Medlemsskap;
-import no.nav.foreldrepenger.common.domain.felles.medlemskap.TidligereOppholdsInformasjon;
 import no.nav.foreldrepenger.common.domain.felles.medlemskap.Utenlandsopphold;
 
 class UtenlandsoppholdTest {
@@ -76,16 +73,14 @@ class UtenlandsoppholdTest {
         assertEquals(NO, ms.landVedDato(LocalDate.now().plusMonths(7)));
     }
 
-    private static TidligereOppholdsInformasjon tidligereOpphold() {
-        var utenlandsopphold = List.of(
+    private static List<Utenlandsopphold> tidligereOpphold() {
+        return List.of(
                 new Utenlandsopphold(FI, new LukketPeriode(FROM_PAST, TO_PAST)));
-        return new TidligereOppholdsInformasjon(ArbeidsInformasjon.IKKE_ARBEIDET, utenlandsopphold);
     }
 
-    private static FramtidigOppholdsInformasjon framtidigOpphold() {
-        var utenlandsopphold = List.of(
+    private static List<Utenlandsopphold> framtidigOpphold() {
+        return List.of(
                 new Utenlandsopphold(FI, new LukketPeriode(FROM_FUTURE, TO_FUTURE)));
-        return new FramtidigOppholdsInformasjon(utenlandsopphold);
     }
 
 }

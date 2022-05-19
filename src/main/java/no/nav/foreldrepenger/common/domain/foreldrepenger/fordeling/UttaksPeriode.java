@@ -6,21 +6,19 @@ import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
 import java.time.LocalDate;
 import java.util.List;
 
-import javax.validation.constraints.NotNull;
-
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import lombok.Builder;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.ToString;
 import no.nav.foreldrepenger.common.domain.felles.ProsentAndel;
 
-@Data
+@Getter
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @JsonTypeInfo(use = NAME, include = PROPERTY, property = "type")
@@ -28,6 +26,7 @@ import no.nav.foreldrepenger.common.domain.felles.ProsentAndel;
         @Type(value = GradertUttaksPeriode.class, name = "gradert")
 })
 public sealed class UttaksPeriode extends LukketPeriodeMedVedlegg permits GradertUttaksPeriode {
+    @JsonAlias("UttaksperiodeType") // TODO: Fjern alias etter ferdig expand
     private final StønadskontoType uttaksperiodeType;
     private final boolean ønskerSamtidigUttak;
     private final MorsAktivitet morsAktivitetsType;
@@ -36,13 +35,8 @@ public sealed class UttaksPeriode extends LukketPeriodeMedVedlegg permits Grader
 
     @JsonCreator
     @Builder(builderMethodName = "UttaksPeriodeBuilder")
-    public UttaksPeriode(@JsonProperty("fom") LocalDate fom, @JsonProperty("tom") LocalDate tom,
-                         @JsonProperty("uttaksperiodeType") @NotNull StønadskontoType uttaksperiodeType,
-                         @JsonProperty("ønskerSamtidigUttak") boolean ønskerSamtidigUttak,
-                         @JsonProperty("morsAktivitetsType") MorsAktivitet morsAktivitetsType,
-                         @JsonProperty("ønskerFlerbarnsdager") boolean ønskerFlerbarnsdager,
-                         @JsonProperty("samtidigUttakProsent") ProsentAndel samtidigUttakProsent,
-                         @JsonProperty("vedlegg") List<String> vedlegg) {
+    public UttaksPeriode(LocalDate fom, LocalDate tom, List<String> vedlegg, StønadskontoType uttaksperiodeType, boolean ønskerSamtidigUttak,
+                         MorsAktivitet morsAktivitetsType, boolean ønskerFlerbarnsdager, ProsentAndel samtidigUttakProsent) {
         super(fom, tom, vedlegg);
         this.uttaksperiodeType = uttaksperiodeType;
         this.ønskerSamtidigUttak = ønskerSamtidigUttak;

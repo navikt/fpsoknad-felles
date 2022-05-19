@@ -5,16 +5,16 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.ToString;
 import no.nav.foreldrepenger.common.domain.felles.ProsentAndel;
 import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.Arbeidsforhold;
 
-@Data
+@Getter
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class DelvisTilrettelegging extends Tilrettelegging {
+public final class DelvisTilrettelegging extends Tilrettelegging {
 
     @NotNull
     private final LocalDate tilrettelagtArbeidFom;

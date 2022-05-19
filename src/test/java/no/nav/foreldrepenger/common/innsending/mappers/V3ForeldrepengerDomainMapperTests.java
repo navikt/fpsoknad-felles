@@ -55,7 +55,7 @@ class V3ForeldrepengerDomainMapperTests {
         var foreldrepenger = (no.nav.foreldrepenger.common.domain.foreldrepenger.Foreldrepenger) søknad.getYtelse();
         var foreldrepengerXMLO = mapper.tilForeldrepenger(foreldrepenger);
 
-        var rettigheterJSON = foreldrepenger.getRettigheter();
+        var rettigheterJSON = foreldrepenger.rettigheter();
         var rettigheterXML = foreldrepengerXMLO.getRettigheter();
         assertThat(rettigheterJSON.harAnnenForelderRett()).isEqualTo(rettigheterXML.isHarAnnenForelderRett());
         assertThat(rettigheterJSON.harAleneOmsorgForBarnet()).isEqualTo(rettigheterXML.isHarAleneomsorgForBarnet());
@@ -63,37 +63,37 @@ class V3ForeldrepengerDomainMapperTests {
         assertThat(rettigheterJSON.harMorForeldrepengerEØS()).isEqualTo(rettigheterXML.isHarMorForeldrepengerEOS());
 
         // AnnenForelder
-        assertThat(foreldrepenger.getAnnenForelder()).isInstanceOf(NorskForelder.class);
+        assertThat(foreldrepenger.annenForelder()).isInstanceOf(NorskForelder.class);
         assertThat(foreldrepengerXMLO.getAnnenForelder()).isInstanceOf(AnnenForelderMedNorskIdent.class);
-        assertThat(((NorskForelder) foreldrepenger.getAnnenForelder()).getFnr()).isEqualTo(NORSK_FORELDER_FNR);
+        assertThat(((NorskForelder) foreldrepenger.annenForelder()).getFnr()).isEqualTo(NORSK_FORELDER_FNR);
         assertThat(((AnnenForelderMedNorskIdent) foreldrepengerXMLO.getAnnenForelder()).getAktoerId()).isEqualTo(aktørIdAnnenpart.value());
 
         // RelasjonTilBarn
-        var fremtidigFødselJSON = (FremtidigFødsel) foreldrepenger.getRelasjonTilBarn();
+        var fremtidigFødselJSON = (FremtidigFødsel) foreldrepenger.relasjonTilBarn();
         var terminXML = (Termin) foreldrepengerXMLO.getRelasjonTilBarnet();
         assertThat((fremtidigFødselJSON.getAntallBarn())).isEqualTo(terminXML.getAntallBarn());
         assertThat((fremtidigFødselJSON.getTerminDato())).isEqualTo(terminXML.getTermindato());
         assertThat((fremtidigFødselJSON.getUtstedtDato())).isEqualTo(terminXML.getUtstedtdato());
 
         // Dekningsgrad
-        assertThat(String.valueOf(foreldrepenger.getDekningsgrad().kode())).isEqualTo(foreldrepengerXMLO.getDekningsgrad().getDekningsgrad().getKode());
+        assertThat(String.valueOf(foreldrepenger.dekningsgrad().kode())).isEqualTo(foreldrepengerXMLO.getDekningsgrad().getDekningsgrad().getKode());
 
         // Opptjening
         assertThat(foreldrepengerXMLO.getOpptjening().getUtenlandskArbeidsforhold())
-                .hasSameSizeAs(foreldrepenger.getOpptjening().getUtenlandskArbeidsforhold())
+                .hasSameSizeAs(foreldrepenger.opptjening().utenlandskArbeidsforhold())
                 .hasSize(1);
         assertThat(foreldrepengerXMLO.getOpptjening().getEgenNaering())
-                .hasSameSizeAs(foreldrepenger.getOpptjening().getEgenNæring())
+                .hasSameSizeAs(foreldrepenger.opptjening().egenNæring())
                 .hasSize(2);
         assertThat(foreldrepengerXMLO.getOpptjening().getAnnenOpptjening())
-                .hasSameSizeAs(foreldrepenger.getOpptjening().getAnnenOpptjening())
+                .hasSameSizeAs(foreldrepenger.opptjening().annenOpptjening())
                 .hasSize(1);
         assertThat(foreldrepengerXMLO.getOpptjening().getFrilans().getFrilansoppdrag())
-                .hasSameSizeAs(foreldrepenger.getOpptjening().getFrilans().frilansOppdrag())
+                .hasSameSizeAs(foreldrepenger.opptjening().frilans().frilansOppdrag())
                 .hasSize(3);
 
         // Fordeling
-        assertThat(foreldrepenger.getFordeling().getPerioder())
+        assertThat(foreldrepenger.fordeling().perioder())
                 .hasSameSizeAs(foreldrepengerXMLO.getFordeling().getPerioder())
                 .hasSize(5);
         assertThat(foreldrepengerXMLO.getFordeling().getPerioder())
@@ -108,8 +108,8 @@ class V3ForeldrepengerDomainMapperTests {
         // Medlemsskap
         assertThat(foreldrepengerXMLO.getMedlemskap().getOppholdUtlandet())
                 .hasSize(
-                        foreldrepenger.getMedlemsskap().getTidligereOppholdsInfo().getUtenlandsOpphold().size() +
-                        foreldrepenger.getMedlemsskap().getFramtidigOppholdsInfo().getUtenlandsOpphold().size()
+                        foreldrepenger.medlemsskap().tidligereUtenlandsopphold().size() +
+                        foreldrepenger.medlemsskap().framtidigUtenlandsopphold().size()
                 );
         assertThat(foreldrepengerXMLO.getMedlemskap().isINorgeVedFoedselstidspunkt()).isTrue();
         assertThat(foreldrepengerXMLO.getMedlemskap().isBoddINorgeSiste12Mnd()).isTrue();

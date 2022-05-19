@@ -10,28 +10,23 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import no.nav.foreldrepenger.common.domain.Fødselsnummer;
 
-@Data
-@EqualsAndHashCode(callSuper = true, exclude = { "navn" })
-public final class NorskForelder extends AnnenForelder {
+@Getter
+@EqualsAndHashCode(exclude = { "navn" })
+public final class NorskForelder implements AnnenForelder {
 
-    @NotNull
     @Valid
+    @NotNull
     private final Fødselsnummer fnr;
     @Pattern(regexp = FRITEKST)
     private final String navn;
 
-    public NorskForelder(Fødselsnummer fnr) {
-        this(fnr, null);
-    }
-
     @JsonCreator
-    public NorskForelder(@JsonProperty("fnr") Fødselsnummer fnr, @JsonProperty("navn") String navn) {
+    public NorskForelder(Fødselsnummer fnr, String navn) {
         this.fnr = fnr;
         this.navn = navn;
     }
