@@ -41,15 +41,14 @@ abstract class AbstractJAXBUtil {
     private final boolean validateMarshalling;
     private final boolean validateUnarshalling;
 
-    protected AbstractJAXBUtil(JAXBContext context, boolean validateMarhsalling,
-            boolean validateUnmarshalling, String... xsds) {
+    AbstractJAXBUtil(JAXBContext context, boolean validateMarhsalling, boolean validateUnmarshalling, String... xsds) {
         this.context = context;
         this.schema = schemaFra(xsds);
         this.validateMarshalling = validateMarhsalling;
         this.validateUnarshalling = validateUnmarshalling;
     }
 
-    protected static JAXBContext contextFra(Class<?>... classes) {
+    static JAXBContext contextFra(Class<?>... classes) {
         try {
             return JAXBContext.newInstance(classes);
         } catch (JAXBException e) {
