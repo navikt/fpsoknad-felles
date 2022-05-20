@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.common.domain.serialization;
+package no.nav.foreldrepenger.common.innsending.mappers.jaxb.serialization;
 
 import java.time.LocalDateTime;
 import java.util.Optional;

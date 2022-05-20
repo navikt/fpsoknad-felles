@@ -42,9 +42,9 @@ import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.UtsettelsesP
 import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.UtsettelsesÅrsak;
 import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.UttaksPeriode;
 import no.nav.foreldrepenger.common.error.UnexpectedInputException;
+import no.nav.foreldrepenger.common.innsending.mappers.jaxb.FPV3JAXBUtil;
 import no.nav.foreldrepenger.common.innsyn.SøknadEgenskap;
 import no.nav.foreldrepenger.common.oppslag.Oppslag;
-import no.nav.foreldrepenger.common.util.jaxb.FPV3JAXBUtil;
 import no.nav.vedtak.felles.xml.soeknad.endringssoeknad.v3.Endringssoeknad;
 import no.nav.vedtak.felles.xml.soeknad.felles.v3.AnnenForelder;
 import no.nav.vedtak.felles.xml.soeknad.felles.v3.AnnenForelderMedNorskIdent;
@@ -343,7 +343,7 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
         return Optional.ofNullable(type)
                 .map(StønadskontoType::name)
                 .map(V3ForeldrepengerDomainMapper::uttaksperiodeTypeFra)
-                .orElseThrow(() -> new UnexpectedInputException("Stønadskontotype må være satt"));
+                .orElseThrow(() -> new UnexpectedInputException("Stønadskontotype må være satt for uttaksperiodetype" + type));
     }
 
     private static Uttaksperiodetyper uttaksperiodeTypeFra(String type) {

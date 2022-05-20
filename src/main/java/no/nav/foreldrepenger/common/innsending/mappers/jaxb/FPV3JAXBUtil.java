@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.common.util.jaxb;
+package no.nav.foreldrepenger.common.innsending.mappers.jaxb;
 
 public final class FPV3JAXBUtil extends AbstractJAXBUtil {
 
