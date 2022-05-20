@@ -54,11 +54,8 @@ import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Spraakkode;
 import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Virksomhetstyper;
 
 final class V3DomainMapperCommon {
-
     private static final Logger LOG = LoggerFactory.getLogger(V3DomainMapperCommon.class);
-
-    private static final Land KOSOVO = landFra(DomainMapper.KOSOVO);
-
+    private static final Land KOSOVO = landFra("XXK");
     private static final no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.ObjectFactory FP_FACTORY_V3 = new no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.ObjectFactory();
 
     private V3DomainMapperCommon() {

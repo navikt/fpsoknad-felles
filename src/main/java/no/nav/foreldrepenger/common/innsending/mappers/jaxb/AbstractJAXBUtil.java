@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.common.util.jaxb;
+package no.nav.foreldrepenger.common.innsending.mappers.jaxb;
 
 import static java.lang.String.format;
 import static javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI;
@@ -34,22 +34,21 @@ import org.xml.sax.SAXException;
 
 import no.nav.foreldrepenger.common.error.UnexpectedInputException;
 
-public abstract class AbstractJAXBUtil {
+abstract class AbstractJAXBUtil {
     protected static final Logger LOG = LoggerFactory.getLogger(AbstractJAXBUtil.class);
     private final JAXBContext context;
     private final Schema schema;
     private final boolean validateMarshalling;
     private final boolean validateUnarshalling;
 
-    public AbstractJAXBUtil(JAXBContext context, boolean validateMarhsalling,
-            boolean validateUnmarshalling, String... xsds) {
+    AbstractJAXBUtil(JAXBContext context, boolean validateMarhsalling, boolean validateUnmarshalling, String... xsds) {
         this.context = context;
         this.schema = schemaFra(xsds);
         this.validateMarshalling = validateMarhsalling;
         this.validateUnarshalling = validateUnmarshalling;
     }
 
-    protected static JAXBContext contextFra(Class<?>... classes) {
+    static JAXBContext contextFra(Class<?>... classes) {
         try {
             return JAXBContext.newInstance(classes);
         } catch (JAXBException e) {

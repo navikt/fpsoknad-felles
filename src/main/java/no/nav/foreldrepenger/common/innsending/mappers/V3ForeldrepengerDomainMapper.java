@@ -1,7 +1,6 @@
 package no.nav.foreldrepenger.common.innsending.mappers;
 
-import static no.nav.foreldrepenger.common.innsending.SøknadType.ENDRING_FORELDREPENGER;
-import static no.nav.foreldrepenger.common.innsending.SøknadType.INITIELL_FORELDREPENGER;
+import static no.nav.foreldrepenger.common.innsending.mappers.MapperEgenskaper.FORELDREPENGER;
 import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.landFra;
 import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.medlemsskapFra;
 import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.målformFra;
@@ -10,7 +9,6 @@ import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperComm
 import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.vedleggFra;
 import static no.nav.foreldrepenger.common.util.Constants.UKJENT_KODEVERKSVERDI;
 import static no.nav.foreldrepenger.common.util.StreamUtil.safeStream;
-import static no.nav.foreldrepenger.common.util.Versjon.V3;
 import static org.apache.cxf.common.util.CollectionUtils.isEmpty;
 
 import java.util.List;
@@ -42,9 +40,9 @@ import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.UtsettelsesP
 import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.UtsettelsesÅrsak;
 import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.UttaksPeriode;
 import no.nav.foreldrepenger.common.error.UnexpectedInputException;
+import no.nav.foreldrepenger.common.innsending.mappers.jaxb.FPV3JAXBUtil;
 import no.nav.foreldrepenger.common.innsyn.SøknadEgenskap;
 import no.nav.foreldrepenger.common.oppslag.Oppslag;
-import no.nav.foreldrepenger.common.util.jaxb.FPV3JAXBUtil;
 import no.nav.vedtak.felles.xml.soeknad.endringssoeknad.v3.Endringssoeknad;
 import no.nav.vedtak.felles.xml.soeknad.felles.v3.AnnenForelder;
 import no.nav.vedtak.felles.xml.soeknad.felles.v3.AnnenForelderMedNorskIdent;
@@ -77,13 +75,13 @@ import no.nav.vedtak.felles.xml.soeknad.v3.OmYtelse;
 import no.nav.vedtak.felles.xml.soeknad.v3.Soeknad;
 
 public class V3ForeldrepengerDomainMapper implements DomainMapper {
-    private static final MapperEgenskaper EGENSKAPER = new MapperEgenskaper(V3, ENDRING_FORELDREPENGER, INITIELL_FORELDREPENGER);
     private static final FPV3JAXBUtil JAXB = new FPV3JAXBUtil();
     private static final no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.ObjectFactory FP_FACTORY_V3 = new no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.ObjectFactory();
     private static final no.nav.vedtak.felles.xml.soeknad.felles.v3.ObjectFactory FELLES_FACTORY_V3 = new no.nav.vedtak.felles.xml.soeknad.felles.v3.ObjectFactory();
     private static final no.nav.vedtak.felles.xml.soeknad.v3.ObjectFactory SØKNAD_FACTORY_V3 = new no.nav.vedtak.felles.xml.soeknad.v3.ObjectFactory();
     private static final no.nav.vedtak.felles.xml.soeknad.uttak.v3.ObjectFactory UTTAK_FACTORY_V3 = new no.nav.vedtak.felles.xml.soeknad.uttak.v3.ObjectFactory();
     private static final no.nav.vedtak.felles.xml.soeknad.endringssoeknad.v3.ObjectFactory ENDRING_FACTORY_V3 = new no.nav.vedtak.felles.xml.soeknad.endringssoeknad.v3.ObjectFactory();
+
     private final Oppslag oppslag;
 
     public V3ForeldrepengerDomainMapper(Oppslag oppslag) {
@@ -92,7 +90,7 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
 
     @Override
     public MapperEgenskaper mapperEgenskaper() {
-        return EGENSKAPER;
+        return FORELDREPENGER;
     }
 
     @Override
@@ -343,7 +341,7 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
         return Optional.ofNullable(type)
                 .map(StønadskontoType::name)
                 .map(V3ForeldrepengerDomainMapper::uttaksperiodeTypeFra)
-                .orElseThrow(() -> new UnexpectedInputException("Stønadskontotype må være satt"));
+                .orElseThrow(() -> new UnexpectedInputException("Stønadskontotype må være satt for uttaksperiodetype" + type));
     }
 
     private static Uttaksperiodetyper uttaksperiodeTypeFra(String type) {

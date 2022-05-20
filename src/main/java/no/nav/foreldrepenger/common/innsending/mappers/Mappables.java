@@ -12,11 +12,11 @@ import no.nav.foreldrepenger.common.error.UnsupportedEgenskapException;
 import no.nav.foreldrepenger.common.innsyn.SøknadEgenskap;
 
 public final class Mappables {
-    private Mappables() {
-    }
-
     public static final String DELEGERENDE = "delegerende";
     private static final Logger LOG = LoggerFactory.getLogger(Mappables.class);
+
+    private Mappables() {
+    }
 
     public static <T extends Mappable> MapperEgenskaper egenskaperFor(List<T> mappables) {
         return new MapperEgenskaper(safeStream(mappables)

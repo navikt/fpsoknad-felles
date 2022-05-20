@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.common.util.jaxb;
+package no.nav.foreldrepenger.common.innsending.mappers.jaxb;
 
 import no.nav.vedtak.felles.xml.soeknad.engangsstoenad.v3.Engangsstønad;
 import no.nav.vedtak.felles.xml.soeknad.v3.Soeknad;
