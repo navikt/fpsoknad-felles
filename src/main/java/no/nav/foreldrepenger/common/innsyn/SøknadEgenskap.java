@@ -19,6 +19,7 @@ public class SøknadEgenskap {
     public static final SøknadEgenskap ETTERSENDING_SVANGERSKAPSPENGER = of(SøknadType.ETTERSENDING_SVANGERSKAPSPENGER);
     public static final SøknadEgenskap ETTERSENDING_FORELDREPENGER = of(SøknadType.ETTERSENDING_FORELDREPENGER);
     public static final SøknadEgenskap ETTERSENDING_ENGANGSSTØNAD = of(SøknadType.ETTERSENDING_ENGANGSSTØNAD);
+    public static final SøknadEgenskap UKJENT = new SøknadEgenskap(Versjon.UKJENT, SøknadType.UKJENT);
 
     private final Pair<Versjon, SøknadType> egenskap;
 

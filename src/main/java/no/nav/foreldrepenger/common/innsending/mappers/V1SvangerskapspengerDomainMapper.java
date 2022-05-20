@@ -41,18 +41,11 @@ import no.nav.vedtak.felles.xml.soeknad.v3.OmYtelse;
 import no.nav.vedtak.felles.xml.soeknad.v3.Soeknad;
 
 public class V1SvangerskapspengerDomainMapper implements DomainMapper {
-
-    private final SVPV1JAXBUtil jaxb;
-
+    private static final SVPV1JAXBUtil jaxb = new SVPV1JAXBUtil();
     private static final no.nav.vedtak.felles.xml.soeknad.svangerskapspenger.v1.ObjectFactory SVP_FACTORY_V1 = new no.nav.vedtak.felles.xml.soeknad.svangerskapspenger.v1.ObjectFactory();
     private static final no.nav.vedtak.felles.xml.soeknad.v3.ObjectFactory SØKNAD_FACTORY_V3 = new no.nav.vedtak.felles.xml.soeknad.v3.ObjectFactory();
 
     public V1SvangerskapspengerDomainMapper() {
-        this(false);
-    }
-
-    public V1SvangerskapspengerDomainMapper(boolean validate) {
-        jaxb = new SVPV1JAXBUtil(validate);
     }
 
     @Override
