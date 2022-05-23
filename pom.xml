@@ -26,6 +26,7 @@
         <xjb.location>${project.basedir}/src/main/resources/xjb</xjb.location>
 
         <jackson.version>2.13.3</jackson.version>
+        <token-validation-version>2.0.20</token-validation-version>
         <kontrakter.version>6.1.21</kontrakter.version>
     </properties>
 
@@ -63,6 +64,11 @@
         </dependencies>
     </dependencyManagement>
     <dependencies>
+        <dependency>
+            <groupId>no.nav.security</groupId>
+            <artifactId>token-validation-core</artifactId>
+            <version>${token-validation-version}</version>
+        </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>

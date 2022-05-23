@@ -3,6 +3,7 @@ package no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling;
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY;
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
 import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
+import static no.nav.foreldrepenger.common.util.StringUtil.maskListe;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -48,5 +49,16 @@ public sealed class UtsettelsesPeriode extends LukketPeriodeMedVedlegg permits F
         this.årsak = årsak;
         this.uttaksperiodeType = uttaksperiodeType;
         this.morsAktivitetsType = morsAktivitetsType;
+    }
+
+    @Override
+    public String toString() {
+        return "UtsettelsesPeriode{"
+                + "årsak=" + årsak + ", "
+                + "uttaksperiodeType=" + uttaksperiodeType + ", "
+                + "erArbeidstaker=" + erArbeidstaker + ", "
+                + "virksomhetsnummer=" + maskListe(virksomhetsnummer) + ", "
+                + "morsAktivitetsType=" + morsAktivitetsType + "} "
+                + super.toString();
     }
 }
