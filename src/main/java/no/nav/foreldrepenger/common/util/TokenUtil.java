@@ -1,6 +1,7 @@
 package no.nav.foreldrepenger.common.util;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -28,23 +29,13 @@ public class TokenUtil {
     private final TokenValidationContextHolder ctxHolder;
     private final List<String> issuers;
 
+    public TokenUtil(TokenValidationContextHolder ctxHolder, String... issuers) {
+        this(ctxHolder, Arrays.asList(issuers));
+    }
+
     public TokenUtil(TokenValidationContextHolder ctxHolder, List<String> issuers) {
         this.ctxHolder = ctxHolder;
         this.issuers = issuers;
-    }
-
-    public boolean erUtløpt() {
-        return Optional.ofNullable(getExpiration())
-                .filter(d -> d.isBefore(LocalDateTime.now()))
-                .isPresent();
-    }
-
-    public LocalDateTime getExpiration() {
-        return Optional.ofNullable(claimSet())
-            .map(c -> c.get("exp"))
-            .map(this::getDateClaim)
-            .map(TimeUtil::fraDato)
-            .orElse(null);
     }
 
     public Fødselsnummer autentisertBruker() {
@@ -55,6 +46,34 @@ public class TokenUtil {
         return getSubject() != null;
     }
 
+    public String getJti() {
+        return Optional.ofNullable(claimSet())
+                .map(c -> c.getStringClaim("jti"))
+                .orElse("");
+    }
+
+    public boolean erUtløpt() {
+        return Optional.ofNullable(getExpiration())
+                .filter(d -> d.isBefore(LocalDateTime.now()))
+                .isPresent();
+    }
+
+    public LocalDateTime getExpiration() {
+        return Optional.ofNullable(claimSet())
+                .map(c -> c.get("exp"))
+                .map(this::getDateClaim)
+                .map(TimeUtil::fraDato)
+                .orElse(null);
+    }
+
+    public AuthenticationLevel getLevel() {
+        return Optional.ofNullable(claimSet())
+                .map(c -> c.get("acr"))
+                .map(String.class::cast)
+                .map(AuthenticationLevel::of)
+                .orElse(AuthenticationLevel.NONE);
+    }
+
     private String fødselsnummerFraToken() {
         return Optional.ofNullable(getSubject())
             .orElseThrow(unauthenticated("Fant ikke subject, antagelig ikke autentisert"));
@@ -62,12 +81,6 @@ public class TokenUtil {
 
     private static Supplier<? extends JwtTokenValidatorException> unauthenticated(String msg) {
         return () -> new JwtTokenValidatorException(msg);
-    }
-
-    public String getJti() {
-        return Optional.ofNullable(claimSet())
-                .map(c -> c.getStringClaim("jti"))
-                .orElse("");
     }
 
     private String getSubject() {
