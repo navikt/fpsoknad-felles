@@ -38,12 +38,23 @@ public class TokenUtil {
         this.issuers = issuers;
     }
 
-    public Fødselsnummer autentisertBruker() {
+    public Fødselsnummer autentisertBrukerOrElseThrowException() {
         return new Fødselsnummer(fødselsnummerFraToken());
     }
 
     public boolean erAutentisert() {
         return getSubject() != null;
+    }
+
+    public String getSubject() {
+        return Optional.ofNullable(claimSet())
+                .map(this::getSubjectFromPidOrSub)
+                .orElse(null);
+    }
+
+    private String getSubjectFromPidOrSub(JwtTokenClaims claims) {
+        return Optional.ofNullable(claims.getStringClaim("pid"))
+                .orElseGet(claims::getSubject);
     }
 
     public String getJti() {
@@ -81,17 +92,6 @@ public class TokenUtil {
 
     private static Supplier<? extends JwtTokenValidatorException> unauthenticated(String msg) {
         return () -> new JwtTokenValidatorException(msg);
-    }
-
-    private String getSubject() {
-        return Optional.ofNullable(claimSet())
-                .map(this::getSubjectFromPidOrSub)
-                .orElse(null);
-    }
-
-    private String getSubjectFromPidOrSub(JwtTokenClaims claims) {
-        return Optional.ofNullable(claims.getStringClaim("pid"))
-                .orElseGet(claims::getSubject);
     }
 
     private JwtTokenClaims claimSet() {
