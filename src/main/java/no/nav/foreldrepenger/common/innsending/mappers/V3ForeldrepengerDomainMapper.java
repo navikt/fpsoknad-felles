@@ -7,7 +7,6 @@ import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperComm
 import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.opptjeningFra;
 import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.søkerFra;
 import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.vedleggFra;
-import static no.nav.foreldrepenger.common.util.Constants.UKJENT_KODEVERKSVERDI;
 import static no.nav.foreldrepenger.common.util.StreamUtil.safeStream;
 import static org.apache.cxf.common.util.CollectionUtils.isEmpty;
 
@@ -76,6 +75,7 @@ import no.nav.vedtak.felles.xml.soeknad.v3.Soeknad;
 
 public class V3ForeldrepengerDomainMapper implements DomainMapper {
     private static final FPV3JAXBUtil JAXB = new FPV3JAXBUtil();
+    private static final String UKJENT_KODEVERKSVERDI = "-";
     private static final no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.ObjectFactory FP_FACTORY_V3 = new no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.ObjectFactory();
     private static final no.nav.vedtak.felles.xml.soeknad.felles.v3.ObjectFactory FELLES_FACTORY_V3 = new no.nav.vedtak.felles.xml.soeknad.felles.v3.ObjectFactory();
     private static final no.nav.vedtak.felles.xml.soeknad.v3.ObjectFactory SØKNAD_FACTORY_V3 = new no.nav.vedtak.felles.xml.soeknad.v3.ObjectFactory();

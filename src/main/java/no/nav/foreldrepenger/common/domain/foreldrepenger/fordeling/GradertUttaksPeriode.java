@@ -2,6 +2,7 @@ package no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling;
 
 import static java.util.Collections.emptyList;
 import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
+import static no.nav.foreldrepenger.common.util.StringUtil.maskListe;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -54,5 +55,12 @@ public final class GradertUttaksPeriode extends UttaksPeriode {
         this.arbeidsForholdSomskalGraderes = arbeidsForholdSomskalGraderes;
         this.frilans = frilans;
         this.selvstendig = selvstendig;
+    }
+
+    @Override
+    public String toString() {
+        return "GradertUttaksPeriode{" + "arbeidstidProsent=" + arbeidstidProsent + ", erArbeidstaker=" + erArbeidstaker
+                + ", virksomhetsnummer=" + maskListe(virksomhetsnummer) + ", arbeidsForholdSomskalGraderes=" + arbeidsForholdSomskalGraderes
+                + ", frilans=" + frilans + ", selvstendig=" + selvstendig + "} " + super.toString();
     }
 }

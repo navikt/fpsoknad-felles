@@ -1,6 +1,7 @@
 package no.nav.foreldrepenger.common.util;
 
 import static java.util.function.Predicate.not;
+import static no.nav.foreldrepenger.common.util.StreamUtil.safeStream;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -57,6 +58,12 @@ public final class StringUtil {
 
     public static String partialMask(String value, int length) {
         return (value != null) && (value.length() == length) ? Strings.padEnd(value.substring(0, length / 2 + length % 2), length, '*') : value;
+    }
+
+    public static List<String> maskListe(List<String> values) {
+        return safeStream(values)
+                .map(StringUtil::mask)
+                .toList();
     }
 
     public static String mask(String value) {

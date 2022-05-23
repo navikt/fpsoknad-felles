@@ -2,6 +2,8 @@ package no.nav.foreldrepenger.common.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 class StringUtilTest {
@@ -14,6 +16,11 @@ class StringUtilTest {
     @Test
     void testPadAllFnr() {
         assertEquals("***********", StringUtil.mask("11111111111"));
+    }
+
+    @Test
+    void testPadListeMedFnr() {
+        assertEquals(List.of("***********", "***********"), StringUtil.maskListe(List.of("11111111111", "22222222222")));
     }
 
     @Test
