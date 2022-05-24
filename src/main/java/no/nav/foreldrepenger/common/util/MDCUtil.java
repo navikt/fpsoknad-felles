@@ -1,6 +1,7 @@
 package no.nav.foreldrepenger.common.util;
 
 import static no.nav.foreldrepenger.common.util.Constants.NAV_CALL_ID;
+import static no.nav.foreldrepenger.common.util.Constants.NAV_CONSUMER_ID;
 
 import java.util.Optional;
 
@@ -15,6 +16,10 @@ public final class MDCUtil {
 
     public static String callId() {
         return MDC.get(NAV_CALL_ID);
+    }
+
+    public static String consumerId() {
+        return MDC.get(NAV_CONSUMER_ID);
     }
 
     public static String callIdOrNew() {
