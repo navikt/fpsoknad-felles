@@ -52,6 +52,13 @@ public final class StringUtil {
         return limit(Arrays.toString(bytes), max);
     }
 
+    public static String limitLast(String tekst, int max) {
+        return Optional.ofNullable(tekst)
+                .filter(t -> t.length() >= max)
+                .map(s -> "*".repeat(s.length() - max) + s.substring(s.length() - max))
+                .orElse(tekst);
+    }
+
     public static String partialMask(String value) {
         return partialMask(value, 11);
     }
@@ -72,6 +79,11 @@ public final class StringUtil {
             .filter(not(String::isBlank))
             .map(v -> "*".repeat(v.length()))
             .orElse("<null>");
+    }
+
+    public static String flertall(List<?> liste) {
+        var størrelse = liste != null ? liste.size() : 0;
+        return flertall(størrelse, DEFAULT_FLERTALL);
     }
 
     public static String flertall(int n) {

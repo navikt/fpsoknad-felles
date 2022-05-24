@@ -1,13 +1,15 @@
 package no.nav.foreldrepenger.common.util;
 
 import static no.nav.foreldrepenger.common.util.Constants.NAV_CALL_ID;
-import static no.nav.foreldrepenger.common.util.Constants.NAV_CONSUMER_ID;
 
 import java.util.Optional;
 
 import org.slf4j.MDC;
 
 public final class MDCUtil {
+
+    private static final CallIdGenerator GEN = new CallIdGenerator();
+
     private MDCUtil() {
     }
 
@@ -15,8 +17,8 @@ public final class MDCUtil {
         return MDC.get(NAV_CALL_ID);
     }
 
-    public static String consumerId() {
-        return MDC.get(NAV_CONSUMER_ID);
+    public static String callIdOrNew() {
+        return Optional.ofNullable(callId()).orElse(GEN.create());
     }
 
     public static void toMDC(String key, Object value) {
