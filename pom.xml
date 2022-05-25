@@ -370,7 +370,6 @@
                     </execution>
                     <execution>
                         <id>report</id>
-                        <phase>verify</phase>
                         <goals>
                             <goal>report-aggregate</goal>
                         </goals>
