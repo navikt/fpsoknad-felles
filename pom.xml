@@ -19,7 +19,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <sonar.moduleKey>${project.artifactId}</sonar.moduleKey>
         <sonar.projectKey>navikt_fpsoknad-felles</sonar.projectKey>
-        <sonar.organization>navit</sonar.organization>
+        <sonar.organization>navikt</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
 
         <xsd.location>${project.basedir}/src/main/resources/xsd</xsd.location>
