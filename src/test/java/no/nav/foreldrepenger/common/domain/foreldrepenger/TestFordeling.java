@@ -33,8 +33,7 @@ class TestFordeling {
                         UTTAK_FEDREKVOTE_ANNEN_FORELDER, null),
                 new UtsettelsesPeriode(ukeDagNær(utsettelseStart),
                         ukeDagNær(LocalDate.now().plusMonths(3)), true, Collections.singletonList("222"),
-                        INSTITUSJONSOPPHOLD_BARNET, FEDREKVOTE, null,
-                        null)));
+                        INSTITUSJONSOPPHOLD_BARNET, null, null)));
         assertEquals(utsettelseStart, f.getFørsteUttaksdag());
     }
 
@@ -49,8 +48,7 @@ class TestFordeling {
                         Overføringsårsak.ALENEOMSORG, FEDREKVOTE, null),
                 new UtsettelsesPeriode(ukeDagNær(LocalDate.now().plusMonths(2)),
                         ukeDagNær(LocalDate.now().plusMonths(3)), true, Collections.singletonList("222"),
-                        INSTITUSJONSOPPHOLD_BARNET, FEDREKVOTE, null,
-                        null),
+                        INSTITUSJONSOPPHOLD_BARNET, null, null),
                 uttaksPeriode(ukeDagNær(uttakStart), ukeDagNær(LocalDate.now().plusMonths(4)))));
         assertEquals(uttakStart, f.getFørsteUttaksdag());
     }

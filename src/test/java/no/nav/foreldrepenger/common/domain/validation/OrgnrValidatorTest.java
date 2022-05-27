@@ -9,7 +9,7 @@ import javax.validation.Validator;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import no.nav.foreldrepenger.common.domain.validation.annotations.Orgnr;
+import no.nav.foreldrepenger.common.domain.Orgnummer;
 
 class OrgnrValidatorTest {
 
@@ -23,37 +23,26 @@ class OrgnrValidatorTest {
 
     @Test
     void testOK() {
-        assertTrue(validator.validate(new TestClass(NAV)).isEmpty());
+        assertTrue(validator.validate(new Orgnummer(NAV)).isEmpty());
     }
 
     @Test
     void testOKbutWrongFirstDigit() {
-        assertFalse(validator.validate(new TestClass("123456785")).isEmpty());
+        assertFalse(validator.validate(new Orgnummer("123456785")).isEmpty());
     }
 
     @Test
     void testStrange() {
-        assertTrue(validator.validate(new TestClass("999999999")).isEmpty());
+        assertTrue(validator.validate(new Orgnummer("999999999")).isEmpty());
     }
 
     @Test
     void testNull() {
-        assertTrue(validator.validate(new TestClass(null)).isEmpty());
+        assertTrue(validator.validate(new Orgnummer(null)).isEmpty());
     }
 
     @Test
     void testLength() {
-        assertFalse(validator.validate(new TestClass("666")).isEmpty());
-    }
-
-    static class TestClass {
-
-        @Orgnr
-        private final String orgnr;
-
-        public TestClass(String orgnr) {
-            this.orgnr = orgnr;
-        }
-
+        assertFalse(validator.validate(new Orgnummer("666")).isEmpty());
     }
 }

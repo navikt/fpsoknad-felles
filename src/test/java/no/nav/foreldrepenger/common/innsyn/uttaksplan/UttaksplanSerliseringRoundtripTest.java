@@ -1,9 +1,7 @@
 package no.nav.foreldrepenger.common.innsyn.uttaksplan;
 
 
-import static no.nav.foreldrepenger.common.mapper.DefaultJsonMapper.MAPPER;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -11,15 +9,14 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-
 import no.nav.foreldrepenger.common.domain.foreldrepenger.Dekningsgrad;
 import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.MorsAktivitet;
 import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.Oppholdsårsak;
 import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.Overføringsårsak;
 import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.StønadskontoType;
+import no.nav.foreldrepenger.common.util.SerializationTestBase;
 
-class UttaksplanSerliseringRoundtripTest {
+class UttaksplanSerliseringRoundtripTest extends SerializationTestBase {
 
     @Test
     void uttaksperiodeRoundtripSeraliseringsTest() throws IOException {
@@ -42,7 +39,7 @@ class UttaksplanSerliseringRoundtripTest {
         var uttaksperiode = getUttaksPeriode();
         var grunnlag = getGrunnlag();
         var uttaksplanUtenPerioder = new UttaksplanDto(grunnlag, List.of(uttaksperiode, uttaksperiode));
-        test(uttaksplanUtenPerioder);
+        test(uttaksplanUtenPerioder, true);
     }
 
     private SøknadsGrunnlagDto getGrunnlag() {
@@ -50,7 +47,7 @@ class UttaksplanSerliseringRoundtripTest {
                 null,
                 LocalDate.now(),
                 null,
-                Dekningsgrad.GRAD100,
+                Dekningsgrad.HUNDRE,
                 1,
                 true,
                 true,
@@ -85,13 +82,5 @@ class UttaksplanSerliseringRoundtripTest {
                 UttakArbeidType.FRILANS,
                 new ArbeidsgiverInfoDto("123", "Privat Arbeidsgiver", ArbeidsgiverType.PRIVAT),
                 "ÅRSAK");
-    }
-
-    private void test(Object object) throws IOException {
-        assertEquals(object, MAPPER.readValue(write(object), object.getClass()));
-    }
-
-    private String write(Object obj) throws JsonProcessingException {
-        return MAPPER.writeValueAsString(obj);
     }
 }

@@ -169,7 +169,7 @@ public class ForeldrepengerTestUtils {
     }
 
     public static Ettersending ettersending() {
-        return new Ettersending("42", EttersendingsType.foreldrepenger, TO_VEDLEGG, null);
+        return new Ettersending("42", EttersendingsType.FORELDREPENGER, TO_VEDLEGG, null);
     }
 
     private static List<Tilrettelegging> tilrettelegging(String... vedleggRefs) {
@@ -209,7 +209,7 @@ public class ForeldrepengerTestUtils {
         return Foreldrepenger.builder()
                 .rettigheter(rettigheter())
                 .annenForelder(norskForelder())
-                .dekningsgrad(Dekningsgrad.GRAD100)
+                .dekningsgrad(Dekningsgrad.HUNDRE)
                 .fordeling(fordeling(vedleggRefs))
                 .opptjening(opptjening(vedleggRefs))
                 .relasjonTilBarn(termin())
@@ -393,8 +393,7 @@ public class ForeldrepengerTestUtils {
     public static UtsettelsesPeriode utsettelsesPeriode(String... vedleggRefs) {
         return new UtsettelsesPeriode(ukeDagNær(LocalDate.now().plusMonths(2)),
                 ukeDagNær(LocalDate.now().plusMonths(3)), true, Collections.singletonList("222"),
-                UtsettelsesÅrsak.INSTITUSJONSOPPHOLD_BARNET, StønadskontoType.FEDREKVOTE, null,
-                Arrays.asList(vedleggRefs));
+                UtsettelsesÅrsak.INSTITUSJONSOPPHOLD_BARNET, null, Arrays.asList(vedleggRefs));
     }
 
     public static Fordeling fordeling(String... vedleggRefs) {

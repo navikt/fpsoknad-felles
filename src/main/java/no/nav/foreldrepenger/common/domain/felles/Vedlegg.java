@@ -35,12 +35,12 @@ public abstract class Vedlegg {
 
     @Valid
     private final VedleggMetaData metadata;
-    private final byte[] vedlegg;
+    private final byte[] innhold;
 
     @JsonCreator
-    protected Vedlegg(VedleggMetaData metadata, byte[] vedlegg) {
+    protected Vedlegg(VedleggMetaData metadata, byte[] innhold) {
         this.metadata = metadata;
-        this.vedlegg = vedlegg;
+        this.innhold = innhold;
     }
 
     @JsonIgnore
@@ -78,13 +78,13 @@ public abstract class Vedlegg {
 
     @JsonIgnore
     public long getStørrelse() {
-        return Optional.ofNullable(vedlegg)
+        return Optional.ofNullable(innhold)
                 .map(v -> v.length)
                 .orElse(0);
     }
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "metadata=" + metadata + "vedlegg=" + limit(vedlegg, 50);
+        return getClass().getSimpleName() + "metadata=" + metadata + "vedlegg=" + limit(innhold, 50);
     }
 }

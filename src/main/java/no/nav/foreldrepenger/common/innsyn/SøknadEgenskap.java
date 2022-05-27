@@ -2,6 +2,7 @@ package no.nav.foreldrepenger.common.innsyn;
 
 import static no.nav.foreldrepenger.common.util.Versjon.defaultVersjon;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -11,7 +12,7 @@ import no.nav.foreldrepenger.common.innsending.SøknadType;
 import no.nav.foreldrepenger.common.util.Pair;
 import no.nav.foreldrepenger.common.util.Versjon;
 
-public class SøknadEgenskap {
+public class SøknadEgenskap implements Serializable {
     public static final SøknadEgenskap INITIELL_SVANGERSKAPSPENGER = of(SøknadType.INITIELL_SVANGERSKAPSPENGER);
     public static final SøknadEgenskap INITIELL_ENGANGSSTØNAD = of(SøknadType.INITIELL_ENGANGSSTØNAD);
     public static final SøknadEgenskap INITIELL_FORELDREPENGER = of(SøknadType.INITIELL_FORELDREPENGER);

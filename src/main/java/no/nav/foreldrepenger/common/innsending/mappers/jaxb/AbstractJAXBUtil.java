@@ -99,7 +99,9 @@ abstract class AbstractJAXBUtil {
 
     private static Schema schemaFra(String... xsds) {
         try {
-            return SchemaFactory.newInstance(W3C_XML_SCHEMA_NS_URI).newSchema(sourcesFra(xsds));
+            var schemaFactory = SchemaFactory.newInstance(W3C_XML_SCHEMA_NS_URI);
+            schemaFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+            return schemaFactory.newSchema(sourcesFra(xsds));
         } catch (SAXException e) {
             LOG.warn(
                     "Noe gikk galt med konfigurasjon av skjema fra {}, bruker ikke-validerende marshaller",

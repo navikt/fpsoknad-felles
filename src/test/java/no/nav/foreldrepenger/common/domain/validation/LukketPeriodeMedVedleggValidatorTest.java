@@ -33,6 +33,13 @@ class LukketPeriodeMedVedleggValidatorTest {
     }
 
     @Test
+    void testTomBeforeFom() {
+        var periode = new OppholdsPeriode(LocalDate.of(2019, Month.MARCH, 1),
+                LocalDate.of(2018, Month.MARCH, 1), Oppholdsårsak.INGEN, List.of());
+        assertFalse(validator.validate(periode).isEmpty());
+    }
+
+    @Test
     void testNullStart() {
         var periode = new OppholdsPeriode(null,
                 LocalDate.of(2019, Month.MARCH, 3), Oppholdsårsak.INGEN, List.of());

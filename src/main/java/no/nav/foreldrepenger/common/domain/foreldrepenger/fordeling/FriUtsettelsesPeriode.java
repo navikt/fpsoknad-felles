@@ -20,8 +20,8 @@ public class FriUtsettelsesPeriode extends UtsettelsesPeriode {
     @JsonCreator
     @Builder(builderMethodName = "FriUtsettelsesPeriodeBuilder")
     public FriUtsettelsesPeriode(LocalDate fom, LocalDate tom, boolean erArbeidstaker,
-            @NotNull UtsettelsesÅrsak årsak, StønadskontoType type, MorsAktivitet morsAktivitetsType, List<String> vedlegg) {
-        super(fom, tom, erArbeidstaker, null, årsak, type, morsAktivitetsType, vedlegg);
+            @NotNull UtsettelsesÅrsak årsak, MorsAktivitet morsAktivitetsType, List<String> vedlegg) {
+        super(fom, tom, erArbeidstaker, null, årsak, morsAktivitetsType, vedlegg);
     }
 
 }
