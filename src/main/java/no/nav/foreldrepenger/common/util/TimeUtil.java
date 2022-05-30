@@ -35,6 +35,7 @@ public final class TimeUtil {
             LOG.trace("Venter i {}ms", delayMillis);
             Thread.sleep(delayMillis);
         } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
             throw new RuntimeException("Kunne ikke vente i " + delayMillis + "ms", e);
         }
     }

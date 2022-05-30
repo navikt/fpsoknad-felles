@@ -23,7 +23,7 @@ public abstract class FordelKvittering {
         return forsendelseStatus;
     }
 
-    public FordelKvittering(String forsendelseStatus) {
+    protected FordelKvittering(String forsendelseStatus) {
         this.forsendelseStatus = forsendelseStatus;
     }
 }

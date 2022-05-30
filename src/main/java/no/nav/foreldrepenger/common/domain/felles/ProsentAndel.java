@@ -13,7 +13,7 @@ public record ProsentAndel(@Prosent @JsonValue Double prosent){
     }
 
     @Override
-    public Double prosent() {
+    public Double prosent() { // NOSONAR: Her overrider vi default getter fra record fordi den propagerer annoteringer fra field. Vi ønsker ikke @JsonValue på getter.
         return prosent;
     }
 }

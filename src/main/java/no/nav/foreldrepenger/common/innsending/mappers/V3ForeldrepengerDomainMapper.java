@@ -257,7 +257,6 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
                 .withTom(u.getTom())
                 .withErArbeidstaker(u.isErArbeidstaker())
                 .withMorsAktivitetIPerioden(morsAktivitetFra(u.getMorsAktivitetsType()))
-                .withUtsettelseAv(uttaksperiodeTypeFra(u.getUttaksperiodeType(), true))
                 .withAarsak(utsettelsesÅrsakFra(u.getÅrsak()))
                 .withVedlegg(lukketPeriodeVedleggFra(u.getVedlegg()));
     }
@@ -266,7 +265,6 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
         return new Utsettelsesperiode()
                 .withFom(p.getFom())
                 .withTom(p.getTom())
-                .withUtsettelseAv(uttaksperiodeTypeFra(p.getUttaksperiodeType(), true))
                 .withMorsAktivitetIPerioden(morsAktivitetFra(p.getMorsAktivitetsType(), true))
                 .withAarsak(utsettelsesÅrsakFra(p.getÅrsak()))
                 .withVedlegg(lukketPeriodeVedleggFra(p.getVedlegg()));
@@ -328,16 +326,6 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
     }
 
     private static Uttaksperiodetyper uttaksperiodeTypeFra(StønadskontoType type) {
-        return uttaksperiodeTypeFra(type, false);
-    }
-
-    private static Uttaksperiodetyper uttaksperiodeTypeFra(StønadskontoType type, boolean optional) {
-        if (optional) {
-            return Optional.ofNullable(type)
-                    .map(StønadskontoType::name)
-                    .map(V3ForeldrepengerDomainMapper::uttaksperiodeTypeFra)
-                    .orElse(null);
-        }
         return Optional.ofNullable(type)
                 .map(StønadskontoType::name)
                 .map(V3ForeldrepengerDomainMapper::uttaksperiodeTypeFra)

@@ -7,11 +7,11 @@ import no.nav.foreldrepenger.common.util.Versjon;
 public abstract class SøknadEgenskapException extends RuntimeException {
     private final SøknadEgenskap egenskap;
 
-    public SøknadEgenskapException(SøknadEgenskap egenskap) {
+    protected SøknadEgenskapException(SøknadEgenskap egenskap) {
         this(null, egenskap, null);
     }
 
-    public SøknadEgenskapException(String msg, SøknadEgenskap egenskap, Throwable cause) {
+    protected SøknadEgenskapException(String msg, SøknadEgenskap egenskap, Throwable cause) {
         super(msg, cause);
         this.egenskap = egenskap;
     }

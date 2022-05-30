@@ -13,6 +13,7 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -35,12 +36,13 @@ public abstract class Vedlegg {
 
     @Valid
     private final VedleggMetaData metadata;
-    private final byte[] vedlegg;
+    @JsonAlias("vedlegg")
+    private final byte[] innhold;
 
     @JsonCreator
-    protected Vedlegg(VedleggMetaData metadata, byte[] vedlegg) {
+    protected Vedlegg(VedleggMetaData metadata, byte[] innhold) {
         this.metadata = metadata;
-        this.vedlegg = vedlegg;
+        this.innhold = innhold;
     }
 
     @JsonIgnore
@@ -78,13 +80,13 @@ public abstract class Vedlegg {
 
     @JsonIgnore
     public long getStørrelse() {
-        return Optional.ofNullable(vedlegg)
+        return Optional.ofNullable(innhold)
                 .map(v -> v.length)
                 .orElse(0);
     }
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "metadata=" + metadata + "vedlegg=" + limit(vedlegg, 50);
+        return getClass().getSimpleName() + "metadata=" + metadata + "vedlegg=" + limit(innhold, 50);
     }
 }

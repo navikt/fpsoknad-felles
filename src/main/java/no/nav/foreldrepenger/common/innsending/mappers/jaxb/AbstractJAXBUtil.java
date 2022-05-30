@@ -35,7 +35,7 @@ import org.xml.sax.SAXException;
 import no.nav.foreldrepenger.common.error.UnexpectedInputException;
 
 abstract class AbstractJAXBUtil {
-    protected static final Logger LOG = LoggerFactory.getLogger(AbstractJAXBUtil.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AbstractJAXBUtil.class);
     private final JAXBContext context;
     private final Schema schema;
     private final boolean validateMarshalling;
@@ -99,11 +99,11 @@ abstract class AbstractJAXBUtil {
 
     private static Schema schemaFra(String... xsds) {
         try {
-            return SchemaFactory.newInstance(W3C_XML_SCHEMA_NS_URI).newSchema(sourcesFra(xsds));
+            var schemaFactory = SchemaFactory.newInstance(W3C_XML_SCHEMA_NS_URI);
+            schemaFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+            return schemaFactory.newSchema(sourcesFra(xsds));
         } catch (SAXException e) {
-            LOG.warn(
-                    "Noe gikk galt med konfigurasjon av skjema fra {}, bruker ikke-validerende marshaller",
-                    Arrays.toString(xsds), e);
+            LOG.warn("Noe gikk galt med konfigurasjon av skjema fra {}, bruker ikke-validerende marshaller", Arrays.toString(xsds), e);
             return null;
         }
     }

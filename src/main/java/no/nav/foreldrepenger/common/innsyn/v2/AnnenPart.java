@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 
-public record AnnenPart(PersonDetaljer personDetaljer) {
+public record AnnenPart(@JsonValue PersonDetaljer personDetaljer) {
 
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
     public AnnenPart {
@@ -14,8 +14,7 @@ public record AnnenPart(PersonDetaljer personDetaljer) {
     }
 
     @Override
-    @JsonValue
-    public PersonDetaljer personDetaljer() {
+    public PersonDetaljer personDetaljer() { // NOSONAR: Her overrider vi default getter fra record fordi den propagerer annoteringer fra field. Vi ønsker ikke @JsonValue på getter.
         return personDetaljer;
     }
 }

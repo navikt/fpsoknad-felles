@@ -1,7 +1,6 @@
 package no.nav.foreldrepenger.common.util;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -30,7 +29,7 @@ public class TokenUtil {
     private final List<String> issuers;
 
     public TokenUtil(TokenValidationContextHolder ctxHolder, String... issuers) {
-        this(ctxHolder, Arrays.asList(issuers));
+        this(ctxHolder, List.of(issuers));
     }
 
     public TokenUtil(TokenValidationContextHolder ctxHolder, List<String> issuers) {

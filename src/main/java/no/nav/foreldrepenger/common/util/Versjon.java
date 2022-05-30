@@ -1,6 +1,5 @@
 package no.nav.foreldrepenger.common.util;
 
-import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static no.nav.foreldrepenger.common.domain.FagsakType.SVANGERSKAPSPENGER;
 
@@ -25,7 +24,7 @@ public enum Versjon {
     }
 
     Versjon(String... namespaces) {
-        this(asList(namespaces));
+        this(List.of(namespaces));
     }
 
     Versjon(List<String> namespaces) {

@@ -8,33 +8,20 @@ import javax.validation.constraints.Pattern;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-import no.nav.foreldrepenger.common.domain.validation.OrgnrValidator;
+import no.nav.foreldrepenger.common.domain.validation.annotations.Orgnr;
 
-public record Orgnummer(@JsonValue @Pattern(regexp = FRITEKST) String value) implements ArbeidsgiverIdentifikator {
-
+public record Orgnummer(@JsonValue @Pattern(regexp = FRITEKST) @Orgnr String value) implements ArbeidsgiverIdentifikator {
     public static final String MAGIC = "342352362";
-
     public static final Orgnummer MAGIC_ORG = Orgnummer.valueOf(MAGIC);
 
-    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
-    public Orgnummer {
-        if (!validator().isValid(value, null)) {
-            throw new IllegalArgumentException(value + " er ikke et gyldig organisasjonsnummer");
-        }
+    @JsonCreator
+    public static Orgnummer valueOf(String id) {
+        return new Orgnummer(id);
     }
 
-    // For å bare ha @JsonValue på fields, og ikke getter...
     @Override
-    public String value() {
+    public String value() { // NOSONAR: Her overrider vi default getter fra record fordi den propagerer annoteringer fra field. Vi ønsker ikke @JsonValue på getter.
         return value;
-    }
-
-    private OrgnrValidator validator() {
-        return new OrgnrValidator();
-    }
-
-    public static Orgnummer valueOf(String orgnr) {
-        return new Orgnummer(orgnr);
     }
 
     public String maskert() {

@@ -12,7 +12,7 @@ public record SamtidigUttak(@JsonValue BigDecimal value) {
     }
 
     @Override
-    public BigDecimal value() {
+    public BigDecimal value() { // NOSONAR: Her overrider vi default getter fra record fordi den propagerer annoteringer fra field. Vi ønsker ikke @JsonValue på getter.
         return value;
     }
 }

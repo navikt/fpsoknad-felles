@@ -2,7 +2,6 @@ package no.nav.foreldrepenger.common.util;
 
 import static org.apache.cxf.common.util.CollectionUtils.isEmpty;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +23,7 @@ public final class StreamUtil {
 
     @SafeVarargs
     public static <T> Stream<T> safeStream(T... elems) {
-        return safeStream(Arrays.asList(elems));
+        return safeStream(List.of(elems));
     }
 
     public static <T> Stream<T> safeStream(List<T> list) {

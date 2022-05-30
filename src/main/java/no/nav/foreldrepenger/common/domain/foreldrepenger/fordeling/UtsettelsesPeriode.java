@@ -19,10 +19,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.ToString;
 
 @Getter
-@ToString(callSuper = true, exclude = "virksomhetsnummer")
 @EqualsAndHashCode(callSuper = true, exclude = { "morsAktivitetsType", "virksomhetsnummer" })
 @JsonTypeInfo(use = NAME, include = PROPERTY, property = "type")
 @JsonSubTypes({
@@ -32,7 +30,6 @@ public sealed class UtsettelsesPeriode extends LukketPeriodeMedVedlegg permits F
 
     @NotNull
     private final UtsettelsesÅrsak årsak;
-    private final StønadskontoType uttaksperiodeType; // TODO: Tror denne alltid er null. Fjern senere
     private final boolean erArbeidstaker;
     private final List<@Pattern(regexp = FRITEKST) String> virksomhetsnummer;
     private final MorsAktivitet morsAktivitetsType;
@@ -40,14 +37,11 @@ public sealed class UtsettelsesPeriode extends LukketPeriodeMedVedlegg permits F
     @JsonCreator
     @Builder(builderMethodName = "UtsettelsesPeriodeBuilder")
     public UtsettelsesPeriode(LocalDate fom, LocalDate tom, boolean erArbeidstaker, List<String> virksomhetsnummer,
-                              UtsettelsesÅrsak årsak, StønadskontoType uttaksperiodeType,
-                              MorsAktivitet morsAktivitetsType,
-                              List<String> vedlegg) {
+                              UtsettelsesÅrsak årsak, MorsAktivitet morsAktivitetsType, List<String> vedlegg) {
         super(fom, tom, vedlegg);
         this.erArbeidstaker = erArbeidstaker;
         this.virksomhetsnummer = virksomhetsnummer;
         this.årsak = årsak;
-        this.uttaksperiodeType = uttaksperiodeType;
         this.morsAktivitetsType = morsAktivitetsType;
     }
 
@@ -55,7 +49,6 @@ public sealed class UtsettelsesPeriode extends LukketPeriodeMedVedlegg permits F
     public String toString() {
         return "UtsettelsesPeriode{"
                 + "årsak=" + årsak + ", "
-                + "uttaksperiodeType=" + uttaksperiodeType + ", "
                 + "erArbeidstaker=" + erArbeidstaker + ", "
                 + "virksomhetsnummer=" + maskListe(virksomhetsnummer) + ", "
                 + "morsAktivitetsType=" + morsAktivitetsType + "} "

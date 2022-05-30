@@ -1,6 +1,5 @@
 package no.nav.foreldrepenger.common.domain;
 
-import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
 import static no.nav.foreldrepenger.common.util.StreamUtil.safeStream;
@@ -53,7 +52,7 @@ public class Søknad {
     private final List<Vedlegg> vedlegg;
 
     public Søknad(LocalDate mottattdato, Søker søker, Ytelse ytelse, Vedlegg... vedlegg) {
-        this(mottattdato, søker, ytelse, asList(vedlegg));
+        this(mottattdato, søker, ytelse, List.of(vedlegg));
     }
 
     @JsonCreator

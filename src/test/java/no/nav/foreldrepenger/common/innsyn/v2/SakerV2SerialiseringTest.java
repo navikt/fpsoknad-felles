@@ -39,7 +39,7 @@ class SakerV2SerialiseringTest {
     }
 
     @Test
-    public void sakerV2ForeldrepengerRoundtripTest() throws Exception {
+    void sakerV2ForeldrepengerRoundtripTest() throws Exception {
         var saksnummer = new Saksnummer("123");
         var familieHendelse = new Familiehendelse(LocalDate.of(2021, 12, 6),
                 LocalDate.of(2021, 12, 5), 1, LocalDate.of(2021, 12, 12));

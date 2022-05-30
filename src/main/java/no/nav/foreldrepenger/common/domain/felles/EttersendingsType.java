@@ -1,8 +1,12 @@
 package no.nav.foreldrepenger.common.domain.felles;
 
-public enum EttersendingsType {
-    engangsstønad,
-    foreldrepenger,
-    svangerskapspenger
+import com.fasterxml.jackson.annotation.JsonAlias;
 
+public enum EttersendingsType {
+    @JsonAlias("engangsstønad")
+    ENGANGSSTØNAD,
+    @JsonAlias("foreldrepenger")
+    FORELDREPENGER,
+    @JsonAlias("svangerskapspenger")
+    SVANGERSKAPSPENGER,
 }

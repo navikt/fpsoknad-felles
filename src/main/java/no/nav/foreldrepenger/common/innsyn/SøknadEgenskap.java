@@ -2,16 +2,18 @@ package no.nav.foreldrepenger.common.innsyn;
 
 import static no.nav.foreldrepenger.common.util.Versjon.defaultVersjon;
 
+import java.io.Serializable;
 import java.util.Objects;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import no.nav.foreldrepenger.common.innsending.SøknadType;
-import no.nav.foreldrepenger.common.util.Pair;
 import no.nav.foreldrepenger.common.util.Versjon;
 
-public class SøknadEgenskap {
+public class SøknadEgenskap implements Serializable {
     public static final SøknadEgenskap INITIELL_SVANGERSKAPSPENGER = of(SøknadType.INITIELL_SVANGERSKAPSPENGER);
     public static final SøknadEgenskap INITIELL_ENGANGSSTØNAD = of(SøknadType.INITIELL_ENGANGSSTØNAD);
     public static final SøknadEgenskap INITIELL_FORELDREPENGER = of(SøknadType.INITIELL_FORELDREPENGER);
@@ -37,11 +39,11 @@ public class SøknadEgenskap {
     }
 
     public Versjon getVersjon() {
-        return egenskap.getFirst();
+        return egenskap.getLeft();
     }
 
     public SøknadType getType() {
-        return egenskap.getSecond();
+        return egenskap.getRight();
     }
 
     public boolean erEttersending() {
@@ -78,8 +80,7 @@ public class SøknadEgenskap {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + " [versjon=" + egenskap.getFirst() + ", søknadType=" + egenskap.getSecond()
-                + "]";
+        return getClass().getSimpleName() + " [versjon=" + getVersjon() + ", søknadType=" + getType() + "]";
     }
 
 }
