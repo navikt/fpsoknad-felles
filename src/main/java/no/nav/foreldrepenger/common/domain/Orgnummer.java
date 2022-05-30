@@ -20,7 +20,7 @@ public record Orgnummer(@JsonValue @Pattern(regexp = FRITEKST) @Orgnr String val
     }
 
     @Override
-    public String value() { // For å bare ha @JsonValue på fields, og ikke getter...
+    public String value() { // NOSONAR: Her overrider vi default getter fra record fordi den propagerer annoteringer fra field. Vi ønsker ikke @JsonValue på getter.
         return value;
     }
 

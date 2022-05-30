@@ -27,7 +27,7 @@ public record Fødselsnummer(@Pattern(regexp = FRITEKST) @JsonValue String value
     }
 
     @Override
-    public String value() { // NOSONAR: Annotering i record field blir også lagt på getter
+    public String value() { // NOSONAR: Her overrider vi default getter fra record fordi den propagerer annoteringer fra field. Vi ønsker ikke @JsonValue på getter.
         return value;
     }
 

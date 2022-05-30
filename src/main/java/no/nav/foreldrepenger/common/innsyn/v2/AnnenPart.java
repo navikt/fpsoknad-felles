@@ -14,7 +14,7 @@ public record AnnenPart(@JsonValue PersonDetaljer personDetaljer) {
     }
 
     @Override
-    public PersonDetaljer personDetaljer() {
+    public PersonDetaljer personDetaljer() { // NOSONAR: Her overrider vi default getter fra record fordi den propagerer annoteringer fra field. Vi ønsker ikke @JsonValue på getter.
         return personDetaljer;
     }
 }

@@ -16,7 +16,7 @@ public record AktørId(@JsonValue @Pattern(regexp = BARE_TALL) String value) imp
     }
 
     @Override
-    public String value() {
+    public String value() { // NOSONAR: Her overrider vi default getter fra record fordi den propagerer annoteringer fra field. Vi ønsker ikke @JsonValue på getter.
         return value;
     }
 

@@ -13,6 +13,7 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -35,6 +36,7 @@ public abstract class Vedlegg {
 
     @Valid
     private final VedleggMetaData metadata;
+    @JsonAlias("vedlegg")
     private final byte[] innhold;
 
     @JsonCreator
