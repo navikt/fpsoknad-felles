@@ -1,6 +1,5 @@
 package no.nav.foreldrepenger.common.domain.foreldrepenger;
 
-import static java.util.Arrays.asList;
 import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.BARE_TALL;
 
 import java.time.LocalDate;
@@ -46,7 +45,7 @@ public final class Endringssøknad extends Søknad {
     public Endringssøknad(LocalDate mottattDato, Søker søker, Fordeling fordeling, AnnenForelder annenForelder,
             Fødsel fødsel, Rettigheter rettigheter, String saksnr,
             Vedlegg... vedlegg) {
-        this(mottattDato, søker, fordeling, annenForelder, fødsel, rettigheter, saksnr, asList(vedlegg));
+        this(mottattDato, søker, fordeling, annenForelder, fødsel, rettigheter, saksnr, List.of(vedlegg));
     }
 
     @JsonCreator

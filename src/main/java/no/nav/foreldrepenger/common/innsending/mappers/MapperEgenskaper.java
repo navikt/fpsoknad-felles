@@ -1,6 +1,5 @@
 package no.nav.foreldrepenger.common.innsending.mappers;
 
-import static java.util.Arrays.asList;
 import static no.nav.foreldrepenger.common.innsending.SøknadType.ENDRING_FORELDREPENGER;
 import static no.nav.foreldrepenger.common.innsending.SøknadType.INITIELL_ENGANGSSTØNAD;
 import static no.nav.foreldrepenger.common.innsending.SøknadType.INITIELL_FORELDREPENGER;
@@ -41,7 +40,7 @@ public class MapperEgenskaper {
     }
 
     MapperEgenskaper(SøknadEgenskap... egenskaper) {
-        this(asList(egenskaper));
+        this(List.of(egenskaper));
     }
 
     MapperEgenskaper(List<SøknadEgenskap> egenskaper) {
