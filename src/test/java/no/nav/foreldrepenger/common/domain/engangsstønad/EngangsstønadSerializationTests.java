@@ -21,7 +21,7 @@ import no.nav.foreldrepenger.common.domain.felles.TestUtils;
 import no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils;
 import no.nav.foreldrepenger.common.util.SerializationTestBase;
 
-class EngangsstønadSerializationTester extends SerializationTestBase {
+class EngangsstønadSerializationTests extends SerializationTestBase {
 
     @Test
     void testKvittering() {

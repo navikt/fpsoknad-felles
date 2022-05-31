@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public record SamtidigUttak(@JsonValue BigDecimal value) {
 
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
-    public SamtidigUttak {
+    public SamtidigUttak { // NOSONAR
     }
 
     @Override
