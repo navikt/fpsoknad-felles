@@ -39,7 +39,7 @@ class V3ForeldrepengerDomainMapperTests {
         when(oppslag.aktørId(NORSK_FORELDER_FNR)).thenReturn(aktørIdAnnenpart);
         var mapper = new V3ForeldrepengerDomainMapper(oppslag);
 
-        var søknad = ForeldrepengerTestUtils.foreldrepengeSøknad();
+        var søknad = ForeldrepengerTestUtils.foreldrepengesøknad();
         var søknadXML = mapper.tilModell(søknad, aktørIdSøker);
         assertThat(søknadXML.getSoeker().getAktoerId()).isEqualTo(aktørIdSøker.value());
         assertThat(søknadXML.getSoeker().getSoeknadsrolle().getKode()).isEqualTo(søknad.getSøker().getSøknadsRolle().name());
