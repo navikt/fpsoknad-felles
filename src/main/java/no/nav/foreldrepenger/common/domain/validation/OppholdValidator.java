@@ -40,7 +40,7 @@ public class OppholdValidator implements ConstraintValidator<Opphold, List<Utenl
             }
         }
 
-        // Overlapp trenger bare sjekkes
+        // Alle perioder trenger bare sammenlignes en gang hverandre
         var oppholdsperioderSomIkkeErValidert = new ArrayList<>(alleOpphold);
         while (!oppholdsperioderSomIkkeErValidert.isEmpty()) {
             var oppholdUnderValidering = oppholdsperioderSomIkkeErValidert.remove(0);
