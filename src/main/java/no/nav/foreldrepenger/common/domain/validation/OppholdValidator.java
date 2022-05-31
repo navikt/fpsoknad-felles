@@ -27,9 +27,7 @@ public class OppholdValidator implements ConstraintValidator<Opphold, List<Utenl
 
     @Override
     public boolean isValid(List<Utenlandsopphold> alleOpphold, ConstraintValidatorContext context) {
-        var oppholdsperioderSomIkkeErValidert = new ArrayList<>(alleOpphold);
-        while (!oppholdsperioderSomIkkeErValidert.isEmpty()) {
-            var oppholdUnderValidering = oppholdsperioderSomIkkeErValidert.remove(0);
+        for (var oppholdUnderValidering : alleOpphold) {
             if (validerFortid(oppholdUnderValidering)) {
                 LOG.debug("Periode {} er ikke utelukkende i fortiden", oppholdUnderValidering);
                 errorMessageFortidFremtid(context, oppholdUnderValidering, "er ikke utelukkende i fortiden");
@@ -40,9 +38,14 @@ public class OppholdValidator implements ConstraintValidator<Opphold, List<Utenl
                 errorMessageFortidFremtid(context, oppholdUnderValidering, "er ikke i utelukkende framtiden");
                 return false;
             }
+        }
 
+        // Overlapp trenger bare sjekkes
+        var oppholdsperioderSomIkkeErValidert = new ArrayList<>(alleOpphold);
+        while (!oppholdsperioderSomIkkeErValidert.isEmpty()) {
+            var oppholdUnderValidering = oppholdsperioderSomIkkeErValidert.remove(0);
             for (var opphold : oppholdsperioderSomIkkeErValidert) {
-                if (erOverlapp(oppholdUnderValidering, opphold)) {
+                if (erOverlappende(oppholdUnderValidering, opphold)) {
                     LOG.debug("Fant overlapp mellom periodene {} og {}", oppholdUnderValidering.varighet(), opphold.varighet());
                     errorMessageOverlap(context, oppholdUnderValidering, opphold);
                     return false;
@@ -53,8 +56,10 @@ public class OppholdValidator implements ConstraintValidator<Opphold, List<Utenl
         return true;
     }
 
-    private static boolean erOverlapp(Utenlandsopphold førstePeriode, Utenlandsopphold annenPeriode) {
-        return førstePeriode.tom().isAfter(annenPeriode.fom());
+    private static boolean erOverlappende(Utenlandsopphold førstePeriode, Utenlandsopphold annenPeriode) {
+        // Siden vi ikke kan garantere at listen er sortert, så må begge disse være sanne
+        return førstePeriode.tom().isAfter(annenPeriode.fom()) &&
+                annenPeriode.tom().isAfter(førstePeriode.fom());
     }
 
     private boolean validerFramtid(Utenlandsopphold opphold) {
