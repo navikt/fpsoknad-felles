@@ -90,7 +90,7 @@ class TestForeldrepengerSerialization extends SerializationTestBase {
 
     @Test
     void testDekningsgrad() {
-        test(Dekningsgrad.HUNDRE, false);
+        test(Dekningsgrad.HUNDRE, true);
     }
 
     @Test

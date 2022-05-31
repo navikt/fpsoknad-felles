@@ -18,7 +18,7 @@ import com.neovisionaries.i18n.CountryCode;
 import no.nav.foreldrepenger.common.domain.validation.annotations.Opphold;
 
 @JsonPropertyOrder({ "tidligereUtenlandsopphold", "framtidigUtenlandsopphold" })
-public record Medlemsskap(@Valid @Opphold(fortid = true)List<Utenlandsopphold> tidligereUtenlandsopphold,
+public record Medlemsskap(@Valid @Opphold(fortid = true) List<Utenlandsopphold> tidligereUtenlandsopphold,
                           @Valid @Opphold List<Utenlandsopphold> framtidigUtenlandsopphold) {
 
     public Medlemsskap(@Valid List<Utenlandsopphold> tidligereUtenlandsopphold,
