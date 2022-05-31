@@ -96,11 +96,15 @@ public class ForeldrepengerTestUtils {
     private static final ValgfrittVedlegg IKKE_OPPLASTETV1 = ikkeOpplastet(ID142, I000063);
     private static final ValgfrittVedlegg IKKE_OPPLASTETV2 = ikkeOpplastet(ID143, I000063);
 
-    public static Søknad foreldrepengeSøknad() {
+    public static Søknad foreldrepengesøknad() {
         return new Søknad(LocalDate.now(), TestUtils.søker(), foreldrepenger(false), VEDLEGG1);
     }
 
-    public static Søknad foreldrepengeSøknadUtenVedlegg() {
+    public static Søknad foreldrepengesøknad(boolean utland, Vedlegg... vedlegg) {
+        return søknad(foreldrepenger(utland, vedleggRefs(vedlegg)), vedlegg);
+    }
+
+    public static Søknad foreldrepengesøknadUtenVedlegg() {
         return new Søknad(LocalDate.now(), TestUtils.søker(), foreldrepenger(false));
     }
 
@@ -119,11 +123,6 @@ public class ForeldrepengerTestUtils {
     public static Søknad foreldrepengesøknadMedEttIkkeOpplastedVedlegg(boolean utland) {
         return foreldrepengesøknad(utland, IKKE_OPPLASTETV1);
     }
-
-    public static Søknad foreldrepengesøknad(boolean utland, Vedlegg... vedlegg) {
-        return søknad(foreldrepenger(utland, vedleggRefs(vedlegg)), vedlegg);
-    }
-
 
     public static Søknad svp() {
         return svp(true);
