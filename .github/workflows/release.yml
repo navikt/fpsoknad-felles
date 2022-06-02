@@ -32,5 +32,5 @@ jobs:
           NEW_VERSION: ${{ github.event.release.tag_name }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          mvn versions:set -B -ssettings.xml -DnewVersion=${NEW_VERSION}
+          mvn versions:set -B -s settings.xml -DnewVersion=${NEW_VERSION}
           mvn clean deploy -B -s settings.xml
