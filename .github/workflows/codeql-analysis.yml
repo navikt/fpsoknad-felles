@@ -56,7 +56,7 @@ jobs:
     - name: Build
       shell: bash
       run: |
-        mvn package -B -V -e -s settings.xml-Drevision=-$(git log -1 --pretty='%ad' --date=format:'%Y%m%d%H%M%S')-$(echo $GITHUB_SHA | cut -c1-7) -Dfindbugs.skip -Dcheckstyle.skip -Dpmd.skip=true -Denforcer.skip -DskipTests -Dmaven.test.skip.exec -Dlicense.skip=true -Drat.skip=true
+        mvn package -B -V -e -s settings.xml -Dfindbugs.skip -Dcheckstyle.skip -Dpmd.skip=true -Denforcer.skip -DskipTests -Dmaven.test.skip.exec -Dlicense.skip=true -Drat.skip=true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
