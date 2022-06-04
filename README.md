@@ -3,8 +3,8 @@
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=navikt_fpsoknad-felles&metric=code_smells)](https://sonarcloud.io/dashboard?id=navikt_fpsoknad-felles)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=navikt_fpsoknad-felles&metric=security_rating)](https://sonarcloud.io/dashboard?id=navikt_fpsoknad-felles)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=navikt_fpsoknad-felles&metric=coverage)](https://sonarcloud.io/dashboard?id=navikt_fpsoknad-felles)
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/navikt/fp-prosesstask)
-![GitHub](https://img.shields.io/github/license/navikt/fp-prosesstask)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/navikt/fpsoknad-felles)
+![GitHub](https://img.shields.io/github/license/navikt/fpsoknad-felles)
 # fpsoknad-felles
 
 Dette er et felles bibliotek som brukes av blandt annet
