@@ -1,7 +1,5 @@
 package no.nav.foreldrepenger.common.util;
 
-import static org.apache.cxf.common.util.CollectionUtils.isEmpty;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -57,7 +55,7 @@ public final class StreamUtil {
     }
 
     private static <T> Collection<T> verifiser(Collection<T> collection) {
-        if (!isEmpty(collection) && collection.size() != 1) {
+        if (!collection.isEmpty() && collection.size() != 1) {
             LOG.trace("Mer en ett element i {}", collection);
         }
         return collection;

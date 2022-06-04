@@ -6,8 +6,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import javax.annotation.Nullable;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 import lombok.Builder;
@@ -18,7 +16,7 @@ import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.Ti
 
 @Builder
 public record Svangerskapspenger(LocalDate termindato,
-                                 @Nullable LocalDate fødselsdato,
+                                 /*@Nullable*/ LocalDate fødselsdato,
                                  Medlemsskap medlemsskap,
                                  Opptjening opptjening,
                                  List<Tilrettelegging> tilrettelegging) implements Ytelse {
