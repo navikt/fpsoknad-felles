@@ -28,6 +28,7 @@
         <xjb.location>${project.basedir}/src/main/resources/xjb</xjb.location>
 
         <kontrakter.version>6.1.21</kontrakter.version>
+        <jaxb-runtime.version>2.3.6</jaxb-runtime.version>
     </properties>
 
     <scm>
@@ -59,11 +60,6 @@
                 <groupId>com.neovisionaries</groupId>
                 <artifactId>nv-i18n</artifactId>
                 <version>1.29</version>
-            </dependency>
-            <dependency>
-                <groupId>ch.qos.logback</groupId>
-                <artifactId>logback-classic</artifactId>
-                <version>1.2.11</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -118,27 +114,28 @@
             <artifactId>jakarta.xml.bind-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-xjc</artifactId>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <version>${jaxb-runtime.version}</version>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>org.glassfish</groupId>
             <artifactId>jakarta.el</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
         </dependency>
+
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>31.1-jre</version>
         </dependency>
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-core</artifactId>
-        </dependency>
+
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-text</artifactId>
@@ -197,7 +194,8 @@
                         <dependency>
                             <groupId>org.glassfish.jaxb</groupId>
                             <artifactId>jaxb-runtime</artifactId>
-                            <version>2.3.3</version>
+                            <version>${jaxb-runtime.version}</version>
+                            <scope>compile</scope>
                         </dependency>
                     </dependencies>
                     <executions>

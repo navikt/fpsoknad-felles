@@ -12,7 +12,6 @@ import java.util.Optional;
 
 import javax.xml.bind.JAXBElement;
 
-import org.apache.cxf.common.util.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -247,7 +246,7 @@ final class V3DomainMapperCommon {
     }
 
     private static Regnskapsfoerer regnskapsFørerFra(List<Regnskapsfører> regnskapsførere) {
-        if (CollectionUtils.isEmpty(regnskapsførere)) {
+        if (regnskapsførere.isEmpty()) {
             return null;
         }
         var regnskapsfører = regnskapsførere.get(0);
@@ -319,7 +318,7 @@ final class V3DomainMapperCommon {
         return new Frilans()
                 .withErNyoppstartet(frilans.nyOppstartet())
                 .withHarInntektFraFosterhjem(frilans.harInntektFraFosterhjem())
-                .withNaerRelasjon(!CollectionUtils.isEmpty(frilans.frilansOppdrag()))
+                .withNaerRelasjon(!frilans.frilansOppdrag().isEmpty())
                 .withPeriode(periodeFra(frilans.periode()))
                 .withFrilansoppdrag(frilansOppdragFra(frilans.frilansOppdrag()));
     }

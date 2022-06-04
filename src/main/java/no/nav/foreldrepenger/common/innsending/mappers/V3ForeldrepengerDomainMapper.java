@@ -8,7 +8,6 @@ import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperComm
 import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.søkerFra;
 import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.vedleggFra;
 import static no.nav.foreldrepenger.common.util.StreamUtil.safeStream;
-import static org.apache.cxf.common.util.CollectionUtils.isEmpty;
 
 import java.util.List;
 import java.util.Optional;
@@ -309,7 +308,7 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
     }
 
     private static Arbeidsgiver arbeidsgiverFra(List<String> arbeidsgiver) {
-        if (isEmpty(arbeidsgiver)) {
+        if (arbeidsgiver.isEmpty()) {
             return null;
         }
         return Optional.ofNullable(arbeidsgiver.get(0))

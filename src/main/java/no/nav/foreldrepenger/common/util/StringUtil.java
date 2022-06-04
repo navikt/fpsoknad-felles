@@ -9,8 +9,6 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.cxf.common.util.CollectionUtils;
-
 import com.google.common.base.Strings;
 
 public final class StringUtil {
@@ -27,7 +25,7 @@ public final class StringUtil {
     }
 
     public static String endelse(List<?> liste) {
-        if (CollectionUtils.isEmpty(liste)) {
+        if (liste.isEmpty()) {
             return "er";
         }
         return liste.size() == 1 ? "" : "er";
