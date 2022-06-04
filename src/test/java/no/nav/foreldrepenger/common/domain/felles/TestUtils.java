@@ -3,6 +3,7 @@ package no.nav.foreldrepenger.common.domain.felles;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static no.nav.foreldrepenger.common.util.ResourceHandleUtil.bytesFra;
+import static no.nav.foreldrepenger.common.util.ResourceHandleUtil.copyToString;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -230,5 +231,9 @@ public class TestUtils {
                 LocalDate.now().minusYears(25), new Navn("Mor", "Mellommor", "Morsen"),
                 Kjønn.K, Målform.NN, CountryCode.NO,
                 new Bankkonto("2000.20.20000", "Store Fiskerbank"), null);
+    }
+
+    public static String load(String file) {
+        return copyToString(file);
     }
 }
