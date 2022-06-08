@@ -13,6 +13,9 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
+import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.MorsAktivitet;
+import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.UtsettelsesÅrsak;
+
 import org.junit.jupiter.api.Test;
 
 import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.Fordeling;
@@ -70,6 +73,20 @@ class TestFordeling {
                 new OppholdsPeriode(ukeDagNær(LocalDate.now()), ukeDagNær(LocalDate.now().plusMonths(1)),
                         UTTAK_FEDREKVOTE_ANNEN_FORELDER, null)));
         assertNull(f.getFørsteUttaksdag());
+    }
+
+    @Test
+    void testFørsteUttaksdagIgnorererFriPerioder() {
+        var friFom = ukeDagNær(LocalDate.now().minusDays(10));
+        var friTom = friFom.plusDays(2);
+        var ordinærUtsettelseFom = friTom.plusDays(1);
+        var ordinærUtsettelseTom = ordinærUtsettelseFom.plusDays(1);
+        var fordeling = new Fordeling(true, List.of(
+                new UtsettelsesPeriode(friFom, friTom, true, List.of(),
+                        UtsettelsesÅrsak.FRI, MorsAktivitet.ARBEID_OG_UTDANNING, List.of()),
+                new UtsettelsesPeriode(ordinærUtsettelseFom, ordinærUtsettelseTom, true, List.of(), INSTITUSJONSOPPHOLD_BARNET,
+                        MorsAktivitet.INNLAGT, List.of())));
+        assertEquals(ordinærUtsettelseFom, fordeling.getFørsteUttaksdag());
     }
 
 }

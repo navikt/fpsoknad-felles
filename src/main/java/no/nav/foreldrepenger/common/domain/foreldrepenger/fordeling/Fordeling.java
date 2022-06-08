@@ -1,6 +1,7 @@
 package no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling;
 
 import static java.util.Collections.emptyList;
+import static java.util.function.Predicate.not;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -26,6 +27,7 @@ public record Fordeling(boolean erAnnenForelderInformert, @Valid List<LukketPeri
     public LocalDate getFørsteUttaksdag() {
         return perioder.stream()
                 .sorted()
+                .filter(not(erFriPeriode()))
                 .filter(aktuellPeriode())
                 .findFirst()
                 .map(LukketPeriodeMedVedlegg::getFom)
@@ -34,5 +36,9 @@ public record Fordeling(boolean erAnnenForelderInformert, @Valid List<LukketPeri
 
     private static Predicate<? super LukketPeriodeMedVedlegg> aktuellPeriode() {
         return f -> f instanceof UttaksPeriode || f instanceof UtsettelsesPeriode || f instanceof OverføringsPeriode;
+    }
+
+    private static Predicate<? super LukketPeriodeMedVedlegg> erFriPeriode() {
+        return p -> p instanceof UtsettelsesPeriode && ((UtsettelsesPeriode) p).getÅrsak().equals(UtsettelsesÅrsak.FRI);
     }
 }
