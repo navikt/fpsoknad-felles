@@ -308,7 +308,7 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
     }
 
     private static Arbeidsgiver arbeidsgiverFra(List<String> arbeidsgiver) {
-        if (arbeidsgiver.isEmpty()) {
+        if (arbeidsgiver == null || arbeidsgiver.isEmpty()) {
             return null;
         }
         return Optional.ofNullable(arbeidsgiver.get(0))

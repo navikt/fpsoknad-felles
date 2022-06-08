@@ -12,6 +12,8 @@ import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.nimbusds.oauth2.sdk.util.CollectionUtils;
+
 public final class StreamUtil {
 
     private static final Logger LOG = LoggerFactory.getLogger(StreamUtil.class);
@@ -55,7 +57,7 @@ public final class StreamUtil {
     }
 
     private static <T> Collection<T> verifiser(Collection<T> collection) {
-        if (!collection.isEmpty() && collection.size() != 1) {
+        if (collection != null && !collection.isEmpty() && collection.size() != 1) {
             LOG.trace("Mer en ett element i {}", collection);
         }
         return collection;

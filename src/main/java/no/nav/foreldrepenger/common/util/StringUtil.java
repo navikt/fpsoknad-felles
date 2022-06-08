@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.google.common.base.Strings;
+import com.nimbusds.oauth2.sdk.util.CollectionUtils;
 
 public final class StringUtil {
     private static final String DEFAULT_FLERTALL = "er";
@@ -25,7 +26,7 @@ public final class StringUtil {
     }
 
     public static String endelse(List<?> liste) {
-        if (liste.isEmpty()) {
+        if (liste == null || liste.isEmpty()) {
             return "er";
         }
         return liste.size() == 1 ? "" : "er";
