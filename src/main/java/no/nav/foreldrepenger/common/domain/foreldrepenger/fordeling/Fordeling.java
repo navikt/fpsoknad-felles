@@ -39,6 +39,6 @@ public record Fordeling(boolean erAnnenForelderInformert, @Valid List<LukketPeri
     }
 
     private static Predicate<? super LukketPeriodeMedVedlegg> erFriPeriode() {
-        return p -> p instanceof UtsettelsesPeriode && ((UtsettelsesPeriode) p).getÅrsak().equals(UtsettelsesÅrsak.FRI);
+        return p -> p instanceof UtsettelsesPeriode up && up.getÅrsak().equals(UtsettelsesÅrsak.FRI);
     }
 }
