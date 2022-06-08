@@ -5,9 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class ResourceHandleUtil {
 
@@ -16,16 +14,16 @@ public class ResourceHandleUtil {
     }
 
     public static String copyToString(String filnavn) {
-        try (InputStream is = getInputStreamFromResource(filnavn)) {
-            return readFromInputStream(is);
+        try (var br = new BufferedReader(new InputStreamReader(getInputStreamFromResource(filnavn)))) {
+            return br.lines().collect(Collectors.joining("\n"));
         } catch (IOException e) {
             throw new IllegalArgumentException(e);
         }
     }
 
     public static byte[] bytesFra(String filnavn) {
-        try {
-            return Files.readAllBytes(getPath(filnavn));
+        try (InputStream is = getInputStreamFromResource(filnavn)) {
+            return is.readAllBytes();
         } catch (IOException e) {
             throw new IllegalArgumentException(e);
         }
@@ -47,22 +45,5 @@ public class ResourceHandleUtil {
         } else {
             return url;
         }
-    }
-
-    private static Path getPath(String fileName) {
-        return Path.of(Objects.requireNonNull(ResourceHandleUtil.class.getClassLoader().getResource(fileName)).getPath());
-    }
-
-    private static String readFromInputStream(InputStream inputStream)
-            throws IOException {
-        StringBuilder resultStringBuilder = new StringBuilder();
-        try (BufferedReader br
-                     = new BufferedReader(new InputStreamReader(inputStream))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                resultStringBuilder.append(line).append("\n");
-            }
-        }
-        return resultStringBuilder.toString();
     }
 }
