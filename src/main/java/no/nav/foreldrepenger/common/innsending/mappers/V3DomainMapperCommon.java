@@ -246,7 +246,7 @@ final class V3DomainMapperCommon {
     }
 
     private static Regnskapsfoerer regnskapsFørerFra(List<Regnskapsfører> regnskapsførere) {
-        if (regnskapsførere.isEmpty()) {
+        if (regnskapsførere == null || regnskapsførere.isEmpty()) {
             return null;
         }
         var regnskapsfører = regnskapsførere.get(0);
@@ -315,12 +315,13 @@ final class V3DomainMapperCommon {
     }
 
     private static Frilans create(no.nav.foreldrepenger.common.domain.felles.opptjening.Frilans frilans) {
+        var frilansOppdragsList = frilans.frilansOppdrag();
         return new Frilans()
                 .withErNyoppstartet(frilans.nyOppstartet())
                 .withHarInntektFraFosterhjem(frilans.harInntektFraFosterhjem())
-                .withNaerRelasjon(!frilans.frilansOppdrag().isEmpty())
+                .withNaerRelasjon(frilansOppdragsList != null && !frilansOppdragsList.isEmpty())
                 .withPeriode(periodeFra(frilans.periode()))
-                .withFrilansoppdrag(frilansOppdragFra(frilans.frilansOppdrag()));
+                .withFrilansoppdrag(frilansOppdragFra(frilansOppdragsList));
     }
 
     private static List<Frilansoppdrag> frilansOppdragFra(List<FrilansOppdrag> frilansOppdrag) {

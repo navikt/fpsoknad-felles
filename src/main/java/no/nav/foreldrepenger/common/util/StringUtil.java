@@ -25,7 +25,7 @@ public final class StringUtil {
     }
 
     public static String endelse(List<?> liste) {
-        if (liste.isEmpty()) {
+        if (liste == null || liste.isEmpty()) {
             return "er";
         }
         return liste.size() == 1 ? "" : "er";
