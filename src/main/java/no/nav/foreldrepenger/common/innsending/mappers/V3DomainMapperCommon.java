@@ -15,7 +15,6 @@ import javax.xml.bind.JAXBElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Strings;
 import com.neovisionaries.i18n.CountryCode;
 
 import no.nav.foreldrepenger.common.domain.AktørId;

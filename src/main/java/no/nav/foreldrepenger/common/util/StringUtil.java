@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Optional;
 
 import com.google.common.base.Strings;
-import com.nimbusds.oauth2.sdk.util.CollectionUtils;
 
 public final class StringUtil {
     private static final String DEFAULT_FLERTALL = "er";
