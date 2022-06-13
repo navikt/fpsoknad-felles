@@ -85,6 +85,12 @@ class TokenUtilTest {
     }
 
     @Test
+    void testNoToken() {
+        when(context.getJwtToken(TOKENX)).thenReturn(null);
+        assertThrows(JwtTokenValidatorException.class, () -> tokenHelper.getToken());
+    }
+
+    @Test
     void nårSubjectIkkeFinnesISubSåHentesDetFraPidTest() {
         when(claims.getSubject()).thenReturn(null);
         when(claims.getStringClaim(PID)).thenReturn(FNR.value());

@@ -13,6 +13,7 @@ import no.nav.foreldrepenger.common.domain.Fødselsnummer;
 import no.nav.security.token.support.core.context.TokenValidationContext;
 import no.nav.security.token.support.core.context.TokenValidationContextHolder;
 import no.nav.security.token.support.core.exceptions.JwtTokenValidatorException;
+import no.nav.security.token.support.core.jwt.JwtToken;
 import no.nav.security.token.support.core.jwt.JwtTokenClaims;
 
 
@@ -91,6 +92,21 @@ public class TokenUtil {
 
     private static Supplier<? extends JwtTokenValidatorException> unauthenticated(String msg) {
         return () -> new JwtTokenValidatorException(msg);
+    }
+
+    public String getToken() {
+        return issuers.stream()
+                .map(this::getToken)
+                .filter(Objects::nonNull)
+                .findFirst()
+                .orElseThrow(unauthenticated("Fant ikke ID-token"));
+    }
+
+    private String getToken(String issuer) {
+        return Optional.ofNullable(context())
+                .map(c -> c.getJwtToken(issuer))
+                .map(JwtToken::getTokenAsString)
+                .orElse(null);
     }
 
     private JwtTokenClaims claimSet() {
