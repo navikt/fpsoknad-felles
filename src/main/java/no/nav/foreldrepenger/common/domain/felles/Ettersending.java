@@ -10,7 +10,9 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
-public record Ettersending(@NotNull String saksnr,
+import no.nav.foreldrepenger.common.domain.Saksnummer;
+
+public record Ettersending(@Valid Saksnummer saksnr,
                            @NotNull EttersendingsType type,
                            @Valid List<Vedlegg> vedlegg,
                            @Pattern(regexp = FRITEKST) String dialogId) {

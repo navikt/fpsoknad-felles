@@ -127,7 +127,7 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
     private static JAXBElement<Endringssoeknad> endringssøknadFra(Endringssøknad endringssøknad) {
         return ENDRING_FACTORY_V3.createEndringssoeknad(new Endringssoeknad()
                 .withFordeling(fordelingFra(endringssøknad))
-                .withSaksnummer(endringssøknad.getSaksnr()));
+                .withSaksnummer(endringssøknad.getSaksnr().value()));
     }
 
     private JAXBElement<Foreldrepenger> foreldrepengerFra(no.nav.foreldrepenger.common.domain.foreldrepenger.Foreldrepenger ytelse) {
