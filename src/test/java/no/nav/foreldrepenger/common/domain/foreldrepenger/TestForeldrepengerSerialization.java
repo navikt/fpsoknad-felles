@@ -33,6 +33,7 @@ import org.junit.jupiter.api.Test;
 
 import com.neovisionaries.i18n.CountryCode;
 
+import no.nav.foreldrepenger.common.domain.Saksnummer;
 import no.nav.foreldrepenger.common.domain.felles.DokumentType;
 import no.nav.foreldrepenger.common.domain.felles.InnsendingsType;
 import no.nav.foreldrepenger.common.domain.felles.ProsentAndel;
@@ -85,7 +86,7 @@ class TestForeldrepengerSerialization extends SerializationTestBase {
 
     @Test
     void testFordeltKvittering() {
-        test(new FPSakFordeltKvittering("123", "456"), false);
+        test(new FPSakFordeltKvittering("123", Saksnummer.valueOf("456")), false);
     }
 
     @Test
@@ -105,7 +106,7 @@ class TestForeldrepengerSerialization extends SerializationTestBase {
 
     @Test
     void testEndringssøknad() {
-        test(endringssøknad(), false);
+        test(endringssøknad(), true);
     }
 
     @Test

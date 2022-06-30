@@ -14,6 +14,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import no.nav.foreldrepenger.common.domain.BrukerRolle;
+import no.nav.foreldrepenger.common.domain.Saksnummer;
 import no.nav.foreldrepenger.common.domain.Søker;
 import no.nav.foreldrepenger.common.domain.felles.LukketPeriode;
 import no.nav.foreldrepenger.common.domain.foreldrepenger.Endringssøknad;
@@ -67,7 +68,7 @@ class PeriodeValidatorTest {
         var fordeling = new Fordeling(true, Collections.singletonList(uttaksPeriode(null, null)));
         assertFalse(validator.validate(fordeling).isEmpty());
         var es = new Endringssøknad(LocalDate.now(), new Søker(BrukerRolle.MOR, Målform.standard()), fordeling, null, null,
-                null, "42");
+                null, Saksnummer.valueOf("42"));
         assertFalse(validator.validate(es).isEmpty());
     }
 

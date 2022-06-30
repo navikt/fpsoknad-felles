@@ -25,6 +25,7 @@ import com.google.common.collect.Lists;
 import com.neovisionaries.i18n.CountryCode;
 
 import no.nav.foreldrepenger.common.domain.Fødselsnummer;
+import no.nav.foreldrepenger.common.domain.Saksnummer;
 import no.nav.foreldrepenger.common.domain.Søknad;
 import no.nav.foreldrepenger.common.domain.Ytelse;
 import no.nav.foreldrepenger.common.domain.felles.DokumentType;
@@ -149,8 +150,7 @@ public class ForeldrepengerTestUtils {
         return new Endringssøknad(LocalDate.now(), søker(),
                 fordeling(vedleggRefs(vedlegg)), norskForelder(),
                 fødsel(),
-                rettigheter(),
-                "42V3", vedlegg);
+                rettigheter(), Saksnummer.valueOf("123456789"), vedlegg);
     }
 
     public static Søknad søknad(Ytelse ytelse, Vedlegg... vedlegg) {
@@ -167,7 +167,7 @@ public class ForeldrepengerTestUtils {
     }
 
     public static Ettersending ettersending() {
-        return new Ettersending("42", EttersendingsType.FORELDREPENGER, TO_VEDLEGG, null);
+        return new Ettersending(Saksnummer.valueOf("42"), EttersendingsType.FORELDREPENGER, TO_VEDLEGG, null);
     }
 
     private static List<Tilrettelegging> tilrettelegging(String... vedleggRefs) {

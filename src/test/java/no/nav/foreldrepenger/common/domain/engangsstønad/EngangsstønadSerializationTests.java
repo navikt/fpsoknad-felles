@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import no.nav.foreldrepenger.common.domain.AktørId;
 import no.nav.foreldrepenger.common.domain.Fødselsnummer;
 import no.nav.foreldrepenger.common.domain.Kvittering;
+import no.nav.foreldrepenger.common.domain.Saksnummer;
 import no.nav.foreldrepenger.common.domain.felles.TestUtils;
 import no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils;
 import no.nav.foreldrepenger.common.util.SerializationTestBase;
@@ -25,8 +26,14 @@ class EngangsstønadSerializationTests extends SerializationTestBase {
 
     @Test
     void testKvittering() {
-        var kvittering = new Kvittering(LocalDateTime.now(), "saksnummer", "pdf".getBytes(), "infoskrivPdf".getBytes());
-        test(kvittering, false);
+        var kvittering = new Kvittering(LocalDateTime.now(), null, "pdf".getBytes(), "infoskrivPdf".getBytes());
+        test(kvittering, true);
+    }
+
+    @Test
+    void testKvitteringMedSaksnummer() {
+        var kvittering = new Kvittering(LocalDateTime.now(), Saksnummer.valueOf("123456789"), "pdf".getBytes(), "infoskrivPdf".getBytes());
+        test(kvittering, true);
     }
 
     @Test

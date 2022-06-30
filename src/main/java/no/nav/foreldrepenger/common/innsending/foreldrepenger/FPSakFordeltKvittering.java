@@ -5,17 +5,19 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import no.nav.foreldrepenger.common.domain.Saksnummer;
+
 public class FPSakFordeltKvittering extends FordelKvittering {
 
     static final String STATUS = "FPSAK";
 
-    private final String saksnummer;
+    private final Saksnummer saksnummer;
 
     private final String journalpostId;
 
     @JsonCreator
     public FPSakFordeltKvittering(@JsonProperty("journalpostId") String journalpostId,
-            @JsonProperty("saksnummer") String saksnummer) {
+            @JsonProperty("saksnummer") Saksnummer saksnummer) {
         super(STATUS);
         this.journalpostId = journalpostId;
         this.saksnummer = saksnummer;
@@ -25,7 +27,7 @@ public class FPSakFordeltKvittering extends FordelKvittering {
         return journalpostId;
     }
 
-    public String getSaksnummer() {
+    public Saksnummer getSaksnummer() {
         return saksnummer;
     }
 
