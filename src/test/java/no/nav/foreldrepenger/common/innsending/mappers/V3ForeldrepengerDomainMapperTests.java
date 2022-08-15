@@ -60,7 +60,7 @@ class V3ForeldrepengerDomainMapperTests {
         assertThat(rettigheterJSON.harAnnenForelderRett()).isEqualTo(rettigheterXML.isHarAnnenForelderRett());
         assertThat(rettigheterJSON.harAleneOmsorgForBarnet()).isEqualTo(rettigheterXML.isHarAleneomsorgForBarnet());
         assertThat(rettigheterJSON.harMorUføretrygd()).isEqualTo(rettigheterXML.isHarMorUforetrygd());
-        assertThat(rettigheterJSON.harMorForeldrepengerEØS()).isEqualTo(rettigheterXML.isHarMorForeldrepengerEOS());
+        assertThat(rettigheterJSON.harMorRettPåForeldrepengerIEtEØSLand()).isEqualTo(rettigheterXML.isHarMorForeldrepengerEOS());
 
         // AnnenForelder
         assertThat(foreldrepenger.annenForelder()).isInstanceOf(NorskForelder.class);

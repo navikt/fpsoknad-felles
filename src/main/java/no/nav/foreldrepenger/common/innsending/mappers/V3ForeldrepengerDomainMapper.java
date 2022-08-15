@@ -416,7 +416,7 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
                 .withHarAnnenForelderRett(r.harAnnenForelderRett())
                 .withHarAleneomsorgForBarnet(r.harAleneOmsorgForBarnet())
                 .withHarMorUforetrygd(r.harMorUføretrygd())
-                .withHarMorForeldrepengerEOS(r.harMorForeldrepengerEØS());
+                .withHarMorForeldrepengerEOS(r.harMorRettPåForeldrepengerIEtEØSLand());
     }
 
     private AnnenForelder annenForelderFra(
