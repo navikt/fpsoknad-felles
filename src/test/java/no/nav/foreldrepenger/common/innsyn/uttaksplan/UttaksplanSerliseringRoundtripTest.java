@@ -3,7 +3,6 @@ package no.nav.foreldrepenger.common.innsyn.uttaksplan;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -19,7 +18,7 @@ import no.nav.foreldrepenger.common.util.SerializationTestBase;
 class UttaksplanSerliseringRoundtripTest extends SerializationTestBase {
 
     @Test
-    void uttaksperiodeRoundtripSeraliseringsTest() throws IOException {
+    void uttaksperiodeRoundtripSeraliseringsTest() {
         var uttaksperiode = getUttaksPeriode();
         test(uttaksperiode);
         assertThat(uttaksperiode.periode()).isNotNull();
@@ -28,14 +27,14 @@ class UttaksplanSerliseringRoundtripTest extends SerializationTestBase {
     }
 
     @Test
-    void uttaksplanUtenPerioderRoundtripSeraliseringTest() throws IOException {
+    void uttaksplanUtenPerioderRoundtripSeraliseringTest() {
         var grunnlag = getGrunnlag();
         var uttaksplanUtenPerioder = new UttaksplanDto(grunnlag, List.of());
         test(uttaksplanUtenPerioder);
     }
 
     @Test
-    void uttaksplanMedPerioderRoundtripSeraliseringTest() throws IOException {
+    void uttaksplanMedPerioderRoundtripSeraliseringTest() {
         var uttaksperiode = getUttaksPeriode();
         var grunnlag = getGrunnlag();
         var uttaksplanUtenPerioder = new UttaksplanDto(grunnlag, List.of(uttaksperiode, uttaksperiode));
@@ -53,6 +52,7 @@ class UttaksplanSerliseringRoundtripTest extends SerializationTestBase {
                 true,
                 true,
                 null,
+                false,
                 true,
                 false,
                 true);
