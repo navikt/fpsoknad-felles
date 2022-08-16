@@ -9,5 +9,5 @@ public record Rettigheter(boolean harAnnenForelderRett,
                           boolean harAleneOmsorgForBarnet,
                           boolean harMorUføretrygd,
                           @JsonAlias("harMorForeldrepengerEØS") // Fjern etter at både api og mottak er oppdatert
-                          boolean harRettPåForeldrepengerIEØS) {
+                          boolean harAnnenPartRettPåForeldrepengerIEØS) {
 }

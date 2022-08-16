@@ -13,7 +13,7 @@ public record SøknadsGrunnlagDto(LocalDate termindato,
                                  Boolean morErAleneOmOmsorg,
                                  Boolean morHarRett,
                                  Boolean morErUfør,
-                                 Boolean morMottarForeldrepengerIEØS,
+                                 Boolean annenPartMottarForeldrepengerIEØS,
                                  Boolean farMedmorErAleneOmOmsorg,
                                  Boolean farMedmorHarRett,
                                  Boolean annenForelderErInformert) {
