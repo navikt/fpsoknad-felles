@@ -55,7 +55,8 @@ class UttaksplanSerliseringRoundtripTest extends SerializationTestBase {
                 false,
                 true,
                 false,
-                true);
+                true,
+                false);
     }
 
     private UttaksPeriodeDto getUttaksPeriode() {

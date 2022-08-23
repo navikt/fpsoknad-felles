@@ -65,7 +65,7 @@ class PeriodeValidatorTest {
 
     @Test
     void testFordeling() {
-        var fordeling = new Fordeling(true, Collections.singletonList(uttaksPeriode(null, null)));
+        var fordeling = new Fordeling(true, Collections.singletonList(uttaksPeriode(null, null)), null);
         assertFalse(validator.validate(fordeling).isEmpty());
         var es = new Endringssøknad(LocalDate.now(), new Søker(BrukerRolle.MOR, Målform.standard()), fordeling, null, null,
                 null, Saksnummer.valueOf("42"));

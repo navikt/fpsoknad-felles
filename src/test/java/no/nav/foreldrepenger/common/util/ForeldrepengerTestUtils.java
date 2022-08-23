@@ -394,7 +394,7 @@ public class ForeldrepengerTestUtils {
     }
 
     public static Fordeling fordeling(String... vedleggRefs) {
-        return new Fordeling(true, perioder(vedleggRefs));
+        return new Fordeling(true, perioder(vedleggRefs), true);
     }
 
     public static Rettigheter rettigheter() {
