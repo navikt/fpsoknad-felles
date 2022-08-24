@@ -93,7 +93,8 @@ class V3ForeldrepengerDomainMapperTests {
                 .hasSize(3);
 
         // Fordeling
-        assertThat(foreldrepenger.fordeling().perioder())
+        var fordeling = foreldrepenger.fordeling();
+        assertThat(fordeling.perioder())
                 .hasSameSizeAs(foreldrepengerXMLO.getFordeling().getPerioder())
                 .hasSize(5);
         assertThat(foreldrepengerXMLO.getFordeling().getPerioder())
@@ -104,6 +105,7 @@ class V3ForeldrepengerDomainMapperTests {
                         Uttaksperiode.class,
                         Gradering.class
                 );
+        assertThat(fordeling.ønskerJustertUttakVedFødsel()).isTrue();
 
         // Medlemsskap
         assertThat(foreldrepengerXMLO.getMedlemskap().getOppholdUtlandet())

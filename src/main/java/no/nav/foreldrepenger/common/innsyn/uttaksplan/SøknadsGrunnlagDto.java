@@ -16,5 +16,6 @@ public record SøknadsGrunnlagDto(LocalDate termindato,
                                  Boolean annenPartHarRettPåForeldrepengerIEØS,
                                  Boolean farMedmorErAleneOmOmsorg,
                                  Boolean farMedmorHarRett,
-                                 Boolean annenForelderErInformert) {
+                                 Boolean annenForelderErInformert,
+                                 Boolean ønskerJustertUttakVedFødsel) {
 }

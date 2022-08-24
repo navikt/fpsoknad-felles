@@ -27,7 +27,7 @@
         <xsd.location>${project.basedir}/src/main/resources/xsd</xsd.location>
         <xjb.location>${project.basedir}/src/main/resources/xjb</xjb.location>
 
-        <kontrakter.version>6.1.21</kontrakter.version>
+        <kontrakter.version>6.1.24</kontrakter.version>
         <jaxb-runtime.version>2.3.6</jaxb-runtime.version>
     </properties>
 

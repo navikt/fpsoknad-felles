@@ -186,6 +186,7 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
     private static Fordeling create(no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.Fordeling fordeling) {
         return new Fordeling()
                 .withPerioder(perioderFra(fordeling.perioder()))
+                .withOenskerJustertVedFoedsel(fordeling.ønskerJustertUttakVedFødsel())
                 .withOenskerKvoteOverfoert(overføringsÅrsakFra(UKJENT_KODEVERKSVERDI))
                 .withAnnenForelderErInformert(fordeling.erAnnenForelderInformert());
     }
