@@ -5,11 +5,11 @@ import java.math.BigDecimal;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public record Gradering(Arbeidstidprosent arbeidstidprosent) {
+public record Gradering(Arbeidstidprosent arbeidstidprosent, Aktivitet aktivitet) {
 
     @JsonCreator
-    public Gradering(BigDecimal arbeidstidprosent) {
-        this(new Arbeidstidprosent(arbeidstidprosent));
+    public Gradering(BigDecimal arbeidstidprosent, Aktivitet aktivitet) {
+        this(new Arbeidstidprosent(arbeidstidprosent), aktivitet);
     }
 
     public record Arbeidstidprosent(@JsonValue BigDecimal value) {

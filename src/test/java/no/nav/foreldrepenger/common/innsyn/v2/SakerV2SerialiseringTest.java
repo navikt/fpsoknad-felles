@@ -50,7 +50,8 @@ class SakerV2SerialiseringTest {
                 UtsettelseÅrsak.BARN_INNLAGT,
                 OppholdÅrsak.MØDREKVOTE_ANNEN_FORELDER,
                 OverføringÅrsak.ALENEOMSORG,
-                new Gradering(BigDecimal.valueOf(50L)),
+                new Gradering(BigDecimal.valueOf(50L), new Aktivitet(Aktivitet.Type.ORDINÆRT_ARBEID,
+                        new Arbeidsgiver("123", Arbeidsgiver.ArbeidsgiverType.ORGANISASJON))),
                 MorsAktivitet.INNLAGT,
                 new SamtidigUttak(BigDecimal.valueOf(30L)),
                 false);
