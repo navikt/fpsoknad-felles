@@ -8,6 +8,6 @@ import no.nav.foreldrepenger.common.domain.validation.annotations.Rettighet;
 public record Rettigheter(boolean harAnnenForelderRett,
                           boolean harAleneOmsorgForBarnet,
                           boolean harMorUføretrygd,
-                          @JsonAlias("harMorForeldrepengerEØS") // Fjern etter at både api og mottak er oppdatert
-                          boolean harAnnenPartRettPåForeldrepengerIEØS) {
+                          @JsonAlias("harAnnenPartRettPåForeldrepengerIEØS") // Fjern etter at både api og mottak er oppdatert
+                          boolean harAnnenForelderTilsvarendeRettEØS) {
 }
