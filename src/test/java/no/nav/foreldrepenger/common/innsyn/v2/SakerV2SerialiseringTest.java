@@ -46,7 +46,7 @@ class SakerV2SerialiseringTest {
         var vedtakPerioder = new VedtakPeriode(LocalDate.of(2021, 12, 1),
                 LocalDate.of(2022, 3, 31),
                 KontoType.FORELDREPENGER,
-                new VedtakPeriodeResultat(true),
+                new VedtakPeriodeResultat(true, true),
                 UtsettelseÅrsak.BARN_INNLAGT,
                 OppholdÅrsak.MØDREKVOTE_ANNEN_FORELDER,
                 OverføringÅrsak.ALENEOMSORG,

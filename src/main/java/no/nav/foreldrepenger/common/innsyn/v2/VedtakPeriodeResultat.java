@@ -1,3 +1,3 @@
 package no.nav.foreldrepenger.common.innsyn.v2;
 
-public record VedtakPeriodeResultat(boolean innvilget) { }
+public record VedtakPeriodeResultat(boolean innvilget, boolean trekkerMinsterett) { }
