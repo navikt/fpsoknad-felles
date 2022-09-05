@@ -3,12 +3,14 @@ package no.nav.foreldrepenger.common.innsyn.v2;
 import java.math.BigDecimal;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public record Gradering(Arbeidstidprosent arbeidstidprosent, Aktivitet aktivitet) {
 
     @JsonCreator
-    public Gradering(BigDecimal arbeidstidprosent, Aktivitet aktivitet) {
+    public Gradering(@JsonProperty("arbeidstidprosent") BigDecimal arbeidstidprosent,
+                     @JsonProperty("aktivitet") Aktivitet aktivitet) {
         this(new Arbeidstidprosent(arbeidstidprosent), aktivitet);
     }
 
