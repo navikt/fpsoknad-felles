@@ -4,7 +4,7 @@ import no.nav.foreldrepenger.common.domain.validation.annotations.Rettighet;
 
 @Rettighet
 public record Rettigheter(boolean harAnnenForelderRett,
-                          boolean harAleneOmsorgForBarnet,
+                          Boolean harAleneOmsorgForBarnet,
                           Boolean harMorUføretrygd,
                           Boolean harAnnenForelderTilsvarendeRettEØS) {
 }

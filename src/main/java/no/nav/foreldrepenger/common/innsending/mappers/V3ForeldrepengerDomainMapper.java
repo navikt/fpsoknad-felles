@@ -416,7 +416,7 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
         return new Rettigheter()
                 .withHarOmsorgForBarnetIPeriodene(true)
                 .withHarAnnenForelderRett(r.harAnnenForelderRett())
-                .withHarAleneomsorgForBarnet(r.harAleneOmsorgForBarnet())
+                .withHarAleneomsorgForBarnet(toBoolean(r.harAleneOmsorgForBarnet()))
                 .withHarMorUforetrygd(toBoolean(r.harMorUføretrygd()))
                 .withHarAnnenForelderTilsvarendeRettEOS(toBoolean(r.harAnnenForelderTilsvarendeRettEØS()));
     }

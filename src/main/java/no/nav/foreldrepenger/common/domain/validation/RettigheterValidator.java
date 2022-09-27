@@ -13,7 +13,7 @@ public class RettigheterValidator implements ConstraintValidator<Rettighet, Rett
 
     @Override
     public boolean isValid(Rettigheter rettigheter, ConstraintValidatorContext ctx) {
-        if (rettigheter.harAleneOmsorgForBarnet() && (rettigheter.harAnnenForelderRett() || toBoolean(rettigheter.harMorUføretrygd()))) {
+        if (toBoolean(rettigheter.harAleneOmsorgForBarnet()) && (rettigheter.harAnnenForelderRett() || toBoolean(rettigheter.harMorUføretrygd()))) {
             return false;
         }
         return true;
