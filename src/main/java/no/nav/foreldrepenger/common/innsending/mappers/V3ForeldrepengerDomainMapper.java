@@ -7,6 +7,7 @@ import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperComm
 import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.opptjeningFra;
 import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.søkerFra;
 import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.vedleggFra;
+import static no.nav.foreldrepenger.common.util.LangUtil.toBoolean;
 import static no.nav.foreldrepenger.common.util.StreamUtil.safeStream;
 
 import java.util.List;
@@ -188,7 +189,7 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
                 .withPerioder(perioderFra(fordeling.perioder()))
                 .withOenskerJustertVedFoedsel(fordeling.ønskerJustertUttakVedFødsel())
                 .withOenskerKvoteOverfoert(overføringsÅrsakFra(UKJENT_KODEVERKSVERDI))
-                .withAnnenForelderErInformert(fordeling.erAnnenForelderInformert());
+                .withAnnenForelderErInformert(toBoolean(fordeling.erAnnenForelderInformert()));
     }
 
     private static List<no.nav.vedtak.felles.xml.soeknad.uttak.v3.LukketPeriodeMedVedlegg> perioderFra(
@@ -415,9 +416,9 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
         return new Rettigheter()
                 .withHarOmsorgForBarnetIPeriodene(true)
                 .withHarAnnenForelderRett(r.harAnnenForelderRett())
-                .withHarAleneomsorgForBarnet(r.harAleneOmsorgForBarnet())
-                .withHarMorUforetrygd(r.harMorUføretrygd())
-                .withHarAnnenForelderTilsvarendeRettEOS(r.harAnnenForelderTilsvarendeRettEØS());
+                .withHarAleneomsorgForBarnet(toBoolean(r.harAleneOmsorgForBarnet()))
+                .withHarMorUforetrygd(toBoolean(r.harMorUføretrygd()))
+                .withHarAnnenForelderTilsvarendeRettEOS(toBoolean(r.harAnnenForelderTilsvarendeRettEØS()));
     }
 
     private AnnenForelder annenForelderFra(

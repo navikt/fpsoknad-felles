@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 
 @Builder
-public record Fordeling(boolean erAnnenForelderInformert, @Valid List<LukketPeriodeMedVedlegg> perioder, Boolean ønskerJustertUttakVedFødsel) {
+public record Fordeling(Boolean erAnnenForelderInformert, @Valid List<LukketPeriodeMedVedlegg> perioder, Boolean ønskerJustertUttakVedFødsel) {
 
     @JsonCreator
     public Fordeling {
