@@ -17,7 +17,7 @@ import no.nav.foreldrepenger.common.oppslag.dkif.Målform;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Søker {
 
-    @NotNull(message = "{ytelse.søknadsrolle.notnull}")
+    @NotNull(message = "Søknadsrolle må være satt")
     private final BrukerRolle søknadsRolle;
     private final Målform målform;
 

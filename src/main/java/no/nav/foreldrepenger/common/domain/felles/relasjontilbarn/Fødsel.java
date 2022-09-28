@@ -18,7 +18,7 @@ import no.nav.foreldrepenger.common.domain.validation.annotations.PastOrToday;
 @BarnOgFødselsdatoer
 public final class Fødsel extends RelasjonTilBarn {
 
-    private final List<@PastOrToday(message = "{ytelse.relasjontilbarn.fødsel.fødselsdato}") LocalDate> fødselsdato;
+    private final List<@PastOrToday(message = "Fødselsdato for barn [${validatedValue}] kan ikke være en en framtidig dato") LocalDate> fødselsdato;
     private final LocalDate termindato;
 
     @Builder

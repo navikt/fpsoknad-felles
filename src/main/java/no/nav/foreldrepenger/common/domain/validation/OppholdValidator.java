@@ -56,7 +56,7 @@ public class OppholdValidator implements ConstraintValidator<Opphold, List<Utenl
         return true;
     }
 
-    private static boolean erOverlappende(Utenlandsopphold førstePeriode, Utenlandsopphold annenPeriode) {
+    public static boolean erOverlappende(Utenlandsopphold førstePeriode, Utenlandsopphold annenPeriode) {
         // Siden vi ikke kan garantere at listen er sortert, så må begge disse være sanne
         return førstePeriode.tom().isAfter(annenPeriode.fom()) &&
                 annenPeriode.tom().isAfter(førstePeriode.fom());

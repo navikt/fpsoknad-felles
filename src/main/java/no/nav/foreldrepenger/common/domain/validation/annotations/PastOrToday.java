@@ -20,7 +20,7 @@ import no.nav.foreldrepenger.common.domain.validation.PastOrTodayValidator;
 public @interface PastOrToday {
     String message()
 
-    default "{ytelse.relasjontilbarn.framtidig.terminbekreftelse.fortid}";
+    default "Terminbekreftelsesdato [${validatedValue}]  må være satt og kan ikke være en framtidig dato";
 
     Class<?>[] groups() default {};
 

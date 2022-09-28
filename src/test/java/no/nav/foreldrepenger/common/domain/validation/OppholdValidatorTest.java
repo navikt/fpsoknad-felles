@@ -1,6 +1,7 @@
 package no.nav.foreldrepenger.common.domain.validation;
 
 
+import static no.nav.foreldrepenger.common.domain.validation.OppholdValidator.erOverlappende;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
@@ -29,6 +30,13 @@ class OppholdValidatorTest {
         validator = Validation.buildDefaultValidatorFactory().getValidator();
     }
 
+    @Test
+    void overlappSammeDag() {
+        boolean overlapp = erOverlappende(
+                new Utenlandsopphold(CountryCode.NO, new LukketPeriode(LocalDate.of(2022, 6, 20), LocalDate.of(2022, 6, 26))),
+                new Utenlandsopphold(CountryCode.SE, new LukketPeriode(LocalDate.of(2022, 6, 25), LocalDate.of(2022, 6, 27))));
+        assertThat(overlapp).isFalse();
+    }
     @Test
     void happycaseIngenPeridoer() {
         var medlemsskap = new Medlemsskap(null, null);

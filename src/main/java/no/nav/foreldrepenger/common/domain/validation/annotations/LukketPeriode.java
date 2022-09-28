@@ -18,5 +18,5 @@ public @interface LukketPeriode {
 
     Class<?>[] payload() default {};
 
-    String message() default "{ytelse.medlemsskap.periode.ugyldig}";
+    String message() default "Perioden {validatedValue} er ugyldig";
 }
