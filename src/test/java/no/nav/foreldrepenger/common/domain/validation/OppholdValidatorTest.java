@@ -31,11 +31,11 @@ class OppholdValidatorTest {
     }
 
     @Test
-    void overlappSammeDag() {
+    void overlappendePerioderSkalFeile() {
         boolean overlapp = erOverlappende(
                 new Utenlandsopphold(CountryCode.NO, new LukketPeriode(LocalDate.of(2022, 6, 20), LocalDate.of(2022, 6, 26))),
-                new Utenlandsopphold(CountryCode.SE, new LukketPeriode(LocalDate.of(2022, 6, 25), LocalDate.of(2022, 6, 27))));
-        assertThat(overlapp).isFalse();
+                new Utenlandsopphold(CountryCode.SE, new LukketPeriode(LocalDate.of(2022, 6, 24), LocalDate.of(2022, 6, 27))));
+        assertThat(overlapp).isTrue();
     }
     @Test
     void happycaseIngenPeridoer() {
