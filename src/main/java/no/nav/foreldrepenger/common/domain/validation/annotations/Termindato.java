@@ -20,7 +20,7 @@ import no.nav.foreldrepenger.common.domain.validation.TermindatoValidator;
 @Documented
 @ReportAsSingleViolation
 public @interface Termindato {
-    String message() default "{ytelse.relasjontilbarn.framtidig.termindato.fortid}";
+    String message() default "Termindato [${validatedValue}]  må være satt og kan ikke være lenger tilbake i tid enn {weeks} uker";
 
     Class<?>[] groups() default {};
 

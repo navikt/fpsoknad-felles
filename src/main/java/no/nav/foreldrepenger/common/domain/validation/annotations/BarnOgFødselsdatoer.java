@@ -17,7 +17,7 @@ import no.nav.foreldrepenger.common.domain.validation.BarnOgFødselsdatoerValida
 @Documented
 public @interface BarnOgFødselsdatoer {
 
-    String message() default "{ytelse.relasjontilbarn.fødsel.fødselsdato.match}";
+    String message() default "Antall barn og antall fødselsdatoer må matche";
 
     Class<?>[] groups() default {};
 

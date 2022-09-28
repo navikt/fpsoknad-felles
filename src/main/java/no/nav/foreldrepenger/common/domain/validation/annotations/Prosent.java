@@ -22,5 +22,5 @@ public @interface Prosent {
 
     public double max() default 100d;
 
-    String message() default "{prosent.ugyldig}";
+    String message() default "Prosentandel må være mellom 0 og 100, var {validatedValue}";
 }
