@@ -39,6 +39,6 @@ public final class Adopsjon extends RelasjonTilBarn {
 
     @Override
     public LocalDate relasjonsDato() {
-        return fødselsdato.get(0);
+        return omsorgsovertakelsesdato;
     }
 }
