@@ -1,5 +1,7 @@
 package no.nav.foreldrepenger.common.domain.felles.relasjontilbarn;
 
+import static no.nav.foreldrepenger.common.util.StreamUtil.safeStream;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -31,6 +33,8 @@ public final class Fødsel extends RelasjonTilBarn {
 
     @Override
     public LocalDate relasjonsDato() {
-        return fødselsdato.get(0);
+        return safeStream(fødselsdato)
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("Fødselsdato for barnet må være satt!"));
     }
 }
