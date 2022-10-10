@@ -46,9 +46,10 @@ public final class GradertUttaksPeriode extends UttaksPeriode {
                                 List<String> virksomhetsnummer,
                                 boolean arbeidsForholdSomskalGraderes,
                                 Boolean frilans,
-                                Boolean selvstendig) {
+                                Boolean selvstendig,
+                                Boolean justeresVedFødsel) {
         super(fom, tom, vedlegg, uttaksperiodeType, ønskerSamtidigUttak, morsAktivitetsType, ønskerFlerbarnsdager,
-                samtidigUttakProsent);
+                samtidigUttakProsent, justeresVedFødsel);
         this.arbeidstidProsent = arbeidstidProsent;
         this.erArbeidstaker = erArbeidstaker;
         this.virksomhetsnummer = Optional.ofNullable(virksomhetsnummer).orElse(emptyList());
