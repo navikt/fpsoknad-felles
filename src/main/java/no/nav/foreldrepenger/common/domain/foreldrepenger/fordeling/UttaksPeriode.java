@@ -30,16 +30,19 @@ public sealed class UttaksPeriode extends LukketPeriodeMedVedlegg permits Grader
     private final MorsAktivitet morsAktivitetsType;
     private final boolean ønskerFlerbarnsdager;
     private final ProsentAndel samtidigUttakProsent;
+    private final Boolean justeresVedFødsel;
 
     @JsonCreator
     @Builder(builderMethodName = "UttaksPeriodeBuilder")
     public UttaksPeriode(LocalDate fom, LocalDate tom, List<String> vedlegg, StønadskontoType uttaksperiodeType, boolean ønskerSamtidigUttak,
-                         MorsAktivitet morsAktivitetsType, boolean ønskerFlerbarnsdager, ProsentAndel samtidigUttakProsent) {
+                         MorsAktivitet morsAktivitetsType, boolean ønskerFlerbarnsdager, ProsentAndel samtidigUttakProsent,
+                         Boolean justeresVedFødsel) {
         super(fom, tom, vedlegg);
         this.uttaksperiodeType = uttaksperiodeType;
         this.ønskerSamtidigUttak = ønskerSamtidigUttak;
         this.morsAktivitetsType = morsAktivitetsType;
         this.ønskerFlerbarnsdager = ønskerFlerbarnsdager;
         this.samtidigUttakProsent = samtidigUttakProsent;
+        this.justeresVedFødsel = justeresVedFødsel;
     }
 }
