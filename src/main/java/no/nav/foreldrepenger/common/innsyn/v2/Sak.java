@@ -1,5 +1,6 @@
 package no.nav.foreldrepenger.common.innsyn.v2;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 interface Sak {
@@ -13,5 +14,7 @@ interface Sak {
     boolean gjelderAdopsjon();
 
     boolean sakAvsluttet();
+
+    LocalDate sisteSøknadMottattDato();
 
 }
