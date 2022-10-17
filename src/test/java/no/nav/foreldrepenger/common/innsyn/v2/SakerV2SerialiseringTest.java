@@ -58,7 +58,7 @@ class SakerV2SerialiseringTest {
         var åpenBehandling = new FpÅpenBehandling(BehandlingTilstand.UNDER_BEHANDLING, Set.of(new Søknadsperiode(LocalDate.of(2021, 11, 1),
                 LocalDate.of(2021, 11, 13), KontoType.FORELDREPENGER)));
         var fpVedtak = new FpVedtak(List.of(vedtakPerioder));
-        var fpSak = new FpSak(saksnummer, false, false, false, false, false, false, true,
+        var fpSak = new FpSak(saksnummer, false, LocalDate.now(), false, false, false, false, false, true,
                 RettighetType.ALENEOMSORG, annenPart, familieHendelse, fpVedtak, åpenBehandling, Set.of(barn),
                 Dekningsgrad.ÅTTI);
         var saker = new Saker(Set.of(fpSak), Set.of(), Set.of());
