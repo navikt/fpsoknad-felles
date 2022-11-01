@@ -43,10 +43,10 @@ class SakerV2SerialiseringTest {
         var saksnummer = new Saksnummer("123");
         var familieHendelse = new Familiehendelse(LocalDate.of(2021, 12, 6),
                 LocalDate.of(2021, 12, 5), 1, LocalDate.of(2021, 12, 12));
-        var vedtakPerioder = new VedtakPeriode(LocalDate.of(2021, 12, 1),
+        var vedtakPerioder = new UttakPeriode(LocalDate.of(2021, 12, 1),
                 LocalDate.of(2022, 3, 31),
                 KontoType.FORELDREPENGER,
-                new VedtakPeriodeResultat(true, true),
+                new UttakPeriodeResultat(true, true),
                 UtsettelseÅrsak.BARN_INNLAGT,
                 OppholdÅrsak.MØDREKVOTE_ANNEN_FORELDER,
                 OverføringÅrsak.ALENEOMSORG,
@@ -55,8 +55,11 @@ class SakerV2SerialiseringTest {
                 MorsAktivitet.INNLAGT,
                 new SamtidigUttak(BigDecimal.valueOf(30L)),
                 false);
-        var åpenBehandling = new FpÅpenBehandling(BehandlingTilstand.UNDER_BEHANDLING, Set.of(new Søknadsperiode(LocalDate.of(2021, 11, 1),
-                LocalDate.of(2021, 11, 13), KontoType.FORELDREPENGER)));
+        var åpenBehandling = new FpÅpenBehandling(BehandlingTilstand.UNDER_BEHANDLING, List.of(new UttakPeriode(LocalDate.of(2021, 11, 1),
+                LocalDate.of(2021, 11, 13), KontoType.FORELDREPENGER, null, UtsettelseÅrsak.FRI, OppholdÅrsak.FEDREKVOTE_ANNEN_FORELDER,
+                OverføringÅrsak.SYKDOM_ANNEN_FORELDER, new Gradering(BigDecimal.valueOf(10), new Aktivitet(Aktivitet.Type.ORDINÆRT_ARBEID,
+                new Arbeidsgiver("123", Arbeidsgiver.ArbeidsgiverType.ORGANISASJON))), MorsAktivitet.ARBEID,
+                new SamtidigUttak(BigDecimal.valueOf(10)), true)));
         var fpVedtak = new FpVedtak(List.of(vedtakPerioder));
         var fpSak = new FpSak(saksnummer, false, LocalDate.now(), false, false, false, false, false, true,
                 RettighetType.ALENEOMSORG, annenPart, familieHendelse, fpVedtak, åpenBehandling, Set.of(barn),
