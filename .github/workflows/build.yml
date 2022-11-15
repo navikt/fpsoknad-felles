@@ -1,51 +1,39 @@
-
-name: Bygg og deploy
+name: Bygg
 
 on:
   push:
     branches:
-      - master
+      - '**'
     paths-ignore:
       - '**.md'
       - '**.MD'
       - '.gitignore'
-      - 'LICENCE'
+      - 'LICENSE'
       - 'CODEOWNERS'
-      - '.github/workflows/build-pr.yml'
-      - '.github/workflows/dispatch.yml'
-      - '.github/workflows/codeql-analysis.yml'
-      - '.github/dependabot.yml'
-env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - 'dokumentasjon/**'
+      - 'lokalutvikling/**'
+  schedule:
+    - cron: '0 4 * * 1'
+
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
+  build-feature:
+    name: Build
+    uses: navikt/fp-gha-workflows/.github/workflows/build-feature.yml@main
+    with:
+      sonar-scan: true # default: false
+    secrets: inherit
 
-      - name: Setup maven
-        uses: whelk-io/maven-settings-xml-action@v20
-        with:
-          repositories: '[{ "id": "github", "name": "github", "url": "https://maven.pkg.github.com/${{ github.repository }}", "releases": { "enabled": "true" }, "snapshots": { "enabled": "false" } }]'
-          servers: '[{ "id": "github", "username": "${{ github.actor }}", "password": "${{ secrets.READER_TOKEN }}" }]'
-          output_file: settings.xml
+  release-drafter:
+    name: Update
+    if: github.ref_name == 'main'
+    needs: build-feature
+    uses: navikt/fp-gha-workflows/.github/workflows/release-drafter.yml@main
+    secrets: inherit
 
-      - uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-          cache: 'maven'
-
-      - name: Bygg og  test
-        run: |
-          mvn install -e -B -s settings.xml
-      - name: Release Drafter
-        uses: release-drafter/release-drafter@v5
-        if: success()
-      - name: Sonar analyse
-        run: |
-          mvn jacoco:report org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -s settings.xml
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  snyk:
+    name: Snyk
+    needs: build-feature
+    uses: navikt/fp-gha-workflows/.github/workflows/snyk.yml@main
+    with:
+      build-version: ${{ needs.build-feature.outputs.build-version }}
+    secrets: inherit
