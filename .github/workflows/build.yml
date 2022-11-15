@@ -25,7 +25,7 @@ jobs:
 
   release-drafter:
     name: Update
-    if: github.ref_name == 'main'
+    if: github.ref_name == 'master'
     needs: build-feature
     uses: navikt/fp-gha-workflows/.github/workflows/release-drafter.yml@main
     secrets: inherit
