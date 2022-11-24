@@ -20,7 +20,7 @@ public record Person(Fødselsnummer fnr,
     public Person {
         Objects.requireNonNull(fnr,"Fnr kan ikke være null");
         Objects.requireNonNull(fornavn,"Fornavn kan ikke være null");
-        Objects.requireNonNull(fornavn,"Etternavn kan ikke være null");
+        Objects.requireNonNull(etternavn,"Etternavn kan ikke være null");
     }
 
 }
