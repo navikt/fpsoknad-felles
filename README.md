@@ -22,4 +22,4 @@ Biblioteket inneholder:
 * Kontrakt mellom fpsoknad-mottak og fpinfo,
 * Mapper fra JSON til XML søknadsobjekt (som sendes videre til fpfordel for journalføring),
 * Mappere fra XML til JSON søknadsobjekt for bruk i innsynsløsnignen,
-* Utilities og søknadsbygger.
+* Utilities og søknadsbygger. 
