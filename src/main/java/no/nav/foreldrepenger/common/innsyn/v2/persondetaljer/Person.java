@@ -14,7 +14,8 @@ public record Person(Fødselsnummer fnr,
                      String mellomnavn,
                      String etternavn,
                      Kjønn kjønn,
-                     LocalDate fødselsdato) implements PersonDetaljer {
+                     LocalDate fødselsdato,
+                     LocalDate dødsdato) implements PersonDetaljer {
 
     @JsonCreator
     public Person {
