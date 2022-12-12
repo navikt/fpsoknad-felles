@@ -9,6 +9,7 @@ import no.nav.foreldrepenger.common.domain.felles.Kjønn;
 
 public record Barn(@Valid Fødselsnummer fnr,
                    LocalDate fødselsdato,
+                   LocalDate dødsdato,
                    @Valid Navn navn,
                    Kjønn kjønn,
                    @Valid AnnenPart annenPart) {
