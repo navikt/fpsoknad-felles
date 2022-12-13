@@ -33,7 +33,7 @@ class SakerV2SerialiseringTest {
 
     @Test
     void annenPartPersonRoundtripTest() throws IOException {
-        var person = new Person(new Fødselsnummer("12345678901"), "Navn", null, "Navnæsen", Kjønn.K, LocalDate.now().minusDays(1), LocalDate.now());
+        var person = new Person(new Fødselsnummer("12345678901"), "Navn", null, "Navnæsen", Kjønn.K, LocalDate.now().minusDays(1));
         var annenPartPerson = new AnnenPart(person);
         roundtripTest(annenPartPerson);
     }
