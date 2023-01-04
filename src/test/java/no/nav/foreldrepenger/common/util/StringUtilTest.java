@@ -11,6 +11,8 @@ class StringUtilTest {
     @Test
     void testPadFnr() {
         assertEquals("111111*****", StringUtil.partialMask("11111111111"));
+        assertEquals("11*********", StringUtil.partialMask("11111111111", 2));
+        assertEquals("111111***", StringUtil.partialMask("111111111"));
     }
 
     @Test

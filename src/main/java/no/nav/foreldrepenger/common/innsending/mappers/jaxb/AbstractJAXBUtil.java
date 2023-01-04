@@ -5,9 +5,7 @@ import static javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI;
 import static javax.xml.bind.Marshaller.JAXB_FORMATTED_OUTPUT;
 import static no.nav.foreldrepenger.common.util.ResourceHandleUtil.getInputStreamFromResource;
 import static no.nav.foreldrepenger.common.util.ResourceHandleUtil.getURLFromResource;
-import static org.apache.commons.text.StringEscapeUtils.unescapeHtml4;
 
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -18,7 +16,6 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.helpers.DefaultValidationEventHandler;
 import javax.xml.transform.Source;
 import javax.xml.transform.dom.DOMResult;
@@ -39,13 +36,11 @@ abstract class AbstractJAXBUtil {
     private final JAXBContext context;
     private final Schema schema;
     private final boolean validateMarshalling;
-    private final boolean validateUnarshalling;
 
-    AbstractJAXBUtil(JAXBContext context, boolean validateMarhsalling, boolean validateUnmarshalling, String... xsds) {
+    AbstractJAXBUtil(JAXBContext context, boolean validateMarhsalling, String... xsds) {
         this.context = context;
         this.schema = schemaFra(xsds);
         this.validateMarshalling = validateMarhsalling;
-        this.validateUnarshalling = validateUnmarshalling;
     }
 
     static JAXBContext contextFra(Class<?>... classes) {
@@ -77,26 +72,6 @@ abstract class AbstractJAXBUtil {
         }
     }
 
-    public <T> T unmarshal(byte[] bytes, Class<T> clazz) {
-        return unmarshal(new String(bytes), clazz);
-    }
-
-    public <T> T unmarshal(String xml, Class<T> clazz) {
-        try {
-            return (T) unmarshaller().unmarshal(new StringReader(unescapeHtml4(xml)));
-        } catch (JAXBException e) {
-            throw new UnexpectedInputException(format("Feil ved unmarshalling av %s til  %s", xml, clazz.getName()), e);
-        }
-    }
-
-    public <T> JAXBElement<T> unmarshalToElement(String xml, Class<T> clazz) {
-        try {
-            return (JAXBElement<T>) unmarshaller().unmarshal(new StringReader(unescapeHtml4(xml)));
-        } catch (JAXBException e) {
-            throw new UnexpectedInputException(format("Feil ved unmarshalling av %s til  %s", xml, clazz.getName()), e);
-        }
-    }
-
     private static Schema schemaFra(String... xsds) {
         try {
             var schemaFactory = SchemaFactory.newInstance(W3C_XML_SCHEMA_NS_URI);
@@ -105,20 +80,6 @@ abstract class AbstractJAXBUtil {
         } catch (SAXException e) {
             LOG.warn("Noe gikk galt med konfigurasjon av skjema fra {}, bruker ikke-validerende marshaller", Arrays.toString(xsds), e);
             return null;
-        }
-    }
-
-    public Unmarshaller unmarshaller() {
-        try {
-            var unmarshaller = context.createUnmarshaller();
-            unmarshaller.setEventHandler(new DefaultValidationEventHandler());
-            if (schema != null && validateUnarshalling) {
-                unmarshaller.setSchema(schema);
-            }
-            return unmarshaller;
-        } catch (JAXBException e) {
-            throw new UnexpectedInputException(
-                    format("Feil ved konstruksjon av unmarshaller fra kontekst %s og skjema  %s", context, schema), e);
         }
     }
 

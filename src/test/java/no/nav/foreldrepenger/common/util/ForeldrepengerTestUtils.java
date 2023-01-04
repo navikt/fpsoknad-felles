@@ -1,6 +1,5 @@
 package no.nav.foreldrepenger.common.util;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static java.time.DayOfWeek.SATURDAY;
 import static java.time.DayOfWeek.SUNDAY;
 import static java.util.Collections.singletonList;
@@ -20,8 +19,9 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import com.google.common.collect.Lists;
 import com.neovisionaries.i18n.CountryCode;
 
 import no.nav.foreldrepenger.common.domain.Fødselsnummer;
@@ -87,9 +87,10 @@ public class ForeldrepengerTestUtils {
     public static final String ID143 = "V143";
     public static final String ID144 = "V144";
 
-    public static final List<Vedlegg> TO_VEDLEGG = newArrayList(
+    public static final List<Vedlegg> TO_VEDLEGG = Stream.of(
             valgfrittVedlegg(ID142, InnsendingsType.LASTET_OPP),
-            valgfrittVedlegg(ID143, InnsendingsType.LASTET_OPP));
+            valgfrittVedlegg(ID143, InnsendingsType.LASTET_OPP))
+            .collect(Collectors.toList());
     public static final ValgfrittVedlegg VEDLEGG1 = opplastetVedlegg(ID142, I500002);
     public static final ValgfrittVedlegg VEDLEGG2 = opplastetVedlegg(ID143, I500005);
     public static final ValgfrittVedlegg VEDLEGG3 = opplastetVedlegg(ID144, I000062);
@@ -171,9 +172,9 @@ public class ForeldrepengerTestUtils {
     }
 
     private static List<Tilrettelegging> tilrettelegging(String... vedleggRefs) {
-        return Lists.newArrayList(helTilrettelegging(vedleggRefs), helTilrettelegging(vedleggRefs),
-                delvisTilrettelegging(vedleggRefs),
-                ingenTilrettelegging(vedleggRefs));
+        return Stream.of(helTilrettelegging(vedleggRefs), helTilrettelegging(vedleggRefs),
+                        delvisTilrettelegging(vedleggRefs), ingenTilrettelegging(vedleggRefs))
+                .collect(Collectors.toList());
     }
 
     private static Tilrettelegging ingenTilrettelegging(String... vedleggRefs) {
@@ -314,12 +315,13 @@ public class ForeldrepengerTestUtils {
     }
 
     public static List<LukketPeriodeMedVedlegg> perioder(String... vedleggRefs) {
-        return newArrayList(
+        return Stream.of(
                 oppholdsPeriode(vedleggRefs),
                 overføringsPeriode(vedleggRefs),
                 utsettelsesPeriode(vedleggRefs),
                 uttaksPeriode(vedleggRefs),
-                gradertPeriode(vedleggRefs));
+                gradertPeriode(vedleggRefs))
+                .collect(Collectors.toList());
     }
 
     public static FremtidigFødsel termin() {
