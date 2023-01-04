@@ -5,8 +5,6 @@ import static no.nav.foreldrepenger.common.util.Versjon.defaultVersjon;
 import java.io.Serializable;
 import java.util.Objects;
 
-import org.apache.commons.lang3.tuple.Pair;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -23,7 +21,8 @@ public class SøknadEgenskap implements Serializable {
     public static final SøknadEgenskap ETTERSENDING_ENGANGSSTØNAD = of(SøknadType.ETTERSENDING_ENGANGSSTØNAD);
     public static final SøknadEgenskap UKJENT = new SøknadEgenskap(Versjon.UKJENT, SøknadType.UKJENT);
 
-    private final Pair<Versjon, SøknadType> egenskap;
+    private final Versjon versjon;
+    private final SøknadType type;
 
     public static SøknadEgenskap of(SøknadType type) {
         return new SøknadEgenskap(defaultVersjon(type), type);
@@ -31,19 +30,16 @@ public class SøknadEgenskap implements Serializable {
 
     @JsonCreator
     public SøknadEgenskap(@JsonProperty("versjon") Versjon versjon, @JsonProperty("type") SøknadType type) {
-        this.egenskap = Pair.of(versjon, type);
-    }
-
-    public Pair<Versjon, SøknadType> getEgenskap() {
-        return egenskap;
+        this.versjon = versjon;
+        this.type = type;
     }
 
     public Versjon getVersjon() {
-        return egenskap.getLeft();
+        return versjon;
     }
 
     public SøknadType getType() {
-        return egenskap.getRight();
+        return type;
     }
 
     public boolean erEttersending() {
@@ -59,28 +55,22 @@ public class SøknadEgenskap implements Serializable {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(egenskap);
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        SøknadEgenskap that = (SøknadEgenskap) o;
+        return versjon == that.versjon && type == that.type;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        SøknadEgenskap other = (SøknadEgenskap) obj;
-        return Objects.equals(getVersjon(), other.getVersjon()) && Objects.equals(getType(), other.getType());
+    public int hashCode() {
+        return Objects.hash(versjon, type);
     }
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + " [versjon=" + getVersjon() + ", søknadType=" + getType() + "]";
+        return "SøknadEgenskap{" + "versjon=" + versjon + ", type=" + type + '}';
     }
-
 }

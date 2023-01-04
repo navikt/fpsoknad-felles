@@ -9,8 +9,6 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
-import com.google.common.base.Strings;
-
 public final class StringUtil {
     private static final String DEFAULT_FLERTALL = "er";
     private static final int DEFAULT_LENGTH = 50;
@@ -58,11 +56,15 @@ public final class StringUtil {
     }
 
     public static String partialMask(String value) {
-        return partialMask(value, 11);
+        return partialMask(value, 6);
     }
 
-    public static String partialMask(String value, int length) {
-        return (value != null) && (value.length() == length) ? Strings.padEnd(value.substring(0, length / 2 + length % 2), length, '*') : value;
+    public static String partialMask(String value, int maskFraIndex) {
+        return Optional.ofNullable(value)
+                .filter(t -> t.length() >= maskFraIndex)
+                .map(s -> s.substring(0, maskFraIndex) + "*".repeat(s.length() - maskFraIndex))
+                .orElse(value);
+
     }
 
     public static List<String> maskListe(List<String> values) {
