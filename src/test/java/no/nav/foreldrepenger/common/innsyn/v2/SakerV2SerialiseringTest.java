@@ -21,7 +21,7 @@ import no.nav.foreldrepenger.common.innsyn.v2.persondetaljer.Person;
 
 class SakerV2SerialiseringTest {
 
-    private ObjectMapper mapper = MAPPER;
+    private final ObjectMapper mapper = MAPPER;
 
     private final static AnnenPart annenPart = new AnnenPart(new AktørId("42"));
     private final static AktørId barn = new AktørId("1");
@@ -65,6 +65,17 @@ class SakerV2SerialiseringTest {
                 RettighetType.ALENEOMSORG, annenPart, familieHendelse, fpVedtak, åpenBehandling, Set.of(barn),
                 Dekningsgrad.ÅTTI);
         var saker = new Saker(Set.of(fpSak), Set.of(), Set.of());
+
+        roundtripTest(saker);
+    }
+
+    @Test
+    void sakerV2SvangerskapspengerRoundtripTest() throws Exception {
+        var saksnummer = new Saksnummer("123");
+        var familieHendelse = new Familiehendelse(LocalDate.of(2021, 12, 6),
+                LocalDate.of(2021, 12, 5), 1, LocalDate.of(2021, 12, 12));
+        var svpSak = new SvpSak(saksnummer, familieHendelse, true, new SvpÅpenBehandling(BehandlingTilstand.UNDER_BEHANDLING));
+        var saker = new Saker(Set.of(), Set.of(), Set.of(svpSak));
 
         roundtripTest(saker);
     }
