@@ -80,6 +80,17 @@ class SakerV2SerialiseringTest {
         roundtripTest(saker);
     }
 
+    @Test
+    void sakerV2EngangsstønadRoundtripTest() throws Exception {
+        var saksnummer = new Saksnummer("123");
+        var familieHendelse = new Familiehendelse(LocalDate.of(2021, 12, 6),
+                LocalDate.of(2021, 12, 5), 1, LocalDate.of(2021, 12, 12));
+        var esSaker = new EsSak(saksnummer, familieHendelse, true, new EsÅpenBehandling(BehandlingTilstand.UNDER_BEHANDLING), false);
+        var saker = new Saker(Set.of(), Set.of(esSaker), Set.of());
+
+        roundtripTest(saker);
+    }
+
     private void roundtripTest(Object object) throws IOException {
         assertEquals(object, mapper.readValue(write(object), object.getClass()));
     }
