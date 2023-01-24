@@ -1,5 +1,5 @@
 package no.nav.foreldrepenger.common.innsyn.v2;
 
-record EsÅpenBehandling(BehandlingTilstand tilstand) {
+public record EsÅpenBehandling(BehandlingTilstand tilstand) {
 
 }
