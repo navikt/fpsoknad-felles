@@ -1,11 +1,10 @@
 package no.nav.foreldrepenger.common.domain.felles;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
-import static java.util.Collections.emptySet;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -32,13 +31,13 @@ public record Person(@Valid AktørId aktørId,
                      @Valid Målform målform,
                      CountryCode land,
                      @Valid Bankkonto bankkonto,
-                     @Valid Set<Barn> barn) {
+                     @Valid List<Barn> barn) {
     @Builder
     @JsonCreator
     public Person {
         målform = Optional.ofNullable(målform).orElse(Målform.standard());
         land = Optional.ofNullable(land).orElse(CountryCode.NO);
-        barn = Optional.ofNullable(barn).orElse(emptySet());
+        barn = Optional.ofNullable(barn).orElse(List.of());
     }
 
     @JsonIgnore
