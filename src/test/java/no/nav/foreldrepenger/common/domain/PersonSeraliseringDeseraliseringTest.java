@@ -1,7 +1,7 @@
 package no.nav.foreldrepenger.common.domain;
 
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
@@ -31,7 +31,7 @@ class PersonSeraliseringDeseraliseringTest extends SerializationTestBase {
                 .målform(Målform.NB)
                 .land(CountryCode.NO)
                 .bankkonto(Bankkonto.UKJENT)
-                .barn(Set.of(barn))
+                .barn(List.of(barn))
                 .build();
 
         test(person);
