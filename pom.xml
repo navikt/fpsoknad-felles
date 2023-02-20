@@ -7,7 +7,7 @@
     <parent>
         <groupId>no.nav.foreldrepenger.felles</groupId>
         <artifactId>fp-bom</artifactId>
-        <version>0.3.0</version>
+        <version>0.4.3</version>
     </parent>
 
     <groupId>no.nav.foreldrepenger</groupId>
@@ -27,7 +27,7 @@
         <xsd.location>${project.basedir}/src/main/resources/xsd</xsd.location>
         <xjb.location>${project.basedir}/src/main/resources/xjb</xjb.location>
 
-        <kontrakter.version>6.1.25</kontrakter.version>
+        <kontrakter.version>6.2.9</kontrakter.version>
         <jaxb-runtime.version>2.3.6</jaxb-runtime.version>
     </properties>
 
@@ -40,6 +40,13 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>no.nav.foreldrepenger.felles</groupId>
+                <artifactId>fp-bom</artifactId>
+                <version>0.4.3</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
             <dependency>
                 <groupId>no.nav.security</groupId>
                 <artifactId>token-validation-core</artifactId>
@@ -54,7 +61,7 @@
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
-                <version>1.18.24</version>
+                <version>1.18.26</version>
             </dependency>
             <dependency>
                 <groupId>com.neovisionaries</groupId>
