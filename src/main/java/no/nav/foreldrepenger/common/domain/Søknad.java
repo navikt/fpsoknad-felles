@@ -125,48 +125,4 @@ public class Søknad {
                 ", vedlegg=" + vedlegg +
                 '}';
     }
-
-    public static Builder builder() {
-        return new Builder<>();
-    }
-
-    public static class Builder<B extends Builder> {
-        protected LocalDate mottattdato;
-        protected Søker søker;
-        protected Ytelse ytelse;
-        protected String tilleggsopplysninger;
-        protected List<Vedlegg> vedlegg;
-
-        public Builder() {
-        }
-
-        public B mottattdato(LocalDate mottattdato) {
-            this.mottattdato = mottattdato;
-            return (B) this;
-        }
-
-        public B søker(Søker søker) {
-            this.søker = søker;
-            return (B) this;
-        }
-
-        public B ytelse(Ytelse ytelse) {
-            this.ytelse = ytelse;
-            return (B) this;
-        }
-
-        public B tilleggsopplysninger(String tilleggsopplysninger) {
-            this.tilleggsopplysninger = tilleggsopplysninger;
-            return (B) this;
-        }
-
-        public B vedlegg(List<Vedlegg> vedlegg) {
-            this.vedlegg = vedlegg;
-            return (B) this;
-        }
-
-        public Søknad build() {
-            return new Søknad(this.mottattdato, this.søker, this.ytelse, this.tilleggsopplysninger, this.vedlegg);
-        }
-    }
 }
