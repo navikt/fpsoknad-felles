@@ -1,5 +1,11 @@
 package no.nav.foreldrepenger.common.domain.foreldrepenger;
 
+import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.*;
+import org.junit.jupiter.api.Test;
+
+import java.time.LocalDate;
+import java.util.List;
+
 import static no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.Oppholdsårsak.UTTAK_FEDREKVOTE_ANNEN_FORELDER;
 import static no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.Overføringsårsak.IKKE_RETT_ANNEN_FORELDER;
 import static no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.StønadskontoType.FEDREKVOTE;
@@ -8,20 +14,6 @@ import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.ukeDagN�
 import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.uttaksPeriode;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-
-import java.time.LocalDate;
-import java.util.Collections;
-import java.util.List;
-
-import org.junit.jupiter.api.Test;
-
-import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.Fordeling;
-import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.MorsAktivitet;
-import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.OppholdsPeriode;
-import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.OverføringsPeriode;
-import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.Overføringsårsak;
-import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.UtsettelsesPeriode;
-import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.UtsettelsesÅrsak;
 
 class TestFordeling {
 
@@ -34,8 +26,7 @@ class TestFordeling {
                 new OppholdsPeriode(ukeDagNær(LocalDate.now().plusMonths(1)), ukeDagNær(utsettelseStart),
                         UTTAK_FEDREKVOTE_ANNEN_FORELDER, null),
                 new UtsettelsesPeriode(ukeDagNær(utsettelseStart),
-                        ukeDagNær(LocalDate.now().plusMonths(3)), true, Collections.singletonList("222"),
-                        INSTITUSJONSOPPHOLD_BARNET, null, null)),
+                        ukeDagNær(LocalDate.now().plusMonths(3)), true,INSTITUSJONSOPPHOLD_BARNET, null, null)),
                 false);
         assertEquals(utsettelseStart, f.getFørsteUttaksdag());
     }
@@ -50,8 +41,7 @@ class TestFordeling {
                 new OverføringsPeriode(ukeDagNær(LocalDate.now()), ukeDagNær(LocalDate.now().plusMonths(1)),
                         Overføringsårsak.ALENEOMSORG, FEDREKVOTE, null),
                 new UtsettelsesPeriode(ukeDagNær(LocalDate.now().plusMonths(2)),
-                        ukeDagNær(LocalDate.now().plusMonths(3)), true, Collections.singletonList("222"),
-                        INSTITUSJONSOPPHOLD_BARNET, null, null),
+                        ukeDagNær(LocalDate.now().plusMonths(3)), true, INSTITUSJONSOPPHOLD_BARNET, null, null),
                 uttaksPeriode(ukeDagNær(uttakStart), ukeDagNær(LocalDate.now().plusMonths(4)))),
                 false);
         assertEquals(uttakStart, f.getFørsteUttaksdag());
@@ -85,10 +75,8 @@ class TestFordeling {
         var ordinærUtsettelseFom = friTom.plusDays(1);
         var ordinærUtsettelseTom = ordinærUtsettelseFom.plusDays(1);
         var fordeling = new Fordeling(true, List.of(
-                new UtsettelsesPeriode(friFom, friTom, true, List.of(),
-                        UtsettelsesÅrsak.FRI, MorsAktivitet.ARBEID_OG_UTDANNING, List.of()),
-                new UtsettelsesPeriode(ordinærUtsettelseFom, ordinærUtsettelseTom, true, List.of(), INSTITUSJONSOPPHOLD_BARNET,
-                        MorsAktivitet.INNLAGT, List.of())),
+                new UtsettelsesPeriode(friFom, friTom, true, UtsettelsesÅrsak.FRI, MorsAktivitet.ARBEID_OG_UTDANNING, List.of()),
+                new UtsettelsesPeriode(ordinærUtsettelseFom, ordinærUtsettelseTom, true, INSTITUSJONSOPPHOLD_BARNET, MorsAktivitet.INNLAGT, List.of())),
                 false);
         assertEquals(ordinærUtsettelseFom, fordeling.getFørsteUttaksdag());
     }

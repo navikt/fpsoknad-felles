@@ -1,18 +1,18 @@
 package no.nav.foreldrepenger.common.domain;
 
-import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
-import static no.nav.foreldrepenger.common.util.StringUtil.mask;
-
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import javax.validation.constraints.Pattern;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import javax.validation.constraints.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
+import static no.nav.foreldrepenger.common.util.StringUtil.mask;
+
 @JsonPropertyOrder({"fornavn", "mellomnavn", "etternavn"})
-public record Navn(@Pattern(regexp = FRITEKST) String fornavn, @Pattern(regexp = FRITEKST) String mellomnavn,
+public record Navn(@Pattern(regexp = FRITEKST) String fornavn,
+                   @Pattern(regexp = FRITEKST) String mellomnavn,
                    @Pattern(regexp = FRITEKST) String etternavn) {
 
     @JsonIgnore

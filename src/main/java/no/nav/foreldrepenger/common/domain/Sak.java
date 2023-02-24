@@ -1,52 +1,31 @@
 package no.nav.foreldrepenger.common.domain;
 
-import static java.util.Collections.emptyList;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import no.nav.foreldrepenger.common.domain.felles.AnnenPart;
+import no.nav.foreldrepenger.common.innsyn.Behandling;
+import no.nav.foreldrepenger.common.innsyn.FagsakStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import static java.util.Collections.emptyList;
 
-import lombok.Data;
-import no.nav.foreldrepenger.common.domain.felles.AnnenPart;
-import no.nav.foreldrepenger.common.innsyn.Behandling;
-import no.nav.foreldrepenger.common.innsyn.FagsakStatus;
+public record Sak(String saksnummer,
+                  FagsakStatus status,
+                  String behandlingTema,
+                  AktørId aktørId,
+                  AnnenPart annenPart,
+                  List<AktørId> aktørIdBarn,
+                  List<Behandling> behandlinger,
+                  LocalDateTime opprettet,
+                  LocalDateTime endret,
+                  boolean mottattEndringssøknad) {
 
-@Data
-public class Sak {
-    private final String saksnummer;
-    private final FagsakStatus fagsakStatus;
-    private final String behandlingTema;
-    private final AktørId aktørId;
-    private final AnnenPart annenPart;
-    private final List<AktørId> aktørIdBarn;
-    private final List<Behandling> behandlinger;
-    private final LocalDateTime opprettet;
-    private final LocalDateTime endret;
-    private final boolean mottattEndringssøknad;
 
     @JsonCreator
-    public Sak(@JsonProperty("saksnummer") String saksnummer,
-            @JsonProperty("status") FagsakStatus fagsakStatus,
-            @JsonProperty("behandlingTema") String behandlingTema,
-            @JsonProperty("aktørId") AktørId aktørId,
-            @JsonProperty("annenPart") AnnenPart annenPart,
-            @JsonProperty("aktørIdBarn") List<AktørId> aktørIdBarn,
-            @JsonProperty("behandlinger") List<Behandling> behandlinger,
-            @JsonProperty("opprettet") LocalDateTime opprettet,
-            @JsonProperty("endret") LocalDateTime endret,
-            @JsonProperty("mottattEndringssøknad") boolean mottattEndringssøknad) {
-        this.saksnummer = saksnummer;
-        this.fagsakStatus = fagsakStatus;
-        this.behandlingTema = behandlingTema;
-        this.aktørId = aktørId;
-        this.annenPart = annenPart;
-        this.aktørIdBarn = Optional.ofNullable(aktørIdBarn).orElse(emptyList());
-        this.behandlinger = Optional.ofNullable(behandlinger).orElse(emptyList());
-        this.opprettet = opprettet;
-        this.endret = endret;
-        this.mottattEndringssøknad = mottattEndringssøknad;
+    public Sak {
+        aktørIdBarn = Optional.ofNullable(aktørIdBarn).orElse(emptyList());
+        behandlinger = Optional.ofNullable(behandlinger).orElse(emptyList());
     }
 }

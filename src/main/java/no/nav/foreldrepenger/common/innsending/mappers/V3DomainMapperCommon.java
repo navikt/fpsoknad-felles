@@ -1,56 +1,40 @@
 package no.nav.foreldrepenger.common.innsending.mappers;
 
-import static com.neovisionaries.i18n.CountryCode.XK;
-import static no.nav.foreldrepenger.common.domain.felles.InnsendingsType.LASTET_OPP;
-import static no.nav.foreldrepenger.common.domain.felles.InnsendingsType.SEND_SENERE;
-import static no.nav.foreldrepenger.common.util.StreamUtil.safeStream;
-
-import java.math.BigInteger;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-
-import javax.xml.bind.JAXBElement;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.neovisionaries.i18n.CountryCode;
-
 import no.nav.foreldrepenger.common.domain.AktørId;
 import no.nav.foreldrepenger.common.domain.BrukerRolle;
 import no.nav.foreldrepenger.common.domain.Søker;
 import no.nav.foreldrepenger.common.domain.felles.InnsendingsType;
+import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
 import no.nav.foreldrepenger.common.domain.felles.medlemskap.Medlemsskap;
 import no.nav.foreldrepenger.common.domain.felles.medlemskap.Utenlandsopphold;
-import no.nav.foreldrepenger.common.domain.felles.opptjening.AnnenOpptjeningType;
-import no.nav.foreldrepenger.common.domain.felles.opptjening.EgenNæring;
-import no.nav.foreldrepenger.common.domain.felles.opptjening.FrilansOppdrag;
-import no.nav.foreldrepenger.common.domain.felles.opptjening.Regnskapsfører;
-import no.nav.foreldrepenger.common.domain.felles.opptjening.Virksomhetstype;
+import no.nav.foreldrepenger.common.domain.felles.opptjening.*;
 import no.nav.foreldrepenger.common.domain.felles.ÅpenPeriode;
 import no.nav.foreldrepenger.common.error.UnexpectedInputException;
 import no.nav.foreldrepenger.common.oppslag.dkif.Målform;
-import no.nav.vedtak.felles.xml.soeknad.felles.v3.Bruker;
-import no.nav.vedtak.felles.xml.soeknad.felles.v3.Medlemskap;
-import no.nav.vedtak.felles.xml.soeknad.felles.v3.OppholdUtlandet;
-import no.nav.vedtak.felles.xml.soeknad.felles.v3.Periode;
-import no.nav.vedtak.felles.xml.soeknad.felles.v3.Vedlegg;
+import no.nav.vedtak.felles.xml.soeknad.felles.v3.*;
 import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.AnnenOpptjening;
-import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.EgenNaering;
 import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.Frilans;
-import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.Frilansoppdrag;
 import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.NorskOrganisasjon;
 import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.Opptjening;
-import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.Regnskapsfoerer;
 import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.UtenlandskArbeidsforhold;
 import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.UtenlandskOrganisasjon;
-import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.AnnenOpptjeningTyper;
-import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Brukerroller;
-import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Innsendingstype;
-import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Land;
-import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Spraakkode;
-import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Virksomhetstyper;
+import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.*;
+import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.xml.bind.JAXBElement;
+import java.math.BigInteger;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
+import static com.neovisionaries.i18n.CountryCode.XK;
+import static no.nav.foreldrepenger.common.domain.felles.InnsendingsType.LASTET_OPP;
+import static no.nav.foreldrepenger.common.domain.felles.InnsendingsType.SEND_SENERE;
+import static no.nav.foreldrepenger.common.util.StreamUtil.safeStream;
 
 final class V3DomainMapperCommon {
     private static final Logger LOG = LoggerFactory.getLogger(V3DomainMapperCommon.class);
@@ -62,9 +46,9 @@ final class V3DomainMapperCommon {
     }
 
     static Spraakkode målformFra(Søker søker) {
-        LOG.trace("Mapper målform fra {}", søker.getMålform());
+        LOG.trace("Mapper målform fra {}", søker.målform());
         return Optional.ofNullable(søker)
-                .map(Søker::getMålform)
+                .map(Søker::målform)
                 .map(Målform::name)
                 .map(V3DomainMapperCommon::målformFra)
                 .orElse(målformFra(Målform.standard()));
@@ -157,56 +141,54 @@ final class V3DomainMapperCommon {
     }
 
     private static EgenNaering create(EgenNæring egenNæring) {
-        if (egenNæring instanceof no.nav.foreldrepenger.common.domain.felles.opptjening.NorskOrganisasjon o) {
-            return create(o);
+        if (CountryCode.NO.equals(egenNæring.registrertILand())) {
+            return norskOrganisasjon(egenNæring);
+        } else {
+            return utenlandskOrganisasjon(egenNæring);
         }
-        if (egenNæring instanceof no.nav.foreldrepenger.common.domain.felles.opptjening.UtenlandskOrganisasjon u) {
-            return create(u);
-        }
-        throw new UnexpectedInputException("Vil aldri skje");
     }
 
-    private static UtenlandskOrganisasjon create(
-            no.nav.foreldrepenger.common.domain.felles.opptjening.UtenlandskOrganisasjon utenlandskOrg) {
+    private static UtenlandskOrganisasjon utenlandskOrganisasjon(EgenNæring utenlandskOrg) {
         return new UtenlandskOrganisasjon()
-                .withVedlegg(egenNæringVedleggFraIDs(utenlandskOrg.getVedlegg()))
-                .withBeskrivelseAvEndring(utenlandskOrg.getBeskrivelseEndring())
-                .withNaerRelasjon(utenlandskOrg.isNærRelasjon())
-                .withEndringsDato(utenlandskOrg.getEndringsDato())
-                .withOppstartsdato(utenlandskOrg.getOppstartsDato())
-                .withErNyoppstartet(utenlandskOrg.isErNyOpprettet())
-                .withErNyIArbeidslivet(utenlandskOrg.isErNyIArbeidslivet())
-                .withErVarigEndring(utenlandskOrg.isErVarigEndring())
-                .withNaeringsinntektBrutto(BigInteger.valueOf(utenlandskOrg.getNæringsinntektBrutto()))
-                .withNavn(utenlandskOrg.getOrgName())
-                .withRegistrertILand(landFra(utenlandskOrg.getRegistrertILand()))
-                .withPeriode(periodeFra(utenlandskOrg.getPeriode()))
-                .withRegnskapsfoerer(regnskapsFørerFra(utenlandskOrg.getRegnskapsførere()))
-                .withVirksomhetstype(virksomhetsTyperFra(utenlandskOrg.getVirksomhetsTyper()));
+                .withVedlegg(egenNæringVedleggFraIDs(utenlandskOrg.vedlegg()))
+                .withBeskrivelseAvEndring(utenlandskOrg.beskrivelseEndring())
+                .withNaerRelasjon(utenlandskOrg.nærRelasjon())
+                .withEndringsDato(utenlandskOrg.endringsDato())
+                .withOppstartsdato(utenlandskOrg.oppstartsDato())
+                .withErNyoppstartet(utenlandskOrg.erNyOpprettet())
+                .withErNyIArbeidslivet(utenlandskOrg.erNyIArbeidslivet())
+                .withErVarigEndring(utenlandskOrg.erVarigEndring())
+                .withNaeringsinntektBrutto(BigInteger.valueOf(utenlandskOrg.næringsinntektBrutto()))
+                .withNavn(utenlandskOrg.orgName())
+                .withRegistrertILand(landFra(utenlandskOrg.registrertILand()))
+                .withPeriode(periodeFra(utenlandskOrg.periode()))
+                .withRegnskapsfoerer(regnskapsFørerFra(utenlandskOrg.regnskapsførere()))
+                .withVirksomhetstype(virksomhetsTyperFra(utenlandskOrg.virksomhetsTyper()));
     }
 
-    private static NorskOrganisasjon create(
-            no.nav.foreldrepenger.common.domain.felles.opptjening.NorskOrganisasjon norskOrg) {
+    private static NorskOrganisasjon norskOrganisasjon(EgenNæring norskOrg) {
         return new NorskOrganisasjon()
-                .withVedlegg(egenNæringVedleggFraIDs(norskOrg.getVedlegg()))
-                .withBeskrivelseAvEndring(norskOrg.getBeskrivelseEndring())
-                .withNaerRelasjon(norskOrg.isNærRelasjon())
-                .withEndringsDato(norskOrg.getEndringsDato())
-                .withOppstartsdato(norskOrg.getOppstartsDato())
-                .withErNyoppstartet(norskOrg.isErNyOpprettet())
-                .withErNyIArbeidslivet(norskOrg.isErNyIArbeidslivet())
-                .withErVarigEndring(norskOrg.isErVarigEndring())
-                .withNaeringsinntektBrutto(BigInteger.valueOf(norskOrg.getNæringsinntektBrutto()))
-                .withNavn(norskOrg.getOrgName())
-                .withOrganisasjonsnummer(norskOrg.getOrgNummer().value())
-                .withPeriode(periodeFra(norskOrg.getPeriode()))
-                .withRegnskapsfoerer(regnskapsFørerFra(norskOrg.getRegnskapsførere()))
-                .withVirksomhetstype(virksomhetsTyperFra(norskOrg.getVirksomhetsTyper()))
-                .withOppstartsdato(norskOrg.getOppstartsDato());
+                .withVedlegg(egenNæringVedleggFraIDs(norskOrg.vedlegg()))
+                .withBeskrivelseAvEndring(norskOrg.beskrivelseEndring())
+                .withNaerRelasjon(norskOrg.nærRelasjon())
+                .withEndringsDato(norskOrg.endringsDato())
+                .withOppstartsdato(norskOrg.oppstartsDato())
+                .withErNyoppstartet(norskOrg.erNyOpprettet())
+                .withErNyIArbeidslivet(norskOrg.erNyIArbeidslivet())
+                .withErVarigEndring(norskOrg.erVarigEndring())
+                .withNaeringsinntektBrutto(BigInteger.valueOf(norskOrg.næringsinntektBrutto()))
+                .withNavn(norskOrg.orgName())
+                .withOrganisasjonsnummer(norskOrg.orgNummer().value())
+                .withPeriode(periodeFra(norskOrg.periode()))
+                .withRegnskapsfoerer(regnskapsFørerFra(norskOrg.regnskapsførere()))
+                .withVirksomhetstype(virksomhetsTyperFra(norskOrg.virksomhetsTyper()))
+                .withOppstartsdato(norskOrg.oppstartsDato());
     }
 
-    private static List<JAXBElement<Object>> egenNæringVedleggFraIDs(List<String> vedlegg) {
+    private static List<JAXBElement<Object>> egenNæringVedleggFraIDs(List<VedleggReferanse> vedlegg) {
         return safeStream(vedlegg)
+                .filter(Objects::nonNull)
+                .map(VedleggReferanse::referanse)
                 .map(s -> FP_FACTORY_V3.createEgenNaeringVedlegg(new Vedlegg().withId(s)))
                 .toList();
     }
@@ -274,14 +256,16 @@ final class V3DomainMapperCommon {
     private static UtenlandskArbeidsforhold utenlandskArbeidsforholdFra(
             no.nav.foreldrepenger.common.domain.felles.opptjening.UtenlandskArbeidsforhold forhold) {
         return new UtenlandskArbeidsforhold()
-                .withVedlegg(utenlandsArbeidsforholdVedleggFra(forhold.getVedlegg()))
-                .withArbeidsgiversnavn(forhold.getArbeidsgiverNavn())
-                .withArbeidsland(landFra(forhold.getLand()))
-                .withPeriode(periodeFra(forhold.getPeriode()));
+                .withVedlegg(utenlandsArbeidsforholdVedleggFra(forhold.vedlegg()))
+                .withArbeidsgiversnavn(forhold.arbeidsgiverNavn())
+                .withArbeidsland(landFra(forhold.land()))
+                .withPeriode(periodeFra(forhold.periode()));
     }
 
-    private static List<JAXBElement<Object>> utenlandsArbeidsforholdVedleggFra(List<String> vedlegg) {
+    private static List<JAXBElement<Object>> utenlandsArbeidsforholdVedleggFra(List<VedleggReferanse> vedlegg) {
         return safeStream(vedlegg)
+                .filter(Objects::nonNull)
+                .map(VedleggReferanse::referanse)
                 .map(s -> FP_FACTORY_V3.createUtenlandskArbeidsforholdVedlegg(new Vedlegg().withId(s)))
                 .toList();
     }
@@ -289,7 +273,7 @@ final class V3DomainMapperCommon {
     static Bruker søkerFra(AktørId aktørId, Søker søker) {
         return new Bruker()
                 .withAktoerId(aktørId.value())
-                .withSoeknadsrolle(brukerRolleFra(søker.getSøknadsRolle()));
+                .withSoeknadsrolle(brukerRolleFra(søker.søknadsRolle()));
     }
 
     static List<Vedlegg> vedleggFra(
@@ -342,8 +326,10 @@ final class V3DomainMapperCommon {
                 .withPeriode(periodeFra(oppdrag.periode()));
     }
 
-    private static List<JAXBElement<Object>> annenOpptjeningVedleggFra(List<String> vedlegg) {
+    private static List<JAXBElement<Object>> annenOpptjeningVedleggFra(List<VedleggReferanse> vedlegg) {
         return safeStream(vedlegg)
+                .filter(Objects::nonNull)
+                .map(VedleggReferanse::referanse)
                 .map(s -> FP_FACTORY_V3.createAnnenOpptjeningVedlegg(new Vedlegg().withId(s)))
                 .toList();
     }

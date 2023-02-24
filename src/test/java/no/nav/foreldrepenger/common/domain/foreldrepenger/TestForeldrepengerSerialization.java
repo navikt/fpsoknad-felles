@@ -1,45 +1,10 @@
 package no.nav.foreldrepenger.common.domain.foreldrepenger;
 
-import static java.util.Collections.singletonList;
-import static no.nav.foreldrepenger.common.domain.felles.TestUtils.adopsjon;
-import static no.nav.foreldrepenger.common.domain.felles.TestUtils.person;
-import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.annenOpptjening;
-import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.endringssøknad;
-import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.ettersending;
-import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.fordeling;
-import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.foreldrepenger;
-import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.gradertPeriode;
-import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.norskEgenNæring;
-import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.norskForelder;
-import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.omsorgsovertakelse;
-import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.oppholdsPeriode;
-import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.opptjening;
-import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.overføringsPeriode;
-import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.rettigheter;
-import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.termin;
-import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.utenlandskArbeidsforhold;
-import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.utenlandskEgenNæring;
-import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.utenlandskForelder;
-import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.utsettelsesPeriode;
-import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.uttaksPeriode;
-import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.åpenPeriode;
-import static no.nav.foreldrepenger.common.util.ResourceHandleUtil.bytesFra;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.time.Duration;
-import java.time.LocalDate;
-
-import org.junit.jupiter.api.Test;
-
 import com.neovisionaries.i18n.CountryCode;
-
 import no.nav.foreldrepenger.common.domain.Saksnummer;
-import no.nav.foreldrepenger.common.domain.felles.DokumentType;
-import no.nav.foreldrepenger.common.domain.felles.InnsendingsType;
-import no.nav.foreldrepenger.common.domain.felles.ProsentAndel;
-import no.nav.foreldrepenger.common.domain.felles.VedleggMetaData;
+import no.nav.foreldrepenger.common.domain.felles.*;
 import no.nav.foreldrepenger.common.domain.felles.annenforelder.UkjentForelder;
-import no.nav.foreldrepenger.common.domain.felles.opptjening.UtenlandskOrganisasjon;
+import no.nav.foreldrepenger.common.domain.felles.opptjening.EgenNæring;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.Adopsjon;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.FremtidigFødsel;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.Fødsel;
@@ -50,6 +15,17 @@ import no.nav.foreldrepenger.common.innsending.foreldrepenger.GosysKvittering;
 import no.nav.foreldrepenger.common.innsending.foreldrepenger.PendingKvittering;
 import no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils;
 import no.nav.foreldrepenger.common.util.SerializationTestBase;
+import org.junit.jupiter.api.Test;
+
+import java.time.Duration;
+import java.time.LocalDate;
+
+import static java.util.Collections.singletonList;
+import static no.nav.foreldrepenger.common.domain.felles.TestUtils.adopsjon;
+import static no.nav.foreldrepenger.common.domain.felles.TestUtils.person;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.*;
+import static no.nav.foreldrepenger.common.util.ResourceHandleUtil.bytesFra;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 class TestForeldrepengerSerialization extends SerializationTestBase {
@@ -141,7 +117,7 @@ class TestForeldrepengerSerialization extends SerializationTestBase {
 
     @Test
     void testVedleggMetadata() {
-        test(new VedleggMetaData("42", InnsendingsType.LASTET_OPP, DokumentType.I000002));
+        test(new VedleggMetaData(new VedleggReferanse("42"), InnsendingsType.LASTET_OPP, DokumentType.I000002));
     }
 
     @Test
@@ -216,10 +192,12 @@ class TestForeldrepengerSerialization extends SerializationTestBase {
 
     @Test
     void relasjonTilBarn() {
-        RelasjonTilBarn f = Fødsel.builder()
-                .antallBarn(1)
-                .fødselsdato(singletonList(LocalDate.now()))
-                .build();
+        RelasjonTilBarn f = new Fødsel(
+                1,
+                singletonList(LocalDate.now()),
+                null,
+                null
+        );
 
         test(f, true);
         f = new FremtidigFødsel(LocalDate.now(), LocalDate.now());
@@ -230,7 +208,7 @@ class TestForeldrepengerSerialization extends SerializationTestBase {
 
     @Test
     void testEgenNæringUtenlandskOrganisasjon() throws Exception {
-        assertEquals(CountryCode.UG, mapper.readValue(bytesFra("json/utenlandskOrg.json"), UtenlandskOrganisasjon.class).getRegistrertILand());
+        assertEquals(CountryCode.UG, mapper.readValue(bytesFra("json/utenlandskOrg.json"), EgenNæring.class).registrertILand());
 
         test(utenlandskEgenNæring(), true);
     }

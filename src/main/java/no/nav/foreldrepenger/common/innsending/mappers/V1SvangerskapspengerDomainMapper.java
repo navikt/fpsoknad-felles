@@ -1,44 +1,26 @@
 package no.nav.foreldrepenger.common.innsending.mappers;
 
-import static no.nav.foreldrepenger.common.innsending.mappers.MapperEgenskaper.SVANGERSKAPSPENGER;
-import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.medlemsskapFra;
-import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.målformFra;
-import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.opptjeningFra;
-import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.søkerFra;
-import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.vedleggFra;
-import static no.nav.foreldrepenger.common.util.StreamUtil.safeStream;
-
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import javax.xml.bind.JAXBElement;
-
 import no.nav.foreldrepenger.common.domain.AktørId;
 import no.nav.foreldrepenger.common.domain.Søknad;
 import no.nav.foreldrepenger.common.domain.felles.ProsentAndel;
+import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
 import no.nav.foreldrepenger.common.domain.foreldrepenger.Endringssøknad;
 import no.nav.foreldrepenger.common.error.UnexpectedInputException;
 import no.nav.foreldrepenger.common.innsending.mappers.jaxb.SVPV1JAXBUtil;
 import no.nav.foreldrepenger.common.innsyn.SøknadEgenskap;
 import no.nav.vedtak.felles.xml.soeknad.felles.v3.Vedlegg;
-import no.nav.vedtak.felles.xml.soeknad.svangerskapspenger.v1.Arbeidsforhold;
-import no.nav.vedtak.felles.xml.soeknad.svangerskapspenger.v1.DelvisTilrettelegging;
-import no.nav.vedtak.felles.xml.soeknad.svangerskapspenger.v1.Frilanser;
-import no.nav.vedtak.felles.xml.soeknad.svangerskapspenger.v1.HelTilrettelegging;
-import no.nav.vedtak.felles.xml.soeknad.svangerskapspenger.v1.IngenTilrettelegging;
-import no.nav.vedtak.felles.xml.soeknad.svangerskapspenger.v1.PrivatArbeidsgiver;
-import no.nav.vedtak.felles.xml.soeknad.svangerskapspenger.v1.SelvstendigNæringsdrivende;
-import no.nav.vedtak.felles.xml.soeknad.svangerskapspenger.v1.Svangerskapspenger;
-import no.nav.vedtak.felles.xml.soeknad.svangerskapspenger.v1.Tilrettelegging;
-import no.nav.vedtak.felles.xml.soeknad.svangerskapspenger.v1.TilretteleggingListe;
-import no.nav.vedtak.felles.xml.soeknad.svangerskapspenger.v1.Virksomhet;
+import no.nav.vedtak.felles.xml.soeknad.svangerskapspenger.v1.*;
 import no.nav.vedtak.felles.xml.soeknad.v3.OmYtelse;
 import no.nav.vedtak.felles.xml.soeknad.v3.Soeknad;
+
+import javax.xml.bind.JAXBElement;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.*;
+
+import static no.nav.foreldrepenger.common.innsending.mappers.MapperEgenskaper.SVANGERSKAPSPENGER;
+import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.*;
+import static no.nav.foreldrepenger.common.util.StreamUtil.safeStream;
 
 public class V1SvangerskapspengerDomainMapper implements DomainMapper {
     private static final SVPV1JAXBUtil jaxb = new SVPV1JAXBUtil();
@@ -68,7 +50,6 @@ public class V1SvangerskapspengerDomainMapper implements DomainMapper {
                 .withSoeker(søkerFra(søker, søknad.getSøker()))
                 .withOmYtelse(ytelseFra(søknad))
                 .withMottattDato(søknad.getMottattdato())
-                .withBegrunnelseForSenSoeknad(søknad.getBegrunnelseForSenSøknad())
                 .withTilleggsopplysninger(søknad.getTilleggsopplysninger());
     }
 
@@ -152,8 +133,10 @@ public class V1SvangerskapspengerDomainMapper implements DomainMapper {
                 .orElse(0d);
     }
 
-    private static List<JAXBElement<Object>> tilretteleggingVedleggFraIDs(List<String> vedlegg) {
+    private static List<JAXBElement<Object>> tilretteleggingVedleggFraIDs(List<VedleggReferanse> vedlegg) {
         return safeStream(vedlegg)
+                .filter(Objects::nonNull)
+                .map(VedleggReferanse::referanse)
                 .map(s -> SVP_FACTORY_V1.createTilretteleggingVedlegg(new Vedlegg().withId(s)))
                 .toList();
     }

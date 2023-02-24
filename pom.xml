@@ -27,8 +27,11 @@
         <xsd.location>${project.basedir}/src/main/resources/xsd</xsd.location>
         <xjb.location>${project.basedir}/src/main/resources/xjb</xjb.location>
 
+        <fp-bom.version>0.4.3</fp-bom.version>
         <kontrakter.version>6.2.11</kontrakter.version>
+        <nv-i18n.version>1.29</nv-i18n.version>
         <jaxb-runtime.version>2.3.6</jaxb-runtime.version>
+        <maven-jaxb2-plugin.version>0.15.2</maven-jaxb2-plugin.version>
     </properties>
 
     <scm>
@@ -43,7 +46,7 @@
             <dependency>
                 <groupId>no.nav.foreldrepenger.felles</groupId>
                 <artifactId>fp-bom</artifactId>
-                <version>0.4.3</version>
+                <version>${fp-bom.version}</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
@@ -59,14 +62,9 @@
                 </exclusions>
             </dependency>
             <dependency>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok</artifactId>
-                <version>1.18.26</version>
-            </dependency>
-            <dependency>
                 <groupId>com.neovisionaries</groupId>
                 <artifactId>nv-i18n</artifactId>
-                <version>1.29</version>
+                <version>${nv-i18n.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -94,10 +92,6 @@
         <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>
             <artifactId>jackson-module-parameter-names</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
         </dependency>
         <dependency>
             <groupId>com.neovisionaries</groupId>
@@ -184,7 +178,7 @@
                 <plugin>
                     <groupId>org.jvnet.jaxb2.maven2</groupId>
                     <artifactId>maven-jaxb2-plugin</artifactId>
-                    <version>0.15.2</version>
+                    <version>${maven-jaxb2-plugin.version}</version>
                     <dependencies>
                         <dependency>
                             <groupId>org.glassfish.jaxb</groupId>
@@ -246,19 +240,6 @@
                             </plugin>
                         </plugins>
                     </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.projectlombok</groupId>
-                    <artifactId>lombok-maven-plugin</artifactId>
-                    <version>1.18.20.0</version>
-                    <executions>
-                        <execution>
-                            <phase>generate-sources</phase>
-                            <goals>
-                                <goal>delombok</goal>
-                            </goals>
-                        </execution>
-                    </executions>
                 </plugin>
             </plugins>
         </pluginManagement>

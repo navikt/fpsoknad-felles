@@ -1,24 +1,9 @@
 package no.nav.foreldrepenger.common.domain.felles;
 
-import static java.util.Collections.emptyList;
-import static java.util.Collections.singletonList;
-import static no.nav.foreldrepenger.common.util.ResourceHandleUtil.bytesFra;
-
-import java.time.LocalDate;
-import java.time.Period;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.neovisionaries.i18n.CountryCode;
-
-import no.nav.foreldrepenger.common.domain.AktørId;
-import no.nav.foreldrepenger.common.domain.BrukerRolle;
-import no.nav.foreldrepenger.common.domain.Fødselsnummer;
-import no.nav.foreldrepenger.common.domain.Navn;
-import no.nav.foreldrepenger.common.domain.Søker;
-import no.nav.foreldrepenger.common.domain.Søknad;
+import no.nav.foreldrepenger.common.domain.*;
 import no.nav.foreldrepenger.common.domain.engangsstønad.Engangsstønad;
 import no.nav.foreldrepenger.common.domain.felles.annenforelder.AnnenForelder;
 import no.nav.foreldrepenger.common.domain.felles.annenforelder.NorskForelder;
@@ -26,12 +11,17 @@ import no.nav.foreldrepenger.common.domain.felles.annenforelder.UkjentForelder;
 import no.nav.foreldrepenger.common.domain.felles.annenforelder.UtenlandskForelder;
 import no.nav.foreldrepenger.common.domain.felles.medlemskap.Medlemsskap;
 import no.nav.foreldrepenger.common.domain.felles.medlemskap.Utenlandsopphold;
-import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.Adopsjon;
-import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.FremtidigFødsel;
-import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.Fødsel;
-import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.Omsorgsovertakelse;
-import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.RelasjonTilBarn;
+import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.*;
 import no.nav.foreldrepenger.common.oppslag.dkif.Målform;
+
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+import static no.nav.foreldrepenger.common.util.ResourceHandleUtil.bytesFra;
 
 public class TestUtils {
     public static boolean hasPdfSignature(byte[] bytes) {
@@ -58,10 +48,7 @@ public class TestUtils {
     }
 
     public static Søknad engangssøknad(boolean utland, RelasjonTilBarn relasjon, Vedlegg... vedlegg) {
-        var s = new Søknad(LocalDate.now(), søker(), engangstønad(utland, relasjon), vedlegg);
-        s.setBegrunnelseForSenSøknad("Glemte hele ungen");
-        s.setTilleggsopplysninger("Intet å tilføye");
-        return s;
+        return new Søknad(LocalDate.now(), søker(), engangstønad(utland, relasjon), "Intet å tilføye", List.of(vedlegg));
     }
 
     public static Engangsstønad engangstønad(boolean utland, RelasjonTilBarn relasjon) {
@@ -117,12 +104,12 @@ public class TestUtils {
     }
 
     public static PåkrevdVedlegg påkrevdVedlegg(String id, String name) {
-        var vedleggMetaData = new VedleggMetaData(id, InnsendingsType.LASTET_OPP, DokumentType.I000062);
+        var vedleggMetaData = new VedleggMetaData(new VedleggReferanse(id), InnsendingsType.LASTET_OPP, DokumentType.I000062);
         return new PåkrevdVedlegg(vedleggMetaData, bytesFra(name));
     }
 
     static ValgfrittVedlegg valgfrittVedlegg(String id, InnsendingsType type, String name) {
-        var vedleggMetaData = new VedleggMetaData(id, type, DokumentType.I000062);
+        var vedleggMetaData = new VedleggMetaData(new VedleggReferanse(id), type, DokumentType.I000062);
         return new ValgfrittVedlegg(vedleggMetaData, bytesFra(name));
     }
 
@@ -135,11 +122,12 @@ public class TestUtils {
     }
 
     public static RelasjonTilBarn fødsel(LocalDate date) {
-        return Fødsel.builder()
-                .antallBarn(1)
-                .termindato(date)
-                .fødselsdato(singletonList(date))
-                .build();
+        return new Fødsel(
+                1,
+                singletonList(date),
+                date,
+                null
+        );
     }
 
     public static List<Utenlandsopphold> framtidigOppHoldIUtlandet() {

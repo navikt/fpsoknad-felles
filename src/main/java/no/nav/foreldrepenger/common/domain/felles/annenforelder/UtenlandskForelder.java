@@ -1,30 +1,18 @@
 package no.nav.foreldrepenger.common.domain.felles.annenforelder;
 
-import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
-import static no.nav.foreldrepenger.common.util.StringUtil.mask;
+import com.neovisionaries.i18n.CountryCode;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
-import com.neovisionaries.i18n.CountryCode;
+import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
+import static no.nav.foreldrepenger.common.util.StringUtil.mask;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
-@Getter
-@RequiredArgsConstructor
-@EqualsAndHashCode
-public final class UtenlandskForelder implements AnnenForelder {
-
-    @NotBlank
-    @Pattern(regexp = FRITEKST)
-    private final String id;
-    @NotNull
-    private final CountryCode land;
-    @Pattern(regexp = FRITEKST)
-    private final String navn;
+public record UtenlandskForelder(@NotBlank @Pattern(regexp = FRITEKST) String id,
+                                 @NotNull CountryCode land,
+                                 @Pattern(regexp = FRITEKST) String navn) implements AnnenForelder {
 
     @Override
     public boolean hasId() {
@@ -33,6 +21,10 @@ public final class UtenlandskForelder implements AnnenForelder {
 
     @Override
     public String toString() {
-        return "UtenlandskForelder{" + "id='" + mask(id) + '\'' + ", land=" + land + ", navn='" + mask(navn) + '\'' + "} " + super.toString();
+        return "UtenlandskForelder{" +
+                "id='" + mask(id) + '\'' +
+                ", land=" + land +
+                ", navn='" + mask(navn) + '\'' +
+                '}';
     }
 }

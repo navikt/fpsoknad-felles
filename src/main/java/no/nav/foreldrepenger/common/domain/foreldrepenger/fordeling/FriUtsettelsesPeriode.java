@@ -1,27 +1,35 @@
 package no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import no.nav.foreldrepenger.common.domain.felles.ValgfrittVedlegg;
+import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
+
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 
-import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.Value;
-
-@Value
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-public class FriUtsettelsesPeriode extends UtsettelsesPeriode {
+public final class FriUtsettelsesPeriode extends UtsettelsesPeriode {
 
     @JsonCreator
-    @Builder(builderMethodName = "FriUtsettelsesPeriodeBuilder")
     public FriUtsettelsesPeriode(LocalDate fom, LocalDate tom, boolean erArbeidstaker,
-            @NotNull UtsettelsesÅrsak årsak, MorsAktivitet morsAktivitetsType, List<String> vedlegg) {
-        super(fom, tom, erArbeidstaker, null, årsak, morsAktivitetsType, vedlegg);
+            @NotNull UtsettelsesÅrsak årsak, MorsAktivitet morsAktivitetsType, List<VedleggReferanse> vedlegg) {
+        super(fom, tom, erArbeidstaker, årsak, morsAktivitetsType, vedlegg);
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return other instanceof ValgfrittVedlegg;
+    }
+
+    @Override
+    public int hashCode() {
+        return ValgfrittVedlegg.class.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "FriUtsettelsesPeriode{}" + super.toString();
     }
 
 }

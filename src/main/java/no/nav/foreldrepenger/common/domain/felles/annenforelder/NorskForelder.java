@@ -1,35 +1,16 @@
 package no.nav.foreldrepenger.common.domain.felles.annenforelder;
 
-import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
-import static no.nav.foreldrepenger.common.util.StringUtil.mask;
-
-import java.util.Optional;
+import no.nav.foreldrepenger.common.domain.Fødselsnummer;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.util.Optional;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
+import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
+import static no.nav.foreldrepenger.common.util.StringUtil.mask;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import no.nav.foreldrepenger.common.domain.Fødselsnummer;
-
-@Getter
-@EqualsAndHashCode(exclude = { "navn" })
-public final class NorskForelder implements AnnenForelder {
-
-    @Valid
-    @NotNull
-    private final Fødselsnummer fnr;
-    @Pattern(regexp = FRITEKST)
-    private final String navn;
-
-    @JsonCreator
-    public NorskForelder(Fødselsnummer fnr, String navn) {
-        this.fnr = fnr;
-        this.navn = navn;
-    }
+public record NorskForelder(@Valid @NotNull Fødselsnummer fnr, @Pattern(regexp = FRITEKST) String navn) implements AnnenForelder {
 
     @Override
     public boolean hasId() {
@@ -40,6 +21,9 @@ public final class NorskForelder implements AnnenForelder {
 
     @Override
     public String toString() {
-        return "NorskForelder{" + "fnr=" + fnr + ", navn='" + mask(navn) + '\'' + "} " + super.toString();
+        return "NorskForelder{" +
+                "fnr=" + fnr +
+                ", navn='" + mask(navn) + '\'' +
+                '}';
     }
 }

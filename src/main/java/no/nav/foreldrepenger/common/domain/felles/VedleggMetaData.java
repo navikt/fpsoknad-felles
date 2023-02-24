@@ -1,22 +1,21 @@
 package no.nav.foreldrepenger.common.domain.felles;
 
-import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
-
-import java.util.Optional;
-
-import javax.validation.constraints.Pattern;
-
+import com.fasterxml.jackson.annotation.JsonCreator;
 import org.hibernate.validator.constraints.Length;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
+import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
+import java.util.Optional;
 
-public record VedleggMetaData(@Length(max = 2000) @Pattern(regexp = FRITEKST) String beskrivelse,
-                              @Pattern(regexp = FRITEKST) String id,
+import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
+
+public record VedleggMetaData(@Valid VedleggReferanse id,
                               InnsendingsType innsendingsType,
-                              DokumentType dokumentType) {
+                              DokumentType dokumentType,
+                              @Length(max = 2000) @Pattern(regexp = FRITEKST) String beskrivelse) {
 
-    public VedleggMetaData(String id, InnsendingsType innsendingsType, DokumentType dokumentType) {
-        this(dokumentType.getBeskrivelse(), id, innsendingsType, dokumentType);
+    public VedleggMetaData(VedleggReferanse id, InnsendingsType innsendingsType, DokumentType dokumentType) {
+        this(id, innsendingsType, dokumentType, dokumentType.getBeskrivelse());
     }
 
     @JsonCreator
