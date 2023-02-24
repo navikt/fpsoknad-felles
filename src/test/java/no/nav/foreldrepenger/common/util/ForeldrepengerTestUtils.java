@@ -400,7 +400,7 @@ public class ForeldrepengerTestUtils {
     }
 
     public static Rettigheter rettigheter() {
-        return new Rettigheter(true, true, true, false);
+        return new Rettigheter(true, true, true, false, false);
     }
 
     private static ValgfrittVedlegg opplastetVedlegg(String id, DokumentType type) {

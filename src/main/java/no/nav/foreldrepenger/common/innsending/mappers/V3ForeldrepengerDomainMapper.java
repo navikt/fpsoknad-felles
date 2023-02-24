@@ -418,6 +418,7 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
                 .withHarAnnenForelderRett(r.harAnnenForelderRett())
                 .withHarAleneomsorgForBarnet(toBoolean(r.harAleneOmsorgForBarnet()))
                 .withHarMorUforetrygd(toBoolean(r.harMorUføretrygd()))
+                .withHarAnnenForelderOppholdtSegIEOS(toBoolean(r.harAnnenForelderOppholdtSegIEØS()))
                 .withHarAnnenForelderTilsvarendeRettEOS(toBoolean(r.harAnnenForelderTilsvarendeRettEØS()));
     }
 
