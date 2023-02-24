@@ -1,27 +1,20 @@
 package no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import no.nav.foreldrepenger.common.domain.felles.ProsentAndel;
+import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
+
+import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
 import static java.util.Collections.emptyList;
 import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
 import static no.nav.foreldrepenger.common.util.StringUtil.maskListe;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-
-import javax.validation.Valid;
-import javax.validation.constraints.Pattern;
-
-import com.fasterxml.jackson.annotation.JsonCreator;
-
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
-import no.nav.foreldrepenger.common.domain.felles.ProsentAndel;
-
-@Getter
-@EqualsAndHashCode(callSuper = true, exclude = { "virksomhetsnummer" })
-@ToString(callSuper = true, exclude = { "virksomhetsnummer" })
 public final class GradertUttaksPeriode extends UttaksPeriode {
     @Valid
     private final ProsentAndel arbeidstidProsent;
@@ -32,10 +25,9 @@ public final class GradertUttaksPeriode extends UttaksPeriode {
     private final Boolean selvstendig;
 
     @JsonCreator
-    @Builder(builderMethodName = "GradertUttaksPeriodeBuilder")
     public GradertUttaksPeriode(LocalDate fom,
                                 LocalDate tom,
-                                List<String> vedlegg,
+                                List<VedleggReferanse> vedlegg,
                                 StønadskontoType uttaksperiodeType,
                                 boolean ønskerSamtidigUttak,
                                 MorsAktivitet morsAktivitetsType,
@@ -58,10 +50,55 @@ public final class GradertUttaksPeriode extends UttaksPeriode {
         this.selvstendig = selvstendig;
     }
 
+
+
+    public ProsentAndel getArbeidstidProsent() {
+        return arbeidstidProsent;
+    }
+
+    public boolean isErArbeidstaker() {
+        return erArbeidstaker;
+    }
+
+    public List<String> getVirksomhetsnummer() {
+        return virksomhetsnummer;
+    }
+
+    public boolean isArbeidsForholdSomskalGraderes() {
+        return arbeidsForholdSomskalGraderes;
+    }
+
+    public Boolean getFrilans() {
+        return frilans;
+    }
+
+    public Boolean getSelvstendig() {
+        return selvstendig;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        GradertUttaksPeriode that = (GradertUttaksPeriode) o;
+        return erArbeidstaker == that.erArbeidstaker && arbeidsForholdSomskalGraderes == that.arbeidsForholdSomskalGraderes && Objects.equals(arbeidstidProsent, that.arbeidstidProsent) && Objects.equals(virksomhetsnummer, that.virksomhetsnummer) && Objects.equals(frilans, that.frilans) && Objects.equals(selvstendig, that.selvstendig);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), arbeidstidProsent, erArbeidstaker, virksomhetsnummer, arbeidsForholdSomskalGraderes, frilans, selvstendig);
+    }
+
     @Override
     public String toString() {
-        return "GradertUttaksPeriode{" + "arbeidstidProsent=" + arbeidstidProsent + ", erArbeidstaker=" + erArbeidstaker
-                + ", virksomhetsnummer=" + maskListe(virksomhetsnummer) + ", arbeidsForholdSomskalGraderes=" + arbeidsForholdSomskalGraderes
-                + ", frilans=" + frilans + ", selvstendig=" + selvstendig + "} " + super.toString();
+        return "GradertUttaksPeriode{" +
+                "arbeidstidProsent=" + arbeidstidProsent +
+                ", erArbeidstaker=" + erArbeidstaker +
+                ", virksomhetsnummer=" + maskListe(virksomhetsnummer) +
+                ", arbeidsForholdSomskalGraderes=" + arbeidsForholdSomskalGraderes +
+                ", frilans=" + frilans +
+                ", selvstendig=" + selvstendig +
+                '}' + super.toString();
     }
 }

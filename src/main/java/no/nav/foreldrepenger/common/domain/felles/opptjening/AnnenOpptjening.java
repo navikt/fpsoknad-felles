@@ -1,26 +1,21 @@
 package no.nav.foreldrepenger.common.domain.felles.opptjening;
 
-import static java.util.Collections.emptyList;
-import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
+import no.nav.foreldrepenger.common.domain.felles.ÅpenPeriode;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Pattern;
+import static java.util.Collections.emptyList;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-
-import no.nav.foreldrepenger.common.domain.felles.ÅpenPeriode;
-
-public record AnnenOpptjening(AnnenOpptjeningType type, @Valid ÅpenPeriode periode, List<@Pattern(regexp = FRITEKST) String> vedlegg) {
+public record AnnenOpptjening(AnnenOpptjeningType type, @Valid ÅpenPeriode periode, List<VedleggReferanse> vedlegg) {
 
     @JsonCreator
-    public AnnenOpptjening(AnnenOpptjeningType type, ÅpenPeriode periode, List<String> vedlegg) {
-        this.type = type;
-        this.periode = periode;
-        this.vedlegg = Optional.ofNullable(vedlegg).orElse(emptyList());
+    public AnnenOpptjening {
+        vedlegg = Optional.ofNullable(vedlegg).orElse(emptyList());
     }
 
     @Override

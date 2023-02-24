@@ -1,77 +1,40 @@
 package no.nav.foreldrepenger.common.innsending.mappers;
 
-import static no.nav.foreldrepenger.common.innsending.mappers.MapperEgenskaper.FORELDREPENGER;
-import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.landFra;
-import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.medlemsskapFra;
-import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.målformFra;
-import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.opptjeningFra;
-import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.søkerFra;
-import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.vedleggFra;
-import static no.nav.foreldrepenger.common.util.LangUtil.toBoolean;
-import static no.nav.foreldrepenger.common.util.StreamUtil.safeStream;
-
-import java.util.List;
-import java.util.Optional;
-
-import javax.xml.bind.JAXBElement;
-
 import no.nav.foreldrepenger.common.domain.AktørId;
 import no.nav.foreldrepenger.common.domain.Søknad;
 import no.nav.foreldrepenger.common.domain.felles.ProsentAndel;
+import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
 import no.nav.foreldrepenger.common.domain.felles.annenforelder.NorskForelder;
 import no.nav.foreldrepenger.common.domain.felles.annenforelder.UtenlandskForelder;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.Adopsjon;
-import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.FremtidigFødsel;
-import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.Fødsel;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.Omsorgsovertakelse;
-import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.RelasjonTilBarn;
+import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.*;
 import no.nav.foreldrepenger.common.domain.foreldrepenger.Endringssøknad;
-import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.FriUtsettelsesPeriode;
-import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.GradertUttaksPeriode;
 import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.LukketPeriodeMedVedlegg;
-import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.MorsAktivitet;
-import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.OppholdsPeriode;
-import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.Oppholdsårsak;
-import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.OverføringsPeriode;
-import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.Overføringsårsak;
-import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.StønadskontoType;
-import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.UtsettelsesPeriode;
-import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.UtsettelsesÅrsak;
-import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.UttaksPeriode;
+import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.*;
 import no.nav.foreldrepenger.common.error.UnexpectedInputException;
 import no.nav.foreldrepenger.common.innsending.mappers.jaxb.FPV3JAXBUtil;
 import no.nav.foreldrepenger.common.innsyn.SøknadEgenskap;
 import no.nav.foreldrepenger.common.oppslag.Oppslag;
 import no.nav.vedtak.felles.xml.soeknad.endringssoeknad.v3.Endringssoeknad;
-import no.nav.vedtak.felles.xml.soeknad.felles.v3.AnnenForelder;
-import no.nav.vedtak.felles.xml.soeknad.felles.v3.AnnenForelderMedNorskIdent;
-import no.nav.vedtak.felles.xml.soeknad.felles.v3.AnnenForelderUtenNorskIdent;
-import no.nav.vedtak.felles.xml.soeknad.felles.v3.Foedsel;
-import no.nav.vedtak.felles.xml.soeknad.felles.v3.Rettigheter;
-import no.nav.vedtak.felles.xml.soeknad.felles.v3.SoekersRelasjonTilBarnet;
-import no.nav.vedtak.felles.xml.soeknad.felles.v3.Termin;
-import no.nav.vedtak.felles.xml.soeknad.felles.v3.UkjentForelder;
-import no.nav.vedtak.felles.xml.soeknad.felles.v3.Vedlegg;
+import no.nav.vedtak.felles.xml.soeknad.felles.v3.*;
 import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.Dekningsgrad;
 import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.Foreldrepenger;
-import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Dekningsgrader;
-import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.MorsAktivitetsTyper;
-import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Omsorgsovertakelseaarsaker;
-import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Oppholdsaarsaker;
-import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Overfoeringsaarsaker;
-import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Utsettelsesaarsaker;
-import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Uttaksperiodetyper;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Arbeidsgiver;
+import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.*;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Fordeling;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Gradering;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Oppholdsperiode;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Overfoeringsperiode;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Person;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Utsettelsesperiode;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Uttaksperiode;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Virksomhet;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v3.*;
 import no.nav.vedtak.felles.xml.soeknad.v3.OmYtelse;
 import no.nav.vedtak.felles.xml.soeknad.v3.Soeknad;
+
+import javax.xml.bind.JAXBElement;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
+import static no.nav.foreldrepenger.common.innsending.mappers.MapperEgenskaper.FORELDREPENGER;
+import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.*;
+import static no.nav.foreldrepenger.common.util.LangUtil.toBoolean;
+import static no.nav.foreldrepenger.common.util.StreamUtil.safeStream;
 
 public class V3ForeldrepengerDomainMapper implements DomainMapper {
     private static final FPV3JAXBUtil JAXB = new FPV3JAXBUtil();
@@ -111,7 +74,6 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
                 .withSoeker(søkerFra(søker, søknad.getSøker()))
                 .withOmYtelse(ytelseFra(søknad))
                 .withMottattDato(søknad.getMottattdato())
-                .withBegrunnelseForSenSoeknad(søknad.getBegrunnelseForSenSøknad())
                 .withTilleggsopplysninger(søknad.getTilleggsopplysninger());
     }
 
@@ -199,8 +161,10 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
                 .toList();
     }
 
-    private static List<JAXBElement<Object>> lukketPeriodeVedleggFra(List<String> vedlegg) {
+    private static List<JAXBElement<Object>> lukketPeriodeVedleggFra(List<VedleggReferanse> vedlegg) {
         return safeStream(vedlegg)
+                .filter(Objects::nonNull)
+                .map(VedleggReferanse::referanse)
                 .map(s -> UTTAK_FACTORY_V3.createLukketPeriodeMedVedleggVedlegg(new Vedlegg().withId(s)))
                 .toList();
     }
@@ -505,8 +469,10 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
                 .withAnkomstdato(adopsjon.getAnkomstDato());
     }
 
-    private static List<JAXBElement<Object>> relasjonTilBarnVedleggFra(List<String> vedlegg) {
+    private static List<JAXBElement<Object>> relasjonTilBarnVedleggFra(List<VedleggReferanse> vedlegg) {
         return safeStream(vedlegg)
+                .filter(Objects::nonNull)
+                .map(VedleggReferanse::referanse)
                 .map(s -> FELLES_FACTORY_V3.createSoekersRelasjonTilBarnetVedlegg(new Vedlegg().withId(s)))
                 .toList();
     }

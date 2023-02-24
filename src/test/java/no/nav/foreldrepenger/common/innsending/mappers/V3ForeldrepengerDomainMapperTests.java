@@ -1,13 +1,5 @@
 package no.nav.foreldrepenger.common.innsending.mappers;
 
-import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.NORSK_FORELDER_FNR;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import no.nav.foreldrepenger.common.domain.AktørId;
 import no.nav.foreldrepenger.common.domain.felles.ValgfrittVedlegg;
 import no.nav.foreldrepenger.common.domain.felles.annenforelder.NorskForelder;
@@ -16,11 +8,14 @@ import no.nav.foreldrepenger.common.oppslag.Oppslag;
 import no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils;
 import no.nav.vedtak.felles.xml.soeknad.felles.v3.AnnenForelderMedNorskIdent;
 import no.nav.vedtak.felles.xml.soeknad.felles.v3.Termin;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Gradering;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Oppholdsperiode;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Overfoeringsperiode;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Utsettelsesperiode;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Uttaksperiode;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v3.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.NORSK_FORELDER_FNR;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class V3ForeldrepengerDomainMapperTests {
 
@@ -42,7 +37,7 @@ class V3ForeldrepengerDomainMapperTests {
         var søknad = ForeldrepengerTestUtils.foreldrepengesøknad();
         var søknadXML = mapper.tilModell(søknad, aktørIdSøker);
         assertThat(søknadXML.getSoeker().getAktoerId()).isEqualTo(aktørIdSøker.value());
-        assertThat(søknadXML.getSoeker().getSoeknadsrolle().getKode()).isEqualTo(søknad.getSøker().getSøknadsRolle().name());
+        assertThat(søknadXML.getSoeker().getSoeknadsrolle().getKode()).isEqualTo(søknad.getSøker().søknadsRolle().name());
 
         assertThat(søknadXML.getMottattDato()).isEqualTo(søknad.getMottattdato());
         assertThat(søknad.getVedlegg())

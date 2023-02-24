@@ -1,22 +1,17 @@
 package no.nav.foreldrepenger.common.domain.felles.annenforelder;
 
-import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
-import static no.nav.foreldrepenger.common.util.StringUtil.mask;
-
-import java.util.Optional;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import no.nav.foreldrepenger.common.domain.Fødselsnummer;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.util.Objects;
+import java.util.Optional;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
+import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
+import static no.nav.foreldrepenger.common.util.StringUtil.mask;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import no.nav.foreldrepenger.common.domain.Fødselsnummer;
-
-@Getter
-@EqualsAndHashCode(exclude = { "navn" })
 public final class NorskForelder implements AnnenForelder {
 
     @Valid
@@ -36,6 +31,29 @@ public final class NorskForelder implements AnnenForelder {
         return Optional.ofNullable(fnr)
                 .map(Fødselsnummer::value)
                 .isPresent();
+    }
+
+    public Fødselsnummer getFnr() {
+        return fnr;
+    }
+
+    public String getNavn() {
+        return navn;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        NorskForelder that = (NorskForelder) o;
+        return Objects.equals(fnr, that.fnr);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(fnr);
     }
 
     @Override

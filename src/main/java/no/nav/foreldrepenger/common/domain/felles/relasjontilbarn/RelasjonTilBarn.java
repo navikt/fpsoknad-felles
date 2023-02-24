@@ -1,28 +1,20 @@
 package no.nav.foreldrepenger.common.domain.felles.relasjontilbarn;
 
-import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY;
-import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
-import static java.util.Collections.emptyList;
-import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Positive;
-
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import javax.validation.constraints.Positive;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
-@Getter
-@ToString
-@EqualsAndHashCode
+import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY;
+import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
+import static java.util.Collections.emptyList;
+
 @JsonTypeInfo(use = NAME, include = PROPERTY, property = "type")
 @JsonSubTypes({
         @Type(value = Fødsel.class, name = "fødsel"),
@@ -34,12 +26,40 @@ public abstract sealed class RelasjonTilBarn permits Fødsel,FremtidigFødsel,Ad
 
     public abstract LocalDate relasjonsDato();
 
-    private final List<@Pattern(regexp = FRITEKST)String> vedlegg;
+    private final List<VedleggReferanse> vedlegg;
     @Positive
     private final int antallBarn;
 
-    protected RelasjonTilBarn(int antallBarn, List<String> vedlegg) {
+    protected RelasjonTilBarn(int antallBarn, List<VedleggReferanse> vedlegg) {
         this.antallBarn = antallBarn;
         this.vedlegg = Optional.ofNullable(vedlegg).orElse(emptyList());
+    }
+
+    public List<VedleggReferanse> getVedlegg() {
+        return vedlegg;
+    }
+
+    public int getAntallBarn() {
+        return antallBarn;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        RelasjonTilBarn that = (RelasjonTilBarn) o;
+        return antallBarn == that.antallBarn && Objects.equals(vedlegg, that.vedlegg);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(vedlegg, antallBarn);
+    }
+
+    @Override
+    public String toString() {
+        return "RelasjonTilBarn{" + "vedlegg=" + vedlegg + ", antallBarn=" + antallBarn + '}';
     }
 }

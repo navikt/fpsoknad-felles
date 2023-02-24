@@ -1,68 +1,69 @@
 package no.nav.foreldrepenger.common.domain;
 
-import static java.util.Collections.emptyList;
-import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
-import static no.nav.foreldrepenger.common.util.StreamUtil.safeStream;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-
-import org.hibernate.validator.constraints.Length;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import no.nav.foreldrepenger.common.domain.felles.PåkrevdVedlegg;
 import no.nav.foreldrepenger.common.domain.felles.ValgfrittVedlegg;
 import no.nav.foreldrepenger.common.domain.felles.Vedlegg;
 import no.nav.foreldrepenger.common.domain.foreldrepenger.Foreldrepenger;
+import org.hibernate.validator.constraints.Length;
 
-@Data
-@Builder
-@AllArgsConstructor(access = AccessLevel.PACKAGE)
-@EqualsAndHashCode(exclude = "mottattdato")
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
+import static java.util.Collections.emptyList;
+import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
+import static no.nav.foreldrepenger.common.util.StreamUtil.safeStream;
+
 @JsonPropertyOrder({ "mottattdato", "søker", "ytelse", "begrunnelseForSenSøknad", "tilleggsopplysninger", "vedlegg" })
 public class Søknad {
 
     @NotNull
-    private LocalDate mottattdato;
+    private final LocalDate mottattdato;
     @Valid
     private final Søker søker;
     @Valid
     private final Ytelse ytelse;
-    @Length(max = 2000)
-    @Pattern(regexp = FRITEKST)
-    private String begrunnelseForSenSøknad;
     @Length(max = 4000)
     @Pattern(regexp = FRITEKST)
-    private String tilleggsopplysninger;
+    private final String tilleggsopplysninger;
     @Valid
     private final List<Vedlegg> vedlegg;
 
-    public Søknad(LocalDate mottattdato, Søker søker, Ytelse ytelse, Vedlegg... vedlegg) {
-        this(mottattdato, søker, ytelse, List.of(vedlegg));
-    }
 
     @JsonCreator
-    public Søknad(@JsonProperty("mottattdato") LocalDate mottattdato, @JsonProperty("søker") Søker søker,
-            @JsonProperty("ytelse") Ytelse ytelse,
-            @JsonProperty("vedlegg") List<Vedlegg> vedlegg) {
+    public Søknad(LocalDate mottattdato, Søker søker, Ytelse ytelse, String tilleggsopplysninger, List<Vedlegg> vedlegg) {
         this.mottattdato = mottattdato;
         this.søker = søker;
         this.ytelse = ytelse;
+        this.tilleggsopplysninger = tilleggsopplysninger;
         this.vedlegg = Optional.ofNullable(vedlegg).orElse(emptyList());
+    }
+
+    public LocalDate getMottattdato() {
+        return mottattdato;
+    }
+
+    public Søker getSøker() {
+        return søker;
+    }
+
+    public Ytelse getYtelse() {
+        return ytelse;
+    }
+
+    public String getTilleggsopplysninger() {
+        return tilleggsopplysninger;
+    }
+
+    public List<Vedlegg> getVedlegg() {
+        return vedlegg;
     }
 
     @JsonIgnore
@@ -83,7 +84,7 @@ public class Søknad {
 
     @JsonIgnore
     public BrukerRolle getSøknadsRolle() {
-        return søker.getSøknadsRolle();
+        return søker.søknadsRolle();
     }
 
     @JsonIgnore
@@ -99,5 +100,73 @@ public class Søknad {
         return Optional.ofNullable(getFørsteUttaksdag())
                 .map(d -> d.minusWeeks(4))
                 .orElse(null);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Søknad søknad = (Søknad) o;
+        return Objects.equals(mottattdato, søknad.mottattdato) && Objects.equals(søker, søknad.søker) && Objects.equals(ytelse, søknad.ytelse) && Objects.equals(tilleggsopplysninger, søknad.tilleggsopplysninger) && Objects.equals(vedlegg, søknad.vedlegg);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(mottattdato, søker, ytelse, tilleggsopplysninger, vedlegg);
+    }
+
+    @Override
+    public String toString() {
+        return "Søknad{" +
+                "mottattdato=" + mottattdato +
+                ", søker=" + søker +
+                ", ytelse=" + ytelse +
+                ", tilleggsopplysninger='" + tilleggsopplysninger + '\'' +
+                ", vedlegg=" + vedlegg +
+                '}';
+    }
+
+    public static Builder builder() {
+        return new Builder<>();
+    }
+
+    public static class Builder<B extends Builder> {
+        protected LocalDate mottattdato;
+        protected Søker søker;
+        protected Ytelse ytelse;
+        protected String tilleggsopplysninger;
+        protected List<Vedlegg> vedlegg;
+
+        public Builder() {
+        }
+
+        public B mottattdato(LocalDate mottattdato) {
+            this.mottattdato = mottattdato;
+            return (B) this;
+        }
+
+        public B søker(Søker søker) {
+            this.søker = søker;
+            return (B) this;
+        }
+
+        public B ytelse(Ytelse ytelse) {
+            this.ytelse = ytelse;
+            return (B) this;
+        }
+
+        public B tilleggsopplysninger(String tilleggsopplysninger) {
+            this.tilleggsopplysninger = tilleggsopplysninger;
+            return (B) this;
+        }
+
+        public B vedlegg(List<Vedlegg> vedlegg) {
+            this.vedlegg = vedlegg;
+            return (B) this;
+        }
+
+        public Søknad build() {
+            return new Søknad(this.mottattdato, this.søker, this.ytelse, this.tilleggsopplysninger, this.vedlegg);
+        }
     }
 }

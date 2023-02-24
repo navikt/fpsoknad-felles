@@ -1,75 +1,23 @@
 package no.nav.foreldrepenger.common.util;
 
-import static java.time.DayOfWeek.SATURDAY;
-import static java.time.DayOfWeek.SUNDAY;
-import static java.util.Collections.singletonList;
-import static no.nav.foreldrepenger.common.domain.Orgnummer.MAGIC_ORG;
-import static no.nav.foreldrepenger.common.domain.felles.DokumentType.I000062;
-import static no.nav.foreldrepenger.common.domain.felles.DokumentType.I000063;
-import static no.nav.foreldrepenger.common.domain.felles.DokumentType.I500002;
-import static no.nav.foreldrepenger.common.domain.felles.DokumentType.I500005;
-import static no.nav.foreldrepenger.common.domain.felles.TestUtils.medlemsskap;
-import static no.nav.foreldrepenger.common.domain.felles.TestUtils.søker;
-import static no.nav.foreldrepenger.common.domain.felles.TestUtils.valgfrittVedlegg;
-import static no.nav.foreldrepenger.common.domain.felles.opptjening.Virksomhetstype.FISKE;
-import static no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.StønadskontoType.FEDREKVOTE;
-import static no.nav.foreldrepenger.common.util.ResourceHandleUtil.bytesFra;
-
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import com.neovisionaries.i18n.CountryCode;
-
 import no.nav.foreldrepenger.common.domain.Fødselsnummer;
 import no.nav.foreldrepenger.common.domain.Saksnummer;
 import no.nav.foreldrepenger.common.domain.Søknad;
 import no.nav.foreldrepenger.common.domain.Ytelse;
-import no.nav.foreldrepenger.common.domain.felles.DokumentType;
-import no.nav.foreldrepenger.common.domain.felles.Ettersending;
-import no.nav.foreldrepenger.common.domain.felles.EttersendingsType;
-import no.nav.foreldrepenger.common.domain.felles.InnsendingsType;
-import no.nav.foreldrepenger.common.domain.felles.ProsentAndel;
-import no.nav.foreldrepenger.common.domain.felles.TestUtils;
-import no.nav.foreldrepenger.common.domain.felles.ValgfrittVedlegg;
-import no.nav.foreldrepenger.common.domain.felles.Vedlegg;
-import no.nav.foreldrepenger.common.domain.felles.VedleggMetaData;
+import no.nav.foreldrepenger.common.domain.felles.*;
 import no.nav.foreldrepenger.common.domain.felles.annenforelder.NorskForelder;
 import no.nav.foreldrepenger.common.domain.felles.annenforelder.UtenlandskForelder;
-import no.nav.foreldrepenger.common.domain.felles.opptjening.AnnenOpptjening;
-import no.nav.foreldrepenger.common.domain.felles.opptjening.AnnenOpptjeningType;
-import no.nav.foreldrepenger.common.domain.felles.opptjening.EgenNæring;
-import no.nav.foreldrepenger.common.domain.felles.opptjening.Frilans;
-import no.nav.foreldrepenger.common.domain.felles.opptjening.FrilansOppdrag;
-import no.nav.foreldrepenger.common.domain.felles.opptjening.NorskOrganisasjon;
-import no.nav.foreldrepenger.common.domain.felles.opptjening.Opptjening;
-import no.nav.foreldrepenger.common.domain.felles.opptjening.Regnskapsfører;
-import no.nav.foreldrepenger.common.domain.felles.opptjening.UtenlandskArbeidsforhold;
-import no.nav.foreldrepenger.common.domain.felles.opptjening.UtenlandskOrganisasjon;
+import no.nav.foreldrepenger.common.domain.felles.opptjening.*;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.Adopsjon;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.FremtidigFødsel;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.Fødsel;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.Omsorgsovertakelse;
-import no.nav.foreldrepenger.common.domain.felles.ÅpenPeriode;
 import no.nav.foreldrepenger.common.domain.foreldrepenger.Dekningsgrad;
 import no.nav.foreldrepenger.common.domain.foreldrepenger.Endringssøknad;
 import no.nav.foreldrepenger.common.domain.foreldrepenger.Foreldrepenger;
 import no.nav.foreldrepenger.common.domain.foreldrepenger.Rettigheter;
-import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.Fordeling;
-import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.GradertUttaksPeriode;
-import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.LukketPeriodeMedVedlegg;
-import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.MorsAktivitet;
-import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.OppholdsPeriode;
-import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.Oppholdsårsak;
-import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.OverføringsPeriode;
-import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.Overføringsårsak;
-import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.StønadskontoType;
-import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.UtsettelsesPeriode;
-import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.UtsettelsesÅrsak;
-import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.UttaksPeriode;
+import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.*;
 import no.nav.foreldrepenger.common.domain.svangerskapspenger.Svangerskapspenger;
 import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.DelvisTilrettelegging;
 import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.HelTilrettelegging;
@@ -79,6 +27,23 @@ import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.ar
 import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.Frilanser;
 import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.PrivatArbeidsgiver;
 import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.Virksomhet;
+
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static java.time.DayOfWeek.SATURDAY;
+import static java.time.DayOfWeek.SUNDAY;
+import static java.util.Collections.singletonList;
+import static no.nav.foreldrepenger.common.domain.Orgnummer.MAGIC_ORG;
+import static no.nav.foreldrepenger.common.domain.felles.DokumentType.*;
+import static no.nav.foreldrepenger.common.domain.felles.TestUtils.*;
+import static no.nav.foreldrepenger.common.domain.felles.opptjening.Virksomhetstype.FISKE;
+import static no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.StønadskontoType.FEDREKVOTE;
+import static no.nav.foreldrepenger.common.util.ResourceHandleUtil.bytesFra;
 
 public class ForeldrepengerTestUtils {
 
@@ -99,7 +64,7 @@ public class ForeldrepengerTestUtils {
     private static final ValgfrittVedlegg IKKE_OPPLASTETV2 = ikkeOpplastet(ID143, I000063);
 
     public static Søknad foreldrepengesøknad() {
-        return new Søknad(LocalDate.now(), TestUtils.søker(), foreldrepenger(false), VEDLEGG1);
+        return new Søknad(LocalDate.now(), TestUtils.søker(), foreldrepenger(false), null, List.of(VEDLEGG1));
     }
 
     public static Søknad foreldrepengesøknad(boolean utland, Vedlegg... vedlegg) {
@@ -107,7 +72,7 @@ public class ForeldrepengerTestUtils {
     }
 
     public static Søknad foreldrepengesøknadUtenVedlegg() {
-        return new Søknad(LocalDate.now(), TestUtils.søker(), foreldrepenger(false));
+        return new Søknad(LocalDate.now(), TestUtils.søker(), foreldrepenger(false), null, null);
     }
 
     public static Søknad foreldrepengesøknadMedEttVedlegg() {
@@ -138,57 +103,69 @@ public class ForeldrepengerTestUtils {
 
     }
 
-    public static Svangerskapspenger svangerskapspenger(String... vedleggRefs) {
-        return Svangerskapspenger.builder()
-                .termindato(LocalDate.now().plusMonths(1))
-                .medlemsskap(medlemsskap())
-                .opptjening(opptjening())
-                .tilrettelegging(tilrettelegging(vedleggRefs))
-                .build();
+    public static Svangerskapspenger svangerskapspenger(VedleggReferanse... vedleggRefs) {
+        return new Svangerskapspenger(
+                LocalDate.now().plusMonths(1),
+                null,
+                medlemsskap(),
+                opptjening(),
+                tilrettelegging(vedleggRefs)
+        );
     }
 
     public static Endringssøknad endringssøknad(Vedlegg... vedlegg) {
-        return new Endringssøknad(LocalDate.now(), søker(),
-                fordeling(vedleggRefs(vedlegg)), norskForelder(),
-                fødsel(),
-                rettigheter(), Saksnummer.valueOf("123456789"), vedlegg);
+        return new Endringssøknad(
+                LocalDate.now(),
+                søker(),
+                new Foreldrepenger(
+                        norskForelder(),
+                        fødsel(),
+                        rettigheter(),
+                        null,
+                        null,
+                        fordeling(vedleggRefs(vedlegg)),
+                        null
+                ),
+                null,
+                List.of(vedlegg),
+                Saksnummer.valueOf("123456789")
+
+        );
     }
 
     public static Søknad søknad(Ytelse ytelse, Vedlegg... vedlegg) {
-        var søknad = new Søknad(LocalDate.now(), TestUtils.søker(), ytelse, List.of(vedlegg));
-        søknad.setTilleggsopplysninger("Opplysninger av den kjente tilleggtypen");
-        søknad.setBegrunnelseForSenSøknad("Begrunner det ikke nie");
-        return søknad;
+        return new Søknad(LocalDate.now(), TestUtils.søker(), ytelse, "Opplysninger av den kjente tilleggtypen", List.of(vedlegg));
     }
 
-    private static String[] vedleggRefs(Vedlegg... vedlegg) {
+    private static VedleggReferanse[] vedleggRefs(Vedlegg... vedlegg) {
         return Arrays.stream(vedlegg)
-                .map(Vedlegg::getId)
-                .toArray(String[]::new);
+                .map(Vedlegg::getMetadata)
+                .map(VedleggMetaData::id)
+                .toArray(VedleggReferanse[]::new);
     }
 
     public static Ettersending ettersending() {
         return new Ettersending(Saksnummer.valueOf("42"), EttersendingsType.FORELDREPENGER, TO_VEDLEGG, null);
     }
 
-    private static List<Tilrettelegging> tilrettelegging(String... vedleggRefs) {
+    private static List<Tilrettelegging> tilrettelegging(VedleggReferanse... vedleggRefs) {
         return Stream.of(helTilrettelegging(vedleggRefs), helTilrettelegging(vedleggRefs),
                         delvisTilrettelegging(vedleggRefs), ingenTilrettelegging(vedleggRefs))
                 .collect(Collectors.toList());
     }
 
-    private static Tilrettelegging ingenTilrettelegging(String... vedleggRefs) {
+    private static Tilrettelegging ingenTilrettelegging(VedleggReferanse... vedleggRefs) {
         return new IngenTilrettelegging(frilanser(), LocalDate.now().plusMonths(2), LocalDate.now().plusMonths(2),
                 List.of(vedleggRefs));
 
     }
 
-    public static Tilrettelegging delvisTilrettelegging(String... vedleggRefs) {
+    public static Tilrettelegging delvisTilrettelegging(VedleggReferanse... vedleggRefs) {
         return new DelvisTilrettelegging(privat(), LocalDate.now().plusMonths(1), LocalDate.now().plusMonths(2),
                 new ProsentAndel(77d), List.of(vedleggRefs));
     }
 
-    private static Tilrettelegging helTilrettelegging(String... vedleggRefs) {
+    private static Tilrettelegging helTilrettelegging(VedleggReferanse... vedleggRefs) {
         return new HelTilrettelegging(virksomhet(), LocalDate.now().plusMonths(1), LocalDate.now().plusMonths(2), List.of(vedleggRefs));
     }
 
@@ -204,19 +181,19 @@ public class ForeldrepengerTestUtils {
         return new Frilanser("risiko", "tiltak");
     }
 
-    public static Foreldrepenger foreldrepenger(boolean utland, String... vedleggRefs) {
-        return Foreldrepenger.builder()
-                .rettigheter(rettigheter())
-                .annenForelder(norskForelder())
-                .dekningsgrad(Dekningsgrad.HUNDRE)
-                .fordeling(fordeling(vedleggRefs))
-                .opptjening(opptjening(vedleggRefs))
-                .relasjonTilBarn(termin())
-                .medlemsskap(medlemsskap(utland))
-                .build();
+    public static Foreldrepenger foreldrepenger(boolean utland, VedleggReferanse... vedleggRefs) {
+        return new Foreldrepenger(
+                norskForelder(),
+                termin(),
+                rettigheter(),
+                Dekningsgrad.HUNDRE,
+                opptjening(vedleggRefs),
+                fordeling(vedleggRefs),
+                medlemsskap(utland)
+        );
     }
 
-    public static Opptjening opptjening(String... vedleggRefs) {
+    public static Opptjening opptjening(VedleggReferanse... vedleggRefs) {
         return new Opptjening(Collections.singletonList(utenlandskArbeidsforhold(vedleggRefs)),
                 egneNæringer(vedleggRefs),
                 andreOpptjeninger(vedleggRefs), frilans());
@@ -232,11 +209,11 @@ public class ForeldrepengerTestUtils {
                 ));
     }
 
-    private static List<AnnenOpptjening> andreOpptjeninger(String... vedleggRefs) {
+    private static List<AnnenOpptjening> andreOpptjeninger(VedleggReferanse... vedleggRefs) {
         return List.of(annenOpptjening(vedleggRefs));
     }
 
-    private static List<EgenNæring> egneNæringer(String... vedleggRefs) {
+    private static List<EgenNæring> egneNæringer(VedleggReferanse... vedleggRefs) {
         return List.of(utenlandskEgenNæring(vedleggRefs), norskEgenNæring(vedleggRefs));
     }
 
@@ -266,55 +243,62 @@ public class ForeldrepengerTestUtils {
         return new Omsorgsovertakelse(LocalDate.now(), LocalDate.now());
     }
 
-    public static UtenlandskOrganisasjon utenlandskEgenNæring(String... vedleggRefs) {
-        return UtenlandskOrganisasjon.builder()
-                .vedlegg(List.of(vedleggRefs))
-                .registrertILand(CountryCode.UG)
-                .periode(åpenPeriode())
-                .regnskapsførere(List.of(new Regnskapsfører("Rein Åge Skapsfører", "+4799999999")))
-                .erNyOpprettet(true)
-                .erVarigEndring(true)
-                .erNyIArbeidslivet(false)
-                .næringsinntektBrutto(100_000)
-                .orgName("Utenlandsk org")
-                .virksomhetsTyper(List.of(FISKE))
-                .beskrivelseEndring(
-                        "Endringer skjer fort i verdens største land (utlandet) og ikke minst skjer det mye med linjebryting")
-                .nærRelasjon(true)
-                .endringsDato(LocalDate.now()).build();
+    public static EgenNæring utenlandskEgenNæring(VedleggReferanse... vedleggRefs) {
+        return new EgenNæring(
+                CountryCode.UG,
+                null,
+                "Utenlandsk org",
+                List.of(FISKE),
+                åpenPeriode(),
+                true,
+                List.of(new Regnskapsfører("Rein Åge Skapsfører", "+4799999999")),
+                true,
+                true,
+                false,
+                100_000,
+                LocalDate.now(),
+                null,
+                "Endringer skjer fort i verdens største land (utlandet) og ikke minst skjer det mye med linjebryting",
+                ProsentAndel.valueOf(100),
+                List.of(vedleggRefs)
+        );
     }
 
-    public static NorskOrganisasjon norskEgenNæring(String... vedleggRefs) {
-        return NorskOrganisasjon.builder()
-                .vedlegg(List.of(vedleggRefs))
-                .periode(åpenPeriode())
-                .regnskapsførere(Collections.singletonList(new Regnskapsfører("Rein Åge Kapsfører", "+4799999999")))
-                .erNyOpprettet(true)
-                .erVarigEndring(true)
-                .erNyIArbeidslivet(true)
-                .erNyOpprettet(true)
-                .næringsinntektBrutto(100_000)
-                .orgName("Norsk org")
-                .orgNummer(MAGIC_ORG)
-                .virksomhetsTyper(Collections.singletonList(FISKE))
-                .beskrivelseEndring("Ting endrer seg i Norge også")
-                .nærRelasjon(true)
-                .endringsDato(LocalDate.now()).build();
+    public static EgenNæring norskEgenNæring(VedleggReferanse... vedleggRefs) {
+        return new EgenNæring(
+                CountryCode.NO,
+                MAGIC_ORG,
+                "Norsk org",
+                singletonList(FISKE),
+                åpenPeriode(),
+                true,
+                singletonList(new Regnskapsfører("Rein Åge Kapsfører", "+4799999999")),
+                true,
+                true,
+                true,
+                100_000,
+                LocalDate.now(),
+                null,
+                "Ting endrer seg i Norge også",
+                ProsentAndel.valueOf(100),
+                List.of(vedleggRefs)
+        );
     }
 
-    public static AnnenOpptjening annenOpptjening(String... vedleggRefs) {
+    public static AnnenOpptjening annenOpptjening(VedleggReferanse... vedleggRefs) {
         return new AnnenOpptjening(AnnenOpptjeningType.VENTELØNN_VARTPENGER, åpenPeriode(), List.of(vedleggRefs));
     }
 
-    public static UtenlandskArbeidsforhold utenlandskArbeidsforhold(String... vedleggRefs) {
-        return UtenlandskArbeidsforhold.builder()
-                .vedlegg(List.of(vedleggRefs))
-                .arbeidsgiverNavn("Brzezánski")
-                .land(CountryCode.PL)
-                .periode(åpenPeriode()).build();
+    public static UtenlandskArbeidsforhold utenlandskArbeidsforhold(VedleggReferanse... vedleggRefs) {
+        return new UtenlandskArbeidsforhold(
+                "Brzezánski",
+                åpenPeriode(),
+                List.of(vedleggRefs),
+                CountryCode.PL
+        );
     }
 
-    public static List<LukketPeriodeMedVedlegg> perioder(String... vedleggRefs) {
+    public static List<LukketPeriodeMedVedlegg> perioder(VedleggReferanse... vedleggRefs) {
         return Stream.of(
                 oppholdsPeriode(vedleggRefs),
                 overføringsPeriode(vedleggRefs),
@@ -329,73 +313,86 @@ public class ForeldrepengerTestUtils {
     }
 
     public static Fødsel fødsel() {
-        return Fødsel.builder()
-                .antallBarn(1)
-                .fødselsdato(singletonList(LocalDate.now().minusMonths(2)))
-                .build();
+        return new Fødsel(
+                1,
+                singletonList(LocalDate.now().minusMonths(2)),
+                null,
+                null
+                );
     }
 
     public static UttaksPeriode uttaksPeriode(LocalDate fom, LocalDate tom) {
-        return UttaksPeriode.UttaksPeriodeBuilder()
-                .fom(fom)
-                .tom(tom)
-                .uttaksperiodeType(FEDREKVOTE)
-                .ønskerSamtidigUttak(true)
-                .morsAktivitetsType(MorsAktivitet.ARBEID)
-                .ønskerFlerbarnsdager(true)
-                .samtidigUttakProsent(new ProsentAndel(100.0d))
-                .vedlegg(List.of())
-                .build();
+        return new UttaksPeriode(
+                fom,
+                tom,
+                List.of(),
+                FEDREKVOTE,
+                true,
+                MorsAktivitet.ARBEID,
+                true,
+                new ProsentAndel(100.0d),
+                null
+        );
     }
 
-    public static UttaksPeriode uttaksPeriode(String... vedleggRefs) {
-        return UttaksPeriode.UttaksPeriodeBuilder()
-                .fom(ukeDagNær(LocalDate.now().plusMonths(3)))
-                .tom(ukeDagNær(LocalDate.now().plusMonths(4)))
-                .uttaksperiodeType(FEDREKVOTE)
-                .ønskerSamtidigUttak(true)
-                .morsAktivitetsType(MorsAktivitet.ARBEID_OG_UTDANNING)
-                .ønskerFlerbarnsdager(true)
-                .samtidigUttakProsent(new ProsentAndel(42d))
-                .vedlegg(List.of(vedleggRefs))
-                .build();
+    public static UttaksPeriode uttaksPeriode(VedleggReferanse... vedleggRefs) {
+        return new UttaksPeriode(
+                ukeDagNær(LocalDate.now().plusMonths(3)),
+                ukeDagNær(LocalDate.now().plusMonths(4)),
+                List.of(vedleggRefs),
+                FEDREKVOTE,
+                true,
+                MorsAktivitet.ARBEID_OG_UTDANNING,
+                true,
+                new ProsentAndel(42d),
+                null
+        );
     }
 
-    public static UttaksPeriode gradertPeriode(String... vedleggRefs) {
-        return GradertUttaksPeriode.GradertUttaksPeriodeBuilder()
-                .fom(ukeDagNær(LocalDate.now().plusMonths(4)))
-                .tom(LocalDate.now().plusMonths(5))
-                .uttaksperiodeType(FEDREKVOTE)
-                .ønskerSamtidigUttak(true)
-                .morsAktivitetsType(MorsAktivitet.ARBEID_OG_UTDANNING)
-                .ønskerFlerbarnsdager(true)
-                .arbeidstidProsent(new ProsentAndel(75d))
-                .erArbeidstaker(true)
-                .arbeidsForholdSomskalGraderes(true)
-                .virksomhetsnummer(Collections.singletonList("22222222222"))
-                .frilans(true)
-                .selvstendig(true)
-                .vedlegg(List.of(vedleggRefs))
-                .build();
+    public static UttaksPeriode gradertPeriode(VedleggReferanse... vedleggRefs) {
+        return new GradertUttaksPeriode(
+                ukeDagNær(LocalDate.now().plusMonths(4)),
+                ukeDagNær(LocalDate.now().plusMonths(5)),
+                List.of(vedleggRefs),
+                FEDREKVOTE,
+                true,
+                MorsAktivitet.ARBEID_OG_UTDANNING,
+                true,
+                null,
+                new ProsentAndel(75d),
+                true,
+                Collections.singletonList("22222222222"),
+                true,
+                true,
+                true,
+                null
+        );
     }
 
-    public static OverføringsPeriode overføringsPeriode(String... vedleggRefs) {
+    public static OverføringsPeriode overføringsPeriode(VedleggReferanse... vedleggRefs) {
         return new OverføringsPeriode(ukeDagNær(LocalDate.now()), ukeDagNær(LocalDate.now().plusMonths(1)),
                 Overføringsårsak.ALENEOMSORG, StønadskontoType.FEDREKVOTE, List.of(vedleggRefs));
     }
 
-    public static OppholdsPeriode oppholdsPeriode(String... vedleggRefs) {
-        return new OppholdsPeriode(ukeDagNær(LocalDate.now().plusMonths(1)), ukeDagNær(LocalDate.now().plusMonths(2)),
+    public static OppholdsPeriode oppholdsPeriode(VedleggReferanse... vedleggRefs) {
+        return new OppholdsPeriode(
+                ukeDagNær(LocalDate.now().plusMonths(1)),
+                ukeDagNær(LocalDate.now().plusMonths(2)),
                 Oppholdsårsak.UTTAK_FEDREKVOTE_ANNEN_FORELDER, List.of(vedleggRefs));
     }
 
-    public static UtsettelsesPeriode utsettelsesPeriode(String... vedleggRefs) {
-        return new UtsettelsesPeriode(ukeDagNær(LocalDate.now().plusMonths(2)),
-                ukeDagNær(LocalDate.now().plusMonths(3)), true, Collections.singletonList("222"),
-                UtsettelsesÅrsak.INSTITUSJONSOPPHOLD_BARNET, null, List.of(vedleggRefs));
+    public static UtsettelsesPeriode utsettelsesPeriode(VedleggReferanse... vedleggRefs) {
+        return new UtsettelsesPeriode(
+                ukeDagNær(LocalDate.now().plusMonths(2)),
+                ukeDagNær(LocalDate.now().plusMonths(3)),
+                true,
+                UtsettelsesÅrsak.INSTITUSJONSOPPHOLD_BARNET,
+                null,
+                List.of(vedleggRefs)
+        );
     }
 
-    public static Fordeling fordeling(String... vedleggRefs) {
+    public static Fordeling fordeling(VedleggReferanse... vedleggRefs) {
         return new Fordeling(true, perioder(vedleggRefs), true);
     }
 
@@ -405,7 +402,7 @@ public class ForeldrepengerTestUtils {
 
     private static ValgfrittVedlegg opplastetVedlegg(String id, DokumentType type) {
         try {
-            var vedleggMetaData = new VedleggMetaData(id, InnsendingsType.LASTET_OPP, type);
+            var vedleggMetaData = new VedleggMetaData(new VedleggReferanse(id), InnsendingsType.LASTET_OPP, type);
             return new ValgfrittVedlegg(vedleggMetaData,
                 bytesFra("pdf/terminbekreftelse.pdf"));
         } catch (Exception e) {
@@ -415,7 +412,7 @@ public class ForeldrepengerTestUtils {
 
     private static ValgfrittVedlegg ikkeOpplastet(String id, DokumentType type) {
         try {
-            var vedleggMetaData = new VedleggMetaData(id, InnsendingsType.SEND_SENERE, type);
+            var vedleggMetaData = new VedleggMetaData(new VedleggReferanse(id), InnsendingsType.SEND_SENERE, type);
             return new ValgfrittVedlegg(vedleggMetaData, null);
         } catch (Exception e) {
             throw new IllegalArgumentException();

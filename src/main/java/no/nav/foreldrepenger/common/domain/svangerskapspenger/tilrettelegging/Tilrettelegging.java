@@ -1,29 +1,21 @@
 package no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging;
 
-import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY;
-import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
-import static java.util.Collections.emptyList;
-import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
+import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.Arbeidsforhold;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY;
+import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
+import static java.util.Collections.emptyList;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
-import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.Arbeidsforhold;
-
-@Getter
-@EqualsAndHashCode(exclude = { "vedlegg" })
-@ToString(exclude = { "vedlegg" })
 @JsonTypeInfo(use = NAME, include = PROPERTY, property = "type")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = HelTilrettelegging.class, name = "hel"),
@@ -36,11 +28,44 @@ public abstract class Tilrettelegging {
     private final Arbeidsforhold arbeidsforhold;
     @NotNull
     private final LocalDate behovForTilretteleggingFom;
-    private final List<@Pattern(regexp = FRITEKST) String> vedlegg;
+    private final List<VedleggReferanse> vedlegg;
 
-    protected Tilrettelegging(Arbeidsforhold arbeidsforhold, LocalDate behovForTilretteleggingFom, List<String> vedlegg) {
+    protected Tilrettelegging(Arbeidsforhold arbeidsforhold, LocalDate behovForTilretteleggingFom, List<VedleggReferanse> vedlegg) {
         this.arbeidsforhold = arbeidsforhold;
         this.behovForTilretteleggingFom = behovForTilretteleggingFom;
         this.vedlegg = Optional.ofNullable(vedlegg).orElse(emptyList());
+    }
+
+    public Arbeidsforhold getArbeidsforhold() {
+        return arbeidsforhold;
+    }
+
+    public LocalDate getBehovForTilretteleggingFom() {
+        return behovForTilretteleggingFom;
+    }
+
+    public List<VedleggReferanse> getVedlegg() {
+        return vedlegg;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Tilrettelegging that = (Tilrettelegging) o;
+        return Objects.equals(arbeidsforhold, that.arbeidsforhold) && Objects.equals(behovForTilretteleggingFom, that.behovForTilretteleggingFom);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(arbeidsforhold, behovForTilretteleggingFom);
+    }
+
+    @Override
+    public String toString() {
+        return "Tilrettelegging{" +
+                "arbeidsforhold=" + arbeidsforhold +
+                ", behovForTilretteleggingFom=" + behovForTilretteleggingFom +
+                '}';
     }
 }

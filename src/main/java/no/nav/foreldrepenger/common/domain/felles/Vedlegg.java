@@ -1,29 +1,23 @@
 package no.nav.foreldrepenger.common.domain.felles;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.validation.Valid;
+import java.util.Objects;
+import java.util.Optional;
+
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY;
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
 import static no.nav.foreldrepenger.common.domain.felles.InnsendingsType.LASTET_OPP;
 import static no.nav.foreldrepenger.common.domain.felles.InnsendingsType.SEND_SENERE;
 import static no.nav.foreldrepenger.common.util.StringUtil.limit;
 
-import java.util.Optional;
-
-import javax.validation.Valid;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-
-@Getter
-@EqualsAndHashCode(exclude = { "innhold" })
 @JsonTypeInfo(use = NAME, include = PROPERTY, property = "type")
 @JsonSubTypes({
         @Type(value = ValgfrittVedlegg.class, name = "valgfritt"),
@@ -41,6 +35,14 @@ public abstract class Vedlegg {
     protected Vedlegg(VedleggMetaData metadata, byte[] innhold) {
         this.metadata = metadata;
         this.innhold = innhold;
+    }
+
+    public VedleggMetaData getMetadata() {
+        return metadata;
+    }
+
+    public byte[] getInnhold() {
+        return innhold;
     }
 
     @JsonIgnore
@@ -68,7 +70,7 @@ public abstract class Vedlegg {
 
     @JsonIgnore
     public String getId() {
-        return metadata.id();
+        return metadata.id().referanse();
     }
 
     @JsonIgnore
@@ -81,6 +83,21 @@ public abstract class Vedlegg {
         return Optional.ofNullable(innhold)
                 .map(v -> v.length)
                 .orElse(0);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Vedlegg vedlegg = (Vedlegg) o;
+        return Objects.equals(metadata, vedlegg.metadata);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(metadata);
     }
 
     @Override

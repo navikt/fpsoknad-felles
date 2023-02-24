@@ -1,21 +1,17 @@
 package no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling;
 
-import static java.util.Collections.emptyList;
-import static java.util.function.Predicate.not;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import javax.validation.Valid;
+import static java.util.Collections.emptyList;
+import static java.util.function.Predicate.not;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import lombok.Builder;
-
-@Builder
 public record Fordeling(Boolean erAnnenForelderInformert, @Valid List<LukketPeriodeMedVedlegg> perioder, Boolean ønskerJustertUttakVedFødsel) {
 
     @JsonCreator
