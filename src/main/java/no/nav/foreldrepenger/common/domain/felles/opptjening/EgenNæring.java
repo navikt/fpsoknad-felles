@@ -8,14 +8,13 @@ import no.nav.foreldrepenger.common.domain.felles.ÅpenPeriode;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.util.List;
 
 import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
 
-public record EgenNæring(@NotNull CountryCode registrertILand,
+public record EgenNæring(CountryCode registrertILand,
                          @Valid Orgnummer orgNummer,
                          @Length(max = 100) @Pattern(regexp = FRITEKST) String orgName,
                          @Valid List<Virksomhetstype> virksomhetsTyper,
