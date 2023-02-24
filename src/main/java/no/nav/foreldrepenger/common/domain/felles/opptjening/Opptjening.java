@@ -19,44 +19,4 @@ public record Opptjening(@Valid List<UtenlandskArbeidsforhold> utenlandskArbeids
         egenNæring = Optional.ofNullable(egenNæring).orElse(emptyList());
         annenOpptjening = Optional.ofNullable(annenOpptjening).orElse(emptyList());
     }
-
-//    private Opptjening(Builder b) {
-//        this(b.utenlandskArbeidsforhold, b.egenNæring, b.annenOpptjening, b.frilans);
-//    }
-//
-//    public static class Builder {
-//        private List<UtenlandskArbeidsforhold> utenlandskArbeidsforhold;
-//        private List<EgenNæring> egenNæring;
-//        private List<AnnenOpptjening> annenOpptjening;
-//        private Frilans frilans;
-//
-//
-//        public Builder() {
-//        }
-//
-//        public Builder utenlandskArbeidsforhold(List<UtenlandskArbeidsforhold> utenlandskArbeidsforhold) {
-//            this.utenlandskArbeidsforhold = utenlandskArbeidsforhold;
-//            return this;
-//        }
-//
-//        public Builder egenNæring(List<EgenNæring> egenNæring) {
-//            this.egenNæring = egenNæring;
-//            return this;
-//        }
-//
-//        public Builder annenOpptjening(List<AnnenOpptjening> annenOpptjening) {
-//            this.annenOpptjening = annenOpptjening;
-//            return this;
-//        }
-//
-//        public Builder frilans(Frilans frilans) {
-//            this.frilans = frilans;
-//            return this;
-//        }
-//
-//        public Opptjening build() {
-//            return new Opptjening(this);
-//        }
-//    }
-
 }

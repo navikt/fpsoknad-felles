@@ -73,7 +73,7 @@ public record Person(@Valid AktørId aktørId,
         private Bankkonto bankkonto;
         private List<Barn> barn;
 
-        public Builder() {
+        Builder() {
         }
 
         public Builder aktørId(AktørId aktørId) {
