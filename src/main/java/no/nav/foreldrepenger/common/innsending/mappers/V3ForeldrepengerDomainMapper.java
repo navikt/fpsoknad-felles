@@ -402,13 +402,13 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
 
     private static AnnenForelderUtenNorskIdent utenlandskForelder(UtenlandskForelder utenlandskForelder) {
         return new AnnenForelderUtenNorskIdent()
-                .withUtenlandskPersonidentifikator(utenlandskForelder.getId())
-                .withLand(landFra(utenlandskForelder.getLand()));
+                .withUtenlandskPersonidentifikator(utenlandskForelder.id())
+                .withLand(landFra(utenlandskForelder.land()));
     }
 
     private AnnenForelderMedNorskIdent norskForelder(NorskForelder norskForelder) {
         return new AnnenForelderMedNorskIdent()
-                .withAktoerId(oppslag.aktørId(norskForelder.getFnr()).value());
+                .withAktoerId(oppslag.aktørId(norskForelder.fnr()).value());
     }
 
     private static SoekersRelasjonTilBarnet relasjonFra(RelasjonTilBarn relasjonTilBarn) {

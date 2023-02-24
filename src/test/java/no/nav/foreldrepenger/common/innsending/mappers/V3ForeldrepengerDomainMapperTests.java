@@ -61,7 +61,7 @@ class V3ForeldrepengerDomainMapperTests {
         // AnnenForelder
         assertThat(foreldrepenger.annenForelder()).isInstanceOf(NorskForelder.class);
         assertThat(foreldrepengerXMLO.getAnnenForelder()).isInstanceOf(AnnenForelderMedNorskIdent.class);
-        assertThat(((NorskForelder) foreldrepenger.annenForelder()).getFnr()).isEqualTo(NORSK_FORELDER_FNR);
+        assertThat(((NorskForelder) foreldrepenger.annenForelder()).fnr()).isEqualTo(NORSK_FORELDER_FNR);
         assertThat(((AnnenForelderMedNorskIdent) foreldrepengerXMLO.getAnnenForelder()).getAktoerId()).isEqualTo(aktørIdAnnenpart.value());
 
         // RelasjonTilBarn
