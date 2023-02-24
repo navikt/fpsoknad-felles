@@ -28,7 +28,7 @@
         <xjb.location>${project.basedir}/src/main/resources/xjb</xjb.location>
 
         <fp-bom.version>0.4.3</fp-bom.version>
-        <kontrakter.version>6.2.9</kontrakter.version>
+        <kontrakter.version>6.2.11</kontrakter.version>
         <nv-i18n.version>1.29</nv-i18n.version>
         <jaxb-runtime.version>2.3.6</jaxb-runtime.version>
         <maven-jaxb2-plugin.version>0.15.2</maven-jaxb2-plugin.version>
