@@ -141,7 +141,7 @@ final class V3DomainMapperCommon {
     }
 
     private static EgenNaering create(EgenNæring egenNæring) {
-        if (CountryCode.NO.equals(egenNæring.registrertILand())) {
+        if (CountryCode.NO.equals(egenNæring.registrertILand()) || egenNæring.registrertILand() == null) {
             return norskOrganisasjon(egenNæring);
         } else {
             return utenlandskOrganisasjon(egenNæring);
