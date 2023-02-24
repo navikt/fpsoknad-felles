@@ -82,11 +82,6 @@ public class Søknad {
     }
 
     @JsonIgnore
-    public BrukerRolle getSøknadsRolle() {
-        return søker.getSøknadsRolle();
-    }
-
-    @JsonIgnore
     public LocalDate getFørsteUttaksdag() {
         if (ytelse instanceof Foreldrepenger fp) {
             return fp.fordeling().getFørsteUttaksdag();

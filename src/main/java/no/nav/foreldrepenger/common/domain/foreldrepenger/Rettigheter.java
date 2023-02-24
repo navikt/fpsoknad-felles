@@ -6,5 +6,6 @@ import no.nav.foreldrepenger.common.domain.validation.annotations.Rettighet;
 public record Rettigheter(boolean harAnnenForelderRett,
                           Boolean harAleneOmsorgForBarnet,
                           Boolean harMorUføretrygd,
+                          Boolean harAnnenForelderOppholdtSegIEØS,
                           Boolean harAnnenForelderTilsvarendeRettEØS) {
 }
