@@ -6,9 +6,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
-import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
-
-public record VedleggReferanse(@NotNull @Pattern(regexp = FRITEKST) @JsonValue String referanse) {
+public record VedleggReferanse(@NotNull @Pattern(regexp = "^[\\p{Digit}\\p{L}]*$") @JsonValue String referanse) {
 
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
     public VedleggReferanse {
