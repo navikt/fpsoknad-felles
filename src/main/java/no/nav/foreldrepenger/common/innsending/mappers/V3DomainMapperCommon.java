@@ -159,6 +159,8 @@ final class V3DomainMapperCommon {
     }
 
     private static EgenNaering create(EgenNæring egenNæring) {
+        // Fiskere kan svare nei på om den er registert i norge og deretter velge norge for å unngå å fylle inn orgnummer
+        // I dette tilfelle vil de bli lagret som utenlandsk næring
         if (CountryCode.NO.equals(egenNæring.registrertILand()) && egenNæring.orgNummer() != null) {
             return norskOrganisasjon(egenNæring);
         } else {
