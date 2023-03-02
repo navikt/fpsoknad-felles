@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import no.nav.foreldrepenger.common.innsending.SøknadType;
-import no.nav.foreldrepenger.common.innsyn.SøknadEgenskap;
+import no.nav.foreldrepenger.common.innsending.SøknadEgenskap;
 import no.nav.foreldrepenger.common.util.Versjon;
 
 public class MapperEgenskaper {

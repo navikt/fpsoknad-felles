@@ -1,7 +1,7 @@
 package no.nav.foreldrepenger.common.error;
 
 import no.nav.foreldrepenger.common.innsending.SøknadType;
-import no.nav.foreldrepenger.common.innsyn.SøknadEgenskap;
+import no.nav.foreldrepenger.common.innsending.SøknadEgenskap;
 import no.nav.foreldrepenger.common.util.Versjon;
 
 public abstract class SøknadEgenskapException extends RuntimeException {

@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import no.nav.foreldrepenger.common.error.UnsupportedEgenskapException;
-import no.nav.foreldrepenger.common.innsyn.SøknadEgenskap;
+import no.nav.foreldrepenger.common.innsending.SøknadEgenskap;
 
 public final class Mappables {
     public static final String DELEGERENDE = "delegerende";

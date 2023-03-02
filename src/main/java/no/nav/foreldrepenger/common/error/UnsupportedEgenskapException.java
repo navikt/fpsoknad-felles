@@ -6,7 +6,7 @@ import static no.nav.foreldrepenger.common.util.StreamUtil.safeStream;
 import java.util.List;
 
 import no.nav.foreldrepenger.common.innsending.mappers.Mappable;
-import no.nav.foreldrepenger.common.innsyn.SøknadEgenskap;
+import no.nav.foreldrepenger.common.innsending.SøknadEgenskap;
 
 public class UnsupportedEgenskapException extends SøknadEgenskapException {
     public UnsupportedEgenskapException(SøknadEgenskap egenskap) {
