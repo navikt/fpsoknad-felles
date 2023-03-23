@@ -19,8 +19,6 @@ public record Person(Fødselsnummer fnr,
     @JsonCreator
     public Person {
         Objects.requireNonNull(fnr,"Fnr kan ikke være null");
-        Objects.requireNonNull(fornavn,"Fornavn kan ikke være null");
-        Objects.requireNonNull(etternavn,"Etternavn kan ikke være null");
     }
 
 }
