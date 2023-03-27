@@ -10,8 +10,8 @@ on:
       - '.gitignore'
       - 'LICENSE'
       - 'CODEOWNERS'
-      - 'dokumentasjon/**'
-      - 'lokalutvikling/**'
+      - 'doks/**'
+      - '.github/*.yml'
   schedule:
     - cron: '0 4 * * 1'
 
