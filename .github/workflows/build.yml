@@ -10,7 +10,7 @@ on:
       - '.gitignore'
       - 'LICENSE'
       - 'CODEOWNERS'
-      - 'doks/**'
+      - 'docs/**'
       - '.github/*.yml'
   schedule:
     - cron: '0 4 * * 1'
