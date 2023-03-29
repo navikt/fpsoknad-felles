@@ -12,10 +12,4 @@ public record Saksnummer(@JsonValue @NotNull @Digits(integer = 18, fraction = 0)
     public static Saksnummer valueOf(String id) {
         return new Saksnummer(id);
     }
-
-    @Override
-    public String value() {
-        return value;
-    }
-
 }

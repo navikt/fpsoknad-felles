@@ -29,7 +29,6 @@ public class DefaultJsonMapper {
                 .enable(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE)
                 .enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
                 .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-                .disable(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS)
                 .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
                 // Spring boot defaults
                 .disable(MapperFeature.DEFAULT_VIEW_INCLUSION)
