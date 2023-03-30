@@ -12,4 +12,9 @@ public record VedleggReferanse(@NotNull @Pattern(regexp = "^[\\p{Digit}\\p{L}-_]
     public VedleggReferanse {
         // Trengs for å legge på @JsonCreator
     }
+
+    @Override
+    public String referanse() {
+        return referanse;
+    }
 }

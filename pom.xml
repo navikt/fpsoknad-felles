@@ -147,10 +147,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>no.nav.security</groupId>
-            <artifactId>token-validation-core</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
         </dependency>
@@ -175,11 +171,6 @@
             <artifactId>nv-i18n</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-registry-prometheus</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>jakarta.validation</groupId>
             <artifactId>jakarta.validation-api</artifactId>
         </dependency>
@@ -187,31 +178,42 @@
             <groupId>jakarta.xml.bind</groupId>
             <artifactId>jakarta.xml.bind-api</artifactId>
         </dependency>
-
         <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <scope>test</scope>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.security</groupId>
+            <artifactId>token-validation-core</artifactId>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
             <scope>provided</scope>
         </dependency>
-
         <dependency>
             <groupId>org.glassfish.jaxb</groupId>
             <artifactId>jaxb-runtime</artifactId>
             <scope>provided</scope>
         </dependency>
-
         <dependency>
             <groupId>org.glassfish</groupId>
             <artifactId>jakarta.el</artifactId>
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
