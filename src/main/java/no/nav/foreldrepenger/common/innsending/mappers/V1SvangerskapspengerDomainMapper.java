@@ -102,7 +102,7 @@ public class V1SvangerskapspengerDomainMapper implements DomainMapper {
         return tilretteleggingListe;
     }
 
-x    private static Tilrettelegging create(List<no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.Tilrettelegging> tiltakListe) {
+    private static Tilrettelegging create(List<no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.Tilrettelegging> tiltakListe) {
         var tilrettelegging = new Tilrettelegging();
 
         for (no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.Tilrettelegging t : tiltakListe) {
