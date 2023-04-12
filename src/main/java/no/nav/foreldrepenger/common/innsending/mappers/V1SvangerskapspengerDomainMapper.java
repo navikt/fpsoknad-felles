@@ -102,8 +102,7 @@ public class V1SvangerskapspengerDomainMapper implements DomainMapper {
         return tilretteleggingListe;
     }
 
-    private static Tilrettelegging create(
-            List<no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.Tilrettelegging> tiltakListe) {
+x    private static Tilrettelegging create(List<no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.Tilrettelegging> tiltakListe) {
         var tilrettelegging = new Tilrettelegging();
 
         for (no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.Tilrettelegging t : tiltakListe) {
@@ -118,7 +117,6 @@ public class V1SvangerskapspengerDomainMapper implements DomainMapper {
             }
         }
 
-        // TODO: What? Finn ut hva i huleste som skjer her :O
         tiltakListe.stream()
                 .findAny()
                 .ifPresent(b -> {
