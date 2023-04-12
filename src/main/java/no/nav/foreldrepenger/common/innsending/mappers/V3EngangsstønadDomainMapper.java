@@ -4,13 +4,13 @@ import static no.nav.foreldrepenger.common.innsending.mappers.MapperEgenskaper.E
 import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.medlemsskapFra;
 import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.målformFra;
 import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.søkerFra;
+import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.tilVedlegg;
 import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.vedleggFra;
 import static no.nav.foreldrepenger.common.util.StreamUtil.safeStream;
 
 import java.util.List;
 
-import javax.xml.bind.JAXBElement;
-
+import jakarta.xml.bind.JAXBElement;
 import no.nav.foreldrepenger.common.domain.AktørId;
 import no.nav.foreldrepenger.common.domain.Søknad;
 import no.nav.foreldrepenger.common.domain.engangsstønad.Engangsstønad;
@@ -21,8 +21,8 @@ import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.Fødsel;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.RelasjonTilBarn;
 import no.nav.foreldrepenger.common.domain.foreldrepenger.Endringssøknad;
 import no.nav.foreldrepenger.common.error.UnexpectedInputException;
-import no.nav.foreldrepenger.common.innsending.mappers.jaxb.ESV3JAXBUtil;
 import no.nav.foreldrepenger.common.innsending.SøknadEgenskap;
+import no.nav.foreldrepenger.common.innsending.mappers.jaxb.ESV3JAXBUtil;
 import no.nav.foreldrepenger.common.oppslag.Oppslag;
 import no.nav.vedtak.felles.xml.soeknad.felles.v3.Foedsel;
 import no.nav.vedtak.felles.xml.soeknad.felles.v3.SoekersRelasjonTilBarnet;
@@ -58,26 +58,28 @@ public class V3EngangsstønadDomainMapper implements DomainMapper {
     }
 
     private Soeknad tilModell(Søknad søknad, AktørId søker) {
-        return new Soeknad()
-                .withSprakvalg(målformFra(søknad.getSøker()))
-                .withAndreVedlegg(vedleggFra(søknad.getFrivilligeVedlegg()))
-                .withPaakrevdeVedlegg(vedleggFra(søknad.getPåkrevdeVedlegg()))
-                .withSoeker(søkerFra(søker, søknad.getSøker()))
-                .withMottattDato(søknad.getMottattdato())
-                .withTilleggsopplysninger(søknad.getTilleggsopplysninger())
-                .withOmYtelse(engangsstønadFra(søknad));
+        var soeknad = new Soeknad();
+        soeknad.setSprakvalg(målformFra(søknad.getSøker()));
+        soeknad.getAndreVedlegg().addAll(vedleggFra(søknad.getFrivilligeVedlegg()));
+        soeknad.getPaakrevdeVedlegg().addAll(vedleggFra(søknad.getPåkrevdeVedlegg()));
+        soeknad.setSoeker(søkerFra(søker, søknad.getSøker()));
+        soeknad.setMottattDato(søknad.getMottattdato());
+        soeknad.setTilleggsopplysninger(søknad.getTilleggsopplysninger());
+        soeknad.setOmYtelse(engangsstønadFra(søknad));
+        return soeknad;
     }
 
     private OmYtelse engangsstønadFra(Søknad søknad) {
-        return new OmYtelse().withAny(JAXB
-                .marshalToElement(engangsstønadFra((Engangsstønad) søknad.getYtelse(), søknad.getVedlegg())));
+        var omYtelse = new OmYtelse();
+        omYtelse.getAny().add(JAXB.marshalToElement(engangsstønadFra((Engangsstønad) søknad.getYtelse(), søknad.getVedlegg())));
+        return omYtelse;
     }
 
-    private JAXBElement<no.nav.vedtak.felles.xml.soeknad.engangsstoenad.v3.Engangsstønad> engangsstønadFra(
-            Engangsstønad es, List<Vedlegg> vedlegg) {
-        return ES_FACTORY_V3.createEngangsstønad(new no.nav.vedtak.felles.xml.soeknad.engangsstoenad.v3.Engangsstønad()
-                .withMedlemskap(medlemsskapFra(es.medlemsskap(), es.relasjonTilBarn().relasjonsDato()))
-                .withSoekersRelasjonTilBarnet(relasjonFra(es.relasjonTilBarn(), vedlegg)));
+    private JAXBElement<no.nav.vedtak.felles.xml.soeknad.engangsstoenad.v3.Engangsstønad> engangsstønadFra(Engangsstønad es, List<Vedlegg> vedlegg) {
+        var engangsstønad = new no.nav.vedtak.felles.xml.soeknad.engangsstoenad.v3.Engangsstønad();
+        engangsstønad.setMedlemskap(medlemsskapFra(es.medlemsskap(), es.relasjonTilBarn().relasjonsDato()));
+        engangsstønad.setSoekersRelasjonTilBarnet(relasjonFra(es.relasjonTilBarn(), vedlegg));
+        return ES_FACTORY_V3.createEngangsstønad(engangsstønad);
     }
 
     private static SoekersRelasjonTilBarnet relasjonFra(RelasjonTilBarn relasjon, List<Vedlegg> vedlegg) {
@@ -94,35 +96,37 @@ public class V3EngangsstønadDomainMapper implements DomainMapper {
     }
 
     private static SoekersRelasjonTilBarnet create(Adopsjon adopsjon, List<Vedlegg> vedlegg) {
-        return new no.nav.vedtak.felles.xml.soeknad.felles.v3.Adopsjon()
-                .withVedlegg(relasjonTilBarnVedleggFra(vedlegg))
-                .withAntallBarn(adopsjon.getAntallBarn())
-                .withFoedselsdato(adopsjon.getFødselsdato())
-                .withOmsorgsovertakelsesdato(adopsjon.getOmsorgsovertakelsesdato())
-                .withAdopsjonAvEktefellesBarn(adopsjon.isEktefellesBarn())
-                .withAnkomstdato(adopsjon.getAnkomstDato());
+        var adopsjonXML = new no.nav.vedtak.felles.xml.soeknad.felles.v3.Adopsjon();
+        adopsjonXML.getVedlegg().addAll(relasjonTilBarnVedleggFra(vedlegg));
+        adopsjonXML.setAntallBarn(adopsjon.getAntallBarn());
+        adopsjonXML.getFoedselsdato().addAll(adopsjon.getFødselsdato());
+        adopsjonXML.setOmsorgsovertakelsesdato(adopsjon.getOmsorgsovertakelsesdato());
+        adopsjonXML.setAdopsjonAvEktefellesBarn(adopsjon.isEktefellesBarn());
+        adopsjonXML.setAnkomstdato(adopsjon.getAnkomstDato());
+        return adopsjonXML;
     }
 
     private static SoekersRelasjonTilBarnet create(Fødsel fødsel, List<Vedlegg> vedlegg) {
-        return new Foedsel()
-                .withVedlegg(relasjonTilBarnVedleggFra(vedlegg))
-                .withFoedselsdato(fødsel.getFødselsdato().get(0))
-                .withAntallBarn(fødsel.getAntallBarn());
+        var foedsel = new Foedsel();
+        foedsel.getVedlegg().addAll(relasjonTilBarnVedleggFra(vedlegg));
+        foedsel.setFoedselsdato(fødsel.getFødselsdato().get(0));
+        foedsel.setAntallBarn(fødsel.getAntallBarn());
+        return foedsel;
     }
 
     private static SoekersRelasjonTilBarnet create(FremtidigFødsel termin, List<Vedlegg> vedlegg) {
-        return new Termin()
-                .withVedlegg(relasjonTilBarnVedleggFra(vedlegg))
-                .withTermindato(termin.getTerminDato())
-                .withUtstedtdato(termin.getUtstedtDato())
-                .withAntallBarn(termin.getAntallBarn());
+        var terminXML = new Termin();
+        terminXML.getVedlegg().addAll(relasjonTilBarnVedleggFra(vedlegg));
+        terminXML.setTermindato(termin.getTerminDato());
+        terminXML.setUtstedtdato(termin.getUtstedtDato());
+        terminXML.setAntallBarn(termin.getAntallBarn());
+        return terminXML;
     }
 
     private static List<JAXBElement<Object>> relasjonTilBarnVedleggFra(List<Vedlegg> vedlegg) {
         return safeStream(vedlegg)
                 .map(Vedlegg::getId)
-                .map(s -> FELLES_FACTORY_V3.createSoekersRelasjonTilBarnetVedlegg(
-                        new no.nav.vedtak.felles.xml.soeknad.felles.v3.Vedlegg().withId(s)))
+                .map(referanse -> FELLES_FACTORY_V3.createSoekersRelasjonTilBarnetVedlegg(tilVedlegg(referanse)))
                 .toList();
     }
 

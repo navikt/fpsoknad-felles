@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import no.nav.foreldrepenger.common.domain.felles.ProsentAndel;
 import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Pattern;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;

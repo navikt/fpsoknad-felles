@@ -9,14 +9,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.validation.Validation;
-import javax.validation.Validator;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.neovisionaries.i18n.CountryCode;
 
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
 import no.nav.foreldrepenger.common.domain.felles.LukketPeriode;
 import no.nav.foreldrepenger.common.domain.felles.medlemskap.Medlemsskap;
 import no.nav.foreldrepenger.common.domain.felles.medlemskap.Utenlandsopphold;

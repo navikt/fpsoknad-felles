@@ -3,7 +3,7 @@ package no.nav.foreldrepenger.common.domain.felles.opptjening;
 import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
 import static no.nav.foreldrepenger.common.util.StringUtil.mask;
 
-import javax.validation.constraints.Pattern;
+import jakarta.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Length;
 

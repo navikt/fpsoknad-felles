@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import no.nav.foreldrepenger.common.oppslag.dkif.Målform;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import java.util.Optional;
 
 import static no.nav.foreldrepenger.common.oppslag.dkif.Målform.standard;

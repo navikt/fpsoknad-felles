@@ -6,9 +6,9 @@ import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
 import no.nav.foreldrepenger.common.domain.felles.ÅpenPeriode;
 import org.hibernate.validator.constraints.Length;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;

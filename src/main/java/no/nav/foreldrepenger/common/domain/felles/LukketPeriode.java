@@ -2,7 +2,7 @@ package no.nav.foreldrepenger.common.domain.felles;
 
 import java.time.LocalDate;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;

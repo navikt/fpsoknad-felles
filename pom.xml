@@ -27,12 +27,18 @@
         <sonar.projectName>fp-soknad-felles</sonar.projectName>
         <sonar.projectKey>navikt_fpsoknad-felles</sonar.projectKey>
 
-        <xsd.location>${project.basedir}/src/main/resources/xsd</xsd.location>
-        <xjb.location>${project.basedir}/src/main/resources/xjb</xjb.location>
 
+        <jaxb2-maven-plugin.version>3.1.0</jaxb2-maven-plugin.version>
+        <xsd.packagename/>
+        <xsd.location>${project.basedir}/src/main/resources/xsd/</xsd.location>
+        <xjb.location>${project.basedir}/src/main/resources/xjb/</xjb.location>
+
+
+        <hibernate-validator.version>8.0.0.Final</hibernate-validator.version>
+        <token-support.version>3.0.10</token-support.version>
         <kontrakter.version>6.2.11</kontrakter.version>
-
-        <jaxb-runtime.version>2.3.6</jaxb-runtime.version>
+        <jakarta.jakartaee-bom.version>10.0.0</jakarta.jakartaee-bom.version>
+        <micrometer-registry-prometheus.version>1.10.5</micrometer-registry-prometheus.version>
     </properties>
 
     <scm>
@@ -48,7 +54,7 @@
             <dependency>
                 <groupId>jakarta.platform</groupId>
                 <artifactId>jakarta.jakartaee-bom</artifactId>
-                <version>8.0.0</version>
+                <version>${jakarta.jakartaee-bom.version}</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
@@ -62,19 +68,10 @@
                 <type>pom</type>
             </dependency>
 
-            <!-- JAXB BOM-->
-            <dependency>
-                <groupId>org.glassfish.jaxb</groupId>
-                <artifactId>jaxb-bom</artifactId>
-                <version>${jaxb-runtime.version}</version>
-                <scope>import</scope>
-                <type>pom</type>
-            </dependency>
-
             <dependency>
                 <groupId>no.nav.security</groupId>
                 <artifactId>token-validation-core</artifactId>
-                <version>2.1.6</version>
+                <version>${token-support.version}</version>
                 <exclusions>
                     <exclusion>
                         <groupId>org.jetbrains.kotlin</groupId>
@@ -86,7 +83,7 @@
             <dependency>
                 <groupId>io.micrometer</groupId>
                 <artifactId>micrometer-registry-prometheus</artifactId>
-                <version>1.10.5</version>
+                <version>${micrometer-registry-prometheus.version}</version>
             </dependency>
 
             <dependency>
@@ -104,13 +101,13 @@
             <dependency>
                 <groupId>org.hibernate.validator</groupId>
                 <artifactId>hibernate-validator</artifactId>
-                <version>6.2.2.Final</version>
+                <version>${hibernate-validator.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.glassfish</groupId>
                 <artifactId>jakarta.el</artifactId>
-                <version>3.0.4</version>
+                <version>4.0.2</version>
             </dependency>
 
             <dependency>
@@ -147,6 +144,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>no.nav.foreldrepenger.kontrakter</groupId>
+            <artifactId>soeknad-v3-jakarta</artifactId>
+            <version>6.2.16</version>
+        </dependency>
+        <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
         </dependency>
@@ -174,10 +176,20 @@
             <groupId>jakarta.validation</groupId>
             <artifactId>jakarta.validation-api</artifactId>
         </dependency>
+        <!-- JAXB API only -->
         <dependency>
             <groupId>jakarta.xml.bind</groupId>
             <artifactId>jakarta.xml.bind-api</artifactId>
         </dependency>
+
+        <!-- JAXB Implementation -->
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <version>4.0.2</version>
+            <scope>runtime</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -196,11 +208,6 @@
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish.jaxb</groupId>
-            <artifactId>jaxb-runtime</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -255,97 +262,125 @@
                         <argLine>@{argLine} ${argLine}</argLine>
                     </configuration>
                 </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-dependency-plugin</artifactId>
-                    <version>3.5.0</version>
-                    <executions>
-                        <execution>
-                            <id>unpack</id>
-                            <phase>generate-sources</phase>
-                            <goals>
-                                <goal>unpack</goal>
-                            </goals>
-                            <configuration>
-                                <artifactItems>
-                                    <artifactItem>
-                                        <groupId>no.nav.foreldrepenger.kontrakter</groupId>
-                                        <artifactId>soeknad-v3</artifactId>
-                                        <version>${kontrakter.version}</version>
-                                        <outputDirectory>${xsd.location}/soeknad-v3</outputDirectory>
-                                        <includes>**\/*.xsd</includes>
-                                    </artifactItem>
-                                </artifactItems>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
-                    <groupId>org.jvnet.jaxb2.maven2</groupId>
-                    <artifactId>maven-jaxb2-plugin</artifactId>
-                    <version>0.15.2</version>
-                    <dependencies>
-                        <dependency>
-                            <groupId>org.glassfish.jaxb</groupId>
-                            <artifactId>jaxb-runtime</artifactId>
-                            <version>${jaxb-runtime.version}</version>
-                            <scope>compile</scope>
-                        </dependency>
-                    </dependencies>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>generate</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                    <configuration>
-                        <bindings>
-                            <binding>
-                                <fileset>
-                                    <directory>${xjb.location}</directory>
-                                    <includes>
-                                        <include>*.xjb</include>
-                                    </includes>
-                                </fileset>
-                            </binding>
-                        </bindings>
-                        <extension>true</extension>
-                        <args>
-                            <arg>-no-header</arg>
-                            <arg>-npa</arg>
-                            <arg>-Xfluent-api</arg>
-                            <arg>-Xannotate</arg>
-                        </args>
-                        <schemas>
-                            <schema>
-                                <fileset>
-                                    <directory>${xsd.location}</directory>
-                                    <includes>
-                                        <include>**/*.xsd</include>
-                                    </includes>
-                                </fileset>
-                            </schema>
-                        </schemas>
-                        <plugins>
-                            <plugin>
-                                <groupId>org.jvnet.jaxb2_commons</groupId>
-                                <artifactId>jaxb2-basics</artifactId>
-                                <version>1.11.1</version>
-                            </plugin>
-                            <plugin>
-                                <groupId>org.jvnet.jaxb2_commons</groupId>
-                                <artifactId>jaxb2-basics-annotate</artifactId>
-                                <version>1.1.0</version>
-                            </plugin>
-                            <plugin>
-                                <groupId>net.java.dev.jaxb2-commons</groupId>
-                                <artifactId>jaxb-fluent-api</artifactId>
-                                <version>2.1.8</version>
-                            </plugin>
-                        </plugins>
-                    </configuration>
-                </plugin>
+
+<!--                <plugin>-->
+<!--                    <groupId>org.apache.maven.plugins</groupId>-->
+<!--                    <artifactId>maven-dependency-plugin</artifactId>-->
+<!--                    <version>3.5.0</version>-->
+<!--                    <executions>-->
+<!--                        <execution>-->
+<!--                            <id>unpack</id>-->
+<!--                            <phase>generate-sources</phase>-->
+<!--                            <goals>-->
+<!--                                <goal>unpack</goal>-->
+<!--                            </goals>-->
+<!--                            <configuration>-->
+<!--                                <artifactItems>-->
+<!--                                    <artifactItem>-->
+<!--                                        <groupId>no.nav.foreldrepenger.kontrakter</groupId>-->
+<!--                                        <artifactId>soeknad-v3</artifactId>-->
+<!--                                        <version>${kontrakter.version}</version>-->
+<!--                                        <outputDirectory>${xsd.location}/soeknad-v3</outputDirectory>-->
+<!--                                        <includes>**\/*.xsd</includes>-->
+<!--                                    </artifactItem>-->
+<!--                                </artifactItems>-->
+<!--                            </configuration>-->
+<!--                        </execution>-->
+<!--                    </executions>-->
+<!--                </plugin>-->
+<!--                <plugin>-->
+<!--                    <groupId>org.codehaus.mojo</groupId>-->
+<!--                    <artifactId>jaxb2-maven-plugin</artifactId>-->
+<!--                    <version>${jaxb2-maven-plugin.version}</version>-->
+<!--                    <executions>-->
+<!--                        <execution>-->
+<!--                            <configuration>-->
+<!--                                <sources>-->
+<!--                                    <source>${xsd.location}</source>-->
+<!--                                </sources>-->
+<!--                                <xjbSources>-->
+<!--                                    <xjbSource>${xjb.location}</xjbSource>-->
+<!--                                </xjbSources>-->
+<!--                                <packageName>${xsd.packagename}</packageName>-->
+<!--                                <encoding>${project.build.sourceEncoding}</encoding>-->
+<!--                            </configuration>-->
+<!--                            <goals>-->
+<!--                                <goal>xjc</goal>-->
+<!--                            </goals>-->
+<!--                        </execution>-->
+<!--                    </executions>-->
+<!--                </plugin>-->
+
+
+<!--                &lt;!&ndash; =============================== &ndash;&gt;-->
+<!--                <plugin>-->
+<!--                    <groupId>org.jvnet.jaxb2.maven2</groupId>-->
+<!--                    <artifactId>maven-jaxb2-plugin</artifactId>-->
+<!--                    <version>${maven-jaxb2-plugin.version}</version>-->
+<!--                    <dependencies>-->
+<!--                        <dependency>-->
+<!--                            <groupId>org.glassfish.jaxb</groupId>-->
+<!--                            <artifactId>jaxb-runtime</artifactId>-->
+<!--                            <version>${jaxb-runtime.version}</version>-->
+<!--                            <scope>compile</scope>-->
+<!--                        </dependency>-->
+<!--                    </dependencies>-->
+<!--                    <executions>-->
+<!--                        <execution>-->
+<!--                            <goals>-->
+<!--                                <goal>generate</goal>-->
+<!--                            </goals>-->
+<!--                        </execution>-->
+<!--                    </executions>-->
+<!--                    <configuration>-->
+<!--                        <bindings>-->
+<!--                            <binding>-->
+<!--                                <fileset>-->
+<!--                                    <directory>${xjb.location}</directory>-->
+<!--                                    <includes>-->
+<!--                                        <include>*.xjb</include>-->
+<!--                                    </includes>-->
+<!--                                </fileset>-->
+<!--                            </binding>-->
+<!--                        </bindings>-->
+<!--                        <extension>true</extension>-->
+<!--                        <args>-->
+<!--                            <arg>-no-header</arg>-->
+<!--                            <arg>-npa</arg>-->
+<!--                            <arg>-Xfluent-api</arg>-->
+<!--                            <arg>-Xannotate</arg>-->
+<!--                        </args>-->
+<!--                        <schemas>-->
+<!--                            <schema>-->
+<!--                                <fileset>-->
+<!--                                    <directory>${xsd.location}</directory>-->
+<!--                                    <includes>-->
+<!--                                        <include>**/*.xsd</include>-->
+<!--                                    </includes>-->
+<!--                                </fileset>-->
+<!--                            </schema>-->
+<!--                        </schemas>-->
+<!--                        <plugins>-->
+<!--                            <plugin>-->
+<!--                                <groupId>org.jvnet.jaxb2_commons</groupId>-->
+<!--                                <artifactId>jaxb2-basics</artifactId>-->
+<!--                                <version>1.11.1</version>-->
+<!--                            </plugin>-->
+<!--                            <plugin>-->
+<!--                                <groupId>org.jvnet.jaxb2_commons</groupId>-->
+<!--                                <artifactId>jaxb2-basics-annotate</artifactId>-->
+<!--                                <version>1.1.0</version>-->
+<!--                            </plugin>-->
+<!--                            <plugin>-->
+<!--                                <groupId>net.java.dev.jaxb2-commons</groupId>-->
+<!--                                <artifactId>jaxb-fluent-api</artifactId>-->
+<!--                                <version>2.1.8</version>-->
+<!--                            </plugin>-->
+<!--                        </plugins>-->
+<!--                    </configuration>-->
+<!--                </plugin>-->
+                <!-- =============================== -->
+
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-source-plugin</artifactId>
@@ -431,15 +466,15 @@
             </plugins>
         </pluginManagement>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-            </plugin>
-            <!-- OBS! maven-dependency-plugin må komme før maven-jaxb2-plugin -->
-            <plugin>
-                <groupId>org.jvnet.jaxb2.maven2</groupId>
-                <artifactId>maven-jaxb2-plugin</artifactId>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-dependency-plugin</artifactId>-->
+<!--            </plugin>-->
+<!--            &lt;!&ndash; OBS! maven-dependency-plugin må komme før maven-jaxb2-plugin &ndash;&gt;-->
+<!--            <plugin>-->
+<!--                <groupId>org.codehaus.mojo</groupId>-->
+<!--                <artifactId>jaxb2-maven-plugin</artifactId>-->
+<!--            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

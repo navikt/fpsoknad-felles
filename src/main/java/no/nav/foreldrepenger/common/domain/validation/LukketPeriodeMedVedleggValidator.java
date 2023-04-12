@@ -1,11 +1,10 @@
 package no.nav.foreldrepenger.common.domain.validation;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.LukketPeriodeMedVedlegg;
 import no.nav.foreldrepenger.common.domain.validation.annotations.LukketPeriode;
 

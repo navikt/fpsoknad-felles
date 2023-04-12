@@ -6,7 +6,7 @@ import no.nav.foreldrepenger.common.domain.Søknad;
 import no.nav.foreldrepenger.common.domain.Ytelse;
 import no.nav.foreldrepenger.common.domain.felles.Vedlegg;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;

@@ -2,7 +2,7 @@ package no.nav.foreldrepenger.common.domain.felles.opptjening;
 
 import no.nav.foreldrepenger.common.domain.felles.ÅpenPeriode;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.List;
 
 public record Frilans(@Valid ÅpenPeriode periode,

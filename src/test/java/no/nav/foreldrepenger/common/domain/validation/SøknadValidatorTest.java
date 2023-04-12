@@ -6,8 +6,8 @@ import static no.nav.foreldrepenger.common.domain.felles.TestUtils.nå;
 import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.svp;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import javax.validation.Validation;
-import javax.validation.Validator;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

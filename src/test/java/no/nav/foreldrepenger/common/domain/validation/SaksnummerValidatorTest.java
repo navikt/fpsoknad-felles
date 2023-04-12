@@ -3,8 +3,8 @@ package no.nav.foreldrepenger.common.domain.validation;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import javax.validation.Validation;
-import javax.validation.Validator;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

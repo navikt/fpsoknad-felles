@@ -11,7 +11,7 @@ import no.nav.foreldrepenger.common.domain.Fødselsnummer;
 import no.nav.foreldrepenger.common.domain.Navn;
 import no.nav.foreldrepenger.common.oppslag.dkif.Målform;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;

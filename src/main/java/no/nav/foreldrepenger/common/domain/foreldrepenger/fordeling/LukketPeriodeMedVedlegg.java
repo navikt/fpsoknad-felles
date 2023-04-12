@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
 import no.nav.foreldrepenger.common.domain.validation.annotations.LukketPeriode;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;

@@ -3,7 +3,7 @@ package no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;

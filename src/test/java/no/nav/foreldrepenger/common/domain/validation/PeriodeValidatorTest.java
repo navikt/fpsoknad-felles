@@ -5,8 +5,8 @@ import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.Fordeling;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import javax.validation.Validation;
-import javax.validation.Validator;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
 import java.time.LocalDate;
 import java.util.Collections;
 

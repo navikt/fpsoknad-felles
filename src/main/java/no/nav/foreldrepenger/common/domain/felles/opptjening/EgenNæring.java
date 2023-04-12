@@ -8,8 +8,8 @@ import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
 import no.nav.foreldrepenger.common.domain.felles.ÅpenPeriode;
 import org.hibernate.validator.constraints.Length;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Pattern;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;

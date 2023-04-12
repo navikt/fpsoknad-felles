@@ -1,12 +1,13 @@
 package no.nav.foreldrepenger.common.domain.felles.opptjening;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
+import static java.util.Collections.emptyList;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
-import static java.util.Collections.emptyList;
+import com.fasterxml.jackson.annotation.JsonCreator;
+
+import jakarta.validation.Valid;
 
 public record Opptjening(@Valid List<UtenlandskArbeidsforhold> utenlandskArbeidsforhold,
                          @Valid List<EgenNæring> egenNæring,
