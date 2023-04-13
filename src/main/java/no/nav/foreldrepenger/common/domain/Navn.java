@@ -3,7 +3,7 @@ package no.nav.foreldrepenger.common.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import javax.validation.constraints.Pattern;
+import jakarta.validation.constraints.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 

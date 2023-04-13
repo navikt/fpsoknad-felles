@@ -4,13 +4,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-
 import org.hibernate.validator.constraintvalidation.HibernateConstraintValidatorContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import no.nav.foreldrepenger.common.domain.felles.medlemskap.Utenlandsopphold;
 import no.nav.foreldrepenger.common.domain.validation.annotations.Opphold;
 
@@ -81,28 +80,25 @@ public class OppholdValidator implements ConstraintValidator<Opphold, List<Utenl
     }
 
     private static void errorMessageFortidFremtid(ConstraintValidatorContext context, Utenlandsopphold opphold, String txt) {
-        var hibernateContext = context
-                .unwrap(HibernateConstraintValidatorContext.class);
-        hibernateContext.disableDefaultConstraintViolation();
+        var hibernateContext = context.unwrap(HibernateConstraintValidatorContext.class);
+//        hibernateContext.disableDefaultConstraintViolation();
         hibernateContext.addExpressionVariable("fra", opphold.fom())
                 .addExpressionVariable("til", opphold.tom())
                 .addExpressionVariable("txt", txt)
                 .buildConstraintViolationWithTemplate("Perioden ${fra} - ${til} ${txt}")
-                .enableExpressionLanguage()
-                .addConstraintViolation();
+                .enableExpressionLanguage();
     }
 
     private static void errorMessageOverlap(ConstraintValidatorContext context, Utenlandsopphold periode1, Utenlandsopphold periode2) {
         var hibernateContext = context.unwrap(HibernateConstraintValidatorContext.class);
-        hibernateContext.disableDefaultConstraintViolation();
+//        hibernateContext.disableDefaultConstraintViolation();
         hibernateContext
                 .addExpressionVariable("fra1", periode1.fom())
                 .addExpressionVariable("til1", periode1.tom())
                 .addExpressionVariable("fra2", periode2.fom())
                 .addExpressionVariable("til2", periode2.tom())
                 .buildConstraintViolationWithTemplate("Periodene ${fra1} - ${til1} og ${fra2} - ${til2} overlapper")
-                .enableExpressionLanguage()
-                .addConstraintViolation();
+                .enableExpressionLanguage();
     }
 
     @Override

@@ -2,8 +2,8 @@ package no.nav.foreldrepenger.common.domain.felles.medlemskap;
 
 import java.time.LocalDate;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 
 import com.neovisionaries.i18n.CountryCode;
 

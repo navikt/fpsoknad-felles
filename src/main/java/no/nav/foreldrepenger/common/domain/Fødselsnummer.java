@@ -5,7 +5,7 @@ import static no.nav.foreldrepenger.common.util.StringUtil.mask;
 
 import java.util.Objects;
 
-import javax.validation.constraints.Pattern;
+import jakarta.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;

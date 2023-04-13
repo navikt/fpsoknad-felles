@@ -11,13 +11,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import javax.xml.bind.JAXBElement;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.neovisionaries.i18n.CountryCode;
 
+import jakarta.xml.bind.JAXBElement;
 import no.nav.foreldrepenger.common.domain.AktørId;
 import no.nav.foreldrepenger.common.domain.BrukerRolle;
 import no.nav.foreldrepenger.common.domain.Søker;
@@ -74,19 +73,21 @@ final class V3DomainMapperCommon {
 
     static Periode periodeFra(ÅpenPeriode periode) {
         return Optional.ofNullable(periode)
-                .map(p -> new Periode()
-                        .withFom(p.fom())
-                        .withTom(p.tom()))
+                .map(V3DomainMapperCommon::tilPeriode)
                 .orElse(null);
     }
 
-    static Opptjening opptjeningFra(
-            no.nav.foreldrepenger.common.domain.felles.opptjening.Opptjening opptjening) {
-        return new Opptjening()
-                .withUtenlandskArbeidsforhold(utenlandskeArbeidsforholdFra(opptjening.utenlandskArbeidsforhold()))
-                .withFrilans(frilansFra(opptjening.frilans()))
-                .withEgenNaering(egneNæringerFra(opptjening.egenNæring()))
-                .withAnnenOpptjening(andreOpptjeningerFra(opptjening.annenOpptjening()));
+    private static Periode tilPeriode(ÅpenPeriode p) {
+        return tilPeriode(p.fom(), p.tom());
+    }
+
+    static Opptjening opptjeningFra(no.nav.foreldrepenger.common.domain.felles.opptjening.Opptjening opptjening) {
+        var opptjeningXml = new Opptjening();
+        opptjeningXml.getUtenlandskArbeidsforhold().addAll(utenlandskeArbeidsforholdFra(opptjening.utenlandskArbeidsforhold()));
+        opptjeningXml.setFrilans(frilansFra(opptjening.frilans()));
+        opptjeningXml.getEgenNaering().addAll(egneNæringerFra(opptjening.egenNæring()));
+        opptjeningXml.getAnnenOpptjening().addAll(andreOpptjeningerFra(opptjening.annenOpptjening()));
+        return opptjeningXml;
     }
 
     static Medlemskap medlemsskapFra(Medlemsskap ms, LocalDate relasjonsDato) {
@@ -96,11 +97,12 @@ final class V3DomainMapperCommon {
     }
 
     private static Medlemskap create(Medlemsskap ms, LocalDate relasjonsDato) {
-        return new Medlemskap()
-                .withOppholdUtlandet(oppholdUtlandetFra(ms))
-                .withINorgeVedFoedselstidspunkt(ms.varINorge(relasjonsDato))
-                .withBoddINorgeSiste12Mnd(oppholdINorgeSiste12(ms))
-                .withBorINorgeNeste12Mnd(oppholdINorgeNeste12(ms));
+        var medlemskap = new Medlemskap();
+        medlemskap.getOppholdUtlandet().addAll(oppholdUtlandetFra(ms));
+        medlemskap.setINorgeVedFoedselstidspunkt(ms.varINorge(relasjonsDato));
+        medlemskap.setBoddINorgeSiste12Mnd(oppholdINorgeSiste12(ms));
+        medlemskap.setBorINorgeNeste12Mnd(oppholdINorgeNeste12(ms));
+        return medlemskap;
     }
 
     private static boolean oppholdINorgeSiste12(Medlemsskap ms) {
@@ -119,12 +121,22 @@ final class V3DomainMapperCommon {
 
     private static OppholdUtlandet utenlandOppholdFra(Utenlandsopphold opphold) {
         return Optional.ofNullable(opphold)
-                .map(o -> new OppholdUtlandet()
-                        .withPeriode(new Periode()
-                                .withFom(o.fom())
-                                .withTom(o.tom()))
-                        .withLand(landFra(o.land())))
+                .map(o -> tilUtenlandsOpphold(o))
                 .orElse(null);
+    }
+
+    private static OppholdUtlandet tilUtenlandsOpphold(Utenlandsopphold o) {
+        var oppholdUtlandet = new OppholdUtlandet();
+        oppholdUtlandet.setPeriode(tilPeriode(o.fom(), o.tom()));
+        oppholdUtlandet.setLand(landFra(o.land()));
+        return oppholdUtlandet;
+    }
+
+    private static Periode tilPeriode(LocalDate fom, LocalDate tom) {
+        var periode = new Periode();
+        periode.setFom(fom);
+        periode.setTom(tom);
+        return periode;
     }
 
     private static List<Virksomhetstyper> virksomhetsTyperFra(List<Virksomhetstype> typer) {
@@ -141,9 +153,10 @@ final class V3DomainMapperCommon {
     }
 
     private static Virksomhetstyper virksomhetsTypeFra(String type) {
-        var vt = new Virksomhetstyper().withKode(type);
-        vt.setKodeverk(vt.getKodeverk());
-        return vt;
+        var virksomhetstyper = new Virksomhetstyper();
+        virksomhetstyper.setKode(type);
+        virksomhetstyper.setKodeverk(virksomhetstyper.getKodeverk()); // bruker default fra getter..
+        return virksomhetstyper;
     }
 
     private static List<EgenNaering> egneNæringerFra(List<EgenNæring> egenNæring) {
@@ -169,75 +182,83 @@ final class V3DomainMapperCommon {
     }
 
     private static UtenlandskOrganisasjon utenlandskOrganisasjon(EgenNæring utenlandskOrg) {
-        return new UtenlandskOrganisasjon()
-                .withVedlegg(egenNæringVedleggFraIDs(utenlandskOrg.vedlegg()))
-                .withBeskrivelseAvEndring(utenlandskOrg.beskrivelseEndring())
-                .withNaerRelasjon(utenlandskOrg.nærRelasjon())
-                .withEndringsDato(utenlandskOrg.endringsDato())
-                .withOppstartsdato(utenlandskOrg.oppstartsDato())
-                .withErNyoppstartet(utenlandskOrg.erNyOpprettet())
-                .withErNyIArbeidslivet(utenlandskOrg.erNyIArbeidslivet())
-                .withErVarigEndring(utenlandskOrg.erVarigEndring())
-                .withNaeringsinntektBrutto(BigInteger.valueOf(utenlandskOrg.næringsinntektBrutto()))
-                .withNavn(utenlandskOrg.orgName())
-                .withRegistrertILand(landFra(utenlandskOrg.registrertILand()))
-                .withPeriode(periodeFra(utenlandskOrg.periode()))
-                .withRegnskapsfoerer(regnskapsFørerFra(utenlandskOrg.regnskapsførere()))
-                .withVirksomhetstype(virksomhetsTyperFra(utenlandskOrg.virksomhetsTyper()));
+        var utenlandskOrganisasjon = new UtenlandskOrganisasjon();
+        utenlandskOrganisasjon.getVedlegg().addAll(egenNæringVedleggFraIDs(utenlandskOrg.vedlegg()));
+        utenlandskOrganisasjon.setBeskrivelseAvEndring(utenlandskOrg.beskrivelseEndring());
+        utenlandskOrganisasjon.setNaerRelasjon(utenlandskOrg.nærRelasjon());
+        utenlandskOrganisasjon.setEndringsDato(utenlandskOrg.endringsDato());
+        utenlandskOrganisasjon.setOppstartsdato(utenlandskOrg.oppstartsDato());
+        utenlandskOrganisasjon.setErNyoppstartet(utenlandskOrg.erNyOpprettet());
+        utenlandskOrganisasjon.setErNyIArbeidslivet (utenlandskOrg.erNyIArbeidslivet());
+        utenlandskOrganisasjon.setErVarigEndring(utenlandskOrg.erVarigEndring());
+        utenlandskOrganisasjon.setNaeringsinntektBrutto(BigInteger.valueOf(utenlandskOrg.næringsinntektBrutto()));
+        utenlandskOrganisasjon.setNavn(utenlandskOrg.orgName());
+        utenlandskOrganisasjon.setRegistrertILand(landFra(utenlandskOrg.registrertILand()));
+        utenlandskOrganisasjon.setPeriode(periodeFra(utenlandskOrg.periode()));
+        utenlandskOrganisasjon.setRegnskapsfoerer(regnskapsFørerFra(utenlandskOrg.regnskapsførere()));
+        utenlandskOrganisasjon.getVirksomhetstype().addAll(virksomhetsTyperFra(utenlandskOrg.virksomhetsTyper()));
+        return utenlandskOrganisasjon;
     }
 
     private static NorskOrganisasjon norskOrganisasjon(EgenNæring norskOrg) {
-        return new NorskOrganisasjon()
-                .withVedlegg(egenNæringVedleggFraIDs(norskOrg.vedlegg()))
-                .withBeskrivelseAvEndring(norskOrg.beskrivelseEndring())
-                .withNaerRelasjon(norskOrg.nærRelasjon())
-                .withEndringsDato(norskOrg.endringsDato())
-                .withOppstartsdato(norskOrg.oppstartsDato())
-                .withErNyoppstartet(norskOrg.erNyOpprettet())
-                .withErNyIArbeidslivet(norskOrg.erNyIArbeidslivet())
-                .withErVarigEndring(norskOrg.erVarigEndring())
-                .withNaeringsinntektBrutto(BigInteger.valueOf(norskOrg.næringsinntektBrutto()))
-                .withNavn(norskOrg.orgName())
-                .withOrganisasjonsnummer(norskOrg.orgNummer().value())
-                .withPeriode(periodeFra(norskOrg.periode()))
-                .withRegnskapsfoerer(regnskapsFørerFra(norskOrg.regnskapsførere()))
-                .withVirksomhetstype(virksomhetsTyperFra(norskOrg.virksomhetsTyper()))
-                .withOppstartsdato(norskOrg.oppstartsDato());
+        var norskOrganisasjon = new NorskOrganisasjon();
+        norskOrganisasjon.getVedlegg().addAll(egenNæringVedleggFraIDs(norskOrg.vedlegg()));
+        norskOrganisasjon.setBeskrivelseAvEndring(norskOrg.beskrivelseEndring());
+        norskOrganisasjon.setNaerRelasjon(norskOrg.nærRelasjon());
+        norskOrganisasjon.setEndringsDato(norskOrg.endringsDato());
+        norskOrganisasjon.setOppstartsdato(norskOrg.oppstartsDato());
+        norskOrganisasjon.setErNyoppstartet(norskOrg.erNyOpprettet());
+        norskOrganisasjon.setErNyIArbeidslivet (norskOrg.erNyIArbeidslivet());
+        norskOrganisasjon.setErVarigEndring(norskOrg.erVarigEndring());
+        norskOrganisasjon.setNaeringsinntektBrutto(BigInteger.valueOf(norskOrg.næringsinntektBrutto()));
+        norskOrganisasjon.setNavn(norskOrg.orgName());
+        norskOrganisasjon.setOrganisasjonsnummer(norskOrg.orgNummer().value());
+        norskOrganisasjon.setPeriode(periodeFra(norskOrg.periode()));
+        norskOrganisasjon.setRegnskapsfoerer(regnskapsFørerFra(norskOrg.regnskapsførere()));
+        norskOrganisasjon.getVirksomhetstype().addAll(virksomhetsTyperFra(norskOrg.virksomhetsTyper()));
+        norskOrganisasjon.setOppstartsdato(norskOrg.oppstartsDato());
+        return norskOrganisasjon;
     }
 
     private static List<JAXBElement<Object>> egenNæringVedleggFraIDs(List<VedleggReferanse> vedlegg) {
         return safeStream(vedlegg)
                 .filter(Objects::nonNull)
                 .map(VedleggReferanse::referanse)
-                .map(s -> FP_FACTORY_V3.createEgenNaeringVedlegg(new Vedlegg().withId(s)))
+                .map(referanse -> FP_FACTORY_V3.createEgenNaeringVedlegg(tilVedlegg(referanse)))
                 .toList();
     }
 
-    private static List<AnnenOpptjening> andreOpptjeningerFra(
-            List<no.nav.foreldrepenger.common.domain.felles.opptjening.AnnenOpptjening> annenOpptjening) {
+    static Vedlegg tilVedlegg(String referanse) {
+        Vedlegg vedlegg = new Vedlegg();
+        vedlegg.setId(referanse);
+        return vedlegg;
+    }
+
+    private static List<AnnenOpptjening> andreOpptjeningerFra(List<no.nav.foreldrepenger.common.domain.felles.opptjening.AnnenOpptjening> annenOpptjening) {
         return safeStream(annenOpptjening)
                 .map(V3DomainMapperCommon::annenOpptjeningFra)
                 .toList();
     }
 
-    private static AnnenOpptjening annenOpptjeningFra(
-            no.nav.foreldrepenger.common.domain.felles.opptjening.AnnenOpptjening annen) {
+    private static AnnenOpptjening annenOpptjeningFra(no.nav.foreldrepenger.common.domain.felles.opptjening.AnnenOpptjening annen) {
         return Optional.ofNullable(annen)
                 .map(V3DomainMapperCommon::create)
                 .orElse(null);
     }
 
     private static AnnenOpptjeningTyper create(String kode) {
-        var type = new AnnenOpptjeningTyper().withKode(kode);
-        type.setKodeverk(type.getKodeverk());
+        var type = new AnnenOpptjeningTyper();
+        type.setKode(kode);
+        type.setKodeverk(type.getKodeverk()); // bruker default fra getter..
         return type;
     }
 
     private static AnnenOpptjening create(no.nav.foreldrepenger.common.domain.felles.opptjening.AnnenOpptjening annen) {
-        return new AnnenOpptjening()
-                .withVedlegg(annenOpptjeningVedleggFra(annen.vedlegg()))
-                .withType(annenOpptjeningTypeFra(annen.type()))
-                .withPeriode(periodeFra(annen.periode()));
+        var annenOpptjening = new AnnenOpptjening();
+        annenOpptjening.getVedlegg().addAll(annenOpptjeningVedleggFra(annen.vedlegg()));
+        annenOpptjening.setType(annenOpptjeningTypeFra(annen.type()));
+        annenOpptjening.setPeriode(periodeFra(annen.periode()));
+        return annenOpptjening;
     }
 
     private static AnnenOpptjeningTyper annenOpptjeningTypeFra(AnnenOpptjeningType type) {
@@ -251,10 +272,12 @@ final class V3DomainMapperCommon {
         if (regnskapsførere == null || regnskapsførere.isEmpty()) {
             return null;
         }
-        var regnskapsfører = regnskapsførere.get(0);
-        return new Regnskapsfoerer()
-                .withTelefon(regnskapsfører.telefon())
-                .withNavn(regnskapsfører.navn());
+        var førsteRegnskapsfører = regnskapsførere.get(0);
+
+        var regnskapsfoerer = new Regnskapsfoerer();
+        regnskapsfoerer.setTelefon(førsteRegnskapsfører.telefon());
+        regnskapsfoerer.setNavn(førsteRegnskapsfører.navn());
+        return regnskapsfoerer;
     }
 
     static Land landFra(CountryCode land) {
@@ -273,38 +296,37 @@ final class V3DomainMapperCommon {
                 .toList();
     }
 
-    private static UtenlandskArbeidsforhold utenlandskArbeidsforholdFra(
-            no.nav.foreldrepenger.common.domain.felles.opptjening.UtenlandskArbeidsforhold forhold) {
-        return new UtenlandskArbeidsforhold()
-                .withVedlegg(utenlandsArbeidsforholdVedleggFra(forhold.vedlegg()))
-                .withArbeidsgiversnavn(forhold.arbeidsgiverNavn())
-                .withArbeidsland(landFra(forhold.land()))
-                .withPeriode(periodeFra(forhold.periode()));
+    private static UtenlandskArbeidsforhold utenlandskArbeidsforholdFra(no.nav.foreldrepenger.common.domain.felles.opptjening.UtenlandskArbeidsforhold forhold) {
+        var utenlandskArbeidsforhold = new UtenlandskArbeidsforhold();
+        utenlandskArbeidsforhold.getVedlegg().addAll(utenlandsArbeidsforholdVedleggFra(forhold.vedlegg()));
+        utenlandskArbeidsforhold.setArbeidsgiversnavn(forhold.arbeidsgiverNavn());
+        utenlandskArbeidsforhold.setArbeidsland(landFra(forhold.land()));
+        utenlandskArbeidsforhold.setPeriode(periodeFra(forhold.periode()));
+        return utenlandskArbeidsforhold;
     }
 
     private static List<JAXBElement<Object>> utenlandsArbeidsforholdVedleggFra(List<VedleggReferanse> vedlegg) {
         return safeStream(vedlegg)
                 .filter(Objects::nonNull)
                 .map(VedleggReferanse::referanse)
-                .map(s -> FP_FACTORY_V3.createUtenlandskArbeidsforholdVedlegg(new Vedlegg().withId(s)))
+                .map(referanse -> FP_FACTORY_V3.createUtenlandskArbeidsforholdVedlegg(tilVedlegg(referanse)))
                 .toList();
     }
 
     static Bruker søkerFra(AktørId aktørId, Søker søker) {
-        return new Bruker()
-                .withAktoerId(aktørId.value())
-                .withSoeknadsrolle(brukerRolleFra(søker.søknadsRolle()));
+        var bruker = new Bruker();
+        bruker.setAktoerId(aktørId.value());
+        bruker.setSoeknadsrolle(brukerRolleFra(søker.søknadsRolle()));
+        return bruker;
     }
 
-    static List<Vedlegg> vedleggFra(
-            List<? extends no.nav.foreldrepenger.common.domain.felles.Vedlegg> vedlegg) {
+    static List<Vedlegg> vedleggFra(List<? extends no.nav.foreldrepenger.common.domain.felles.Vedlegg> vedlegg) {
         return safeStream(vedlegg)
                 .map(V3DomainMapperCommon::vedleggFra)
                 .toList();
     }
 
     private static Innsendingstype innsendingstypeFra(InnsendingsType innsendingsType) {
-
         return switch (innsendingsType) {
             case SEND_SENERE -> innsendingsTypeMedKodeverk(SEND_SENERE);
             case LASTET_OPP -> innsendingsTypeMedKodeverk(LASTET_OPP);
@@ -319,13 +341,13 @@ final class V3DomainMapperCommon {
     }
 
     private static Frilans create(no.nav.foreldrepenger.common.domain.felles.opptjening.Frilans frilans) {
-        var frilansOppdragsList = frilans.frilansOppdrag();
-        return new Frilans()
-                .withErNyoppstartet(frilans.nyOppstartet())
-                .withHarInntektFraFosterhjem(frilans.harInntektFraFosterhjem())
-                .withNaerRelasjon(frilansOppdragsList != null && !frilansOppdragsList.isEmpty())
-                .withPeriode(periodeFra(frilans.periode()))
-                .withFrilansoppdrag(frilansOppdragFra(frilansOppdragsList));
+        var frilansXML = new Frilans();
+        frilansXML.setErNyoppstartet(frilans.nyOppstartet());
+        frilansXML.setHarInntektFraFosterhjem(frilans.harInntektFraFosterhjem());
+        frilansXML.setNaerRelasjon(frilans.frilansOppdrag() != null && !frilans.frilansOppdrag().isEmpty());
+        frilansXML.getPeriode().add(periodeFra(frilans.periode()));
+        frilansXML.getFrilansoppdrag().addAll(frilansOppdragFra(frilans.frilansOppdrag()));
+        return frilansXML;
     }
 
     private static List<Frilansoppdrag> frilansOppdragFra(List<FrilansOppdrag> frilansOppdrag) {
@@ -341,25 +363,27 @@ final class V3DomainMapperCommon {
     }
 
     private static Frilansoppdrag create(FrilansOppdrag oppdrag) {
-        return new Frilansoppdrag()
-                .withOppdragsgiver(oppdrag.oppdragsgiver())
-                .withPeriode(periodeFra(oppdrag.periode()));
+        var frilansoppdrag = new Frilansoppdrag();
+        frilansoppdrag.setOppdragsgiver(oppdrag.oppdragsgiver());
+        frilansoppdrag.setPeriode(periodeFra(oppdrag.periode()));
+        return frilansoppdrag;
     }
 
     private static List<JAXBElement<Object>> annenOpptjeningVedleggFra(List<VedleggReferanse> vedlegg) {
         return safeStream(vedlegg)
                 .filter(Objects::nonNull)
                 .map(VedleggReferanse::referanse)
-                .map(s -> FP_FACTORY_V3.createAnnenOpptjeningVedlegg(new Vedlegg().withId(s)))
+                .map(referanse -> FP_FACTORY_V3.createAnnenOpptjeningVedlegg(tilVedlegg(referanse)))
                 .toList();
     }
 
     private static Vedlegg vedleggFra(no.nav.foreldrepenger.common.domain.felles.Vedlegg vedlegg) {
-        return new Vedlegg()
-                .withId(vedlegg.getId())
-                .withTilleggsinformasjon(vedlegg.getBeskrivelse())
-                .withSkjemanummer(vedlegg.getDokumentType().name())
-                .withInnsendingstype(innsendingstypeFra(vedlegg.getInnsendingsType()));
+        var vedleggXML = new Vedlegg();
+        vedleggXML.setId(vedlegg.getId());
+        vedleggXML.setTilleggsinformasjon(vedlegg.getBeskrivelse());
+        vedleggXML.setSkjemanummer(vedlegg.getDokumentType().name());
+        vedleggXML.setInnsendingstype(innsendingstypeFra(vedlegg.getInnsendingsType()));
+        return vedleggXML;
     }
 
     private static Spraakkode målformFra(Målform kode) {
@@ -367,12 +391,16 @@ final class V3DomainMapperCommon {
     }
 
     private static Spraakkode målformFra(String kode) {
-        return new Spraakkode().withKode(kode);
+        var spraakkkode = new Spraakkode();
+        spraakkkode.setKode(kode);
+        return spraakkkode;
     }
 
     private static Innsendingstype innsendingsTypeMedKodeverk(InnsendingsType type) {
-        var typeMedKodeverk = new Innsendingstype().withKode(type.name());
-        return typeMedKodeverk.withKodeverk(typeMedKodeverk.getKodeverk());
+        var innsendingstype = new Innsendingstype();
+        innsendingstype.setKode(type.name());
+        innsendingstype.setKodeverk(innsendingstype.getKodeverk()); // TODO: Fjern..
+        return innsendingstype;
     }
 
     private static Brukerroller brukerRolleFra(BrukerRolle søknadsRolle) {
@@ -380,12 +408,16 @@ final class V3DomainMapperCommon {
     }
 
     private static Brukerroller brukerRolleFra(String rolle) {
-        var brukerRolle = new Brukerroller().withKode(rolle);
-        return brukerRolle.withKodeverk(brukerRolle.getKodeverk());
+        var brukerRolle = new Brukerroller();
+        brukerRolle.setKode(rolle);
+        brukerRolle.setKodeverk(brukerRolle.getKodeverk()); // TODO: Fjern..
+        return brukerRolle;
     }
 
     private static Land landFra(String alpha3) {
-        var land = new Land().withKode(alpha3);
-        return land.withKodeverk(land.getKodeverk());
+        var land = new Land();
+        land.setKode(alpha3);
+        land.setKodeverk(land.getKodeverk()); // TODO: Fjern..
+        return land;
     }
 }

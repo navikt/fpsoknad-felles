@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
 
-import javax.validation.constraints.Positive;
+import jakarta.validation.constraints.Positive;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;

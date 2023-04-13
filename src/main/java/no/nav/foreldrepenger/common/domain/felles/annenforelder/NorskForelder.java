@@ -2,9 +2,9 @@ package no.nav.foreldrepenger.common.domain.felles.annenforelder;
 
 import no.nav.foreldrepenger.common.domain.Fødselsnummer;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import java.util.Optional;
 
 import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;

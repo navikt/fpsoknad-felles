@@ -1,12 +1,11 @@
 package no.nav.foreldrepenger.common.domain.validation;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import static no.nav.foreldrepenger.common.util.LangUtil.toBoolean;
 
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import no.nav.foreldrepenger.common.domain.foreldrepenger.Rettigheter;
 import no.nav.foreldrepenger.common.domain.validation.annotations.Rettighet;
-
-import static no.nav.foreldrepenger.common.util.LangUtil.toBoolean;
 
 
 public class RettigheterValidator implements ConstraintValidator<Rettighet, Rettigheter> {

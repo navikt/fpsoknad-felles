@@ -7,7 +7,7 @@ import no.nav.foreldrepenger.common.domain.felles.opptjening.Opptjening;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.RelasjonTilBarn;
 import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.Fordeling;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 public record Foreldrepenger(@Valid AnnenForelder annenForelder,
                              @Valid RelasjonTilBarn relasjonTilBarn,

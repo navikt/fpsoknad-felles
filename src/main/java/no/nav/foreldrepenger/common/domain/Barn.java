@@ -2,7 +2,7 @@ package no.nav.foreldrepenger.common.domain;
 
 import java.time.LocalDate;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import no.nav.foreldrepenger.common.domain.felles.AnnenPart;
 import no.nav.foreldrepenger.common.domain.felles.Kjønn;

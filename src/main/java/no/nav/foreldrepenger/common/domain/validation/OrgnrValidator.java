@@ -2,8 +2,8 @@ package no.nav.foreldrepenger.common.domain.validation;
 
 import static no.nav.foreldrepenger.common.domain.Orgnummer.MAGIC;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 import no.nav.foreldrepenger.common.domain.validation.annotations.Orgnr;
 
