@@ -1,22 +1,23 @@
 package no.nav.foreldrepenger.common.domain.felles;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.neovisionaries.i18n.CountryCode;
+
+import jakarta.validation.Valid;
 import no.nav.foreldrepenger.common.domain.AktørId;
 import no.nav.foreldrepenger.common.domain.Barn;
 import no.nav.foreldrepenger.common.domain.Fødselsnummer;
 import no.nav.foreldrepenger.common.domain.Navn;
 import no.nav.foreldrepenger.common.oppslag.dkif.Målform;
-
-import jakarta.validation.Valid;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
 @JsonInclude(NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -28,7 +29,8 @@ public record Person(@Valid AktørId aktørId,
                      @Valid Målform målform,
                      CountryCode land,
                      @Valid Bankkonto bankkonto,
-                     @Valid List<Barn> barn) {
+                     @Valid List<Barn> barn,
+                     Sivilstand sivilstand) {
 
     @JsonCreator
     public Person {
@@ -72,6 +74,7 @@ public record Person(@Valid AktørId aktørId,
         private CountryCode land;
         private Bankkonto bankkonto;
         private List<Barn> barn;
+        private Sivilstand sivilstand;
 
         Builder() {
         }
@@ -121,8 +124,14 @@ public record Person(@Valid AktørId aktørId,
             return this;
         }
 
+        public Builder sivilstand(Sivilstand sivilstand) {
+            this.sivilstand = sivilstand;
+            return this;
+        }
+
         public Person build() {
-            return new Person(this.aktørId, this.fnr, this.fødselsdato, this.navn, this.kjønn, this.målform, this.land, this.bankkonto, this.barn);
+            return new Person(this.aktørId, this.fnr, this.fødselsdato, this.navn, this.kjønn, this.målform, this.land, this.bankkonto, this.barn,
+                    this.sivilstand);
         }
     }
 
