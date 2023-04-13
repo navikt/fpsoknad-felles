@@ -1,16 +1,19 @@
 package no.nav.foreldrepenger.common.domain;
 
+import java.time.LocalDate;
+import java.util.List;
+
+import org.junit.jupiter.api.Test;
+
 import com.neovisionaries.i18n.CountryCode;
+
 import no.nav.foreldrepenger.common.domain.felles.AnnenPart;
 import no.nav.foreldrepenger.common.domain.felles.Bankkonto;
 import no.nav.foreldrepenger.common.domain.felles.Kjønn;
 import no.nav.foreldrepenger.common.domain.felles.Person;
+import no.nav.foreldrepenger.common.domain.felles.Sivilstand;
 import no.nav.foreldrepenger.common.oppslag.dkif.Målform;
 import no.nav.foreldrepenger.common.util.SerializationTestBase;
-import org.junit.jupiter.api.Test;
-
-import java.time.LocalDate;
-import java.util.List;
 
 class PersonSeraliseringDeseraliseringTest extends SerializationTestBase {
 
@@ -29,8 +32,8 @@ class PersonSeraliseringDeseraliseringTest extends SerializationTestBase {
                 Målform.NB,
                 CountryCode.NO,
                 Bankkonto.UKJENT,
-                List.of(barn)
-                );
+                List.of(barn),
+                new Sivilstand(Sivilstand.Type.GIFT));
 
         test(person);
     }
