@@ -7,10 +7,8 @@ import java.util.List;
 import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.neovisionaries.i18n.CountryCode;
 
 import jakarta.validation.Valid;
 import no.nav.foreldrepenger.common.domain.AktørId;
@@ -27,7 +25,6 @@ public record Person(@Valid AktørId aktørId,
                      @Valid Navn navn,
                      @Valid Kjønn kjønn,
                      @Valid Målform målform,
-                     CountryCode land,
                      @Valid Bankkonto bankkonto,
                      @Valid List<Barn> barn,
                      Sivilstand sivilstand) {
@@ -35,29 +32,7 @@ public record Person(@Valid AktørId aktørId,
     @JsonCreator
     public Person {
         målform = Optional.ofNullable(målform).orElse(Målform.standard());
-        land = Optional.ofNullable(land).orElse(CountryCode.NO);
         barn = Optional.ofNullable(barn).orElse(List.of());
-    }
-
-    @JsonIgnore
-    public String getFornavn() {
-        return Optional.ofNullable(navn)
-                .map(Navn::fornavn)
-                .orElse(null);
-    }
-
-    @JsonIgnore
-    public String getMellomnavn() {
-        return Optional.ofNullable(navn)
-                .map(Navn::mellomnavn)
-                .orElse(null);
-    }
-
-    @JsonIgnore
-    public String getEtternavn() {
-        return Optional.ofNullable(navn)
-                .map(Navn::etternavn)
-                .orElse(null);
     }
 
     public static Builder builder() {
@@ -71,7 +46,6 @@ public record Person(@Valid AktørId aktørId,
         private Navn navn;
         private Kjønn kjønn;
         private Målform målform;
-        private CountryCode land;
         private Bankkonto bankkonto;
         private List<Barn> barn;
         private Sivilstand sivilstand;
@@ -109,11 +83,6 @@ public record Person(@Valid AktørId aktørId,
             return this;
         }
 
-        public Builder land(CountryCode land) {
-            this.land = land;
-            return this;
-        }
-
         public Builder bankkonto(Bankkonto bankkonto) {
             this.bankkonto = bankkonto;
             return this;
@@ -130,7 +99,7 @@ public record Person(@Valid AktørId aktørId,
         }
 
         public Person build() {
-            return new Person(this.aktørId, this.fnr, this.fødselsdato, this.navn, this.kjønn, this.målform, this.land, this.bankkonto, this.barn,
+            return new Person(this.aktørId, this.fnr, this.fødselsdato, this.navn, this.kjønn, this.målform, this.bankkonto, this.barn,
                     this.sivilstand);
         }
     }

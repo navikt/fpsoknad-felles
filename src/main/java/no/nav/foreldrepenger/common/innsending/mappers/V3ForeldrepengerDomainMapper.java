@@ -43,7 +43,6 @@ import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.UttaksPeriod
 import no.nav.foreldrepenger.common.error.UnexpectedInputException;
 import no.nav.foreldrepenger.common.innsending.SøknadEgenskap;
 import no.nav.foreldrepenger.common.innsending.mappers.jaxb.FPV3JAXBUtil;
-import no.nav.foreldrepenger.common.oppslag.Oppslag;
 import no.nav.vedtak.felles.xml.soeknad.endringssoeknad.v3.Endringssoeknad;
 import no.nav.vedtak.felles.xml.soeknad.felles.v3.AnnenForelder;
 import no.nav.vedtak.felles.xml.soeknad.felles.v3.AnnenForelderMedNorskIdent;
@@ -83,10 +82,10 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
     private static final no.nav.vedtak.felles.xml.soeknad.uttak.v3.ObjectFactory UTTAK_FACTORY_V3 = new no.nav.vedtak.felles.xml.soeknad.uttak.v3.ObjectFactory();
     private static final no.nav.vedtak.felles.xml.soeknad.endringssoeknad.v3.ObjectFactory ENDRING_FACTORY_V3 = new no.nav.vedtak.felles.xml.soeknad.endringssoeknad.v3.ObjectFactory();
 
-    private final Oppslag oppslag;
+    private final AktørIdTilFnrConverter aktørIdTilFnrConverter;
 
-    public V3ForeldrepengerDomainMapper(Oppslag oppslag) {
-        this.oppslag = oppslag;
+    public V3ForeldrepengerDomainMapper(AktørIdTilFnrConverter aktørIdTilFnrConverter) {
+        this.aktørIdTilFnrConverter = aktørIdTilFnrConverter;
     }
 
     @Override
@@ -495,7 +494,7 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
 
     private AnnenForelderMedNorskIdent norskForelder(NorskForelder norskForelder) {
         var annenForelderMedNorskIdent = new AnnenForelderMedNorskIdent();
-        annenForelderMedNorskIdent.setAktoerId(oppslag.aktørId(norskForelder.fnr()).value());
+        annenForelderMedNorskIdent.setAktoerId(aktørIdTilFnrConverter.konverter(norskForelder.fnr()).value());
         return annenForelderMedNorskIdent;
     }
 
@@ -574,6 +573,6 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + " [oppslag=" + oppslag + ", mapperEgenskaper=" + mapperEgenskaper() + "]";
+        return getClass().getSimpleName() + " [oppslag=" + aktørIdTilFnrConverter + ", mapperEgenskaper=" + mapperEgenskaper() + "]";
     }
 }

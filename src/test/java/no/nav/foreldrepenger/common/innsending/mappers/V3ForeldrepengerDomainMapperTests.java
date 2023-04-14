@@ -1,38 +1,30 @@
 package no.nav.foreldrepenger.common.innsending.mappers;
 
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.NORSK_FORELDER_FNR;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.jupiter.api.Test;
+
 import no.nav.foreldrepenger.common.domain.AktørId;
 import no.nav.foreldrepenger.common.domain.felles.ValgfrittVedlegg;
 import no.nav.foreldrepenger.common.domain.felles.annenforelder.NorskForelder;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.FremtidigFødsel;
-import no.nav.foreldrepenger.common.oppslag.Oppslag;
 import no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils;
 import no.nav.vedtak.felles.xml.soeknad.felles.v3.AnnenForelderMedNorskIdent;
 import no.nav.vedtak.felles.xml.soeknad.felles.v3.Termin;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v3.*;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.NORSK_FORELDER_FNR;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Gradering;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Oppholdsperiode;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Overfoeringsperiode;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Utsettelsesperiode;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Uttaksperiode;
 
 class V3ForeldrepengerDomainMapperTests {
-
-
-    private Oppslag oppslag;
-
-    @BeforeEach
-    void setUp() {
-        oppslag = mock(Oppslag.class);
-    }
 
     @Test
     void sjekkerKorrektMappingFraJsonTilXmlObjekt() {
         var aktørIdSøker = new AktørId("123456789");
         var aktørIdAnnenpart = new AktørId("123456789");
-        when(oppslag.aktørId(NORSK_FORELDER_FNR)).thenReturn(aktørIdAnnenpart);
-        var mapper = new V3ForeldrepengerDomainMapper(oppslag);
+        var mapper = new V3ForeldrepengerDomainMapper(fnr -> aktørIdAnnenpart);
 
         var søknad = ForeldrepengerTestUtils.foreldrepengesøknad();
         var søknadXML = mapper.tilModell(søknad, aktørIdSøker);
