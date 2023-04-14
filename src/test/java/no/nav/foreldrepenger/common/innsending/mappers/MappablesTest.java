@@ -1,7 +1,6 @@
 package no.nav.foreldrepenger.common.innsending.mappers;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 
 import java.util.List;
 
@@ -9,7 +8,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import no.nav.foreldrepenger.common.innsending.SøknadEgenskap;
-import no.nav.foreldrepenger.common.oppslag.Oppslag;
 
 class MappablesTest {
 
@@ -17,11 +15,10 @@ class MappablesTest {
 
     @BeforeEach
     void setUp() {
-        var oppslag = mock(Oppslag.class);
         mappers = List.of(
                 new V1SvangerskapspengerDomainMapper(),
-                new V3EngangsstønadDomainMapper(oppslag),
-                new V3ForeldrepengerDomainMapper(oppslag)
+                new V3EngangsstønadDomainMapper(fnr -> null),
+                new V3ForeldrepengerDomainMapper(fnr -> null)
         );
     }
 

@@ -23,7 +23,6 @@ import no.nav.foreldrepenger.common.domain.foreldrepenger.Endringssøknad;
 import no.nav.foreldrepenger.common.error.UnexpectedInputException;
 import no.nav.foreldrepenger.common.innsending.SøknadEgenskap;
 import no.nav.foreldrepenger.common.innsending.mappers.jaxb.ESV3JAXBUtil;
-import no.nav.foreldrepenger.common.oppslag.Oppslag;
 import no.nav.vedtak.felles.xml.soeknad.felles.v3.Foedsel;
 import no.nav.vedtak.felles.xml.soeknad.felles.v3.SoekersRelasjonTilBarnet;
 import no.nav.vedtak.felles.xml.soeknad.felles.v3.Termin;
@@ -36,10 +35,10 @@ public class V3EngangsstønadDomainMapper implements DomainMapper {
     private static final no.nav.vedtak.felles.xml.soeknad.v3.ObjectFactory SØKNAD_FACTORY_V3 = new no.nav.vedtak.felles.xml.soeknad.v3.ObjectFactory();
     private static final no.nav.vedtak.felles.xml.soeknad.felles.v3.ObjectFactory FELLES_FACTORY_V3 = new no.nav.vedtak.felles.xml.soeknad.felles.v3.ObjectFactory();
 
-    private final Oppslag oppslag;
+    private final AktørIdTilFnrConverter aktørIdTilFnrConverter;
 
-    public V3EngangsstønadDomainMapper(Oppslag oppslag) {
-        this.oppslag = oppslag;
+    public V3EngangsstønadDomainMapper(AktørIdTilFnrConverter aktørIdTilFnrConverter) {
+        this.aktørIdTilFnrConverter = aktørIdTilFnrConverter;
     }
 
     @Override
@@ -132,6 +131,6 @@ public class V3EngangsstønadDomainMapper implements DomainMapper {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + " [oppslag=" + oppslag + ", mapperEgenskaper=" + mapperEgenskaper() + "]";
+        return getClass().getSimpleName() + " [oppslag=" + aktørIdTilFnrConverter + ", mapperEgenskaper=" + mapperEgenskaper() + "]";
     }
 }

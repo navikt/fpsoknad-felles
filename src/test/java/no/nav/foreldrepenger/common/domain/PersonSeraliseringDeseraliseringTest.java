@@ -5,8 +5,6 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import com.neovisionaries.i18n.CountryCode;
-
 import no.nav.foreldrepenger.common.domain.felles.AnnenPart;
 import no.nav.foreldrepenger.common.domain.felles.Bankkonto;
 import no.nav.foreldrepenger.common.domain.felles.Kjønn;
@@ -30,7 +28,6 @@ class PersonSeraliseringDeseraliseringTest extends SerializationTestBase {
                 new Navn("Ola", "Nord", "Mann"),
                 Kjønn.K,
                 Målform.NB,
-                CountryCode.NO,
                 Bankkonto.UKJENT,
                 List.of(barn),
                 new Sivilstand(Sivilstand.Type.GIFT));
