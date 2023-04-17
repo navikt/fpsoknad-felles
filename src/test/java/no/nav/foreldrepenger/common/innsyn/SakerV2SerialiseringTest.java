@@ -14,29 +14,12 @@ import org.junit.jupiter.api.Test;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import no.nav.foreldrepenger.common.domain.AktørId;
 import no.nav.foreldrepenger.common.domain.Fødselsnummer;
-import no.nav.foreldrepenger.common.innsyn.persondetaljer.AktørId;
-import no.nav.foreldrepenger.common.innsyn.persondetaljer.Kjønn;
-import no.nav.foreldrepenger.common.innsyn.persondetaljer.Person;
 
 class SakerV2SerialiseringTest {
 
     private final ObjectMapper mapper = MAPPER;
-
-    private final static AnnenPart annenPart = new AnnenPart(new AktørId("42"));
-    private final static AktørId barn = new AktørId("1");
-
-    @Test
-    void annenPartRoundtripTest() throws Exception {
-        roundtripTest(annenPart);
-    }
-
-    @Test
-    void annenPartPersonRoundtripTest() throws IOException {
-        var person = new Person(new Fødselsnummer("12345678901"), "Navn", null, "Navnæsen", Kjønn.K, LocalDate.now().minusDays(1));
-        var annenPartPerson = new AnnenPart(person);
-        roundtripTest(annenPartPerson);
-    }
 
     @Test
     void sakerV2ForeldrepengerRoundtripTest() throws Exception {
@@ -62,7 +45,7 @@ class SakerV2SerialiseringTest {
                 new SamtidigUttak(BigDecimal.valueOf(10)), true)));
         var fpVedtak = new FpVedtak(List.of(vedtakPerioder));
         var fpSak = new FpSak(saksnummer, false, LocalDate.now(), false, false, false, false, false, true,
-                RettighetType.ALENEOMSORG, annenPart, familieHendelse, fpVedtak, åpenBehandling, Set.of(barn),
+                RettighetType.ALENEOMSORG, new Person(new Fødselsnummer("42"), null), familieHendelse, fpVedtak, åpenBehandling, Set.of(new Person(new Fødselsnummer("1"), new AktørId("2"))),
                 Dekningsgrad.ÅTTI);
         var saker = new Saker(Set.of(fpSak), Set.of(), Set.of());
 

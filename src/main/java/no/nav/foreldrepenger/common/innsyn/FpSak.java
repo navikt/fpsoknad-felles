@@ -13,10 +13,10 @@ public record FpSak(Saksnummer saksnummer,
                     boolean harAnnenForelderTilsvarendeRettEØS,
                     boolean ønskerJustertUttakVedFødsel,
                     RettighetType rettighetType,
-                    AnnenPart annenPart,
+                    Person annenPart,
                     Familiehendelse familiehendelse,
                     FpVedtak gjeldendeVedtak,
                     FpÅpenBehandling åpenBehandling,
-                    Set<PersonDetaljer> barn,
+                    Set<Person> barn,
                     Dekningsgrad dekningsgrad) implements Sak {
 }
