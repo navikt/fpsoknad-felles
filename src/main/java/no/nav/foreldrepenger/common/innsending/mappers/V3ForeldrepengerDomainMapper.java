@@ -109,7 +109,7 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
         soeknad.getAndreVedlegg().addAll(vedleggFra(søknad.getFrivilligeVedlegg()));
         soeknad.getPaakrevdeVedlegg().addAll(vedleggFra(søknad.getPåkrevdeVedlegg()));
         soeknad.setSoeker(søkerFra(søker, søknad.getSøker()));
-        soeknad.setOmYtelse(ytelseFra(søknad));
+        soeknad.setOmYtelse(ytelseFraSøknad(søknad));
         soeknad.setMottattDato(søknad.getMottattdato());
         soeknad.setTilleggsopplysninger(søknad.getTilleggsopplysninger());
         return soeknad;
@@ -121,7 +121,7 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
         soeknad.getAndreVedlegg().addAll(vedleggFra(endringsøknad.getFrivilligeVedlegg()));
         soeknad.getPaakrevdeVedlegg().addAll(vedleggFra(endringsøknad.getPåkrevdeVedlegg()));
         soeknad.setSoeker(søkerFra(søker, endringsøknad.getSøker()));
-        soeknad.setOmYtelse(ytelseFra(endringsøknad));
+        soeknad.setOmYtelse(ytelseFraEndringssøknad(endringsøknad));
         soeknad.setMottattDato(endringsøknad.getMottattdato());
         return soeknad;
     }
@@ -149,13 +149,13 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
         return foreldrepenger;
     }
 
-    private static OmYtelse ytelseFra(Endringssøknad endringssøknad) {
+    private static OmYtelse ytelseFraEndringssøknad(Endringssøknad endringssøknad) {
         var omYtelse = new OmYtelse();
         omYtelse.getAny().add(endringssøknadFra(endringssøknad));
         return omYtelse;
     }
 
-    private OmYtelse ytelseFra(Søknad søknad) {
+    private OmYtelse ytelseFraSøknad(Søknad søknad) {
         var omYtelse = new OmYtelse();
         omYtelse.getAny().add(JAXB.marshalToElement(foreldrepengerFra((no.nav.foreldrepenger.common.domain.foreldrepenger.Foreldrepenger) søknad.getYtelse())));
         return omYtelse;
@@ -231,28 +231,28 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
     private static no.nav.vedtak.felles.xml.soeknad.uttak.v3.LukketPeriodeMedVedlegg create(
             LukketPeriodeMedVedlegg periode) {
         if (periode instanceof OverføringsPeriode p) {
-            return create(p);
+            return createOverføringsperiode(p);
         }
         if (periode instanceof OppholdsPeriode p) {
-            return create(p);
+            return createOppholsperiode(p);
         }
         if (periode instanceof FriUtsettelsesPeriode p) {
-            return create(p);
+            return createFriUtsettelsesPeriode(p);
         }
         if (periode instanceof UtsettelsesPeriode p) {
-            return create(p);
+            return createUtsettelsesperiode(p);
         }
         if (periode instanceof GradertUttaksPeriode p) {
-            return create(p);
+            return createGradertUttaksperiode(p);
         }
 
         if (periode instanceof UttaksPeriode p) {
-            return create(p);
+            return createUttaksperiode(p);
         }
         throw new UnexpectedInputException("Ukjent periode " + periode.getClass().getSimpleName());
     }
 
-    private static no.nav.vedtak.felles.xml.soeknad.uttak.v3.LukketPeriodeMedVedlegg create(OverføringsPeriode o) {
+    private static no.nav.vedtak.felles.xml.soeknad.uttak.v3.LukketPeriodeMedVedlegg createOverføringsperiode(OverføringsPeriode o) {
         var overfoeringsperiode = new Overfoeringsperiode();
         overfoeringsperiode.setFom(o.getFom());
         overfoeringsperiode.setTom(o.getTom());
@@ -262,7 +262,7 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
         return overfoeringsperiode;
     }
 
-    private static no.nav.vedtak.felles.xml.soeknad.uttak.v3.LukketPeriodeMedVedlegg create(OppholdsPeriode o) {
+    private static no.nav.vedtak.felles.xml.soeknad.uttak.v3.LukketPeriodeMedVedlegg createOppholsperiode(OppholdsPeriode o) {
         var oppholdsperiode = new Oppholdsperiode();
         oppholdsperiode.setFom(o.getFom());
         oppholdsperiode.setTom(o.getTom());
@@ -271,7 +271,7 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
         return oppholdsperiode;
     }
 
-    private static no.nav.vedtak.felles.xml.soeknad.uttak.v3.LukketPeriodeMedVedlegg create(UtsettelsesPeriode u) {
+    private static no.nav.vedtak.felles.xml.soeknad.uttak.v3.LukketPeriodeMedVedlegg createUtsettelsesperiode(UtsettelsesPeriode u) {
         var utsettelsesperiode = new Utsettelsesperiode();
         utsettelsesperiode.setFom(u.getFom());
         utsettelsesperiode.setTom(u.getTom());
@@ -282,7 +282,7 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
         return utsettelsesperiode;
     }
 
-    private static no.nav.vedtak.felles.xml.soeknad.uttak.v3.LukketPeriodeMedVedlegg create(FriUtsettelsesPeriode p) {
+    private static no.nav.vedtak.felles.xml.soeknad.uttak.v3.LukketPeriodeMedVedlegg createFriUtsettelsesPeriode(FriUtsettelsesPeriode p) {
         var utsettelsesperiode = new Utsettelsesperiode();
         utsettelsesperiode.setFom(p.getFom());
         utsettelsesperiode.setTom(p.getTom());
@@ -292,7 +292,7 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
         return utsettelsesperiode;
     }
 
-    private static no.nav.vedtak.felles.xml.soeknad.uttak.v3.LukketPeriodeMedVedlegg create(GradertUttaksPeriode g) {
+    private static no.nav.vedtak.felles.xml.soeknad.uttak.v3.LukketPeriodeMedVedlegg createGradertUttaksperiode(GradertUttaksPeriode g) {
         var gradering = new Gradering();
         gradering.setFom(g.getFom());
         gradering.setTom(g.getTom());
@@ -315,7 +315,7 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
         return gradering;
     }
 
-    private static no.nav.vedtak.felles.xml.soeknad.uttak.v3.LukketPeriodeMedVedlegg create(UttaksPeriode u) {
+    private static no.nav.vedtak.felles.xml.soeknad.uttak.v3.LukketPeriodeMedVedlegg createUttaksperiode(UttaksPeriode u) {
         var uttaksperiode = new Uttaksperiode();
         uttaksperiode.setFom(u.getFom());
         uttaksperiode.setTom(u.getTom());
@@ -506,22 +506,22 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
 
     private static SoekersRelasjonTilBarnet create(RelasjonTilBarn relasjonTilBarn) {
         if (relasjonTilBarn instanceof Fødsel f) {
-            return create(f);
+            return createFødsel(f);
         }
         if (relasjonTilBarn instanceof FremtidigFødsel f) {
-            return create(f);
+            return createTermin(f);
         }
         if (relasjonTilBarn instanceof Adopsjon a) {
-            return create(a);
+            return createAdopsjon(a);
         }
         if (relasjonTilBarn instanceof Omsorgsovertakelse o) {
-            return create(o);
+            return createOmsorgsovertakelse(o);
         }
         throw new UnexpectedInputException(
                 "Relasjon " + relasjonTilBarn.getClass().getSimpleName() + " er ikke støttet");
     }
 
-    private static SoekersRelasjonTilBarnet create(Omsorgsovertakelse omsorgsovertakelse) {
+    private static SoekersRelasjonTilBarnet createOmsorgsovertakelse(Omsorgsovertakelse omsorgsovertakelse) {
         var omsorgsovertakelseXLM = new no.nav.vedtak.felles.xml.soeknad.felles.v3.Omsorgsovertakelse();
         omsorgsovertakelseXLM.getVedlegg().addAll(relasjonTilBarnVedleggFra(omsorgsovertakelse.getVedlegg()));
         omsorgsovertakelseXLM.setAntallBarn(omsorgsovertakelse.getAntallBarn());
@@ -534,7 +534,7 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
         return omsorgsovertakelseXLM;
     }
 
-    private static SoekersRelasjonTilBarnet create(Fødsel fødsel) {
+    private static SoekersRelasjonTilBarnet createFødsel(Fødsel fødsel) {
         var foedsel = new Foedsel();
         foedsel.getVedlegg().addAll(relasjonTilBarnVedleggFra(fødsel.getVedlegg()));
         foedsel.setFoedselsdato(fødsel.getFødselsdato().get(0));
@@ -543,7 +543,7 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
         return foedsel;
     }
 
-    private static SoekersRelasjonTilBarnet create(FremtidigFødsel termin) {
+    private static SoekersRelasjonTilBarnet createTermin(FremtidigFødsel termin) {
         var terminXML = new Termin();
         terminXML.getVedlegg().addAll(relasjonTilBarnVedleggFra(termin.getVedlegg()));
         terminXML.setAntallBarn(termin.getAntallBarn());
@@ -552,7 +552,7 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
         return terminXML;
     }
 
-    private static SoekersRelasjonTilBarnet create(Adopsjon adopsjon) {
+    private static SoekersRelasjonTilBarnet createAdopsjon(Adopsjon adopsjon) {
         var adopsjonXML = new no.nav.vedtak.felles.xml.soeknad.felles.v3.Adopsjon();
         adopsjonXML.getVedlegg().addAll(relasjonTilBarnVedleggFra(adopsjon.getVedlegg()));
         adopsjonXML.setAntallBarn(adopsjon.getAntallBarn());
