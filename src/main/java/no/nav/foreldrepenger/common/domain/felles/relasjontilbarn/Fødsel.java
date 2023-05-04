@@ -1,19 +1,22 @@
 package no.nav.foreldrepenger.common.domain.felles.relasjontilbarn;
 
-import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
-import no.nav.foreldrepenger.common.domain.validation.annotations.BarnOgFødselsdatoer;
-import no.nav.foreldrepenger.common.domain.validation.annotations.PastOrToday;
+import static no.nav.foreldrepenger.common.util.StreamUtil.safeStream;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
-import static no.nav.foreldrepenger.common.util.StreamUtil.safeStream;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
+import no.nav.foreldrepenger.common.domain.validation.annotations.PastOrToday;
 
-@BarnOgFødselsdatoer
 public final class Fødsel extends RelasjonTilBarn {
 
+    @NotNull
+    @Size(min = 1, message = "Fødselsdato ved fødsel må inneholde minst {min} fødselsdato. Nå ble {value} fødselsdatoer sendt inn.")
     private final List<@PastOrToday(message = "Fødselsdato for barn [${validatedValue}] kan ikke være en en framtidig dato") LocalDate> fødselsdato;
+
     private final LocalDate termindato;
 
     public Fødsel(int antallBarn, List<LocalDate> fødselsdato, LocalDate termindato, List<VedleggReferanse> vedlegg) {

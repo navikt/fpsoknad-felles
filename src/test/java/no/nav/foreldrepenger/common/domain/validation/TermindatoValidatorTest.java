@@ -5,12 +5,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
 
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
 import no.nav.foreldrepenger.common.domain.validation.annotations.Termindato;
 
 class TermindatoValidatorTest {
@@ -34,8 +33,7 @@ class TermindatoValidatorTest {
 
     @Test
     void testFjernFortid() {
-        assertFalse(validator
-                .validate(new TestClass(LocalDate.now().minusWeeks(3).minusDays(1))).isEmpty());
+        assertFalse(validator.validate(new TestClass(LocalDate.now().minusWeeks(3).minusDays(1))).isEmpty());
     }
 
     @Test

@@ -1,21 +1,32 @@
 package no.nav.foreldrepenger.common.domain.felles.relasjontilbarn;
 
-import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
-import no.nav.foreldrepenger.common.domain.validation.annotations.PastOrToday;
-
-import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
-public final class Adopsjon extends RelasjonTilBarn {
+import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
+import no.nav.foreldrepenger.common.domain.validation.annotations.PastOrToday;
 
-    @NotNull(message = "{ytelse.relasjontilbarn.adopsjon.omsorggsovertakelsesdato.notnull}")
+public final class Adopsjon extends RelasjonTilBarn {
     private final LocalDate omsorgsovertakelsesdato;
     private final boolean ektefellesBarn;
     private final boolean søkerAdopsjonAlene;
     private final LocalDate ankomstDato;
-    private final List<@PastOrToday(message = "{ytelse.relasjontilbarn.adopsjon.fødselssdato.framtid}") LocalDate> fødselsdato;
+
+    @NotNull
+    @Size(min = 1, message = "Fødselsdato ved adopsjon må inneholde minst {min} fødselsdato. Nå ble {value} fødselsdatoer sendt inn.")
+    private final List<@PastOrToday(message = "Fødselsdato for barn [${validatedValue}] kan ikke være en en framtidig dato") LocalDate> fødselsdato;
+
+    @AssertTrue(message = "Ved adopsjon må antall barn match antall fødselsdatoer oppgitt!")
+    private boolean isAntallBarnSkalLikAntallFødselsdatoerVedAdopsjon() {
+        if (fødselsdato == null) {
+            return false;
+        }
+        return fødselsdato.size() == getAntallBarn();
+    }
 
     public Adopsjon(int antallBarn, LocalDate omsorgsovertakelsesdato, boolean ektefellesBarn, boolean søkerAdopsjonAlene,
                     List<VedleggReferanse> vedlegg, LocalDate ankomstDato, List<LocalDate> fødselsdato) {

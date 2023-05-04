@@ -1,6 +1,6 @@
 package no.nav.foreldrepenger.common.innsyn;
 
-interface Sak {
+public interface Sak {
 
     Saksnummer saksnummer();
 
