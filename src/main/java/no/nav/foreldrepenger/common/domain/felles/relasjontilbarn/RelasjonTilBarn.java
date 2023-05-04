@@ -1,19 +1,21 @@
 package no.nav.foreldrepenger.common.domain.felles.relasjontilbarn;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
+import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY;
+import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
+import static java.util.Collections.emptyList;
 
-import jakarta.validation.constraints.Positive;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY;
-import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
-import static java.util.Collections.emptyList;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.Positive;
+import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
 
 @JsonTypeInfo(use = NAME, include = PROPERTY, property = "type")
 @JsonSubTypes({
@@ -29,6 +31,11 @@ public abstract sealed class RelasjonTilBarn permits Fødsel,FremtidigFødsel,Ad
     private final List<VedleggReferanse> vedlegg;
     @Positive
     private final int antallBarn;
+
+    @AssertTrue(message = "Relasjonsdato for relasjon til barnet må være satt!")
+    public boolean isRelasjonsDatoSatt() {
+        return relasjonsDato() != null;
+    }
 
     protected RelasjonTilBarn(int antallBarn, List<VedleggReferanse> vedlegg) {
         this.antallBarn = antallBarn;

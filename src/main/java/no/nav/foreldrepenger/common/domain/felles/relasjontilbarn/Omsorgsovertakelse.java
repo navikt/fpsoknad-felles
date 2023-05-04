@@ -1,19 +1,35 @@
 package no.nav.foreldrepenger.common.domain.felles.relasjontilbarn;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
-import static java.util.Collections.emptyList;
-import static java.util.Collections.singletonList;
+import com.fasterxml.jackson.annotation.JsonCreator;
+
+import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
+import no.nav.foreldrepenger.common.domain.validation.annotations.PastOrToday;
 
 public final class Omsorgsovertakelse extends RelasjonTilBarn {
 
     private final LocalDate omsorgsovertakelsesdato;
-    private final List<LocalDate> fødselsdato;
+
+    @NotNull
+    @Size(min = 1, message = "Fødselsdato ved omsorgsovertagelse må inneholde minst {min} fødselsdato. Nå ble {value} sendt inn.")
+    private final List<@PastOrToday(message = "Fødselsdato for barn [${validatedValue}] kan ikke være en en framtidig dato") LocalDate> fødselsdato;
+
+    @AssertTrue(message = "Ved omsorgsovertagelse må antall barn match antall fødselsdatoer oppgitt!")
+    private boolean isAntallBarnSkalLikAntallFødselsdatoerVedOmsorgsovertakelse() {
+        if (fødselsdato == null) {
+            return false;
+        }
+        return fødselsdato.size() == getAntallBarn();
+    }
 
     @JsonCreator
     public Omsorgsovertakelse(int antallBarn, LocalDate omsorgsovertakelsesdato, List<LocalDate> fødselsdato, List<VedleggReferanse> vedlegg) {

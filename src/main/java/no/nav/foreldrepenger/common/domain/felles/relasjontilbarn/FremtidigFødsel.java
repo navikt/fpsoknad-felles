@@ -1,16 +1,20 @@
 package no.nav.foreldrepenger.common.domain.felles.relasjontilbarn;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
-import no.nav.foreldrepenger.common.domain.validation.annotations.PastOrToday;
+import static java.util.Collections.emptyList;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
-import static java.util.Collections.emptyList;
+import com.fasterxml.jackson.annotation.JsonCreator;
+
+import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
+import no.nav.foreldrepenger.common.domain.validation.annotations.PastOrToday;
+import no.nav.foreldrepenger.common.domain.validation.annotations.Termindato;
 
 public final class FremtidigFødsel extends RelasjonTilBarn {
+
+    @Termindato
     private final LocalDate terminDato;
     @PastOrToday(nullable = true)
     private final LocalDate utstedtDato;
