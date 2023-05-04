@@ -11,7 +11,9 @@ import org.junit.jupiter.api.Test;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.Adopsjon;
+import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.FremtidigFødsel;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.Fødsel;
+import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.Omsorgsovertakelse;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.RelasjonTilBarn;
 
 public class RelasjonTilBarnValidatorTest {
@@ -28,10 +30,47 @@ public class RelasjonTilBarnValidatorTest {
         var fødselsdatoer = List.of(
                 LocalDate.now().minusMonths(4)
         );
-        var fødsel = new Fødsel(3, fødselsdatoer, LocalDate.now().minusMonths(1), null);
+        var fødsel = new Fødsel(3, fødselsdatoer, LocalDate.now().plusMonths(1), null);
 
         assertThat(validertOK(fødsel)).isTrue();
     }
+
+    @Test
+    void fødsel_skal_ikke_feile_ved_manglede_termindato() {
+        var fødselsdatoer = List.of(
+                LocalDate.now().minusMonths(4)
+        );
+
+        var fødsel = new Fødsel(3, fødselsdatoer, null, null);
+
+        assertThat(validertOK(fødsel)).isTrue();
+    }
+
+    @Test
+    void termin_validerer_ok_ved_termindato_i_fremtiden() {
+        var termindato = LocalDate.now().plusMonths(1);
+        var fremtidigFødsel = new FremtidigFødsel(3, termindato, null, null);
+
+        assertThat(validertOK(fremtidigFødsel)).isTrue();
+    }
+
+
+    @Test
+    void termin_skal_feile_på_validering_ved_termin_langt_tilbake_i_tid() {
+        var termindato = LocalDate.now().minusMonths(3);
+        var fremtidigFødsel = new FremtidigFødsel(3, termindato, null, null);
+
+        assertThat(validertOK(fremtidigFødsel)).isFalse();
+    }
+
+    @Test
+    void termin_skal_feile_på_validering_ved_manglende_termindato() {
+        var fremtidigFødsel = new FremtidigFødsel(3, null, null, null);
+
+        assertThat(validertOK(fremtidigFødsel)).isFalse();
+    }
+
+
 
     @Test
     void validering_ok_når_antall_fødsesldatoer_er_lik_antall_barn_oppgitt_ved_adopsjon() {
@@ -58,6 +97,33 @@ public class RelasjonTilBarnValidatorTest {
         var adopsjon = new Adopsjon(3, LocalDate.now(), false, false, null, LocalDate.now().plusMonths(2), fødselsdatoer);
 
         assertThat(validertOK(adopsjon)).isFalse();
+    }
+
+    @Test
+    void validering_ok_når_antall_fødsesldatoer_er_lik_antall_barn_oppgitt_ved_omsorgsovertagelse() {
+        var fødselsdatoer = List.of(
+                LocalDate.now().minusMonths(4),
+                LocalDate.now().minusYears(4),
+                LocalDate.now().minusYears(2)
+        );
+        var omsorgsovertakelse = new Omsorgsovertakelse(3, LocalDate.now(), fødselsdatoer, null);
+
+        assertThat(validertOK(omsorgsovertakelse)).isTrue();
+    }
+
+    @Test
+    void validering_feiler_når_antall_fødsesldatoer_er_forskjellig_fra_antall_barn_oppgitt_ved_omsorgsovertagelse() {
+        var fødselsdatoer = List.of(
+                LocalDate.now().minusMonths(4),
+                LocalDate.now().minusYears(4),
+                LocalDate.now().minusYears(4),
+                LocalDate.now().minusYears(4),
+                LocalDate.now().minusYears(4),
+                LocalDate.now().minusYears(4)
+        );
+        var omsorgsovertakelse = new Omsorgsovertakelse(3, LocalDate.now(), fødselsdatoer, null);
+
+        assertThat(validertOK(omsorgsovertakelse)).isFalse();
     }
 
     private boolean validertOK(RelasjonTilBarn relasjonTilBarn) {
