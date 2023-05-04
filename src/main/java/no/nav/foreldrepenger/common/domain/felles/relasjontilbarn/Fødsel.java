@@ -14,7 +14,7 @@ import no.nav.foreldrepenger.common.domain.validation.annotations.PastOrToday;
 public final class Fødsel extends RelasjonTilBarn {
 
     @NotNull
-    @Size(min = 1, message = "Fødselsdato ved fødsel må inneholde minst {min} fødselsdato. Nå ble {value} sendt inn.")
+    @Size(min = 1, message = "Fødselsdato ved fødsel må inneholde minst {min} fødselsdato. Nå ble {value} fødselsdatoer sendt inn.")
     private final List<@PastOrToday(message = "Fødselsdato for barn [${validatedValue}] kan ikke være en en framtidig dato") LocalDate> fødselsdato;
 
     private final LocalDate termindato;

@@ -20,7 +20,7 @@ public final class Omsorgsovertakelse extends RelasjonTilBarn {
     private final LocalDate omsorgsovertakelsesdato;
 
     @NotNull
-    @Size(min = 1, message = "Fødselsdato ved omsorgsovertagelse må inneholde minst {min} fødselsdato. Nå ble {value} sendt inn.")
+    @Size(min = 1, message = "Fødselsdato ved omsorgsovertagelse må inneholde minst {min} fødselsdato. Nå ble {value} fødselsdatoer sendt inn.")
     private final List<@PastOrToday(message = "Fødselsdato for barn [${validatedValue}] kan ikke være en en framtidig dato") LocalDate> fødselsdato;
 
     @AssertTrue(message = "Ved omsorgsovertagelse må antall barn match antall fødselsdatoer oppgitt!")
