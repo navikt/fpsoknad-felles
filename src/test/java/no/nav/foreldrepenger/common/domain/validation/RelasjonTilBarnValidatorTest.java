@@ -47,30 +47,11 @@ public class RelasjonTilBarnValidatorTest {
     }
 
     @Test
-    void termin_validerer_ok_ved_termindato_i_fremtiden() {
-        var termindato = LocalDate.now().plusMonths(1);
-        var fremtidigFødsel = new FremtidigFødsel(3, termindato, null, null);
-
-        assertThat(validertOK(fremtidigFødsel)).isTrue();
-    }
-
-
-    @Test
-    void termin_skal_feile_på_validering_ved_termin_langt_tilbake_i_tid() {
-        var termindato = LocalDate.now().minusMonths(3);
-        var fremtidigFødsel = new FremtidigFødsel(3, termindato, null, null);
-
-        assertThat(validertOK(fremtidigFødsel)).isFalse();
-    }
-
-    @Test
     void termin_skal_feile_på_validering_ved_manglende_termindato() {
         var fremtidigFødsel = new FremtidigFødsel(3, null, null, null);
 
         assertThat(validertOK(fremtidigFødsel)).isFalse();
     }
-
-
 
     @Test
     void validering_ok_når_antall_fødsesldatoer_er_lik_antall_barn_oppgitt_ved_adopsjon() {

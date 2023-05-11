@@ -10,11 +10,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
 import no.nav.foreldrepenger.common.domain.validation.annotations.PastOrToday;
-import no.nav.foreldrepenger.common.domain.validation.annotations.Termindato;
 
 public final class FremtidigFødsel extends RelasjonTilBarn {
 
-    @Termindato
     private final LocalDate terminDato;
     @PastOrToday(nullable = true)
     private final LocalDate utstedtDato;
