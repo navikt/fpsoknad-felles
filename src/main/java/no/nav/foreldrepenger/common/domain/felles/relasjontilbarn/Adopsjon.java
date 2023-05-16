@@ -21,7 +21,7 @@ public final class Adopsjon extends RelasjonTilBarn {
     private final List<@PastOrToday(message = "Fødselsdato for barn [${validatedValue}] kan ikke være en en framtidig dato") LocalDate> fødselsdato;
 
     @AssertTrue(message = "Ved adopsjon må antall barn match antall fødselsdatoer oppgitt!")
-    private boolean isAntallBarnSkalLikAntallFødselsdatoerVedAdopsjon() {
+    public boolean isAntallBarnSkalLikAntallFødselsdatoerVedAdopsjon() {
         if (fødselsdato == null) {
             return false;
         }
