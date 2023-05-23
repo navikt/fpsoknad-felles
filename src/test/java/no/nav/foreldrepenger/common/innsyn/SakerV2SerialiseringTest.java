@@ -16,8 +16,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import no.nav.foreldrepenger.common.domain.AktørId;
 import no.nav.foreldrepenger.common.domain.Fødselsnummer;
+import no.nav.foreldrepenger.common.util.SerializationTestBase;
 
-class SakerV2SerialiseringTest {
+class SakerV2SerialiseringTest extends SerializationTestBase {
 
     private final ObjectMapper mapper = MAPPER;
 
@@ -49,7 +50,7 @@ class SakerV2SerialiseringTest {
                 Dekningsgrad.ÅTTI);
         var saker = new Saker(Set.of(fpSak), Set.of(), Set.of());
 
-        roundtripTest(saker);
+        test(saker, true);
     }
 
     @Test

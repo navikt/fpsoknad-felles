@@ -32,7 +32,7 @@ class EngangsstønadSerializationTests extends SerializationTestBase {
 
     @Test
     void testKvitteringMedSaksnummer() {
-        var kvittering = new Kvittering(LocalDateTime.now(), Saksnummer.valueOf("123456789"), "pdf".getBytes(), "infoskrivPdf".getBytes());
+        var kvittering = new Kvittering(LocalDateTime.now(), new Saksnummer("123456789"), "pdf".getBytes(), "infoskrivPdf".getBytes());
         test(kvittering, true);
     }
 

@@ -1,23 +1,74 @@
 package no.nav.foreldrepenger.common.util;
 
+import static java.time.DayOfWeek.SATURDAY;
+import static java.time.DayOfWeek.SUNDAY;
+import static java.util.Collections.singletonList;
+import static no.nav.foreldrepenger.common.domain.Orgnummer.MAGIC_ORG;
+import static no.nav.foreldrepenger.common.domain.felles.DokumentType.I000062;
+import static no.nav.foreldrepenger.common.domain.felles.DokumentType.I000063;
+import static no.nav.foreldrepenger.common.domain.felles.DokumentType.I500002;
+import static no.nav.foreldrepenger.common.domain.felles.DokumentType.I500005;
+import static no.nav.foreldrepenger.common.domain.felles.TestUtils.medlemsskap;
+import static no.nav.foreldrepenger.common.domain.felles.TestUtils.søker;
+import static no.nav.foreldrepenger.common.domain.felles.TestUtils.valgfrittVedlegg;
+import static no.nav.foreldrepenger.common.domain.felles.opptjening.Virksomhetstype.FISKE;
+import static no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.StønadskontoType.FEDREKVOTE;
+import static no.nav.foreldrepenger.common.util.ResourceHandleUtil.bytesFra;
+
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import com.neovisionaries.i18n.CountryCode;
+
 import no.nav.foreldrepenger.common.domain.Fødselsnummer;
 import no.nav.foreldrepenger.common.domain.Saksnummer;
 import no.nav.foreldrepenger.common.domain.Søknad;
 import no.nav.foreldrepenger.common.domain.Ytelse;
-import no.nav.foreldrepenger.common.domain.felles.*;
+import no.nav.foreldrepenger.common.domain.felles.DokumentType;
+import no.nav.foreldrepenger.common.domain.felles.Ettersending;
+import no.nav.foreldrepenger.common.domain.felles.EttersendingsType;
+import no.nav.foreldrepenger.common.domain.felles.InnsendingsType;
+import no.nav.foreldrepenger.common.domain.felles.ProsentAndel;
+import no.nav.foreldrepenger.common.domain.felles.TestUtils;
+import no.nav.foreldrepenger.common.domain.felles.ValgfrittVedlegg;
+import no.nav.foreldrepenger.common.domain.felles.Vedlegg;
+import no.nav.foreldrepenger.common.domain.felles.VedleggMetaData;
+import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
 import no.nav.foreldrepenger.common.domain.felles.annenforelder.NorskForelder;
 import no.nav.foreldrepenger.common.domain.felles.annenforelder.UtenlandskForelder;
-import no.nav.foreldrepenger.common.domain.felles.opptjening.*;
+import no.nav.foreldrepenger.common.domain.felles.opptjening.AnnenOpptjening;
+import no.nav.foreldrepenger.common.domain.felles.opptjening.AnnenOpptjeningType;
+import no.nav.foreldrepenger.common.domain.felles.opptjening.EgenNæring;
+import no.nav.foreldrepenger.common.domain.felles.opptjening.Frilans;
+import no.nav.foreldrepenger.common.domain.felles.opptjening.FrilansOppdrag;
+import no.nav.foreldrepenger.common.domain.felles.opptjening.Opptjening;
+import no.nav.foreldrepenger.common.domain.felles.opptjening.Regnskapsfører;
+import no.nav.foreldrepenger.common.domain.felles.opptjening.UtenlandskArbeidsforhold;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.Adopsjon;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.FremtidigFødsel;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.Fødsel;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.Omsorgsovertakelse;
+import no.nav.foreldrepenger.common.domain.felles.ÅpenPeriode;
 import no.nav.foreldrepenger.common.domain.foreldrepenger.Dekningsgrad;
 import no.nav.foreldrepenger.common.domain.foreldrepenger.Endringssøknad;
 import no.nav.foreldrepenger.common.domain.foreldrepenger.Foreldrepenger;
 import no.nav.foreldrepenger.common.domain.foreldrepenger.Rettigheter;
-import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.*;
+import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.Fordeling;
+import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.GradertUttaksPeriode;
+import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.LukketPeriodeMedVedlegg;
+import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.MorsAktivitet;
+import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.OppholdsPeriode;
+import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.Oppholdsårsak;
+import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.OverføringsPeriode;
+import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.Overføringsårsak;
+import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.StønadskontoType;
+import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.UtsettelsesPeriode;
+import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.UtsettelsesÅrsak;
+import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.UttaksPeriode;
 import no.nav.foreldrepenger.common.domain.svangerskapspenger.Svangerskapspenger;
 import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.DelvisTilrettelegging;
 import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.HelTilrettelegging;
@@ -27,23 +78,6 @@ import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.ar
 import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.Frilanser;
 import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.PrivatArbeidsgiver;
 import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.Virksomhet;
-
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static java.time.DayOfWeek.SATURDAY;
-import static java.time.DayOfWeek.SUNDAY;
-import static java.util.Collections.singletonList;
-import static no.nav.foreldrepenger.common.domain.Orgnummer.MAGIC_ORG;
-import static no.nav.foreldrepenger.common.domain.felles.DokumentType.*;
-import static no.nav.foreldrepenger.common.domain.felles.TestUtils.*;
-import static no.nav.foreldrepenger.common.domain.felles.opptjening.Virksomhetstype.FISKE;
-import static no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.StønadskontoType.FEDREKVOTE;
-import static no.nav.foreldrepenger.common.util.ResourceHandleUtil.bytesFra;
 
 public class ForeldrepengerTestUtils {
 
@@ -128,7 +162,7 @@ public class ForeldrepengerTestUtils {
                 ),
                 null,
                 List.of(vedlegg),
-                Saksnummer.valueOf("123456789")
+                new Saksnummer("123456789")
 
         );
     }
@@ -145,7 +179,7 @@ public class ForeldrepengerTestUtils {
     }
 
     public static Ettersending ettersending() {
-        return new Ettersending(Saksnummer.valueOf("42"), EttersendingsType.FORELDREPENGER, TO_VEDLEGG, null);
+        return new Ettersending(new Saksnummer("42"), EttersendingsType.FORELDREPENGER, TO_VEDLEGG, null);
     }
 
     private static List<Tilrettelegging> tilrettelegging(VedleggReferanse... vedleggRefs) {
@@ -259,7 +293,7 @@ public class ForeldrepengerTestUtils {
                 LocalDate.now(),
                 null,
                 "Endringer skjer fort i verdens største land (utlandet) og ikke minst skjer det mye med linjebryting",
-                ProsentAndel.valueOf(100),
+                new ProsentAndel(100.0),
                 List.of(vedleggRefs)
         );
     }
@@ -280,7 +314,7 @@ public class ForeldrepengerTestUtils {
                 LocalDate.now(),
                 null,
                 "Ting endrer seg i Norge også",
-                ProsentAndel.valueOf(100),
+                new ProsentAndel(100.0),
                 List.of(vedleggRefs)
         );
     }
