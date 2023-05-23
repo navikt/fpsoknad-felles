@@ -224,7 +224,7 @@ public class TestUtils {
     }
 
     public static Person person() {
-        return new Person(AktørId.valueOf("42"), new Fødselsnummer("11111111111"),
+        return new Person(new AktørId("42"), new Fødselsnummer("11111111111"),
                 LocalDate.now().minusYears(25), new Navn("Mor", "Mellommor", "Morsen"),
                 Kjønn.K, Målform.NN,
                 new Bankkonto("2000.20.20000", "Store Fiskerbank"), null, new Sivilstand(Sivilstand.Type.GIFT));

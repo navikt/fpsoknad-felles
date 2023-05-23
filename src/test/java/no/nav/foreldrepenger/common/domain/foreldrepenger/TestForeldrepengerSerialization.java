@@ -1,8 +1,44 @@
 package no.nav.foreldrepenger.common.domain.foreldrepenger;
 
+import static java.util.Collections.singletonList;
+import static no.nav.foreldrepenger.common.domain.felles.TestUtils.adopsjon;
+import static no.nav.foreldrepenger.common.domain.felles.TestUtils.person;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.annenOpptjening;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.endringssøknad;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.ettersending;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.fordeling;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.foreldrepenger;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.gradertPeriode;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.norskEgenNæring;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.norskForelder;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.omsorgsovertakelse;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.oppholdsPeriode;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.opptjening;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.overføringsPeriode;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.rettigheter;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.termin;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.utenlandskArbeidsforhold;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.utenlandskEgenNæring;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.utenlandskForelder;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.utsettelsesPeriode;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.uttaksPeriode;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.åpenPeriode;
+import static no.nav.foreldrepenger.common.util.ResourceHandleUtil.bytesFra;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.time.Duration;
+import java.time.LocalDate;
+
+import org.junit.jupiter.api.Test;
+
 import com.neovisionaries.i18n.CountryCode;
+
 import no.nav.foreldrepenger.common.domain.Saksnummer;
-import no.nav.foreldrepenger.common.domain.felles.*;
+import no.nav.foreldrepenger.common.domain.felles.DokumentType;
+import no.nav.foreldrepenger.common.domain.felles.InnsendingsType;
+import no.nav.foreldrepenger.common.domain.felles.ProsentAndel;
+import no.nav.foreldrepenger.common.domain.felles.VedleggMetaData;
+import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
 import no.nav.foreldrepenger.common.domain.felles.annenforelder.UkjentForelder;
 import no.nav.foreldrepenger.common.domain.felles.opptjening.EgenNæring;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.Adopsjon;
@@ -15,17 +51,6 @@ import no.nav.foreldrepenger.common.innsending.foreldrepenger.GosysKvittering;
 import no.nav.foreldrepenger.common.innsending.foreldrepenger.PendingKvittering;
 import no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils;
 import no.nav.foreldrepenger.common.util.SerializationTestBase;
-import org.junit.jupiter.api.Test;
-
-import java.time.Duration;
-import java.time.LocalDate;
-
-import static java.util.Collections.singletonList;
-import static no.nav.foreldrepenger.common.domain.felles.TestUtils.adopsjon;
-import static no.nav.foreldrepenger.common.domain.felles.TestUtils.person;
-import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.*;
-import static no.nav.foreldrepenger.common.util.ResourceHandleUtil.bytesFra;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 class TestForeldrepengerSerialization extends SerializationTestBase {
@@ -62,7 +87,7 @@ class TestForeldrepengerSerialization extends SerializationTestBase {
 
     @Test
     void testFordeltKvittering() {
-        test(new FPSakFordeltKvittering("123", Saksnummer.valueOf("456")), false);
+        test(new FPSakFordeltKvittering("123", new Saksnummer("456")), false);
     }
 
     @Test

@@ -3,20 +3,13 @@ package no.nav.foreldrepenger.common.domain;
 import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
 import static no.nav.foreldrepenger.common.util.StringUtil.mask;
 
-import java.util.Objects;
-
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import no.nav.foreldrepenger.common.domain.felles.Kjønn;
 
-public record Fødselsnummer(@Pattern(regexp = FRITEKST) @JsonValue String value) {
-
-    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
-    public Fødselsnummer {
-        Objects.requireNonNull(value, "Fødselsnummer kan ikke være null");
-    }
+public record Fødselsnummer(@Pattern(regexp = FRITEKST) @NotNull @JsonValue String value) {
 
     public Kjønn kjønn() {
         if (value != null && value.length() == 11) {
