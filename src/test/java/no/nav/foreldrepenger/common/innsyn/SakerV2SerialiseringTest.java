@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -47,7 +48,7 @@ class SakerV2SerialiseringTest extends SerializationTestBase {
         var fpVedtak = new FpVedtak(List.of(vedtakPerioder));
         var fpSak = new FpSak(saksnummer, false, LocalDate.now(), false, false, false, false, false, true,
                 RettighetType.ALENEOMSORG, new Person(new Fødselsnummer("42"), null), familieHendelse, fpVedtak, åpenBehandling, Set.of(new Person(new Fødselsnummer("1"), new AktørId("2"))),
-                Dekningsgrad.ÅTTI);
+                Dekningsgrad.ÅTTI, LocalDateTime.now());
         var saker = new Saker(Set.of(fpSak), Set.of(), Set.of());
 
         test(saker, true);
@@ -58,7 +59,7 @@ class SakerV2SerialiseringTest extends SerializationTestBase {
         var saksnummer = new Saksnummer("123");
         var familieHendelse = new Familiehendelse(LocalDate.of(2021, 12, 6),
                 LocalDate.of(2021, 12, 5), 1, LocalDate.of(2021, 12, 12));
-        var svpSak = new SvpSak(saksnummer, familieHendelse, true, new SvpÅpenBehandling(BehandlingTilstand.UNDER_BEHANDLING));
+        var svpSak = new SvpSak(saksnummer, familieHendelse, true, new SvpÅpenBehandling(BehandlingTilstand.UNDER_BEHANDLING), LocalDateTime.now());
         var saker = new Saker(Set.of(), Set.of(), Set.of(svpSak));
 
         roundtripTest(saker);
@@ -69,7 +70,7 @@ class SakerV2SerialiseringTest extends SerializationTestBase {
         var saksnummer = new Saksnummer("123");
         var familieHendelse = new Familiehendelse(LocalDate.of(2021, 12, 6),
                 LocalDate.of(2021, 12, 5), 1, LocalDate.of(2021, 12, 12));
-        var esSaker = new EsSak(saksnummer, familieHendelse, true, new EsÅpenBehandling(BehandlingTilstand.UNDER_BEHANDLING), false);
+        var esSaker = new EsSak(saksnummer, familieHendelse, true, new EsÅpenBehandling(BehandlingTilstand.UNDER_BEHANDLING), false, LocalDateTime.now());
         var saker = new Saker(Set.of(), Set.of(esSaker), Set.of());
 
         roundtripTest(saker);
