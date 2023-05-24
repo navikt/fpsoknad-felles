@@ -1,5 +1,7 @@
 package no.nav.foreldrepenger.common.innsyn;
 
+import java.time.LocalDateTime;
+
 public interface Sak {
 
     Saksnummer saksnummer();
@@ -7,5 +9,7 @@ public interface Sak {
     Familiehendelse familiehendelse();
 
     boolean sakAvsluttet();
+
+    LocalDateTime oppdatertTidspunkt();
 
 }
