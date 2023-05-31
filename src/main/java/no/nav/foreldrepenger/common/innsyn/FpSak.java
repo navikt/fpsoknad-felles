@@ -1,13 +1,11 @@
 package no.nav.foreldrepenger.common.innsyn;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
 
 public record FpSak(Saksnummer saksnummer,
                     boolean sakAvsluttet,
-                    LocalDate sisteSøknadMottattDato,
                     boolean kanSøkeOmEndring,
                     boolean sakTilhørerMor,
                     boolean gjelderAdopsjon,
@@ -34,8 +32,9 @@ public record FpSak(Saksnummer saksnummer,
                 && sakTilhørerMor == fpSak.sakTilhørerMor && gjelderAdopsjon == fpSak.gjelderAdopsjon
                 && morUføretrygd == fpSak.morUføretrygd
                 && harAnnenForelderTilsvarendeRettEØS == fpSak.harAnnenForelderTilsvarendeRettEØS
-                && ønskerJustertUttakVedFødsel == fpSak.ønskerJustertUttakVedFødsel && Objects.equals(saksnummer, fpSak.saksnummer)
-                && Objects.equals(sisteSøknadMottattDato, fpSak.sisteSøknadMottattDato) && rettighetType == fpSak.rettighetType
+                && ønskerJustertUttakVedFødsel == fpSak.ønskerJustertUttakVedFødsel
+                && Objects.equals(saksnummer, fpSak.saksnummer)
+                && rettighetType == fpSak.rettighetType
                 && Objects.equals(annenPart, fpSak.annenPart) && Objects.equals(familiehendelse, fpSak.familiehendelse)
                 && Objects.equals(gjeldendeVedtak, fpSak.gjeldendeVedtak) && Objects.equals(åpenBehandling, fpSak.åpenBehandling)
                 && Objects.equals(barn, fpSak.barn) && dekningsgrad == fpSak.dekningsgrad;
@@ -43,7 +42,7 @@ public record FpSak(Saksnummer saksnummer,
 
     @Override
     public int hashCode() {
-        return Objects.hash(saksnummer, sakAvsluttet, sisteSøknadMottattDato, kanSøkeOmEndring, sakTilhørerMor, gjelderAdopsjon,
+        return Objects.hash(saksnummer, sakAvsluttet, kanSøkeOmEndring, sakTilhørerMor, gjelderAdopsjon,
                 morUføretrygd, harAnnenForelderTilsvarendeRettEØS, ønskerJustertUttakVedFødsel, rettighetType, annenPart,
                 familiehendelse, gjeldendeVedtak, åpenBehandling, barn, dekningsgrad);
     }
