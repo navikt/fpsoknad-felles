@@ -1,20 +1,21 @@
 package no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
-import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.Arbeidsforhold;
+import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY;
+import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
+import static java.util.Collections.emptyList;
 
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY;
-import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
-import static java.util.Collections.emptyList;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
+import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.Arbeidsforhold;
 
 @JsonTypeInfo(use = NAME, include = PROPERTY, property = "type")
 @JsonSubTypes({
@@ -28,7 +29,7 @@ public abstract class Tilrettelegging {
     private final Arbeidsforhold arbeidsforhold;
     @NotNull
     private final LocalDate behovForTilretteleggingFom;
-    private final List<VedleggReferanse> vedlegg;
+    private final List<@Valid VedleggReferanse> vedlegg;
 
     protected Tilrettelegging(Arbeidsforhold arbeidsforhold, LocalDate behovForTilretteleggingFom, List<VedleggReferanse> vedlegg) {
         this.arbeidsforhold = arbeidsforhold;
