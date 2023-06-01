@@ -24,7 +24,7 @@ public record UttakPeriodeResultat(boolean innvilget, boolean trekkerMinsterett,
 
     // TODO: Fjern etter sammenligning!
     private boolean erTrekkerMinstrettLikNårTrekkdagerErTrue(UttakPeriodeResultat that) {
-        if (!trekkerDager || !that.trekkerDager) {
+        if (!trekkerDager) {
             return true;
         }
         return trekkerMinsterett == that.trekkerMinsterett;
@@ -32,7 +32,7 @@ public record UttakPeriodeResultat(boolean innvilget, boolean trekkerMinsterett,
 
     @Override
     public int hashCode() {
-        return Objects.hash(innvilget, trekkerMinsterett, trekkerDager, årsak);
+        return Objects.hash(innvilget, trekkerDager, årsak);
     }
 }
 
