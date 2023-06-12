@@ -17,6 +17,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import no.nav.foreldrepenger.common.domain.AktørId;
 import no.nav.foreldrepenger.common.domain.Fødselsnummer;
+import no.nav.foreldrepenger.common.innsyn.svp.AktivitetVedtak;
+import no.nav.foreldrepenger.common.innsyn.svp.Avslutning;
+import no.nav.foreldrepenger.common.innsyn.svp.OppholdPeriode;
+import no.nav.foreldrepenger.common.innsyn.svp.SvpPeriode;
+import no.nav.foreldrepenger.common.innsyn.svp.SvpSak;
+import no.nav.foreldrepenger.common.innsyn.svp.Søknad;
+import no.nav.foreldrepenger.common.innsyn.svp.Tilrettelegging;
+import no.nav.foreldrepenger.common.innsyn.svp.TilretteleggingPeriode;
+import no.nav.foreldrepenger.common.innsyn.svp.TilretteleggingType;
+import no.nav.foreldrepenger.common.innsyn.svp.Vedtak;
+import no.nav.foreldrepenger.common.innsyn.svp.ÅpenBehandling;
 import no.nav.foreldrepenger.common.util.SerializationTestBase;
 
 class SakerV2SerialiseringTest extends SerializationTestBase {
@@ -57,9 +68,26 @@ class SakerV2SerialiseringTest extends SerializationTestBase {
     @Test
     void sakerV2SvangerskapspengerRoundtripTest() throws Exception {
         var saksnummer = new Saksnummer("123");
-        var familieHendelse = new Familiehendelse(LocalDate.of(2021, 12, 6),
-                LocalDate.of(2021, 12, 5), 1, LocalDate.of(2021, 12, 12));
-        var svpSak = new SvpSak(saksnummer, familieHendelse, true, new SvpÅpenBehandling(BehandlingTilstand.UNDER_BEHANDLING), LocalDateTime.now());
+        var fødselsdato = LocalDate.now().plusWeeks(10);
+        var familieHendelse = new Familiehendelse(fødselsdato,
+                fødselsdato.plusWeeks(2), 1, null);
+        var aktivitet = new Aktivitet(Aktivitet.Type.ORDINÆRT_ARBEID,
+                new Arbeidsgiver("1", Arbeidsgiver.ArbeidsgiverType.ORGANISASJON));
+        var arbeidstidprosent = new Arbeidstidprosent(BigDecimal.valueOf(50));
+        var tilrettelegging1 = new Tilrettelegging(aktivitet,
+                Set.of(new TilretteleggingPeriode(LocalDate.now(), TilretteleggingType.DELVIS, arbeidstidprosent)));
+        var tilrettelegging2 = new Tilrettelegging(aktivitet,
+                Set.of(new TilretteleggingPeriode(LocalDate.now().plusWeeks(1), TilretteleggingType.HEL, new Arbeidstidprosent(BigDecimal.ZERO))));
+        var søknad = new Søknad(Set.of(tilrettelegging1, tilrettelegging2));
+        var vedtakPeriode1 = new SvpPeriode(LocalDate.now(), TilretteleggingType.DELVIS, arbeidstidprosent, SvpPeriode.ResultatType.AVSLAG_SØKNADSFRIST,
+                new SvpPeriode.Utbetalingsgrad(BigDecimal.valueOf(0)));
+        var vedtakPeriode2 = new SvpPeriode(LocalDate.now().plusWeeks(2), TilretteleggingType.HEL, new Arbeidstidprosent(BigDecimal.ZERO), SvpPeriode.ResultatType.INNVILGET,
+                new SvpPeriode.Utbetalingsgrad(BigDecimal.valueOf(100)));
+        var oppholdPeriode = new OppholdPeriode(LocalDate.now().plusWeeks(1), OppholdPeriode.Årsak.FERIE);
+        var vedtak = new Vedtak(Set.of(new AktivitetVedtak(aktivitet, LocalDate.now(), Set.of(vedtakPeriode1, vedtakPeriode2), Set.of(oppholdPeriode),
+                new Avslutning(fødselsdato.minusWeeks(3), Avslutning.Årsak.AVSLAG_OVERGANG_FORELDREPENGER))));
+        var svpSak = new SvpSak(saksnummer, familieHendelse, true, new ÅpenBehandling(BehandlingTilstand.UNDER_BEHANDLING, søknad),
+                vedtak, LocalDateTime.now());
         var saker = new Saker(Set.of(), Set.of(), Set.of(svpSak));
 
         roundtripTest(saker);
