@@ -35,7 +35,7 @@
         <jakarta.jakartaee-bom.version>10.0.0</jakarta.jakartaee-bom.version>
         <jackson-bom.version>2.15.1</jackson-bom.version>
         <jakarta.el.version>4.0.2</jakarta.el.version>
-        <jaxb-runtime.version>4.0.2</jaxb-runtime.version>
+        <jaxb-runtime.version>4.0.3</jaxb-runtime.version>
         <nv-i18n.version>1.29</nv-i18n.version>
         <slf4j-api.version>2.0.7</slf4j-api.version>
         <micrometer-registry-prometheus.version>1.11.0</micrometer-registry-prometheus.version>
