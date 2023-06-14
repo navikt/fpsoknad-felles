@@ -9,10 +9,11 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import no.nav.foreldrepenger.common.innsyn.Arbeidstidprosent;
 
 public record SvpPeriode(LocalDate fom,
+                         LocalDate tom,
                          TilretteleggingType tilreggeleggingTypeSøkt,
                          Arbeidstidprosent arbeidstidprosent,
                          ResultatType resultatType,
-                         Utbetalingsgrad utbetalingsgrad) {
+                         Utbetalingsgrad utbetalingsgrad) implements Periode {
 
     public SvpPeriode {
         if (ResultatType.INNVILGET.equals(resultatType) != utbetalingsgrad.harUtbetaling()) {
@@ -34,6 +35,5 @@ public record SvpPeriode(LocalDate fom,
         INNVILGET,
         AVSLAG_SØKNADSFRIST,
         AVSLAG_ANNET
-        //TODO utvide hvis det finnes flere
     }
 }

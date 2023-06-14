@@ -7,7 +7,14 @@ import no.nav.foreldrepenger.common.innsyn.Aktivitet;
 
 public record AktivitetVedtak(Aktivitet aktivitet,
                               LocalDate tilretteleggingBehovFom,
-                              Set<SvpPeriode> svpPerioder,
-                              Set<OppholdPeriode> oppholdPerioder,
-                              Avslutning avslutning) {
+                              Set<Periode> perioder,
+                              AvslutningÅrsak avslutningÅrsak) {
+
+    public enum AvslutningÅrsak {
+        NORMAL,
+        TILBAKE_I_HEL_STILLING,
+        AVSLAG_OVERGANG_FORELDREPENGER,
+        AVSLAG_FØDSEL,
+        AVSLAG_ANNET,
+    }
 }
