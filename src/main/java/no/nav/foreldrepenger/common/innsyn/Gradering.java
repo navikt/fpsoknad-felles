@@ -13,10 +13,4 @@ public record Gradering(Arbeidstidprosent arbeidstidprosent, Aktivitet aktivitet
                      @JsonProperty("aktivitet") Aktivitet aktivitet) {
         this(new Arbeidstidprosent(arbeidstidprosent), aktivitet);
     }
-
-    public record Arbeidstidprosent(@JsonValue BigDecimal value) {
-        @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
-        public Arbeidstidprosent { // NOSONAR
-        }
-    }
 }
