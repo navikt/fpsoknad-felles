@@ -1,5 +1,6 @@
 package no.nav.foreldrepenger.common.domain;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -9,11 +10,19 @@ import java.util.stream.Stream;
 
 import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
 import static no.nav.foreldrepenger.common.util.StringUtil.mask;
+import static no.nav.foreldrepenger.common.util.StringUtil.storeForbokstaver;
 
 @JsonPropertyOrder({"fornavn", "mellomnavn", "etternavn"})
 public record Navn(@Pattern(regexp = FRITEKST) String fornavn,
                    @Pattern(regexp = FRITEKST) String mellomnavn,
                    @Pattern(regexp = FRITEKST) String etternavn) {
+
+    @JsonCreator
+    public Navn(String fornavn, String mellomnavn, String etternavn) {
+        this.fornavn = storeForbokstaver(fornavn);
+        this.mellomnavn = storeForbokstaver(mellomnavn);
+        this.etternavn = storeForbokstaver(etternavn);
+    }
 
     @JsonIgnore
     public String navn() {

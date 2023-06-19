@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public final class StringUtil {
     private static final String DEFAULT_FLERTALL = "er";
@@ -20,13 +21,6 @@ public final class StringUtil {
         if (!value.matches("[a-zA-Z0-9]++"))
             throw new IllegalArgumentException(value);
         return value;
-    }
-
-    public static String endelse(List<?> liste) {
-        if (liste == null || liste.isEmpty()) {
-            return "er";
-        }
-        return liste.size() == 1 ? "" : "er";
     }
 
     public static String limit(String tekst) {
@@ -73,12 +67,23 @@ public final class StringUtil {
                 .toList();
     }
 
+    public static String encode(String string) {
+        return Base64.getEncoder().encodeToString(string.getBytes(StandardCharsets.UTF_8));
+    }
+
     public static String mask(String value) {
         return Optional.ofNullable(value)
             .map(String::stripLeading)
             .filter(not(String::isBlank))
             .map(v -> "*".repeat(v.length()))
             .orElse("<null>");
+    }
+
+    public static String endelse(List<?> liste) {
+        if (liste == null || liste.isEmpty()) {
+            return "er";
+        }
+        return liste.size() == 1 ? "" : "er";
     }
 
     public static String flertall(List<?> liste) {
@@ -97,7 +102,16 @@ public final class StringUtil {
         return "";
     }
 
-    public static String encode(String string) {
-        return Base64.getEncoder().encodeToString(string.getBytes(StandardCharsets.UTF_8));
+    public static String storeForbokstaver(String text) {
+        if (text == null || text.isBlank()) {
+            return null;
+        }
+        var words = text.trim().split("\\s");
+        return Arrays.stream(words)
+                .filter(not(String::isBlank))
+                .map(String::toLowerCase)
+                .map(n -> Character.toUpperCase(n.charAt(0)) + n.substring(1))
+                .collect(Collectors.joining(" "));
     }
+
 }
