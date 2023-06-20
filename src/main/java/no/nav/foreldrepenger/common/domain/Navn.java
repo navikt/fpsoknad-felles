@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 
 import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
 import static no.nav.foreldrepenger.common.util.StringUtil.mask;
-import static no.nav.foreldrepenger.common.util.StringUtil.storeForbokstaver;
+import static no.nav.foreldrepenger.common.util.StringUtil.capitalizeFully;
 
 @JsonPropertyOrder({"fornavn", "mellomnavn", "etternavn"})
 public record Navn(@Pattern(regexp = FRITEKST) String fornavn,
@@ -19,9 +19,9 @@ public record Navn(@Pattern(regexp = FRITEKST) String fornavn,
 
     @JsonCreator
     public Navn(String fornavn, String mellomnavn, String etternavn) {
-        this.fornavn = storeForbokstaver(fornavn);
-        this.mellomnavn = storeForbokstaver(mellomnavn);
-        this.etternavn = storeForbokstaver(etternavn);
+        this.fornavn = capitalizeFully(fornavn);
+        this.mellomnavn = capitalizeFully(mellomnavn);
+        this.etternavn = capitalizeFully(etternavn);
     }
 
     @JsonIgnore
