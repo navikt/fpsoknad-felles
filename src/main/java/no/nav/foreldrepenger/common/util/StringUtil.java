@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.function.IntPredicate;
 
 public final class StringUtil {
     private static final String DEFAULT_FLERTALL = "er";
@@ -18,8 +18,9 @@ public final class StringUtil {
     }
 
     public static String taint(String value) {
-        if (!value.matches("[a-zA-Z0-9]++"))
+        if (!value.matches("[a-zA-Z0-9]++")) {
             throw new IllegalArgumentException(value);
+        }
         return value;
     }
 
@@ -102,16 +103,30 @@ public final class StringUtil {
         return "";
     }
 
-    public static String storeForbokstaver(String text) {
+    public static String capitalizeFully(String text) {
         if (text == null || text.isBlank()) {
             return null;
         }
-        var words = text.trim().split("\\s");
-        return Arrays.stream(words)
-                .filter(not(String::isBlank))
-                .map(String::toLowerCase)
-                .map(n -> Character.toUpperCase(n.charAt(0)) + n.substring(1))
-                .collect(Collectors.joining(" "));
+        IntPredicate isHyphen = c -> c == '-' || c == '–' || c == '—' || c == '\'' || c == '’' || c == 'ʼ';
+
+        var result = new StringBuilder();
+        boolean capitalizeNext = true;
+
+        for (int i = 0; i < text.length(); i++) {
+            char currentChar = Character.toLowerCase(text.charAt(i));
+
+            if (capitalizeNext && Character.isLetter(currentChar)) {
+                result.append(Character.toUpperCase(currentChar));
+                capitalizeNext = false;
+            } else if (Character.isWhitespace(currentChar) || isHyphen.test(currentChar)) {
+                result.append(currentChar);
+                capitalizeNext = true;
+            } else {
+                result.append(currentChar);
+            }
+        }
+
+        return result.toString();
     }
 
 }
