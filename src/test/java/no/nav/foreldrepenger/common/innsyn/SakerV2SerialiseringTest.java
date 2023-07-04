@@ -98,7 +98,7 @@ class SakerV2SerialiseringTest extends SerializationTestBase {
                 Set.of(oppholdPeriode), AvslutningÅrsak.AVSLAG_OVERGANG_FORELDREPENGER);
         var vedtakArbeidsforhold2 = new Arbeidsforhold(aktivitet2, now(), "sn er farlig", "ingen", Set.of(vedtakPeriode3),
                 Set.of(), AvslutningÅrsak.NORMAL);
-        var vedtak = new Vedtak(Set.of(vedtakArbeidsforhold1, vedtakArbeidsforhold2));
+        var vedtak = new Vedtak(Set.of(vedtakArbeidsforhold1, vedtakArbeidsforhold2), null);
         var svpSak = new SvpSak(saksnummer, familieHendelse, true, new ÅpenBehandling(BehandlingTilstand.UNDER_BEHANDLING, søknad),
                 vedtak, LocalDateTime.now());
         var saker = new Saker(Set.of(), Set.of(), Set.of(svpSak));
