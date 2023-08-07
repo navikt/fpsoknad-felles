@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
-import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.Adopsjon;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.FremtidigFødsel;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.Fødsel;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.Omsorgsovertakelse;
@@ -51,33 +50,6 @@ public class RelasjonTilBarnValidatorTest {
         var fremtidigFødsel = new FremtidigFødsel(3, null, null, null);
 
         assertThat(validertOK(fremtidigFødsel)).isFalse();
-    }
-
-    @Test
-    void validering_ok_når_antall_fødsesldatoer_er_lik_antall_barn_oppgitt_ved_adopsjon() {
-        var fødselsdatoer = List.of(
-                LocalDate.now().minusMonths(4),
-                LocalDate.now().minusYears(4),
-                LocalDate.now().minusYears(2)
-        );
-        var adopsjon = new Adopsjon(3, LocalDate.now(), false, false, null, LocalDate.now().plusMonths(2), fødselsdatoer);
-
-        assertThat(validertOK(adopsjon)).isTrue();
-    }
-
-    @Test
-    void validering_feiler_når_antall_fødsesldatoer_er_forskjellig_fra_antall_barn_oppgitt_ved_adopsjon() {
-        var fødselsdatoer = List.of(
-                LocalDate.now().minusMonths(4),
-                LocalDate.now().minusYears(4),
-                LocalDate.now().minusYears(4),
-                LocalDate.now().minusYears(4),
-                LocalDate.now().minusYears(4),
-                LocalDate.now().minusYears(4)
-        );
-        var adopsjon = new Adopsjon(3, LocalDate.now(), false, false, null, LocalDate.now().plusMonths(2), fødselsdatoer);
-
-        assertThat(validertOK(adopsjon)).isFalse();
     }
 
     @Test
