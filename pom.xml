@@ -41,7 +41,7 @@
         <micrometer-registry-prometheus.version>1.11.1</micrometer-registry-prometheus.version>
 
         <!-- Testavhengigheter -->
-        <junit-bom.version>5.9.3</junit-bom.version>
+        <junit-bom.version>5.10.0</junit-bom.version>
         <mockito-bom.version>5.3.1</mockito-bom.version>
         <assertj-core.version>3.24.2</assertj-core.version>
         <logback-classic.version>1.4.8</logback-classic.version>
