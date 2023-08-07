@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
-import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
@@ -19,14 +18,6 @@ public final class Adopsjon extends RelasjonTilBarn {
     @NotNull
     @Size(min = 1, message = "Fødselsdato ved adopsjon må inneholde minst {min} fødselsdato. Nå ble {value} fødselsdatoer sendt inn.")
     private final List<@PastOrToday(message = "Fødselsdato for barn [${validatedValue}] kan ikke være en en framtidig dato") LocalDate> fødselsdato;
-
-    @AssertTrue(message = "Ved adopsjon må antall barn match antall fødselsdatoer oppgitt!")
-    public boolean isAntallBarnSkalLikAntallFødselsdatoerVedAdopsjon() {
-        if (fødselsdato == null) {
-            return false;
-        }
-        return fødselsdato.size() == getAntallBarn();
-    }
 
     public Adopsjon(int antallBarn, LocalDate omsorgsovertakelsesdato, boolean ektefellesBarn, boolean søkerAdopsjonAlene,
                     List<VedleggReferanse> vedlegg, LocalDate ankomstDato, List<LocalDate> fødselsdato) {
