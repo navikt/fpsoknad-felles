@@ -114,12 +114,12 @@ public class TestUtils {
     }
 
     public static PåkrevdVedlegg påkrevdVedlegg(String id, String name) {
-        var vedleggMetaData = new VedleggMetaData(new VedleggReferanse(id), InnsendingsType.LASTET_OPP, DokumentType.I000062);
+        var vedleggMetaData = new VedleggMetaData(new VedleggReferanse(id), InnsendingsType.LASTET_OPP, DokumentType.I000062, MediaType.PNG);
         return new PåkrevdVedlegg(vedleggMetaData, bytesFra(name));
     }
 
     static ValgfrittVedlegg valgfrittVedlegg(String id, InnsendingsType type, String name) {
-        var vedleggMetaData = new VedleggMetaData(new VedleggReferanse(id), type, DokumentType.I000062);
+        var vedleggMetaData = new VedleggMetaData(new VedleggReferanse(id), type, DokumentType.I000062,  MediaType.PNG);
         return new ValgfrittVedlegg(vedleggMetaData, bytesFra(name));
     }
 

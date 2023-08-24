@@ -36,6 +36,7 @@ import com.neovisionaries.i18n.CountryCode;
 import no.nav.foreldrepenger.common.domain.Saksnummer;
 import no.nav.foreldrepenger.common.domain.felles.DokumentType;
 import no.nav.foreldrepenger.common.domain.felles.InnsendingsType;
+import no.nav.foreldrepenger.common.domain.felles.MediaType;
 import no.nav.foreldrepenger.common.domain.felles.ProsentAndel;
 import no.nav.foreldrepenger.common.domain.felles.VedleggMetaData;
 import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
@@ -142,7 +143,7 @@ class TestForeldrepengerSerialization extends SerializationTestBase {
 
     @Test
     void testVedleggMetadata() {
-        test(new VedleggMetaData(new VedleggReferanse("42"), InnsendingsType.LASTET_OPP, DokumentType.I000002));
+        test(new VedleggMetaData(new VedleggReferanse("42"), InnsendingsType.LASTET_OPP, DokumentType.I000002, MediaType.PDF));
     }
 
     @Test
