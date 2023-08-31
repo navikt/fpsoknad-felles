@@ -20,8 +20,10 @@ import no.nav.security.token.support.core.jwt.JwtTokenClaims;
 public class TokenUtil {
 
     public static final String SELVBETJENING = "selvbetjening";
+    public static final String IDPORTEN = "idporten";
     public static final String TOKENX = "tokenx";
     public static final String CLAIMS = "acr=Level4";
+    public static final String IDPORTENV2_CLAIMS = "acr=idporten-loa-high";
     public static final String BEARER = "Bearer ";
     public static final String NAV_AUTH_LEVEL = "Nav-auth-level";
     public static final String NAV_TOKEN_EXPIRY_ID = "Nav-Token-Expiry";

@@ -28,23 +28,23 @@
         <sonar.projectKey>navikt_fpsoknad-felles</sonar.projectKey>
 
 
-        <fp-kontrakter.version>6.2.20</fp-kontrakter.version>
-        <token-support.version>3.0.10</token-support.version>
+        <fp-kontrakter.version>7.0.0</fp-kontrakter.version>
+        <token-support.version>3.1.5</token-support.version>
 
         <hibernate-validator.version>8.0.1.Final</hibernate-validator.version>
         <jakarta.jakartaee-bom.version>10.0.0</jakarta.jakartaee-bom.version>
-        <jackson-bom.version>2.15.1</jackson-bom.version>
+        <jackson-bom.version>2.15.2</jackson-bom.version>
         <jakarta.el.version>4.0.2</jakarta.el.version>
         <jaxb-runtime.version>4.0.3</jaxb-runtime.version>
         <nv-i18n.version>1.29</nv-i18n.version>
         <slf4j-api.version>2.0.7</slf4j-api.version>
-        <micrometer-registry-prometheus.version>1.11.2</micrometer-registry-prometheus.version>
+        <micrometer-registry-prometheus.version>1.11.3</micrometer-registry-prometheus.version>
 
         <!-- Testavhengigheter -->
         <junit-bom.version>5.10.0</junit-bom.version>
-        <mockito-bom.version>5.3.1</mockito-bom.version>
+        <mockito-bom.version>5.5.0</mockito-bom.version>
         <assertj-core.version>3.24.2</assertj-core.version>
-        <logback-classic.version>1.4.8</logback-classic.version>
+        <logback-classic.version>1.4.11</logback-classic.version>
     </properties>
 
     <scm>
@@ -103,7 +103,7 @@
     <dependencies>
         <dependency>
             <groupId>no.nav.foreldrepenger.kontrakter</groupId>
-            <artifactId>soeknad-v3-jakarta</artifactId>
+            <artifactId>soeknad-v3</artifactId>
             <version>${fp-kontrakter.version}</version>
         </dependency>
         <dependency>
@@ -228,7 +228,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>3.1.0</version>
+                    <version>3.1.2</version>
                     <configuration>
                         <!-- Må ha @{argLine} ellers blir properties satt av
                         -maven-plugin overskrevet -->
