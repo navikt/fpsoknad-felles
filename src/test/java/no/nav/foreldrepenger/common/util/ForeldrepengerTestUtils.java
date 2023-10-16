@@ -32,6 +32,7 @@ import no.nav.foreldrepenger.common.domain.felles.DokumentType;
 import no.nav.foreldrepenger.common.domain.felles.Ettersending;
 import no.nav.foreldrepenger.common.domain.felles.EttersendingsType;
 import no.nav.foreldrepenger.common.domain.felles.InnsendingsType;
+import no.nav.foreldrepenger.common.domain.felles.MediaType;
 import no.nav.foreldrepenger.common.domain.felles.ProsentAndel;
 import no.nav.foreldrepenger.common.domain.felles.TestUtils;
 import no.nav.foreldrepenger.common.domain.felles.ValgfrittVedlegg;
@@ -436,7 +437,7 @@ public class ForeldrepengerTestUtils {
 
     private static ValgfrittVedlegg opplastetVedlegg(String id, DokumentType type) {
         try {
-            var vedleggMetaData = new VedleggMetaData(new VedleggReferanse(id), InnsendingsType.LASTET_OPP, type);
+            var vedleggMetaData = new VedleggMetaData(new VedleggReferanse(id), InnsendingsType.LASTET_OPP, type,  MediaType.PDF);
             return new ValgfrittVedlegg(vedleggMetaData,
                 bytesFra("pdf/terminbekreftelse.pdf"));
         } catch (Exception e) {
@@ -446,7 +447,7 @@ public class ForeldrepengerTestUtils {
 
     private static ValgfrittVedlegg ikkeOpplastet(String id, DokumentType type) {
         try {
-            var vedleggMetaData = new VedleggMetaData(new VedleggReferanse(id), InnsendingsType.SEND_SENERE, type);
+            var vedleggMetaData = new VedleggMetaData(new VedleggReferanse(id), InnsendingsType.SEND_SENERE, type, MediaType.PDF);
             return new ValgfrittVedlegg(vedleggMetaData, null);
         } catch (Exception e) {
             throw new IllegalArgumentException();
