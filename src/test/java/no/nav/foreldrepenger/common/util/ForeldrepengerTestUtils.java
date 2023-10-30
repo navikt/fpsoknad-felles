@@ -437,8 +437,9 @@ public class ForeldrepengerTestUtils {
     private static ValgfrittVedlegg opplastetVedlegg(String id, DokumentType type) {
         try {
             var vedleggMetaData = new VedleggMetaData(new VedleggReferanse(id), InnsendingsType.LASTET_OPP, type);
-            return new ValgfrittVedlegg(vedleggMetaData,
-                bytesFra("pdf/terminbekreftelse.pdf"));
+            var valgfrittVedlegg = new ValgfrittVedlegg(vedleggMetaData);
+            valgfrittVedlegg.setInnhold(bytesFra("pdf/terminbekreftelse.pdf"));
+            return valgfrittVedlegg;
         } catch (Exception e) {
             throw new IllegalArgumentException();
         }
@@ -447,7 +448,7 @@ public class ForeldrepengerTestUtils {
     private static ValgfrittVedlegg ikkeOpplastet(String id, DokumentType type) {
         try {
             var vedleggMetaData = new VedleggMetaData(new VedleggReferanse(id), InnsendingsType.SEND_SENERE, type);
-            return new ValgfrittVedlegg(vedleggMetaData, null);
+            return new ValgfrittVedlegg(vedleggMetaData);
         } catch (Exception e) {
             throw new IllegalArgumentException();
         }

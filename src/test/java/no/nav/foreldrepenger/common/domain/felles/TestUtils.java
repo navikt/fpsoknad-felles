@@ -115,12 +115,16 @@ public class TestUtils {
 
     public static PåkrevdVedlegg påkrevdVedlegg(String id, String name) {
         var vedleggMetaData = new VedleggMetaData(new VedleggReferanse(id), InnsendingsType.LASTET_OPP, DokumentType.I000062);
-        return new PåkrevdVedlegg(vedleggMetaData, bytesFra(name));
+        var påkrevdVedlegg = new PåkrevdVedlegg(vedleggMetaData);
+        påkrevdVedlegg.setInnhold(bytesFra(name));
+        return påkrevdVedlegg;
     }
 
     static ValgfrittVedlegg valgfrittVedlegg(String id, InnsendingsType type, String name) {
         var vedleggMetaData = new VedleggMetaData(new VedleggReferanse(id), type, DokumentType.I000062);
-        return new ValgfrittVedlegg(vedleggMetaData, bytesFra(name));
+        var valgfrittVedlegg = new ValgfrittVedlegg(vedleggMetaData);
+        valgfrittVedlegg.setInnhold(bytesFra(name));
+        return valgfrittVedlegg;
     }
 
     public static Adopsjon adopsjon() {
