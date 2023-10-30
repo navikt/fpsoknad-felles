@@ -5,8 +5,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 public class ValgfrittVedlegg extends Vedlegg {
 
     @JsonCreator
-    public ValgfrittVedlegg(VedleggMetaData metadata, byte[] vedlegg) {
-        super(metadata, vedlegg);
+    public ValgfrittVedlegg(VedleggMetaData metadata) {
+        super(metadata);
     }
 
     @Override

@@ -31,12 +31,11 @@ public abstract class Vedlegg {
 
     @Valid
     private final VedleggMetaData metadata;
-    private final byte[] innhold;
+    private byte[] innhold;
 
     @JsonCreator
-    protected Vedlegg(VedleggMetaData metadata, byte[] innhold) {
+    protected Vedlegg(VedleggMetaData metadata) {
         this.metadata = metadata;
-        this.innhold = innhold;
     }
 
     public VedleggMetaData getMetadata() {
@@ -45,6 +44,10 @@ public abstract class Vedlegg {
 
     public byte[] getInnhold() {
         return innhold;
+    }
+
+    public void setInnhold(byte[] innhold) {
+        this.innhold = innhold;
     }
 
     @JsonIgnore
