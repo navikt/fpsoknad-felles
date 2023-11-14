@@ -1,21 +1,22 @@
 package no.nav.foreldrepenger.common.domain.felles.opptjening;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.neovisionaries.i18n.CountryCode;
-import no.nav.foreldrepenger.common.domain.Orgnummer;
-import no.nav.foreldrepenger.common.domain.felles.ProsentAndel;
-import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
-import no.nav.foreldrepenger.common.domain.felles.ÅpenPeriode;
-import org.hibernate.validator.constraints.Length;
+import static java.util.Collections.emptyList;
+import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
 
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import static java.util.Collections.emptyList;
-import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
+import org.hibernate.validator.constraints.Length;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.neovisionaries.i18n.CountryCode;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
+import no.nav.foreldrepenger.common.domain.Orgnummer;
+import no.nav.foreldrepenger.common.domain.felles.ProsentAndel;
+import no.nav.foreldrepenger.common.domain.felles.ÅpenPeriode;
 
 public record EgenNæring(CountryCode registrertILand,
                          @Valid Orgnummer orgNummer,
@@ -31,13 +32,11 @@ public record EgenNæring(CountryCode registrertILand,
                          LocalDate endringsDato,
                          LocalDate oppstartsDato,
                          @Length(max = 1000) @Pattern(regexp = FRITEKST) String beskrivelseEndring,
-                         @Valid ProsentAndel stillingsprosent,
-                         @Valid List<VedleggReferanse> vedlegg) {
+                         @Valid ProsentAndel stillingsprosent) {
 
     @JsonCreator
     public EgenNæring {
         virksomhetsTyper = Optional.ofNullable(virksomhetsTyper).orElse(emptyList());
         regnskapsførere = Optional.ofNullable(regnskapsførere).orElse(emptyList());
-        vedlegg = Optional.ofNullable(vedlegg).orElse(emptyList());
     }
 }

@@ -6,20 +6,17 @@ import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperComm
 import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.målformFra;
 import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.opptjeningFra;
 import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.søkerFra;
-import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.tilVedlegg;
 import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.vedleggFra;
 import static no.nav.foreldrepenger.common.util.LangUtil.toBoolean;
 import static no.nav.foreldrepenger.common.util.StreamUtil.safeStream;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import jakarta.xml.bind.JAXBElement;
 import no.nav.foreldrepenger.common.domain.AktørId;
 import no.nav.foreldrepenger.common.domain.Søknad;
 import no.nav.foreldrepenger.common.domain.felles.ProsentAndel;
-import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
 import no.nav.foreldrepenger.common.domain.felles.annenforelder.NorskForelder;
 import no.nav.foreldrepenger.common.domain.felles.annenforelder.UtenlandskForelder;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.Adopsjon;
@@ -77,9 +74,7 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
     private static final FPV3JAXBUtil JAXB = new FPV3JAXBUtil();
     private static final String UKJENT_KODEVERKSVERDI = "-";
     private static final no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.ObjectFactory FP_FACTORY_V3 = new no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.ObjectFactory();
-    private static final no.nav.vedtak.felles.xml.soeknad.felles.v3.ObjectFactory FELLES_FACTORY_V3 = new no.nav.vedtak.felles.xml.soeknad.felles.v3.ObjectFactory();
     private static final no.nav.vedtak.felles.xml.soeknad.v3.ObjectFactory SØKNAD_FACTORY_V3 = new no.nav.vedtak.felles.xml.soeknad.v3.ObjectFactory();
-    private static final no.nav.vedtak.felles.xml.soeknad.uttak.v3.ObjectFactory UTTAK_FACTORY_V3 = new no.nav.vedtak.felles.xml.soeknad.uttak.v3.ObjectFactory();
     private static final no.nav.vedtak.felles.xml.soeknad.endringssoeknad.v3.ObjectFactory ENDRING_FACTORY_V3 = new no.nav.vedtak.felles.xml.soeknad.endringssoeknad.v3.ObjectFactory();
 
     private final AktørIdTilFnrConverter aktørIdTilFnrConverter;
@@ -106,8 +101,7 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
     protected Soeknad tilModell(Søknad søknad, AktørId søker) {
         var soeknad = new Soeknad();
         soeknad.setSprakvalg(målformFra(søknad.getSøker()));
-        soeknad.getAndreVedlegg().addAll(vedleggFra(søknad.getFrivilligeVedlegg()));
-        soeknad.getPaakrevdeVedlegg().addAll(vedleggFra(søknad.getPåkrevdeVedlegg()));
+        soeknad.getPaakrevdeVedlegg().addAll(vedleggFra(søknad.getVedlegg()));
         soeknad.setSoeker(søkerFra(søker, søknad.getSøker()));
         soeknad.setOmYtelse(ytelseFraSøknad(søknad));
         soeknad.setMottattDato(søknad.getMottattdato());
@@ -118,8 +112,7 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
     private static Soeknad tilModell(Endringssøknad endringsøknad, AktørId søker) {
         var soeknad = new Soeknad();
         soeknad.setSprakvalg(målformFra(endringsøknad.getSøker()));
-        soeknad.getAndreVedlegg().addAll(vedleggFra(endringsøknad.getFrivilligeVedlegg()));
-        soeknad.getPaakrevdeVedlegg().addAll(vedleggFra(endringsøknad.getPåkrevdeVedlegg()));
+        soeknad.getPaakrevdeVedlegg().addAll(vedleggFra(endringsøknad.getVedlegg()));
         soeknad.setSoeker(søkerFra(søker, endringsøknad.getSøker()));
         soeknad.setOmYtelse(ytelseFraEndringssøknad(endringsøknad));
         soeknad.setMottattDato(endringsøknad.getMottattdato());
@@ -214,14 +207,6 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
                 .toList();
     }
 
-    private static List<JAXBElement<Object>> lukketPeriodeVedleggFra(List<VedleggReferanse> vedlegg) {
-        return safeStream(vedlegg)
-                .filter(Objects::nonNull)
-                .map(VedleggReferanse::referanse)
-                .map(referanse -> UTTAK_FACTORY_V3.createLukketPeriodeMedVedleggVedlegg(tilVedlegg(referanse)))
-                .toList();
-    }
-
     private static no.nav.vedtak.felles.xml.soeknad.uttak.v3.LukketPeriodeMedVedlegg lukketPeriodeFra(LukketPeriodeMedVedlegg p) {
         return Optional.ofNullable(p)
                 .map(V3ForeldrepengerDomainMapper::create)
@@ -258,7 +243,6 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
         overfoeringsperiode.setTom(o.getTom());
         overfoeringsperiode.setOverfoeringAv(uttaksperiodeTypeFra(o.getUttaksperiodeType()));
         overfoeringsperiode.setAarsak(påkrevdOverføringsÅrsakFra(o.getÅrsak()));
-        overfoeringsperiode.getVedlegg().addAll(lukketPeriodeVedleggFra(o.getVedlegg()));
         return overfoeringsperiode;
     }
 
@@ -267,7 +251,6 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
         oppholdsperiode.setFom(o.getFom());
         oppholdsperiode.setTom(o.getTom());
         oppholdsperiode.setAarsak(oppholdsÅrsakFra(o.getÅrsak()));
-        oppholdsperiode.getVedlegg().addAll(lukketPeriodeVedleggFra(o.getVedlegg()));
         return oppholdsperiode;
     }
 
@@ -278,7 +261,6 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
         utsettelsesperiode.setErArbeidstaker(u.isErArbeidstaker());
         utsettelsesperiode.setMorsAktivitetIPerioden(morsAktivitetFra(u.getMorsAktivitetsType()));
         utsettelsesperiode.setAarsak(utsettelsesÅrsakFra(u.getÅrsak()));
-        utsettelsesperiode.getVedlegg().addAll(lukketPeriodeVedleggFra(u.getVedlegg()));
         return utsettelsesperiode;
     }
 
@@ -288,7 +270,6 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
         utsettelsesperiode.setTom(p.getTom());
         utsettelsesperiode.setMorsAktivitetIPerioden(morsAktivitetFra(p.getMorsAktivitetsType(), true));
         utsettelsesperiode.setAarsak(utsettelsesÅrsakFra(p.getÅrsak()));
-        utsettelsesperiode.getVedlegg().addAll(lukketPeriodeVedleggFra(p.getVedlegg()));
         return utsettelsesperiode;
     }
 
@@ -304,7 +285,6 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
         gradering.setArbeidtidProsent(prosentFra(g.getArbeidstidProsent()));
         gradering.setArbeidsgiver(arbeidsgiverFra(g.getVirksomhetsnummer()));
         gradering.setArbeidsforholdSomSkalGraderes(g.isArbeidsForholdSomskalGraderes());
-        gradering.getVedlegg().addAll(lukketPeriodeVedleggFra(g.getVedlegg()));
         Optional.ofNullable(g.getFrilans()).ifPresent(gradering::setErFrilanser);
         Optional.ofNullable(g.getSelvstendig()).ifPresent(gradering::setErSelvstNæringsdrivende);
 
@@ -324,7 +304,6 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
         uttaksperiode.setType(uttaksperiodeTypeFra(u.getUttaksperiodeType()));
         uttaksperiode.setOenskerSamtidigUttak(u.isØnskerSamtidigUttak());
         uttaksperiode.setMorsAktivitetIPerioden(morsAktivitetFra(u.getMorsAktivitetsType()));
-        uttaksperiode.getVedlegg().addAll(lukketPeriodeVedleggFra(u.getVedlegg()));
         return uttaksperiode;
     }
 
@@ -523,7 +502,6 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
 
     private static SoekersRelasjonTilBarnet createOmsorgsovertakelse(Omsorgsovertakelse omsorgsovertakelse) {
         var omsorgsovertakelseXLM = new no.nav.vedtak.felles.xml.soeknad.felles.v3.Omsorgsovertakelse();
-        omsorgsovertakelseXLM.getVedlegg().addAll(relasjonTilBarnVedleggFra(omsorgsovertakelse.getVedlegg()));
         omsorgsovertakelseXLM.setAntallBarn(omsorgsovertakelse.getAntallBarn());
         omsorgsovertakelseXLM.getFoedselsdato().addAll(omsorgsovertakelse.getFødselsdato());
         omsorgsovertakelseXLM.setOmsorgsovertakelsesdato(omsorgsovertakelse.getOmsorgsovertakelsesdato());
@@ -536,7 +514,6 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
 
     private static SoekersRelasjonTilBarnet createFødsel(Fødsel fødsel) {
         var foedsel = new Foedsel();
-        foedsel.getVedlegg().addAll(relasjonTilBarnVedleggFra(fødsel.getVedlegg()));
         foedsel.setFoedselsdato(fødsel.getFødselsdato().get(0));
         foedsel.setTermindato(fødsel.getTermindato());
         foedsel.setAntallBarn(fødsel.getAntallBarn());
@@ -545,7 +522,6 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
 
     private static SoekersRelasjonTilBarnet createTermin(FremtidigFødsel termin) {
         var terminXML = new Termin();
-        terminXML.getVedlegg().addAll(relasjonTilBarnVedleggFra(termin.getVedlegg()));
         terminXML.setAntallBarn(termin.getAntallBarn());
         terminXML.setTermindato(termin.getTerminDato());
         terminXML.setUtstedtdato(termin.getUtstedtDato());
@@ -554,21 +530,12 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
 
     private static SoekersRelasjonTilBarnet createAdopsjon(Adopsjon adopsjon) {
         var adopsjonXML = new no.nav.vedtak.felles.xml.soeknad.felles.v3.Adopsjon();
-        adopsjonXML.getVedlegg().addAll(relasjonTilBarnVedleggFra(adopsjon.getVedlegg()));
         adopsjonXML.setAntallBarn(adopsjon.getAntallBarn());
         adopsjonXML.getFoedselsdato().addAll(adopsjon.getFødselsdato());
         adopsjonXML.setOmsorgsovertakelsesdato(adopsjon.getOmsorgsovertakelsesdato());
         adopsjonXML.setAdopsjonAvEktefellesBarn(adopsjon.isEktefellesBarn());
         adopsjonXML.setAnkomstdato(adopsjon.getAnkomstDato());
         return adopsjonXML;
-    }
-
-    private static List<JAXBElement<Object>> relasjonTilBarnVedleggFra(List<VedleggReferanse> vedlegg) {
-        return safeStream(vedlegg)
-                .filter(Objects::nonNull)
-                .map(VedleggReferanse::referanse)
-                .map(referanse -> FELLES_FACTORY_V3.createSoekersRelasjonTilBarnetVedlegg(tilVedlegg(referanse)))
-                .toList();
     }
 
     @Override

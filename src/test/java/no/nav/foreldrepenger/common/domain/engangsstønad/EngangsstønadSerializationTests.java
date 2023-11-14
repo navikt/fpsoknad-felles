@@ -5,7 +5,7 @@ import static no.nav.foreldrepenger.common.domain.felles.TestUtils.engangstønad
 import static no.nav.foreldrepenger.common.domain.felles.TestUtils.fødsel;
 import static no.nav.foreldrepenger.common.domain.felles.TestUtils.medlemsskap;
 import static no.nav.foreldrepenger.common.domain.felles.TestUtils.norskForelder;
-import static no.nav.foreldrepenger.common.domain.felles.TestUtils.påkrevdVedlegg;
+import static no.nav.foreldrepenger.common.domain.felles.TestUtils.vedlegg;
 import static no.nav.foreldrepenger.common.domain.felles.TestUtils.termin;
 import static no.nav.foreldrepenger.common.domain.felles.TestUtils.ukjentForelder;
 import static no.nav.foreldrepenger.common.domain.felles.TestUtils.utenlandskForelder;
@@ -19,7 +19,6 @@ import no.nav.foreldrepenger.common.domain.Fødselsnummer;
 import no.nav.foreldrepenger.common.domain.Kvittering;
 import no.nav.foreldrepenger.common.domain.Saksnummer;
 import no.nav.foreldrepenger.common.domain.felles.TestUtils;
-import no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils;
 import no.nav.foreldrepenger.common.util.SerializationTestBase;
 
 class EngangsstønadSerializationTests extends SerializationTestBase {
@@ -38,12 +37,12 @@ class EngangsstønadSerializationTests extends SerializationTestBase {
 
     @Test
     void testVedlegg() {
-        test(påkrevdVedlegg("pdf/terminbekreftelse.pdf"), false);
+        test(vedlegg(), false);
     }
 
     @Test
     void testSøknadNorge() {
-        var engangssøknad = engangssøknad(false, fødsel(), påkrevdVedlegg(ForeldrepengerTestUtils.ID142));
+        var engangssøknad = engangssøknad(false, fødsel(), vedlegg());
         test(engangssøknad, false);
     }
 

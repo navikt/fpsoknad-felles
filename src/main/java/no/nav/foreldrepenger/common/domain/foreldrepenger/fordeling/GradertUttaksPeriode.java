@@ -1,19 +1,19 @@
 package no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import no.nav.foreldrepenger.common.domain.felles.ProsentAndel;
-import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
+import static java.util.Collections.emptyList;
+import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
+import static no.nav.foreldrepenger.common.util.StringUtil.maskListe;
 
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import static java.util.Collections.emptyList;
-import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
-import static no.nav.foreldrepenger.common.util.StringUtil.maskListe;
+import com.fasterxml.jackson.annotation.JsonCreator;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
+import no.nav.foreldrepenger.common.domain.felles.ProsentAndel;
 
 public final class GradertUttaksPeriode extends UttaksPeriode {
     @Valid
@@ -27,7 +27,6 @@ public final class GradertUttaksPeriode extends UttaksPeriode {
     @JsonCreator
     public GradertUttaksPeriode(LocalDate fom,
                                 LocalDate tom,
-                                List<VedleggReferanse> vedlegg,
                                 StønadskontoType uttaksperiodeType,
                                 boolean ønskerSamtidigUttak,
                                 MorsAktivitet morsAktivitetsType,
@@ -40,8 +39,7 @@ public final class GradertUttaksPeriode extends UttaksPeriode {
                                 Boolean frilans,
                                 Boolean selvstendig,
                                 Boolean justeresVedFødsel) {
-        super(fom, tom, vedlegg, uttaksperiodeType, ønskerSamtidigUttak, morsAktivitetsType, ønskerFlerbarnsdager,
-                samtidigUttakProsent, justeresVedFødsel);
+        super(fom, tom, uttaksperiodeType, ønskerSamtidigUttak, morsAktivitetsType, ønskerFlerbarnsdager, samtidigUttakProsent, justeresVedFødsel);
         this.arbeidstidProsent = arbeidstidProsent;
         this.erArbeidstaker = erArbeidstaker;
         this.virksomhetsnummer = Optional.ofNullable(virksomhetsnummer).orElse(emptyList());

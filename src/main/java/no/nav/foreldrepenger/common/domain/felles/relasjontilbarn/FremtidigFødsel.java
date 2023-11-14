@@ -1,14 +1,10 @@
 package no.nav.foreldrepenger.common.domain.felles.relasjontilbarn;
 
-import static java.util.Collections.emptyList;
-
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 
-import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
 import no.nav.foreldrepenger.common.domain.validation.annotations.PastOrToday;
 
 public final class FremtidigFødsel extends RelasjonTilBarn {
@@ -18,14 +14,14 @@ public final class FremtidigFødsel extends RelasjonTilBarn {
     private final LocalDate utstedtDato;
 
     @JsonCreator
-    public FremtidigFødsel(int antallBarn, LocalDate terminDato, LocalDate utstedtDato, List<VedleggReferanse> vedlegg) {
-        super(antallBarn, vedlegg);
+    public FremtidigFødsel(int antallBarn, LocalDate terminDato, LocalDate utstedtDato) {
+        super(antallBarn);
         this.terminDato = terminDato;
         this.utstedtDato = utstedtDato;
     }
 
     public FremtidigFødsel(LocalDate terminDato, LocalDate utstedtDato) {
-        this(1, terminDato, utstedtDato, emptyList());
+        this(1, terminDato, utstedtDato);
     }
 
     public LocalDate getTerminDato() {

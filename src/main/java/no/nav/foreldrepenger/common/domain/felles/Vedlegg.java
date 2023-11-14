@@ -1,7 +1,5 @@
 package no.nav.foreldrepenger.common.domain.felles;
 
-import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY;
-import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
 import static no.nav.foreldrepenger.common.domain.felles.InnsendingsType.LASTET_OPP;
 import static no.nav.foreldrepenger.common.domain.felles.InnsendingsType.SEND_SENERE;
 import static no.nav.foreldrepenger.common.util.StringUtil.limit;
@@ -14,18 +12,10 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import jakarta.validation.Valid;
 
-@JsonTypeInfo(use = NAME, include = PROPERTY, property = "type")
-@JsonSubTypes({
-        @Type(value = ValgfrittVedlegg.class, name = "valgfritt"),
-        @Type(value = PåkrevdVedlegg.class, name = "påkrevd")
-})
-public abstract class Vedlegg {
+public class Vedlegg {
 
     private static final Logger LOG = LoggerFactory.getLogger(Vedlegg.class);
 
@@ -34,7 +24,7 @@ public abstract class Vedlegg {
     private byte[] innhold;
 
     @JsonCreator
-    protected Vedlegg(VedleggMetaData metadata) {
+    public Vedlegg(VedleggMetaData metadata) {
         this.metadata = metadata;
     }
 
@@ -75,9 +65,6 @@ public abstract class Vedlegg {
 
     @JsonIgnore
     public String getId() {
-        if (metadata.id() != null) {
-            return metadata.id().referanse();
-        }
         return metadata.uuid().toString();
     }
 

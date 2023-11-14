@@ -2,12 +2,9 @@ package no.nav.foreldrepenger.common.domain.felles.relasjontilbarn;
 
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY;
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
-import static java.util.Collections.emptyList;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
@@ -15,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Positive;
-import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
 
 @JsonTypeInfo(use = NAME, include = PROPERTY, property = "type")
 @JsonSubTypes({
@@ -28,7 +24,6 @@ public abstract sealed class RelasjonTilBarn permits Fødsel,FremtidigFødsel,Ad
 
     public abstract LocalDate relasjonsDato();
 
-    private final List<VedleggReferanse> vedlegg;
     @Positive
     private final int antallBarn;
 
@@ -37,14 +32,10 @@ public abstract sealed class RelasjonTilBarn permits Fødsel,FremtidigFødsel,Ad
         return relasjonsDato() != null;
     }
 
-    protected RelasjonTilBarn(int antallBarn, List<VedleggReferanse> vedlegg) {
+    protected RelasjonTilBarn(int antallBarn) {
         this.antallBarn = antallBarn;
-        this.vedlegg = Optional.ofNullable(vedlegg).orElse(emptyList());
     }
 
-    public List<VedleggReferanse> getVedlegg() {
-        return vedlegg;
-    }
 
     public int getAntallBarn() {
         return antallBarn;
@@ -57,16 +48,16 @@ public abstract sealed class RelasjonTilBarn permits Fødsel,FremtidigFødsel,Ad
         if (o == null || getClass() != o.getClass())
             return false;
         RelasjonTilBarn that = (RelasjonTilBarn) o;
-        return antallBarn == that.antallBarn && Objects.equals(vedlegg, that.vedlegg);
+        return antallBarn == that.antallBarn;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(vedlegg, antallBarn);
+        return Objects.hash(antallBarn);
     }
 
     @Override
     public String toString() {
-        return "RelasjonTilBarn{" + "vedlegg=" + vedlegg + ", antallBarn=" + antallBarn + '}';
+        return "RelasjonTilBarn{" + " antallBarn=" + antallBarn + '}';
     }
 }

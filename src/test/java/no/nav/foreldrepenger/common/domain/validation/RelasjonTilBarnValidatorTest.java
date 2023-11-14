@@ -29,7 +29,7 @@ public class RelasjonTilBarnValidatorTest {
         var fødselsdatoer = List.of(
                 LocalDate.now().minusMonths(4)
         );
-        var fødsel = new Fødsel(3, fødselsdatoer, LocalDate.now().plusMonths(1), null);
+        var fødsel = new Fødsel(3, fødselsdatoer, LocalDate.now().plusMonths(1));
 
         assertThat(validertOK(fødsel)).isTrue();
     }
@@ -40,14 +40,14 @@ public class RelasjonTilBarnValidatorTest {
                 LocalDate.now().minusMonths(4)
         );
 
-        var fødsel = new Fødsel(3, fødselsdatoer, null, null);
+        var fødsel = new Fødsel(3, fødselsdatoer, null);
 
         assertThat(validertOK(fødsel)).isTrue();
     }
 
     @Test
     void termin_skal_feile_på_validering_ved_manglende_termindato() {
-        var fremtidigFødsel = new FremtidigFødsel(3, null, null, null);
+        var fremtidigFødsel = new FremtidigFødsel(3, null, null);
 
         assertThat(validertOK(fremtidigFødsel)).isFalse();
     }
@@ -59,7 +59,7 @@ public class RelasjonTilBarnValidatorTest {
                 LocalDate.now().minusYears(4),
                 LocalDate.now().minusYears(2)
         );
-        var omsorgsovertakelse = new Omsorgsovertakelse(3, LocalDate.now(), fødselsdatoer, null);
+        var omsorgsovertakelse = new Omsorgsovertakelse(3, LocalDate.now(), fødselsdatoer);
 
         assertThat(validertOK(omsorgsovertakelse)).isTrue();
     }
@@ -74,7 +74,7 @@ public class RelasjonTilBarnValidatorTest {
                 LocalDate.now().minusYears(4),
                 LocalDate.now().minusYears(4)
         );
-        var omsorgsovertakelse = new Omsorgsovertakelse(3, LocalDate.now(), fødselsdatoer, null);
+        var omsorgsovertakelse = new Omsorgsovertakelse(3, LocalDate.now(), fødselsdatoer);
 
         assertThat(validertOK(omsorgsovertakelse)).isFalse();
     }

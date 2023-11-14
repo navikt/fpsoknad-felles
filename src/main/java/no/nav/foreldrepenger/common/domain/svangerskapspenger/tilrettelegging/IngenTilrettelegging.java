@@ -1,21 +1,18 @@
 package no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging;
 
-import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
-import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.Arbeidsforhold;
+import java.time.LocalDate;
+import java.util.Objects;
 
 import jakarta.validation.constraints.NotNull;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Objects;
+import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.Arbeidsforhold;
 
 public final class IngenTilrettelegging extends Tilrettelegging {
 
     @NotNull
     private final LocalDate slutteArbeidFom;
 
-    public IngenTilrettelegging(Arbeidsforhold arbeidsforhold, LocalDate behovForTilretteleggingFom,
-            LocalDate slutteArbeidFom, List<VedleggReferanse> vedlegg) {
-        super(arbeidsforhold, behovForTilretteleggingFom, vedlegg);
+    public IngenTilrettelegging(Arbeidsforhold arbeidsforhold, LocalDate behovForTilretteleggingFom, LocalDate slutteArbeidFom) {
+        super(arbeidsforhold, behovForTilretteleggingFom);
         this.slutteArbeidFom = slutteArbeidFom;
     }
 

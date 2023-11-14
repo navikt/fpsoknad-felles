@@ -1,20 +1,21 @@
 package no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling;
 
-import com.fasterxml.jackson.annotation.*;
-import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
-import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
-import no.nav.foreldrepenger.common.domain.validation.annotations.LukketPeriode;
-
-import jakarta.validation.constraints.NotNull;
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY;
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
-import static java.util.Collections.emptyList;
+
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+import jakarta.validation.constraints.NotNull;
+import no.nav.foreldrepenger.common.domain.validation.annotations.LukketPeriode;
 
 @LukketPeriode
 @JsonPropertyOrder({ "fom", "tom" })
@@ -32,13 +33,11 @@ public abstract sealed class LukketPeriodeMedVedlegg implements Comparable<Lukke
     private final LocalDate fom;
     @NotNull
     private final LocalDate tom;
-    private final List<VedleggReferanse> vedlegg;
 
     @JsonCreator
-    protected LukketPeriodeMedVedlegg(LocalDate fom, LocalDate tom, List<VedleggReferanse> vedlegg) {
+    protected LukketPeriodeMedVedlegg(LocalDate fom, LocalDate tom) {
         this.fom = fom;
         this.tom = tom;
-        this.vedlegg = Optional.ofNullable(vedlegg).orElse(emptyList());
     }
 
     @JsonIgnore
@@ -57,10 +56,6 @@ public abstract sealed class LukketPeriodeMedVedlegg implements Comparable<Lukke
 
     public LocalDate getTom() {
         return tom;
-    }
-
-    public List<VedleggReferanse> getVedlegg() {
-        return vedlegg;
     }
 
     @Override

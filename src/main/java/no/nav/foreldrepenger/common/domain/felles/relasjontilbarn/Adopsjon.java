@@ -6,7 +6,6 @@ import java.util.Objects;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
 import no.nav.foreldrepenger.common.domain.validation.annotations.PastOrToday;
 
 public final class Adopsjon extends RelasjonTilBarn {
@@ -19,9 +18,8 @@ public final class Adopsjon extends RelasjonTilBarn {
     @Size(min = 1, message = "Fødselsdato ved adopsjon må inneholde minst {min} fødselsdato. Nå ble {value} fødselsdatoer sendt inn.")
     private final List<@PastOrToday(message = "Fødselsdato for barn [${validatedValue}] kan ikke være en en framtidig dato") LocalDate> fødselsdato;
 
-    public Adopsjon(int antallBarn, LocalDate omsorgsovertakelsesdato, boolean ektefellesBarn, boolean søkerAdopsjonAlene,
-                    List<VedleggReferanse> vedlegg, LocalDate ankomstDato, List<LocalDate> fødselsdato) {
-        super(antallBarn, vedlegg);
+    public Adopsjon(int antallBarn, LocalDate omsorgsovertakelsesdato, boolean ektefellesBarn, boolean søkerAdopsjonAlene, LocalDate ankomstDato, List<LocalDate> fødselsdato) {
+        super(antallBarn);
         this.omsorgsovertakelsesdato = omsorgsovertakelsesdato;
         this.ektefellesBarn = ektefellesBarn;
         this.ankomstDato = ankomstDato;

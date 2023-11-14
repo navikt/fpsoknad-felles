@@ -1,18 +1,17 @@
 package no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling;
 
+import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY;
+import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
+
+import java.time.LocalDate;
+import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
 
 import jakarta.validation.constraints.NotNull;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Objects;
-
-import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY;
-import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
 
 @JsonTypeInfo(use = NAME, include = PROPERTY, property = "type")
 @JsonSubTypes({
@@ -26,9 +25,8 @@ public sealed class UtsettelsesPeriode extends LukketPeriodeMedVedlegg permits F
     private final MorsAktivitet morsAktivitetsType;
 
     @JsonCreator
-    public UtsettelsesPeriode(LocalDate fom, LocalDate tom, boolean erArbeidstaker, UtsettelsesÅrsak årsak,
-                              MorsAktivitet morsAktivitetsType, List<VedleggReferanse> vedlegg) {
-        super(fom, tom, vedlegg);
+    public UtsettelsesPeriode(LocalDate fom, LocalDate tom, boolean erArbeidstaker, UtsettelsesÅrsak årsak, MorsAktivitet morsAktivitetsType) {
+        super(fom, tom);
         this.erArbeidstaker = erArbeidstaker;
         this.årsak = årsak;
         this.morsAktivitetsType = morsAktivitetsType;

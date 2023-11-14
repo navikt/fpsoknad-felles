@@ -2,19 +2,15 @@ package no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging;
 
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY;
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
-import static java.util.Collections.emptyList;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
 import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.Arbeidsforhold;
 
 @JsonTypeInfo(use = NAME, include = PROPERTY, property = "type")
@@ -23,18 +19,16 @@ import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.ar
         @JsonSubTypes.Type(value = DelvisTilrettelegging.class, name = "delvis"),
         @JsonSubTypes.Type(value = IngenTilrettelegging.class, name = "ingen")
 })
-public abstract class Tilrettelegging {
+public abstract sealed class Tilrettelegging permits HelTilrettelegging, DelvisTilrettelegging, IngenTilrettelegging {
 
     @Valid
     private final Arbeidsforhold arbeidsforhold;
     @NotNull
     private final LocalDate behovForTilretteleggingFom;
-    private final List<@Valid VedleggReferanse> vedlegg;
 
-    protected Tilrettelegging(Arbeidsforhold arbeidsforhold, LocalDate behovForTilretteleggingFom, List<VedleggReferanse> vedlegg) {
+    protected Tilrettelegging(Arbeidsforhold arbeidsforhold, LocalDate behovForTilretteleggingFom) {
         this.arbeidsforhold = arbeidsforhold;
         this.behovForTilretteleggingFom = behovForTilretteleggingFom;
-        this.vedlegg = Optional.ofNullable(vedlegg).orElse(emptyList());
     }
 
     public Arbeidsforhold getArbeidsforhold() {
@@ -43,10 +37,6 @@ public abstract class Tilrettelegging {
 
     public LocalDate getBehovForTilretteleggingFom() {
         return behovForTilretteleggingFom;
-    }
-
-    public List<VedleggReferanse> getVedlegg() {
-        return vedlegg;
     }
 
     @Override

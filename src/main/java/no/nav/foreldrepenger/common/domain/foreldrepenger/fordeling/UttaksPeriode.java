@@ -1,19 +1,18 @@
 package no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling;
 
+import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY;
+import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
+
+import java.time.LocalDate;
+import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import no.nav.foreldrepenger.common.domain.felles.ProsentAndel;
-import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Objects;
-
-import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY;
-import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
 
 
 @JsonTypeInfo(use = NAME, include = PROPERTY, property = "type")
@@ -29,10 +28,10 @@ public sealed class UttaksPeriode extends LukketPeriodeMedVedlegg permits Grader
     private final Boolean justeresVedFødsel;
 
     @JsonCreator
-    public UttaksPeriode(LocalDate fom, LocalDate tom, List<VedleggReferanse> vedlegg, StønadskontoType uttaksperiodeType, boolean ønskerSamtidigUttak,
+    public UttaksPeriode(LocalDate fom, LocalDate tom, StønadskontoType uttaksperiodeType, boolean ønskerSamtidigUttak,
                          MorsAktivitet morsAktivitetsType, boolean ønskerFlerbarnsdager, ProsentAndel samtidigUttakProsent,
                          Boolean justeresVedFødsel) {
-        super(fom, tom, vedlegg);
+        super(fom, tom);
         this.uttaksperiodeType = uttaksperiodeType;
         this.ønskerSamtidigUttak = ønskerSamtidigUttak;
         this.morsAktivitetsType = morsAktivitetsType;

@@ -1,12 +1,11 @@
 package no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling;
 
+import java.time.LocalDate;
+import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
-import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
 
 import jakarta.validation.constraints.NotNull;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Objects;
 
 public final class OppholdsPeriode extends LukketPeriodeMedVedlegg {
 
@@ -14,8 +13,8 @@ public final class OppholdsPeriode extends LukketPeriodeMedVedlegg {
     private final Oppholdsårsak årsak;
 
     @JsonCreator
-    public OppholdsPeriode(LocalDate fom, LocalDate tom, Oppholdsårsak årsak, List<VedleggReferanse> vedlegg) {
-        super(fom, tom, vedlegg);
+    public OppholdsPeriode(LocalDate fom, LocalDate tom, Oppholdsårsak årsak) {
+        super(fom, tom);
         this.årsak = årsak;
     }
 

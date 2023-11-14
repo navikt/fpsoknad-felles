@@ -15,16 +15,15 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.Arbeidsforhold;
 
-public record VedleggMetaData(@Valid VedleggReferanse id,
-                              UUID uuid,
+public record VedleggMetaData(UUID uuid,
                               InnsendingsType innsendingsType,
                               DokumentType dokumentType,
                               @Pattern(regexp = FRITEKST) String filnavn,
                               @Valid Dokumenterer hvaDokumentererVedlegg,
                               @Length(max = 2000) @Pattern(regexp = FRITEKST) String beskrivelse) {
 
-    public VedleggMetaData(VedleggReferanse id, InnsendingsType innsendingsType, DokumentType dokumentType) {
-        this(id, UUID.randomUUID(), innsendingsType, dokumentType, null, null, dokumentType.getBeskrivelse());
+    public VedleggMetaData(UUID id, InnsendingsType innsendingsType, DokumentType dokumentType) {
+        this(id, innsendingsType, dokumentType, null, null, dokumentType.getBeskrivelse());
     }
 
     @JsonCreator

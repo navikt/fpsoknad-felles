@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -105,30 +106,23 @@ public class TestUtils {
         return new Omsorgsovertakelse(nå(), forrigeMåned());
     }
 
-    public static PåkrevdVedlegg påkrevdVedlegg(String id) {
-        return påkrevdVedlegg(id, "pdf/terminbekreftelse.pdf");
+    public static Vedlegg vedlegg() {
+        return vedlegg("pdf/terminbekreftelse.pdf");
     }
 
-    public static ValgfrittVedlegg valgfrittVedlegg(String id, InnsendingsType type) {
-        return valgfrittVedlegg(id, type, "pdf/terminbekreftelse.pdf");
-    }
-
-    public static PåkrevdVedlegg påkrevdVedlegg(String id, String name) {
-        var vedleggMetaData = new VedleggMetaData(new VedleggReferanse(id), InnsendingsType.LASTET_OPP, DokumentType.I000062);
-        var påkrevdVedlegg = new PåkrevdVedlegg(vedleggMetaData);
-        påkrevdVedlegg.setInnhold(bytesFra(name));
-        return påkrevdVedlegg;
-    }
-
-    static ValgfrittVedlegg valgfrittVedlegg(String id, InnsendingsType type, String name) {
-        var vedleggMetaData = new VedleggMetaData(new VedleggReferanse(id), type, DokumentType.I000062);
-        var valgfrittVedlegg = new ValgfrittVedlegg(vedleggMetaData);
-        valgfrittVedlegg.setInnhold(bytesFra(name));
-        return valgfrittVedlegg;
+    public static Vedlegg vedlegg(String name) {
+        var vedleggMetaData = new VedleggMetaData(
+                UUID.randomUUID(),
+                InnsendingsType.LASTET_OPP,
+                DokumentType.I000062
+        );
+        var vedlegg = new Vedlegg(vedleggMetaData);
+        vedlegg.setInnhold(bytesFra(name));
+        return vedlegg;
     }
 
     public static Adopsjon adopsjon() {
-        return new Adopsjon(1, nå(), false, false, emptyList(), nå(), listeMedNå());
+        return new Adopsjon(1, nå(), false, false, nå(), listeMedNå());
     }
 
     public static RelasjonTilBarn fødsel() {
@@ -139,9 +133,7 @@ public class TestUtils {
         return new Fødsel(
                 1,
                 singletonList(date),
-                date,
-                null
-        );
+                date);
     }
 
     public static List<Utenlandsopphold> framtidigOppHoldIUtlandet() {

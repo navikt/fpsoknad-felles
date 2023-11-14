@@ -8,7 +8,6 @@ import static no.nav.foreldrepenger.common.util.StreamUtil.safeStream;
 import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -16,12 +15,10 @@ import org.slf4j.LoggerFactory;
 
 import com.neovisionaries.i18n.CountryCode;
 
-import jakarta.xml.bind.JAXBElement;
 import no.nav.foreldrepenger.common.domain.AktørId;
 import no.nav.foreldrepenger.common.domain.BrukerRolle;
 import no.nav.foreldrepenger.common.domain.Søker;
 import no.nav.foreldrepenger.common.domain.felles.InnsendingsType;
-import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
 import no.nav.foreldrepenger.common.domain.felles.medlemskap.Medlemsskap;
 import no.nav.foreldrepenger.common.domain.felles.medlemskap.Utenlandsopphold;
 import no.nav.foreldrepenger.common.domain.felles.opptjening.AnnenOpptjeningType;
@@ -56,7 +53,6 @@ import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Virksomhetstyper;
 final class V3DomainMapperCommon {
     private static final Logger LOG = LoggerFactory.getLogger(V3DomainMapperCommon.class);
     private static final Land KOSOVO = landFra("XXK");
-    private static final no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.ObjectFactory FP_FACTORY_V3 = new no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.ObjectFactory();
 
     private V3DomainMapperCommon() {
 
@@ -183,7 +179,6 @@ final class V3DomainMapperCommon {
 
     private static UtenlandskOrganisasjon utenlandskOrganisasjon(EgenNæring utenlandskOrg) {
         var utenlandskOrganisasjon = new UtenlandskOrganisasjon();
-        utenlandskOrganisasjon.getVedlegg().addAll(egenNæringVedleggFraIDs(utenlandskOrg.vedlegg()));
         utenlandskOrganisasjon.setBeskrivelseAvEndring(utenlandskOrg.beskrivelseEndring());
         utenlandskOrganisasjon.setNaerRelasjon(utenlandskOrg.nærRelasjon());
         utenlandskOrganisasjon.setEndringsDato(utenlandskOrg.endringsDato());
@@ -202,7 +197,6 @@ final class V3DomainMapperCommon {
 
     private static NorskOrganisasjon norskOrganisasjon(EgenNæring norskOrg) {
         var norskOrganisasjon = new NorskOrganisasjon();
-        norskOrganisasjon.getVedlegg().addAll(egenNæringVedleggFraIDs(norskOrg.vedlegg()));
         norskOrganisasjon.setBeskrivelseAvEndring(norskOrg.beskrivelseEndring());
         norskOrganisasjon.setNaerRelasjon(norskOrg.nærRelasjon());
         norskOrganisasjon.setEndringsDato(norskOrg.endringsDato());
@@ -218,14 +212,6 @@ final class V3DomainMapperCommon {
         norskOrganisasjon.getVirksomhetstype().addAll(virksomhetsTyperFra(norskOrg.virksomhetsTyper()));
         norskOrganisasjon.setOppstartsdato(norskOrg.oppstartsDato());
         return norskOrganisasjon;
-    }
-
-    private static List<JAXBElement<Object>> egenNæringVedleggFraIDs(List<VedleggReferanse> vedlegg) {
-        return safeStream(vedlegg)
-                .filter(Objects::nonNull)
-                .map(VedleggReferanse::referanse)
-                .map(referanse -> FP_FACTORY_V3.createEgenNaeringVedlegg(tilVedlegg(referanse)))
-                .toList();
     }
 
     static Vedlegg tilVedlegg(String referanse) {
@@ -255,7 +241,6 @@ final class V3DomainMapperCommon {
 
     private static AnnenOpptjening create(no.nav.foreldrepenger.common.domain.felles.opptjening.AnnenOpptjening annen) {
         var annenOpptjening = new AnnenOpptjening();
-        annenOpptjening.getVedlegg().addAll(annenOpptjeningVedleggFra(annen.vedlegg()));
         annenOpptjening.setType(annenOpptjeningTypeFra(annen.type()));
         annenOpptjening.setPeriode(periodeFra(annen.periode()));
         return annenOpptjening;
@@ -298,19 +283,10 @@ final class V3DomainMapperCommon {
 
     private static UtenlandskArbeidsforhold utenlandskArbeidsforholdFra(no.nav.foreldrepenger.common.domain.felles.opptjening.UtenlandskArbeidsforhold forhold) {
         var utenlandskArbeidsforhold = new UtenlandskArbeidsforhold();
-        utenlandskArbeidsforhold.getVedlegg().addAll(utenlandsArbeidsforholdVedleggFra(forhold.vedlegg()));
         utenlandskArbeidsforhold.setArbeidsgiversnavn(forhold.arbeidsgiverNavn());
         utenlandskArbeidsforhold.setArbeidsland(landFra(forhold.land()));
         utenlandskArbeidsforhold.setPeriode(periodeFra(forhold.periode()));
         return utenlandskArbeidsforhold;
-    }
-
-    private static List<JAXBElement<Object>> utenlandsArbeidsforholdVedleggFra(List<VedleggReferanse> vedlegg) {
-        return safeStream(vedlegg)
-                .filter(Objects::nonNull)
-                .map(VedleggReferanse::referanse)
-                .map(referanse -> FP_FACTORY_V3.createUtenlandskArbeidsforholdVedlegg(tilVedlegg(referanse)))
-                .toList();
     }
 
     static Bruker søkerFra(AktørId aktørId, Søker søker) {
@@ -367,14 +343,6 @@ final class V3DomainMapperCommon {
         frilansoppdrag.setOppdragsgiver(oppdrag.oppdragsgiver());
         frilansoppdrag.setPeriode(periodeFra(oppdrag.periode()));
         return frilansoppdrag;
-    }
-
-    private static List<JAXBElement<Object>> annenOpptjeningVedleggFra(List<VedleggReferanse> vedlegg) {
-        return safeStream(vedlegg)
-                .filter(Objects::nonNull)
-                .map(VedleggReferanse::referanse)
-                .map(referanse -> FP_FACTORY_V3.createAnnenOpptjeningVedlegg(tilVedlegg(referanse)))
-                .toList();
     }
 
     private static Vedlegg vedleggFra(no.nav.foreldrepenger.common.domain.felles.Vedlegg vedlegg) {

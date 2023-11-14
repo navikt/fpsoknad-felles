@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 
 import no.nav.foreldrepenger.common.domain.AktørId;
-import no.nav.foreldrepenger.common.domain.felles.ValgfrittVedlegg;
+import no.nav.foreldrepenger.common.domain.felles.Vedlegg;
 import no.nav.foreldrepenger.common.domain.felles.annenforelder.NorskForelder;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.FremtidigFødsel;
 import no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils;
@@ -33,10 +33,10 @@ class V3ForeldrepengerDomainMapperTests {
 
         assertThat(søknadXML.getMottattDato()).isEqualTo(søknad.getMottattdato());
         assertThat(søknad.getVedlegg())
-                .hasExactlyElementsOfTypes(ValgfrittVedlegg.class)
-                .hasSameSizeAs(søknadXML.getAndreVedlegg())
+                .hasExactlyElementsOfTypes(Vedlegg.class)
+                .hasSameSizeAs(søknadXML.getPaakrevdeVedlegg())
                 .hasSize(1);
-        assertThat(søknadXML.getPaakrevdeVedlegg()).isEmpty();
+        assertThat(søknadXML.getAndreVedlegg()).isEmpty();
 
         // Foreldrepenger ytelse
         var foreldrepenger = (no.nav.foreldrepenger.common.domain.foreldrepenger.Foreldrepenger) søknad.getYtelse();

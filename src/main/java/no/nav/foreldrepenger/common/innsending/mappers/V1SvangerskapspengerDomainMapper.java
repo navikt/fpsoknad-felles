@@ -5,9 +5,7 @@ import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperComm
 import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.målformFra;
 import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.opptjeningFra;
 import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.søkerFra;
-import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.tilVedlegg;
 import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.vedleggFra;
-import static no.nav.foreldrepenger.common.util.StreamUtil.safeStream;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -15,14 +13,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 import jakarta.xml.bind.JAXBElement;
 import no.nav.foreldrepenger.common.domain.AktørId;
 import no.nav.foreldrepenger.common.domain.Søknad;
 import no.nav.foreldrepenger.common.domain.felles.ProsentAndel;
-import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
 import no.nav.foreldrepenger.common.domain.foreldrepenger.Endringssøknad;
 import no.nav.foreldrepenger.common.error.UnexpectedInputException;
 import no.nav.foreldrepenger.common.innsending.SøknadEgenskap;
@@ -64,8 +60,7 @@ public class V1SvangerskapspengerDomainMapper implements DomainMapper {
     public Soeknad tilModell(Søknad søknad, AktørId søker) {
         var soeknad = new Soeknad();
         soeknad.setSprakvalg(målformFra(søknad.getSøker()));
-        soeknad.getAndreVedlegg().addAll(vedleggFra(søknad.getFrivilligeVedlegg()));
-        soeknad.getPaakrevdeVedlegg().addAll(vedleggFra(søknad.getPåkrevdeVedlegg()));
+        soeknad.getPaakrevdeVedlegg().addAll(vedleggFra(søknad.getVedlegg()));
         soeknad.setSoeker(søkerFra(søker, søknad.getSøker()));
         soeknad.setOmYtelse(ytelseFra(søknad));
         soeknad.setMottattDato(søknad.getMottattdato());
@@ -121,7 +116,6 @@ public class V1SvangerskapspengerDomainMapper implements DomainMapper {
                 .findAny()
                 .ifPresent(b -> {
                     tilrettelegging.setBehovForTilretteleggingFom(b.getBehovForTilretteleggingFom());
-                    tilrettelegging.getVedlegg().addAll(tilretteleggingVedleggFraIDs(b.getVedlegg()));
                     tilrettelegging.setArbeidsforhold(arbeidsforholdFra(b.getArbeidsforhold()));
                 });
 
@@ -151,14 +145,6 @@ public class V1SvangerskapspengerDomainMapper implements DomainMapper {
         return Optional.ofNullable(prosent)
                 .map(ProsentAndel::prosent)
                 .orElse(0d);
-    }
-
-    private static List<JAXBElement<Object>> tilretteleggingVedleggFraIDs(List<VedleggReferanse> vedlegg) {
-        return safeStream(vedlegg)
-                .filter(Objects::nonNull)
-                .map(VedleggReferanse::referanse)
-                .map(referanse -> SVP_FACTORY_V1.createTilretteleggingVedlegg(tilVedlegg(referanse)))
-                .toList();
     }
 
     private static Arbeidsforhold arbeidsforholdFra(no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.Arbeidsforhold forhold) {

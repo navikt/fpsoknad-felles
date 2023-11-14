@@ -8,7 +8,6 @@ import java.util.Objects;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
 import no.nav.foreldrepenger.common.domain.validation.annotations.PastOrToday;
 
 public final class Fødsel extends RelasjonTilBarn {
@@ -19,8 +18,8 @@ public final class Fødsel extends RelasjonTilBarn {
 
     private final LocalDate termindato;
 
-    public Fødsel(int antallBarn, List<LocalDate> fødselsdato, LocalDate termindato, List<VedleggReferanse> vedlegg) {
-        super(antallBarn, vedlegg);
+    public Fødsel(int antallBarn, List<LocalDate> fødselsdato, LocalDate termindato) {
+        super(antallBarn);
         this.fødselsdato = fødselsdato;
         this.termindato = termindato;
     }

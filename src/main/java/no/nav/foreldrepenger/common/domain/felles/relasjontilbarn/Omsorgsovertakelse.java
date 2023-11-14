@@ -1,6 +1,5 @@
 package no.nav.foreldrepenger.common.domain.felles.relasjontilbarn;
 
-import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
 import java.time.LocalDate;
@@ -12,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
 import no.nav.foreldrepenger.common.domain.validation.annotations.PastOrToday;
 
 public final class Omsorgsovertakelse extends RelasjonTilBarn {
@@ -32,14 +30,14 @@ public final class Omsorgsovertakelse extends RelasjonTilBarn {
     }
 
     @JsonCreator
-    public Omsorgsovertakelse(int antallBarn, LocalDate omsorgsovertakelsesdato, List<LocalDate> fødselsdato, List<VedleggReferanse> vedlegg) {
-        super(antallBarn, vedlegg);
+    public Omsorgsovertakelse(int antallBarn, LocalDate omsorgsovertakelsesdato, List<LocalDate> fødselsdato) {
+        super(antallBarn);
         this.omsorgsovertakelsesdato = omsorgsovertakelsesdato;
         this.fødselsdato = fødselsdato;
     }
 
     public Omsorgsovertakelse(LocalDate omsorgsovertakelsesdato, LocalDate fødselsdato) {
-        this(1, omsorgsovertakelsesdato, singletonList(fødselsdato), emptyList());
+        this(1, omsorgsovertakelsesdato, singletonList(fødselsdato));
     }
 
 

@@ -28,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 
@@ -38,7 +39,6 @@ import no.nav.foreldrepenger.common.domain.felles.DokumentType;
 import no.nav.foreldrepenger.common.domain.felles.InnsendingsType;
 import no.nav.foreldrepenger.common.domain.felles.ProsentAndel;
 import no.nav.foreldrepenger.common.domain.felles.VedleggMetaData;
-import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
 import no.nav.foreldrepenger.common.domain.felles.annenforelder.UkjentForelder;
 import no.nav.foreldrepenger.common.domain.felles.opptjening.EgenNæring;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.Adopsjon;
@@ -142,7 +142,7 @@ class TestForeldrepengerSerialization extends SerializationTestBase {
 
     @Test
     void testVedleggMetadata() {
-        test(new VedleggMetaData(new VedleggReferanse("42"), InnsendingsType.LASTET_OPP, DokumentType.I000002));
+        test(new VedleggMetaData(UUID.randomUUID(), InnsendingsType.LASTET_OPP, DokumentType.I000002));
     }
 
     @Test
@@ -220,14 +220,12 @@ class TestForeldrepengerSerialization extends SerializationTestBase {
         RelasjonTilBarn f = new Fødsel(
                 1,
                 singletonList(LocalDate.now()),
-                null,
-                null
-        );
+                null);
 
         test(f, true);
         f = new FremtidigFødsel(LocalDate.now(), LocalDate.now());
         test(f, true);
-        f = new Adopsjon(1, LocalDate.now(), true, false, null, null, null);
+        f = new Adopsjon(1, LocalDate.now(), true, false, null, null);
         test(f, true);
     }
 
