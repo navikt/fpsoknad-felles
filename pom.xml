@@ -28,17 +28,17 @@
         <sonar.projectKey>navikt_fpsoknad-felles</sonar.projectKey>
 
 
-        <fp-kontrakter.version>7.0.0</fp-kontrakter.version>
+        <fp-kontrakter.version>8.0.8</fp-kontrakter.version>
         <token-support.version>3.1.5</token-support.version>
 
         <hibernate-validator.version>8.0.1.Final</hibernate-validator.version>
         <jakarta.jakartaee-bom.version>10.0.0</jakarta.jakartaee-bom.version>
-        <jackson-bom.version>2.15.2</jackson-bom.version>
+        <jackson-bom.version>2.15.3</jackson-bom.version>
         <jakarta.el.version>4.0.2</jakarta.el.version>
-        <jaxb-runtime.version>4.0.3</jaxb-runtime.version>
+        <jaxb-runtime.version>4.0.4</jaxb-runtime.version>
         <nv-i18n.version>1.29</nv-i18n.version>
-        <slf4j-api.version>2.0.7</slf4j-api.version>
-        <micrometer-registry-prometheus.version>1.11.3</micrometer-registry-prometheus.version>
+        <slf4j-api.version>2.0.9</slf4j-api.version>
+        <micrometer-registry-prometheus.version>1.11.5</micrometer-registry-prometheus.version>
 
         <!-- Testavhengigheter -->
         <junit-bom.version>5.10.0</junit-bom.version>
@@ -234,7 +234,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>3.1.2</version>
+                    <version>3.2.1</version>
                     <configuration>
                         <!-- Må ha @{argLine} ellers blir properties satt av
                         -maven-plugin overskrevet -->
@@ -282,7 +282,7 @@
                 <plugin>
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>0.8.10</version>
+                    <version>0.8.11</version>
                     <executions>
                         <execution>
                             <id>prepare-agent</id>
@@ -321,7 +321,7 @@
                 <plugin>
                     <groupId>org.sonarsource.scanner.maven</groupId>
                     <artifactId>sonar-maven-plugin</artifactId>
-                    <version>3.9.1.2184</version>
+                    <version>3.10.0.2594</version>
                 </plugin>
             </plugins>
         </pluginManagement>
