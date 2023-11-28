@@ -19,7 +19,7 @@ public record VedleggMetaData(@Valid VedleggReferanse id,
                               UUID uuid,
                               InnsendingsType innsendingsType,
                               DokumentType dokumentType,
-                              String filnavn,
+                              @Pattern(regexp = FRITEKST) String filnavn,
                               @Valid Dokumenterer hvaDokumentererVedlegg,
                               @Length(max = 2000) @Pattern(regexp = FRITEKST) String beskrivelse) {
 
@@ -35,7 +35,7 @@ public record VedleggMetaData(@Valid VedleggReferanse id,
                         .orElse(null));
     }
 
-    public record Dokumenterer(Type type,
+    public record Dokumenterer(@NotNull Type type,
                                @Valid Arbeidsforhold arbeidsforhold,
                                List<@Valid @NotNull LukketPeriode> perioder) {
         public enum Type {
