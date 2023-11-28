@@ -75,7 +75,10 @@ public abstract class Vedlegg {
 
     @JsonIgnore
     public String getId() {
-        return metadata.id().referanse();
+        if (metadata.id() != null) {
+            return metadata.id().referanse();
+        }
+        return metadata.uuid().toString();
     }
 
     @JsonIgnore
