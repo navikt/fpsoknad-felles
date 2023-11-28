@@ -15,9 +15,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.Arbeidsforhold;
 
-public record VedleggMetaData(UUID uuid,
+public record VedleggMetaData(@NotNull UUID uuid,
                               InnsendingsType innsendingsType,
-                              DokumentType dokumentType,
+                              @NotNull DokumentType dokumentType,
                               @Pattern(regexp = FRITEKST) String filnavn,
                               @Valid Dokumenterer hvaDokumentererVedlegg,
                               @Length(max = 2000) @Pattern(regexp = FRITEKST) String beskrivelse) {
