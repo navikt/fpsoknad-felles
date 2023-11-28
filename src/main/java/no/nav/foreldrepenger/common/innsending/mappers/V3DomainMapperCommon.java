@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -347,10 +348,15 @@ final class V3DomainMapperCommon {
 
     private static Vedlegg vedleggFra(no.nav.foreldrepenger.common.domain.felles.Vedlegg vedlegg) {
         var vedleggXML = new Vedlegg();
-        vedleggXML.setId(vedlegg.getId());
         vedleggXML.setTilleggsinformasjon(vedlegg.getBeskrivelse());
         vedleggXML.setSkjemanummer(vedlegg.getDokumentType().name());
         vedleggXML.setInnsendingstype(innsendingstypeFra(vedlegg.getInnsendingsType()));
+
+        if (vedlegg.getInnsendingsType().equals(LASTET_OPP)) {
+            vedleggXML.setId(vedlegg.getId());
+        } else {
+            vedleggXML.setId(UUID.randomUUID().toString());
+        }
         return vedleggXML;
     }
 
