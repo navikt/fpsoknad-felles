@@ -39,8 +39,7 @@ public record VedleggMetaData(@NotNull UUID uuid,
                                List<@Valid @NotNull LukketPeriode> perioder) {
         public enum Type {
             UTTAK,
-            TILRETTELEGGING,
-            ANNET
+            TILRETTELEGGING
         }
     }
 }
