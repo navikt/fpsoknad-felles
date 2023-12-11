@@ -26,7 +26,6 @@ import no.nav.foreldrepenger.common.domain.felles.medlemskap.Medlemsskap;
 import no.nav.foreldrepenger.common.domain.felles.medlemskap.Utenlandsopphold;
 import no.nav.foreldrepenger.common.domain.felles.opptjening.AnnenOpptjeningType;
 import no.nav.foreldrepenger.common.domain.felles.opptjening.EgenNæring;
-import no.nav.foreldrepenger.common.domain.felles.opptjening.FrilansOppdrag;
 import no.nav.foreldrepenger.common.domain.felles.opptjening.Regnskapsfører;
 import no.nav.foreldrepenger.common.domain.felles.opptjening.Virksomhetstype;
 import no.nav.foreldrepenger.common.domain.felles.ÅpenPeriode;
@@ -40,7 +39,6 @@ import no.nav.vedtak.felles.xml.soeknad.felles.v3.Vedlegg;
 import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.AnnenOpptjening;
 import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.EgenNaering;
 import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.Frilans;
-import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.Frilansoppdrag;
 import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.NorskOrganisasjon;
 import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.Opptjening;
 import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.Regnskapsfoerer;
@@ -343,30 +341,11 @@ final class V3DomainMapperCommon {
     private static Frilans create(no.nav.foreldrepenger.common.domain.felles.opptjening.Frilans frilans) {
         var frilansXML = new Frilans();
         frilansXML.setErNyoppstartet(frilans.nyOppstartet());
-        frilansXML.setHarInntektFraFosterhjem(frilans.harInntektFraFosterhjem());
-        frilansXML.setNaerRelasjon(frilans.frilansOppdrag() != null && !frilans.frilansOppdrag().isEmpty());
         frilansXML.getPeriode().add(periodeFra(frilans.periode()));
-        frilansXML.getFrilansoppdrag().addAll(frilansOppdragFra(frilans.frilansOppdrag()));
+        // TODO: disse under + frilansXML.getFrilansoppdrag() kan fjernes fra kontrakt
+        frilansXML.setHarInntektFraFosterhjem(false);
+        frilansXML.setNaerRelasjon(false);
         return frilansXML;
-    }
-
-    private static List<Frilansoppdrag> frilansOppdragFra(List<FrilansOppdrag> frilansOppdrag) {
-        return safeStream(frilansOppdrag)
-                .map(V3DomainMapperCommon::frilansOppdragFra)
-                .toList();
-    }
-
-    private static Frilansoppdrag frilansOppdragFra(FrilansOppdrag oppdrag) {
-        return Optional.ofNullable(oppdrag)
-                .map(V3DomainMapperCommon::create)
-                .orElse(null);
-    }
-
-    private static Frilansoppdrag create(FrilansOppdrag oppdrag) {
-        var frilansoppdrag = new Frilansoppdrag();
-        frilansoppdrag.setOppdragsgiver(oppdrag.oppdragsgiver());
-        frilansoppdrag.setPeriode(periodeFra(oppdrag.periode()));
-        return frilansoppdrag;
     }
 
     private static List<JAXBElement<Object>> annenOpptjeningVedleggFra(List<VedleggReferanse> vedlegg) {
