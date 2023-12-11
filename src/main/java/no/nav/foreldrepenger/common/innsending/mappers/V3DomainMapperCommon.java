@@ -1,6 +1,7 @@
 package no.nav.foreldrepenger.common.innsending.mappers;
 
 import static com.neovisionaries.i18n.CountryCode.XK;
+import static java.time.LocalDate.now;
 import static no.nav.foreldrepenger.common.domain.felles.InnsendingsType.LASTET_OPP;
 import static no.nav.foreldrepenger.common.domain.felles.InnsendingsType.SEND_SENERE;
 import static no.nav.foreldrepenger.common.util.StreamUtil.safeStream;
@@ -340,11 +341,12 @@ final class V3DomainMapperCommon {
 
     private static Frilans create(no.nav.foreldrepenger.common.domain.felles.opptjening.Frilans frilans) {
         var frilansXML = new Frilans();
-        frilansXML.setErNyoppstartet(frilans.nyOppstartet());
         frilansXML.getPeriode().add(periodeFra(frilans.periode()));
         // TODO: disse under + frilansXML.getFrilansoppdrag() kan fjernes fra kontrakt
         frilansXML.setHarInntektFraFosterhjem(false);
         frilansXML.setNaerRelasjon(false);
+        var erNyoppstartet = frilans.periode().fom().isAfter(now().minusMonths(3));
+        frilansXML.setErNyoppstartet(erNyoppstartet);
         return frilansXML;
     }
 

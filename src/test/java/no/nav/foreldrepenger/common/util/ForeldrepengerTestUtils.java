@@ -233,7 +233,7 @@ public class ForeldrepengerTestUtils {
     }
 
     private static Frilans frilans() {
-        return new Frilans(åpenPeriode(true), true, true);
+        return new Frilans(åpenPeriode(true), true);
     }
 
     private static List<AnnenOpptjening> andreOpptjeninger(VedleggReferanse... vedleggRefs) {
