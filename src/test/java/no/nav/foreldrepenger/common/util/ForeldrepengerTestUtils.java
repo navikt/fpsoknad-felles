@@ -44,7 +44,6 @@ import no.nav.foreldrepenger.common.domain.felles.opptjening.AnnenOpptjening;
 import no.nav.foreldrepenger.common.domain.felles.opptjening.AnnenOpptjeningType;
 import no.nav.foreldrepenger.common.domain.felles.opptjening.EgenNæring;
 import no.nav.foreldrepenger.common.domain.felles.opptjening.Frilans;
-import no.nav.foreldrepenger.common.domain.felles.opptjening.FrilansOppdrag;
 import no.nav.foreldrepenger.common.domain.felles.opptjening.Opptjening;
 import no.nav.foreldrepenger.common.domain.felles.opptjening.Regnskapsfører;
 import no.nav.foreldrepenger.common.domain.felles.opptjening.UtenlandskArbeidsforhold;
@@ -234,13 +233,7 @@ public class ForeldrepengerTestUtils {
     }
 
     private static Frilans frilans() {
-        return new Frilans(åpenPeriode(true), true, true, true,
-                List.of(new FrilansOppdrag("fattern", åpenPeriode(true)),
-                        new FrilansOppdrag(
-                                "den andre bror min og samtidig en fryktelig lang tekst som straks må bryte over til ny linje",
-                                åpenPeriode(true)),
-                        new FrilansOppdrag("far min", åpenPeriode(true))
-                ));
+        return new Frilans(åpenPeriode(true), true);
     }
 
     private static List<AnnenOpptjening> andreOpptjeninger(VedleggReferanse... vedleggRefs) {

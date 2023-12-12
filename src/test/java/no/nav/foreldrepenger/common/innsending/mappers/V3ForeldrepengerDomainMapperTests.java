@@ -77,8 +77,7 @@ class V3ForeldrepengerDomainMapperTests {
                 .hasSameSizeAs(foreldrepenger.opptjening().annenOpptjening())
                 .hasSize(1);
         assertThat(foreldrepengerXMLO.getOpptjening().getFrilans().getFrilansoppdrag())
-                .hasSameSizeAs(foreldrepenger.opptjening().frilans().frilansOppdrag())
-                .hasSize(3);
+                .isEmpty();
 
         // Fordeling
         var fordeling = foreldrepenger.fordeling();
