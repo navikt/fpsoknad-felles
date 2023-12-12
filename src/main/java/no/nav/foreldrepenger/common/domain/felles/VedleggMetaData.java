@@ -1,30 +1,21 @@
 package no.nav.foreldrepenger.common.domain.felles;
 
-import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
+import com.fasterxml.jackson.annotation.JsonCreator;
 import org.hibernate.validator.constraints.Length;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.Arbeidsforhold;
+import java.util.Optional;
+
+import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
 
 public record VedleggMetaData(@Valid VedleggReferanse id,
-                              UUID uuid,
                               InnsendingsType innsendingsType,
                               DokumentType dokumentType,
-                              @Pattern(regexp = FRITEKST) String filnavn,
-                              @Valid Dokumenterer hvaDokumentererVedlegg,
                               @Length(max = 2000) @Pattern(regexp = FRITEKST) String beskrivelse) {
 
     public VedleggMetaData(VedleggReferanse id, InnsendingsType innsendingsType, DokumentType dokumentType) {
-        this(id, UUID.randomUUID(), innsendingsType, dokumentType, null, null, dokumentType.getBeskrivelse());
+        this(id, innsendingsType, dokumentType, dokumentType.getBeskrivelse());
     }
 
     @JsonCreator
@@ -33,14 +24,5 @@ public record VedleggMetaData(@Valid VedleggReferanse id,
                 .orElse(Optional.ofNullable(dokumentType)
                         .map(DokumentType::getBeskrivelse)
                         .orElse(null));
-    }
-
-    public record Dokumenterer(@NotNull Type type,
-                               @Valid Arbeidsforhold arbeidsforhold,
-                               List<@Valid @NotNull LukketPeriode> perioder) {
-        public enum Type {
-            UTTAK,
-            TILRETTELEGGING,
-        }
     }
 }
