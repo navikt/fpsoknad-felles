@@ -43,7 +43,7 @@
         <!-- Testavhengigheter -->
         <junit-bom.version>5.10.1</junit-bom.version>
         <mockito-bom.version>5.8.0</mockito-bom.version>
-        <assertj-core.version>3.24.2</assertj-core.version>
+        <assertj-core.version>3.25.0</assertj-core.version>
         <logback-classic.version>1.4.14</logback-classic.version>
     </properties>
 
@@ -211,7 +211,7 @@
         <dependency>
             <groupId>net.bytebuddy</groupId>
             <artifactId>byte-buddy</artifactId>
-            <version>1.14.10</version>
+            <version>1.14.11</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
