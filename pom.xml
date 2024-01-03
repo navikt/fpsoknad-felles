@@ -33,11 +33,11 @@
 
         <hibernate-validator.version>8.0.1.Final</hibernate-validator.version>
         <jakarta.jakartaee-bom.version>10.0.0</jakarta.jakartaee-bom.version>
-        <jackson-bom.version>2.16.0</jackson-bom.version>
+        <jackson-bom.version>2.16.1</jackson-bom.version>
         <jakarta.el.version>4.0.2</jakarta.el.version>
         <jaxb-runtime.version>4.0.4</jaxb-runtime.version>
         <nv-i18n.version>1.29</nv-i18n.version>
-        <slf4j-api.version>2.0.9</slf4j-api.version>
+        <slf4j-api.version>2.0.10</slf4j-api.version>
         <micrometer-registry-prometheus.version>1.12.1</micrometer-registry-prometheus.version>
 
         <!-- Testavhengigheter -->
@@ -222,7 +222,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.11.0</version>
+                    <version>3.12.1</version>
                     <configuration>
                         <parameters>true</parameters>
                         <source>${java.version}</source>
