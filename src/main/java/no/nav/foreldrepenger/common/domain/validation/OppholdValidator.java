@@ -13,6 +13,7 @@ import jakarta.validation.ConstraintValidatorContext;
 import no.nav.foreldrepenger.common.domain.felles.medlemskap.Utenlandsopphold;
 import no.nav.foreldrepenger.common.domain.validation.annotations.Opphold;
 
+@Deprecated
 public class OppholdValidator implements ConstraintValidator<Opphold, List<Utenlandsopphold>> {
 
     private static final Logger LOG = LoggerFactory.getLogger(OppholdValidator.class);

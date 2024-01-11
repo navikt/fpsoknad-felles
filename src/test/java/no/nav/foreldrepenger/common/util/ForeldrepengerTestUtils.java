@@ -8,7 +8,7 @@ import static no.nav.foreldrepenger.common.domain.felles.DokumentType.I000062;
 import static no.nav.foreldrepenger.common.domain.felles.DokumentType.I000063;
 import static no.nav.foreldrepenger.common.domain.felles.DokumentType.I500002;
 import static no.nav.foreldrepenger.common.domain.felles.DokumentType.I500005;
-import static no.nav.foreldrepenger.common.domain.felles.TestUtils.medlemsskap;
+import static no.nav.foreldrepenger.common.domain.felles.TestUtils.opphold;
 import static no.nav.foreldrepenger.common.domain.felles.TestUtils.søker;
 import static no.nav.foreldrepenger.common.domain.felles.TestUtils.valgfrittVedlegg;
 import static no.nav.foreldrepenger.common.domain.felles.opptjening.Virksomhetstype.FISKE;
@@ -140,7 +140,8 @@ public class ForeldrepengerTestUtils {
         return new Svangerskapspenger(
                 LocalDate.now().plusMonths(1),
                 null,
-                medlemsskap(),
+                null,
+                opphold(),
                 opptjening(),
                 tilrettelegging(vedleggRefs)
         );
@@ -157,6 +158,7 @@ public class ForeldrepengerTestUtils {
                         null,
                         null,
                         fordeling(vedleggRefs(vedlegg)),
+                        null,
                         null
                 ),
                 null,
@@ -222,7 +224,8 @@ public class ForeldrepengerTestUtils {
                 Dekningsgrad.HUNDRE,
                 opptjening(vedleggRefs),
                 fordeling(vedleggRefs),
-                medlemsskap(utland)
+                null,
+                opphold(utland)
         );
     }
 

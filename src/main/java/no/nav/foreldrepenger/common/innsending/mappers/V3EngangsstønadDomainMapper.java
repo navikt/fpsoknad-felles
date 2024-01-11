@@ -76,7 +76,7 @@ public class V3EngangsstønadDomainMapper implements DomainMapper {
 
     private JAXBElement<no.nav.vedtak.felles.xml.soeknad.engangsstoenad.v3.Engangsstønad> engangsstønadFra(Engangsstønad es, List<Vedlegg> vedlegg) {
         var engangsstønad = new no.nav.vedtak.felles.xml.soeknad.engangsstoenad.v3.Engangsstønad();
-        engangsstønad.setMedlemskap(medlemsskapFra(es.medlemsskap(), es.relasjonTilBarn().relasjonsDato()));
+        engangsstønad.setMedlemskap(medlemsskapFra(es.medlemsskap(), es.utenlandsopphold(), es.relasjonTilBarn().relasjonsDato()));
         engangsstønad.setSoekersRelasjonTilBarnet(relasjonFra(es.relasjonTilBarn(), vedlegg));
         return ES_FACTORY_V3.createEngangsstønad(engangsstønad);
     }

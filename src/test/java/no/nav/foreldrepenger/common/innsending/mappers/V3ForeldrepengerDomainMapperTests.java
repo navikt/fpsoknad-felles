@@ -95,14 +95,7 @@ class V3ForeldrepengerDomainMapperTests {
         assertThat(fordeling.ønskerJustertUttakVedFødsel()).isTrue();
 
         // Medlemsskap
-        assertThat(foreldrepengerXMLO.getMedlemskap().getOppholdUtlandet())
-                .hasSize(
-                        foreldrepenger.medlemsskap().tidligereUtenlandsopphold().size() +
-                        foreldrepenger.medlemsskap().framtidigUtenlandsopphold().size()
-                );
+        assertThat(foreldrepengerXMLO.getMedlemskap().getOppholdUtlandet()).hasSize(foreldrepenger.utenlandsopphold().opphold().size());
         assertThat(foreldrepengerXMLO.getMedlemskap().isINorgeVedFoedselstidspunkt()).isTrue();
-        assertThat(foreldrepengerXMLO.getMedlemskap().isBoddINorgeSiste12Mnd()).isTrue();
-        assertThat(foreldrepengerXMLO.getMedlemskap().isBorINorgeNeste12Mnd()).isTrue();
-
     }
 }

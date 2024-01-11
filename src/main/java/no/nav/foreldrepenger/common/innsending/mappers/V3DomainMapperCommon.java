@@ -24,6 +24,7 @@ import no.nav.foreldrepenger.common.domain.Søker;
 import no.nav.foreldrepenger.common.domain.felles.InnsendingsType;
 import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
 import no.nav.foreldrepenger.common.domain.felles.medlemskap.Medlemsskap;
+import no.nav.foreldrepenger.common.domain.felles.medlemskap.OppholdIUtlandet;
 import no.nav.foreldrepenger.common.domain.felles.medlemskap.Utenlandsopphold;
 import no.nav.foreldrepenger.common.domain.felles.opptjening.AnnenOpptjeningType;
 import no.nav.foreldrepenger.common.domain.felles.opptjening.EgenNæring;
@@ -89,10 +90,24 @@ final class V3DomainMapperCommon {
         return opptjeningXml;
     }
 
-    static Medlemskap medlemsskapFra(Medlemsskap ms, LocalDate relasjonsDato) {
-        return Optional.ofNullable(ms)
-                .map(m -> create(m, relasjonsDato))
+    static Medlemskap medlemsskapFra(Medlemsskap ms, OppholdIUtlandet opphold, LocalDate relasjonsDato) {
+        if (opphold == null) {
+            LOG.info("Gammelt format på medlemsskap");
+            return Optional.ofNullable(ms)
+                    .map(m -> create(m, relasjonsDato))
+                    .orElse(null);
+        }
+        LOG.info("Nytt format på medlemsskap");
+        return Optional.of(opphold)
+                .map(o -> create(o, relasjonsDato))
                 .orElse(null);
+    }
+
+    private static Medlemskap create(OppholdIUtlandet opphold, LocalDate relasjonsDato) {
+        var medlemskap = new Medlemskap();
+        medlemskap.getOppholdUtlandet().addAll(oppholdUtlandetFra(opphold));
+        medlemskap.setINorgeVedFoedselstidspunkt(opphold.varINorge(relasjonsDato));
+        return medlemskap;
     }
 
     private static Medlemskap create(Medlemsskap ms, LocalDate relasjonsDato) {
@@ -112,6 +127,12 @@ final class V3DomainMapperCommon {
         return ms.framtidigUtenlandsopphold().isEmpty();
     }
 
+    private static List<OppholdUtlandet> oppholdUtlandetFra(OppholdIUtlandet oppholdIUtlandet) {
+        return safeStream(oppholdIUtlandet.opphold())
+                .map(V3DomainMapperCommon::utenlandOppholdFra)
+                .toList();
+    }
+
     private static List<OppholdUtlandet> oppholdUtlandetFra(Medlemsskap ms) {
         return safeStream(ms.utenlandsOpphold())
                 .map(V3DomainMapperCommon::utenlandOppholdFra)
@@ -120,7 +141,7 @@ final class V3DomainMapperCommon {
 
     private static OppholdUtlandet utenlandOppholdFra(Utenlandsopphold opphold) {
         return Optional.ofNullable(opphold)
-                .map(o -> tilUtenlandsOpphold(o))
+                .map(V3DomainMapperCommon::tilUtenlandsOpphold)
                 .orElse(null);
     }
 
