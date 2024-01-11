@@ -23,8 +23,6 @@ import no.nav.foreldrepenger.common.domain.BrukerRolle;
 import no.nav.foreldrepenger.common.domain.Søker;
 import no.nav.foreldrepenger.common.domain.felles.InnsendingsType;
 import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
-import no.nav.foreldrepenger.common.domain.felles.medlemskap.Medlemsskap;
-import no.nav.foreldrepenger.common.domain.felles.medlemskap.OppholdIUtlandet;
 import no.nav.foreldrepenger.common.domain.felles.medlemskap.Utenlandsopphold;
 import no.nav.foreldrepenger.common.domain.felles.opptjening.AnnenOpptjeningType;
 import no.nav.foreldrepenger.common.domain.felles.opptjening.EgenNæring;
@@ -90,62 +88,32 @@ final class V3DomainMapperCommon {
         return opptjeningXml;
     }
 
-    static Medlemskap medlemsskapFra(Medlemsskap ms, OppholdIUtlandet opphold, LocalDate relasjonsDato) {
-        if (opphold == null) {
-            LOG.info("Gammelt format på medlemsskap");
-            return Optional.ofNullable(ms)
-                    .map(m -> create(m, relasjonsDato))
-                    .orElse(null);
-        }
-        LOG.info("Nytt format på medlemsskap");
-        return Optional.of(opphold)
+    static Medlemskap medlemsskapFra(Utenlandsopphold opphold, LocalDate relasjonsDato) {
+        return Optional.ofNullable(opphold)
                 .map(o -> create(o, relasjonsDato))
                 .orElse(null);
     }
 
-    private static Medlemskap create(OppholdIUtlandet opphold, LocalDate relasjonsDato) {
+    private static Medlemskap create(Utenlandsopphold opphold, LocalDate relasjonsDato) {
         var medlemskap = new Medlemskap();
         medlemskap.getOppholdUtlandet().addAll(oppholdUtlandetFra(opphold));
         medlemskap.setINorgeVedFoedselstidspunkt(opphold.varINorge(relasjonsDato));
         return medlemskap;
     }
 
-    private static Medlemskap create(Medlemsskap ms, LocalDate relasjonsDato) {
-        var medlemskap = new Medlemskap();
-        medlemskap.getOppholdUtlandet().addAll(oppholdUtlandetFra(ms));
-        medlemskap.setINorgeVedFoedselstidspunkt(ms.varINorge(relasjonsDato));
-        medlemskap.setBoddINorgeSiste12Mnd(oppholdINorgeSiste12(ms));
-        medlemskap.setBorINorgeNeste12Mnd(oppholdINorgeNeste12(ms));
-        return medlemskap;
-    }
-
-    private static boolean oppholdINorgeSiste12(Medlemsskap ms) {
-        return ms.tidligereUtenlandsopphold().isEmpty();
-    }
-
-    private static boolean oppholdINorgeNeste12(Medlemsskap ms) {
-        return ms.framtidigUtenlandsopphold().isEmpty();
-    }
-
-    private static List<OppholdUtlandet> oppholdUtlandetFra(OppholdIUtlandet oppholdIUtlandet) {
-        return safeStream(oppholdIUtlandet.opphold())
+    private static List<OppholdUtlandet> oppholdUtlandetFra(Utenlandsopphold utenlandsopphold) {
+        return safeStream(utenlandsopphold.opphold())
                 .map(V3DomainMapperCommon::utenlandOppholdFra)
                 .toList();
     }
 
-    private static List<OppholdUtlandet> oppholdUtlandetFra(Medlemsskap ms) {
-        return safeStream(ms.utenlandsOpphold())
-                .map(V3DomainMapperCommon::utenlandOppholdFra)
-                .toList();
-    }
-
-    private static OppholdUtlandet utenlandOppholdFra(Utenlandsopphold opphold) {
+    private static OppholdUtlandet utenlandOppholdFra(Utenlandsopphold.Opphold opphold) {
         return Optional.ofNullable(opphold)
                 .map(V3DomainMapperCommon::tilUtenlandsOpphold)
                 .orElse(null);
     }
 
-    private static OppholdUtlandet tilUtenlandsOpphold(Utenlandsopphold o) {
+    private static OppholdUtlandet tilUtenlandsOpphold(Utenlandsopphold.Opphold o) {
         var oppholdUtlandet = new OppholdUtlandet();
         oppholdUtlandet.setPeriode(tilPeriode(o.fom(), o.tom()));
         oppholdUtlandet.setLand(landFra(o.land()));

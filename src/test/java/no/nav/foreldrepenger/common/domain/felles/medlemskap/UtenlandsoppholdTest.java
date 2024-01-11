@@ -11,11 +11,11 @@ import com.neovisionaries.i18n.CountryCode;
 
 import no.nav.foreldrepenger.common.domain.felles.LukketPeriode;
 
-class OppholdIUtlandetTest {
+class UtenlandsoppholdTest {
 
     @Test
     void oppholdForrige12MndSkalGiTrueMensNesteIkke() {
-        var oppholdIUtlandet = new OppholdIUtlandet(List.of(
+        var oppholdIUtlandet = new Utenlandsopphold(List.of(
                 utenlandsopphold(LocalDate.now().minusMonths(5), LocalDate.now().minusMonths(2)),
                 utenlandsopphold(LocalDate.now().minusMonths(15), LocalDate.now().minusMonths(9))
         ));
@@ -25,7 +25,7 @@ class OppholdIUtlandetTest {
 
     @Test
     void oppholdSomStarterIFortidOgEnderOppIFremtidSkalVæreOppholdIUtlandenNesteOgSiste12Mnd() {
-        var oppholdIUtlandet = new OppholdIUtlandet(List.of(
+        var oppholdIUtlandet = new Utenlandsopphold(List.of(
                 utenlandsopphold(LocalDate.now().minusMonths(5), LocalDate.now().plusMonths(5))
         ));
 
@@ -34,7 +34,7 @@ class OppholdIUtlandetTest {
 
     @Test
     void landVedDatoSkalVæreInklusiv() {
-        var oppholdIUtlandet = new OppholdIUtlandet(List.of(
+        var oppholdIUtlandet = new Utenlandsopphold(List.of(
                 utenlandsopphold(CountryCode.FI, LocalDate.now(), LocalDate.now().plusMonths(4)),
                 utenlandsopphold(CountryCode.XK, LocalDate.now().plusMonths(5), LocalDate.now().plusMonths(9))
         ));
@@ -48,18 +48,18 @@ class OppholdIUtlandetTest {
 
     @Test
     void hvisDatoIkkeMatcherOppholdsperioderIUtlandetReturnerNO() {
-        var oppholdIUtlandet = new OppholdIUtlandet(List.of(
+        var oppholdIUtlandet = new Utenlandsopphold(List.of(
                 utenlandsopphold(CountryCode.FI, LocalDate.now(), LocalDate.now().plusMonths(4)),
                 utenlandsopphold(CountryCode.XK, LocalDate.now().plusMonths(5), LocalDate.now().plusMonths(9))
         ));
 
         assertThat(oppholdIUtlandet.landVedDato(LocalDate.now().minusMonths(2))).isEqualByComparingTo(CountryCode.NO);
     }
-    public static Utenlandsopphold utenlandsopphold(LocalDate fom, LocalDate tom) {
+    public static Utenlandsopphold.Opphold utenlandsopphold(LocalDate fom, LocalDate tom) {
         return utenlandsopphold(CountryCode.AT, fom, tom);
     }
 
-    public static Utenlandsopphold utenlandsopphold(CountryCode land, LocalDate fom, LocalDate tom) {
-        return new Utenlandsopphold(land, new LukketPeriode(fom, tom));
+    public static Utenlandsopphold.Opphold utenlandsopphold(CountryCode land, LocalDate fom, LocalDate tom) {
+        return new Utenlandsopphold.Opphold(land, new LukketPeriode(fom, tom));
     }
 }

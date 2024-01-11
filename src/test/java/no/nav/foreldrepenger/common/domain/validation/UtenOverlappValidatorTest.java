@@ -13,7 +13,6 @@ import com.neovisionaries.i18n.CountryCode;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import no.nav.foreldrepenger.common.domain.felles.LukketPeriode;
-import no.nav.foreldrepenger.common.domain.felles.medlemskap.OppholdIUtlandet;
 import no.nav.foreldrepenger.common.domain.felles.medlemskap.Utenlandsopphold;
 
 class UtenOverlappValidatorTest {
@@ -27,7 +26,7 @@ class UtenOverlappValidatorTest {
 
     @Test
     void overlappendePerioderSkalFeile() {
-        var opphold = new OppholdIUtlandet(List.of(
+        var opphold = new Utenlandsopphold(List.of(
                 utenlandsopphold(LocalDate.now(), LocalDate.now().plusMonths(2)),
                 utenlandsopphold(LocalDate.now().plusMonths(1), LocalDate.now().plusMonths(4))
         ));
@@ -36,7 +35,7 @@ class UtenOverlappValidatorTest {
 
     @Test
     void toPerioderMedFomOgTomSattTilSammeDatoSkalIkkeGiValideringsfeilPgaOverlapp() {
-        var opphold = new OppholdIUtlandet(List.of(
+        var opphold = new Utenlandsopphold(List.of(
                 utenlandsopphold(LocalDate.now(), LocalDate.now().plusMonths(2)),
                 utenlandsopphold(LocalDate.now().plusMonths(2), LocalDate.now().plusMonths(4))
         ));
@@ -45,7 +44,7 @@ class UtenOverlappValidatorTest {
 
     @Test
     void toPerioderSomIkkeOverlapperSkalValiderstilOK() {
-        var opphold = new OppholdIUtlandet(List.of(
+        var opphold = new Utenlandsopphold(List.of(
                 utenlandsopphold(LocalDate.now(), LocalDate.now().plusMonths(2)),
                 utenlandsopphold(LocalDate.now().plusMonths(3), LocalDate.now().plusMonths(4))
         ));
@@ -71,12 +70,12 @@ class UtenOverlappValidatorTest {
     }
 
 
-    public static Utenlandsopphold utenlandsopphold(LocalDate fom, LocalDate tom) {
+    public static Utenlandsopphold.Opphold utenlandsopphold(LocalDate fom, LocalDate tom) {
         return utenlandsopphold(CountryCode.AT, fom, tom);
     }
 
-    public static Utenlandsopphold utenlandsopphold(CountryCode land, LocalDate fom, LocalDate tom) {
-        return new Utenlandsopphold(land, new LukketPeriode(fom, tom));
+    public static Utenlandsopphold.Opphold utenlandsopphold(CountryCode land, LocalDate fom, LocalDate tom) {
+        return new Utenlandsopphold.Opphold(land, new LukketPeriode(fom, tom));
     }
 
     private boolean validertOK(Object objekt) {

@@ -87,7 +87,7 @@ public class V1SvangerskapspengerDomainMapper implements DomainMapper {
         svangerskapspenger.setFødselsdato(ytelse.fødselsdato());
         svangerskapspenger.setOpptjening(opptjeningFra(ytelse.opptjening()));
         svangerskapspenger.setTilretteleggingListe(tilretteleggingFra(ytelse.tilrettelegging()));
-        svangerskapspenger.setMedlemskap(medlemsskapFra(ytelse.medlemsskap(), ytelse.utenlandsopphold(), relasjonsDatoFra(ytelse.termindato(), ytelse.fødselsdato())));
+        svangerskapspenger.setMedlemskap(medlemsskapFra(ytelse.utenlandsopphold(), relasjonsDatoFra(ytelse.termindato(), ytelse.fødselsdato())));
         return SVP_FACTORY_V1.createSvangerskapspenger(svangerskapspenger);
     }
 
