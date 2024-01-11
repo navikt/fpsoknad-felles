@@ -97,8 +97,8 @@ final class V3DomainMapperCommon {
                     .map(m -> create(m, relasjonsDato))
                     .orElse(null);
         }
-
-        return Optional.ofNullable(opphold)
+        LOG.info("Nytt format på medlemsskap");
+        return Optional.of(opphold)
                 .map(o -> create(o, relasjonsDato))
                 .orElse(null);
     }
@@ -133,7 +133,6 @@ final class V3DomainMapperCommon {
                 .toList();
     }
 
-
     private static List<OppholdUtlandet> oppholdUtlandetFra(Medlemsskap ms) {
         return safeStream(ms.utenlandsOpphold())
                 .map(V3DomainMapperCommon::utenlandOppholdFra)
@@ -142,7 +141,7 @@ final class V3DomainMapperCommon {
 
     private static OppholdUtlandet utenlandOppholdFra(Utenlandsopphold opphold) {
         return Optional.ofNullable(opphold)
-                .map(o -> tilUtenlandsOpphold(o))
+                .map(V3DomainMapperCommon::tilUtenlandsOpphold)
                 .orElse(null);
     }
 

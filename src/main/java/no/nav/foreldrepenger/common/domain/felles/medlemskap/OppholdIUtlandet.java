@@ -20,16 +20,6 @@ public record OppholdIUtlandet(@Valid @Size(max = 40) @UtenOverlapp List<@Valid 
         opphold = Optional.ofNullable(opphold).orElse(List.of());
     }
 
-    public boolean harOppholdSegIUtlandetSiste12() {
-        return opphold.stream()
-                .anyMatch(o -> o.fom().isBefore(LocalDate.now()) && o.tom().isAfter(LocalDate.now().minusMonths(12)));
-    }
-
-    public boolean harOppholdtSegIUtlandetNeste12() {
-        return opphold.stream()
-                .anyMatch(o -> o.tom().isAfter(LocalDate.now()) && o.tom().isBefore(LocalDate.now().plusMonths(12)));
-    }
-
     public boolean varINorge(LocalDate dato) {
         return NO.equals(landVedDato(dato));
     }

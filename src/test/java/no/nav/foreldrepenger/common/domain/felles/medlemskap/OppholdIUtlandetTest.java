@@ -20,8 +20,7 @@ class OppholdIUtlandetTest {
                 utenlandsopphold(LocalDate.now().minusMonths(15), LocalDate.now().minusMonths(9))
         ));
 
-        assertThat(oppholdIUtlandet.harOppholdSegIUtlandetSiste12()).isTrue();
-        assertThat(oppholdIUtlandet.harOppholdtSegIUtlandetNeste12()).isFalse();
+        assertThat(oppholdIUtlandet.landVedDato(LocalDate.now().minusMonths(1))).isEqualByComparingTo(CountryCode.NO);
     }
 
     @Test
@@ -30,31 +29,11 @@ class OppholdIUtlandetTest {
                 utenlandsopphold(LocalDate.now().minusMonths(5), LocalDate.now().plusMonths(5))
         ));
 
-        assertThat(oppholdIUtlandet.harOppholdSegIUtlandetSiste12()).isTrue();
-        assertThat(oppholdIUtlandet.harOppholdtSegIUtlandetNeste12()).isTrue();
+        assertThat(oppholdIUtlandet.landVedDato(LocalDate.now())).isEqualByComparingTo(CountryCode.AT);
     }
 
     @Test
-    void oppholdFør12MndSkalIkkeTelle() {
-        var oppholdIUtlandet = new OppholdIUtlandet(List.of(
-                utenlandsopphold(LocalDate.now().minusMonths(19), LocalDate.now().minusMonths(15))
-        ));
-
-        assertThat(oppholdIUtlandet.harOppholdSegIUtlandetSiste12()).isFalse();
-        assertThat(oppholdIUtlandet.harOppholdtSegIUtlandetNeste12()).isFalse();
-    }
-    @Test
-    void oppholdSomStarterEtter12MndSkalIkkeGiUtslag() {
-        var oppholdIUtlandet = new OppholdIUtlandet(List.of(
-                utenlandsopphold(LocalDate.now().plusMonths(15), LocalDate.now().plusMonths(18))
-        ));
-
-        assertThat(oppholdIUtlandet.harOppholdSegIUtlandetSiste12()).isFalse();
-        assertThat(oppholdIUtlandet.harOppholdtSegIUtlandetNeste12()).isFalse();
-    }
-
-    @Test
-    void hvisOppholdIUtlandVedDatoReturnerLandFraUtland() {
+    void landVedDatoSkalVæreInklusiv() {
         var oppholdIUtlandet = new OppholdIUtlandet(List.of(
                 utenlandsopphold(CountryCode.FI, LocalDate.now(), LocalDate.now().plusMonths(4)),
                 utenlandsopphold(CountryCode.XK, LocalDate.now().plusMonths(5), LocalDate.now().plusMonths(9))
@@ -64,6 +43,7 @@ class OppholdIUtlandetTest {
         assertThat(oppholdIUtlandet.landVedDato(LocalDate.now().plusMonths(2))).isEqualByComparingTo(CountryCode.FI);
         assertThat(oppholdIUtlandet.landVedDato(LocalDate.now().plusMonths(5))).isEqualByComparingTo(CountryCode.XK);
         assertThat(oppholdIUtlandet.landVedDato(LocalDate.now().plusMonths(9))).isEqualByComparingTo(CountryCode.XK);
+        assertThat(oppholdIUtlandet.landVedDato(LocalDate.now().plusMonths(10))).isEqualByComparingTo(CountryCode.NO);
     }
 
     @Test

@@ -17,7 +17,5 @@ public @interface UtenOverlapp {
 
     Class<?>[] payload() default {};
 
-    boolean fortid() default false;
-
     String message() default "Nei gi deg, da";
 }
