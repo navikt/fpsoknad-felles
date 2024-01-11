@@ -9,12 +9,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import jakarta.validation.Valid;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.neovisionaries.i18n.CountryCode;
 
+import jakarta.validation.Valid;
 import no.nav.foreldrepenger.common.domain.validation.annotations.Opphold;
 
 @JsonPropertyOrder({ "tidligereUtenlandsopphold", "framtidigUtenlandsopphold" })

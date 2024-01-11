@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,6 +26,7 @@ import no.nav.foreldrepenger.common.domain.felles.annenforelder.NorskForelder;
 import no.nav.foreldrepenger.common.domain.felles.annenforelder.UkjentForelder;
 import no.nav.foreldrepenger.common.domain.felles.annenforelder.UtenlandskForelder;
 import no.nav.foreldrepenger.common.domain.felles.medlemskap.Medlemsskap;
+import no.nav.foreldrepenger.common.domain.felles.medlemskap.OppholdIUtlandet;
 import no.nav.foreldrepenger.common.domain.felles.medlemskap.Utenlandsopphold;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.Adopsjon;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.FremtidigFødsel;
@@ -62,7 +64,7 @@ public class TestUtils {
     }
 
     public static Engangsstønad engangstønad(boolean utland, RelasjonTilBarn relasjon) {
-        return new Engangsstønad(medlemsskap(utland), relasjon);
+        return new Engangsstønad(medlemsskap(utland), opphold(utland), relasjon);
     }
 
     public static Utenlandsopphold utenlandsopphold() {
@@ -75,6 +77,33 @@ public class TestUtils {
 
     public static UtenlandskForelder utenlandskForelder() {
         return new UtenlandskForelder("123456", CountryCode.SE, "Far Farsen");
+    }
+
+    public static OppholdIUtlandet opphold() {
+        return oppholdBareINorge();
+    }
+
+    public static OppholdIUtlandet opphold(boolean utland) {
+        if (utland) {
+            return oppholdUtlandet();
+        }
+        return oppholdBareINorge();
+    }
+
+    public static OppholdIUtlandet oppholdBareINorge() {
+        return new OppholdIUtlandet(List.of());
+    }
+
+    public static OppholdIUtlandet oppholdUtlandet() {
+        var tidligereOpphold = List.of(
+                new Utenlandsopphold(CountryCode.AT, new LukketPeriode(LocalDate.now().minusYears(1), LocalDate.now().minusMonths(6).minusDays(1))),
+                new Utenlandsopphold(CountryCode.FI, new LukketPeriode(LocalDate.now().minusMonths(6), LocalDate.now()))
+        );
+        var fremtidigOpphold = List.of(
+                new Utenlandsopphold(CountryCode.GR, new LukketPeriode(LocalDate.now(), LocalDate.now().plusMonths(6))),
+                new Utenlandsopphold(CountryCode.DE, new LukketPeriode(LocalDate.now().plusYears(1), LocalDate.now().plusYears(1).plusMonths(6)))
+        );
+        return new OppholdIUtlandet(Stream.concat(tidligereOpphold.stream(), fremtidigOpphold.stream()).toList());
     }
 
     public static Medlemsskap medlemsskap() {

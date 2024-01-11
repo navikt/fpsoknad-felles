@@ -6,14 +6,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import jakarta.validation.Constraint;
+import no.nav.foreldrepenger.common.domain.validation.UtenOverlappValidator;
 
-import no.nav.foreldrepenger.common.domain.validation.OppholdValidator;
-
-@Deprecated
-@Constraint(validatedBy = OppholdValidator.class)
+@Constraint(validatedBy = UtenOverlappValidator.class)
 @Target({ ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Opphold {
+public @interface UtenOverlapp {
 
     Class<?>[] groups() default {};
 

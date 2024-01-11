@@ -85,7 +85,8 @@ class EngangsstønadSerializationTests extends SerializationTestBase {
 
     @Test
     void testMedlemsskapUtland() {
-        test(TestUtils.medlemsskap(false));
+        test(TestUtils.medlemsskap(true));
+        test(TestUtils.oppholdUtlandet());
     }
 
     @Test
