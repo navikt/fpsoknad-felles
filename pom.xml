@@ -37,8 +37,8 @@
         <jakarta.el.version>4.0.2</jakarta.el.version>
         <jaxb-runtime.version>4.0.4</jaxb-runtime.version>
         <nv-i18n.version>1.29</nv-i18n.version>
-        <slf4j-api.version>2.0.10</slf4j-api.version>
-        <micrometer-registry-prometheus.version>1.12.1</micrometer-registry-prometheus.version>
+        <slf4j-api.version>2.0.11</slf4j-api.version>
+        <micrometer-registry-prometheus.version>1.12.2</micrometer-registry-prometheus.version>
 
         <!-- Testavhengigheter -->
         <junit-bom.version>5.10.1</junit-bom.version>
@@ -234,7 +234,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>3.2.3</version>
+                    <version>3.2.5</version>
                     <configuration>
                         <!-- Må ha @{argLine} ellers blir properties satt av
                         -maven-plugin overskrevet -->
