@@ -1,16 +1,14 @@
 package no.nav.foreldrepenger.common.domain.engangsstønad;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import no.nav.foreldrepenger.common.domain.Ytelse;
-import no.nav.foreldrepenger.common.domain.felles.medlemskap.Medlemsskap;
-import no.nav.foreldrepenger.common.domain.felles.medlemskap.OppholdIUtlandet;
-import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.RelasjonTilBarn;
 
 import jakarta.validation.Valid;
+import no.nav.foreldrepenger.common.domain.Ytelse;
+import no.nav.foreldrepenger.common.domain.felles.medlemskap.Utenlandsopphold;
+import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.RelasjonTilBarn;
 
-@JsonPropertyOrder({ "medlemsskap", "relasjonTilBarn" })
-public record Engangsstønad(@Deprecated @Valid Medlemsskap medlemsskap,
-                            @Valid OppholdIUtlandet utenlandsopphold,
+@JsonPropertyOrder({ "utenlandsopphold", "relasjonTilBarn" })
+public record Engangsstønad(@Valid Utenlandsopphold utenlandsopphold,
                             @Valid RelasjonTilBarn relasjonTilBarn) implements Ytelse {
 
 }

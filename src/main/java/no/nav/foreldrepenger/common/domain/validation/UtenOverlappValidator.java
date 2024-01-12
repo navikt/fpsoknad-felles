@@ -10,16 +10,16 @@ import jakarta.validation.ConstraintValidatorContext;
 import no.nav.foreldrepenger.common.domain.felles.medlemskap.Utenlandsopphold;
 import no.nav.foreldrepenger.common.domain.validation.annotations.UtenOverlapp;
 
-public class UtenOverlappValidator implements ConstraintValidator<UtenOverlapp, List<Utenlandsopphold>> {
+public class UtenOverlappValidator implements ConstraintValidator<UtenOverlapp, List<Utenlandsopphold.Opphold>> {
     @Override
-    public boolean isValid(List<Utenlandsopphold> utenlandsopphold, ConstraintValidatorContext context) {
+    public boolean isValid(List<Utenlandsopphold.Opphold> utenlandsopphold, ConstraintValidatorContext context) {
         if (erOverlappendePerioder(utenlandsopphold, context)) {
             return false;
         }
         return true;
     }
 
-    private static boolean erOverlappendePerioder(List<Utenlandsopphold> utenlandsopphold, ConstraintValidatorContext context) {
+    private static boolean erOverlappendePerioder(List<Utenlandsopphold.Opphold> utenlandsopphold, ConstraintValidatorContext context) {
         var oppholdsperioderSomIkkeErValidert = new ArrayList<>(utenlandsopphold);
         while (!oppholdsperioderSomIkkeErValidert.isEmpty()) {
             var oppholdUnderValidering = oppholdsperioderSomIkkeErValidert.remove(0);
@@ -33,11 +33,11 @@ public class UtenOverlappValidator implements ConstraintValidator<UtenOverlapp, 
         return false;
     }
 
-    public static boolean erOverlappende(Utenlandsopphold førstePeriode, Utenlandsopphold annenPeriode) {
+    public static boolean erOverlappende(Utenlandsopphold.Opphold førstePeriode, Utenlandsopphold.Opphold annenPeriode) {
         return førstePeriode.tom().isAfter(annenPeriode.fom()) && annenPeriode.tom().isAfter(førstePeriode.fom());
     }
 
-    private static void errorMessageOverlap(ConstraintValidatorContext context, Utenlandsopphold periode1, Utenlandsopphold periode2) {
+    private static void errorMessageOverlap(ConstraintValidatorContext context, Utenlandsopphold.Opphold periode1, Utenlandsopphold.Opphold periode2) {
         var hibernateContext = context.unwrap(HibernateConstraintValidatorContext.class);
         hibernateContext
                 .addExpressionVariable("fra1", periode1.fom())

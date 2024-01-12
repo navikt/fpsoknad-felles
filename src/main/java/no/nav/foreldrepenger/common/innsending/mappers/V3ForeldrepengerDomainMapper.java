@@ -140,7 +140,7 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
     protected Foreldrepenger tilForeldrepenger(no.nav.foreldrepenger.common.domain.foreldrepenger.Foreldrepenger ytelse) {
         var foreldrepenger = new Foreldrepenger();
         foreldrepenger.setDekningsgrad(dekningsgradFra(ytelse.dekningsgrad()));
-        foreldrepenger.setMedlemskap(medlemsskapFra(ytelse.medlemsskap(), ytelse.utenlandsopphold(), ytelse.relasjonTilBarn().relasjonsDato()));
+        foreldrepenger.setMedlemskap(medlemsskapFra(ytelse.utenlandsopphold(), ytelse.relasjonTilBarn().relasjonsDato()));
         foreldrepenger.setOpptjening(opptjeningFra(ytelse.opptjening()));
         foreldrepenger.setFordeling(fordelingFra(ytelse.fordeling()));
         foreldrepenger.setRettigheter(rettigheterFra(ytelse.rettigheter(), erAnnenForelderUkjent(ytelse.annenForelder())));

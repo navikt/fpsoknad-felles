@@ -140,7 +140,6 @@ public class ForeldrepengerTestUtils {
         return new Svangerskapspenger(
                 LocalDate.now().plusMonths(1),
                 null,
-                null,
                 opphold(),
                 opptjening(),
                 tilrettelegging(vedleggRefs)
@@ -158,7 +157,6 @@ public class ForeldrepengerTestUtils {
                         null,
                         null,
                         fordeling(vedleggRefs(vedlegg)),
-                        null,
                         null
                 ),
                 null,
@@ -224,7 +222,6 @@ public class ForeldrepengerTestUtils {
                 Dekningsgrad.HUNDRE,
                 opptjening(vedleggRefs),
                 fordeling(vedleggRefs),
-                null,
                 opphold(utland)
         );
     }

@@ -3,7 +3,6 @@ package no.nav.foreldrepenger.common.domain.engangsstønad;
 import static no.nav.foreldrepenger.common.domain.felles.TestUtils.engangssøknad;
 import static no.nav.foreldrepenger.common.domain.felles.TestUtils.engangstønad;
 import static no.nav.foreldrepenger.common.domain.felles.TestUtils.fødsel;
-import static no.nav.foreldrepenger.common.domain.felles.TestUtils.medlemsskap;
 import static no.nav.foreldrepenger.common.domain.felles.TestUtils.norskForelder;
 import static no.nav.foreldrepenger.common.domain.felles.TestUtils.påkrevdVedlegg;
 import static no.nav.foreldrepenger.common.domain.felles.TestUtils.termin;
@@ -79,13 +78,7 @@ class EngangsstønadSerializationTests extends SerializationTestBase {
     }
 
     @Test
-    void testMedlemsskap() {
-        test(TestUtils.medlemsskap(false));
-    }
-
-    @Test
     void testMedlemsskapUtland() {
-        test(TestUtils.medlemsskap(true));
         test(TestUtils.oppholdUtlandet());
     }
 
@@ -107,16 +100,6 @@ class EngangsstønadSerializationTests extends SerializationTestBase {
     @Test
     void testFødsel() {
         test(fødsel(), false);
-    }
-
-    @Test
-    void testFremtidigOppholdNorge() {
-        test(medlemsskap(false), false);
-    }
-
-    @Test
-    void testFremtidigOppholdUtland() {
-        test(medlemsskap(true), false);
     }
 
     @Test

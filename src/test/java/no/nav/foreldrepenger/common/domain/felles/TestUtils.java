@@ -25,8 +25,6 @@ import no.nav.foreldrepenger.common.domain.felles.annenforelder.AnnenForelder;
 import no.nav.foreldrepenger.common.domain.felles.annenforelder.NorskForelder;
 import no.nav.foreldrepenger.common.domain.felles.annenforelder.UkjentForelder;
 import no.nav.foreldrepenger.common.domain.felles.annenforelder.UtenlandskForelder;
-import no.nav.foreldrepenger.common.domain.felles.medlemskap.Medlemsskap;
-import no.nav.foreldrepenger.common.domain.felles.medlemskap.OppholdIUtlandet;
 import no.nav.foreldrepenger.common.domain.felles.medlemskap.Utenlandsopphold;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.Adopsjon;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.FremtidigFødsel;
@@ -64,11 +62,11 @@ public class TestUtils {
     }
 
     public static Engangsstønad engangstønad(boolean utland, RelasjonTilBarn relasjon) {
-        return new Engangsstønad(medlemsskap(utland), opphold(utland), relasjon);
+        return new Engangsstønad(opphold(utland), relasjon);
     }
 
-    public static Utenlandsopphold utenlandsopphold() {
-        return new Utenlandsopphold(CountryCode.SE, varighet());
+    public static Utenlandsopphold.Opphold utenlandsopphold() {
+        return new Utenlandsopphold.Opphold(CountryCode.SE, varighet());
     }
 
     public static NorskForelder norskForelder() {
@@ -79,55 +77,31 @@ public class TestUtils {
         return new UtenlandskForelder("123456", CountryCode.SE, "Far Farsen");
     }
 
-    public static OppholdIUtlandet opphold() {
+    public static Utenlandsopphold opphold() {
         return oppholdBareINorge();
     }
 
-    public static OppholdIUtlandet opphold(boolean utland) {
+    public static Utenlandsopphold opphold(boolean utland) {
         if (utland) {
             return oppholdUtlandet();
         }
         return oppholdBareINorge();
     }
 
-    public static OppholdIUtlandet oppholdBareINorge() {
-        return new OppholdIUtlandet(List.of());
+    public static Utenlandsopphold oppholdBareINorge() {
+        return new Utenlandsopphold(List.of());
     }
 
-    public static OppholdIUtlandet oppholdUtlandet() {
+    public static Utenlandsopphold oppholdUtlandet() {
         var tidligereOpphold = List.of(
-                new Utenlandsopphold(CountryCode.AT, new LukketPeriode(LocalDate.now().minusYears(1), LocalDate.now().minusMonths(6).minusDays(1))),
-                new Utenlandsopphold(CountryCode.FI, new LukketPeriode(LocalDate.now().minusMonths(6), LocalDate.now()))
+                new Utenlandsopphold.Opphold(CountryCode.AT, new LukketPeriode(LocalDate.now().minusYears(1), LocalDate.now().minusMonths(6).minusDays(1))),
+                new Utenlandsopphold.Opphold(CountryCode.FI, new LukketPeriode(LocalDate.now().minusMonths(6), LocalDate.now()))
         );
         var fremtidigOpphold = List.of(
-                new Utenlandsopphold(CountryCode.GR, new LukketPeriode(LocalDate.now(), LocalDate.now().plusMonths(6))),
-                new Utenlandsopphold(CountryCode.DE, new LukketPeriode(LocalDate.now().plusYears(1), LocalDate.now().plusYears(1).plusMonths(6)))
+                new Utenlandsopphold.Opphold(CountryCode.GR, new LukketPeriode(LocalDate.now(), LocalDate.now().plusMonths(6))),
+                new Utenlandsopphold.Opphold(CountryCode.DE, new LukketPeriode(LocalDate.now().plusYears(1), LocalDate.now().plusYears(1).plusMonths(6)))
         );
-        return new OppholdIUtlandet(Stream.concat(tidligereOpphold.stream(), fremtidigOpphold.stream()).toList());
-    }
-
-    public static Medlemsskap medlemsskap() {
-        return medlemsskap(false);
-    }
-
-    public static Medlemsskap medlemsskap(boolean utland) {
-        if (utland) {
-            return new Medlemsskap(tidligereOppHoldIUtlandet(), framtidigOppHoldIUtlandet());
-        }
-        return new Medlemsskap(tidligereOppHoldINorge(), framtidigOppholdINorge());
-    }
-
-    static List<Utenlandsopphold> tidligereOppHoldIUtlandet() {
-        List<Utenlandsopphold> utenlandOpphold = new ArrayList<>();
-        utenlandOpphold.add(new Utenlandsopphold(CountryCode.AT,
-                new LukketPeriode(LocalDate.now().minusYears(1), LocalDate.now().minusMonths(6).minusDays(1))));
-        utenlandOpphold.add(new Utenlandsopphold(CountryCode.FI,
-                new LukketPeriode(LocalDate.now().minusMonths(6), LocalDate.now())));
-        return utenlandOpphold;
-    }
-
-    static List<Utenlandsopphold> tidligereOppHoldINorge() {
-        return emptyList();
+        return new Utenlandsopphold(Stream.concat(tidligereOpphold.stream(), fremtidigOpphold.stream()).toList());
     }
 
     public static Omsorgsovertakelse omsorgsovertakelse() {
@@ -173,16 +147,16 @@ public class TestUtils {
         );
     }
 
-    public static List<Utenlandsopphold> framtidigOppHoldIUtlandet() {
-        List<Utenlandsopphold> opphold = new ArrayList<>();
-        opphold.add(new Utenlandsopphold(CountryCode.GR,
+    public static List<Utenlandsopphold.Opphold> framtidigOppHoldIUtlandet() {
+        List<Utenlandsopphold.Opphold> opphold = new ArrayList<>();
+        opphold.add(new Utenlandsopphold.Opphold(CountryCode.GR,
                 new LukketPeriode(LocalDate.now(), LocalDate.now().plusMonths(6))));
-        opphold.add(new Utenlandsopphold(CountryCode.DE,
+        opphold.add(new Utenlandsopphold.Opphold(CountryCode.DE,
                 new LukketPeriode(LocalDate.now().plusYears(1), LocalDate.now().plusYears(1).plusMonths(6))));
         return opphold;
     }
 
-    public static List<Utenlandsopphold> framtidigOppholdINorge() {
+    public static List<Utenlandsopphold.Opphold> framtidigOppholdINorge() {
         return emptyList();
     }
 
