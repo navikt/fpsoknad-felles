@@ -43,7 +43,7 @@
         <!-- Testavhengigheter -->
         <junit-bom.version>5.10.1</junit-bom.version>
         <mockito-bom.version>5.8.0</mockito-bom.version>
-        <assertj-core.version>3.25.1</assertj-core.version>
+        <assertj-core.version>3.25.3</assertj-core.version>
         <logback-classic.version>1.4.14</logback-classic.version>
     </properties>
 
