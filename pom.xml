@@ -28,7 +28,7 @@
         <sonar.projectKey>navikt_fpsoknad-felles</sonar.projectKey>
 
 
-        <fp-kontrakter.version>9.0.2</fp-kontrakter.version>
+        <fp-kontrakter.version>9.1.2</fp-kontrakter.version>
         <token-support.version>3.1.5</token-support.version>
 
         <hibernate-validator.version>8.0.1.Final</hibernate-validator.version>
