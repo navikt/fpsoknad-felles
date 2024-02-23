@@ -6,8 +6,8 @@ import static java.util.Collections.singletonList;
 import static no.nav.foreldrepenger.common.domain.Orgnummer.MAGIC_ORG;
 import static no.nav.foreldrepenger.common.domain.felles.DokumentType.I000062;
 import static no.nav.foreldrepenger.common.domain.felles.DokumentType.I000063;
-import static no.nav.foreldrepenger.common.domain.felles.DokumentType.I500002;
-import static no.nav.foreldrepenger.common.domain.felles.DokumentType.I500005;
+import static no.nav.foreldrepenger.common.domain.felles.DokumentType.I000065;
+import static no.nav.foreldrepenger.common.domain.felles.DokumentType.I000108;
 import static no.nav.foreldrepenger.common.domain.felles.TestUtils.opphold;
 import static no.nav.foreldrepenger.common.domain.felles.TestUtils.søker;
 import static no.nav.foreldrepenger.common.domain.felles.TestUtils.valgfrittVedlegg;
@@ -89,8 +89,8 @@ public class ForeldrepengerTestUtils {
             valgfrittVedlegg(ID142, InnsendingsType.LASTET_OPP),
             valgfrittVedlegg(ID143, InnsendingsType.LASTET_OPP))
             .collect(Collectors.toList());
-    public static final ValgfrittVedlegg VEDLEGG1 = opplastetVedlegg(ID142, I500002);
-    public static final ValgfrittVedlegg VEDLEGG2 = opplastetVedlegg(ID143, I500005);
+    public static final ValgfrittVedlegg VEDLEGG1 = opplastetVedlegg(ID142, I000065);
+    public static final ValgfrittVedlegg VEDLEGG2 = opplastetVedlegg(ID143, I000108);
     public static final ValgfrittVedlegg VEDLEGG3 = opplastetVedlegg(ID144, I000062);
 
     private static final ValgfrittVedlegg IKKE_OPPLASTETV1 = ikkeOpplastet(ID142, I000063);
