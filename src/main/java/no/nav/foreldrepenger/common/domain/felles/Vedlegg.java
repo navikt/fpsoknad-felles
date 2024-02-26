@@ -53,7 +53,7 @@ public abstract class Vedlegg {
     @JsonIgnore
     public String getBeskrivelse() {
         return Optional.ofNullable(metadata.beskrivelse())
-                .orElse(getDokumentType().getBeskrivelse());
+                .orElse(getDokumentType().getTittel());
     }
 
     @JsonIgnore
