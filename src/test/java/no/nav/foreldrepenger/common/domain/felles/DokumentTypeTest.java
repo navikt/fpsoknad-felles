@@ -1,5 +1,6 @@
 package no.nav.foreldrepenger.common.domain.felles;
 
+import static no.nav.foreldrepenger.common.domain.felles.DokumentType.I000027;
 import static no.nav.foreldrepenger.common.domain.felles.DokumentType.I000050;
 import static no.nav.foreldrepenger.common.domain.felles.DokumentType.I000067;
 import static no.nav.foreldrepenger.common.domain.felles.DokumentType.I000119;
@@ -19,6 +20,7 @@ class DokumentTypeTest {
         assertThat(dokumentType.erEndringssøknad()).isFalse();
         assertThat(dokumentType.erInntektsmelding()).isFalse();
         assertThat(dokumentType.erUttalelseOmTilbakekreving()).isFalse();
+        assertThat(dokumentType.erKlage()).isFalse();
     }
 
     @Test
@@ -30,6 +32,7 @@ class DokumentTypeTest {
         assertThat(dokumentType.erEndringssøknad()).isFalse();
         assertThat(dokumentType.erInntektsmelding()).isFalse();
         assertThat(dokumentType.erUttalelseOmTilbakekreving()).isTrue();
+        assertThat(dokumentType.erKlage()).isFalse();
     }
 
     @Test
@@ -41,6 +44,7 @@ class DokumentTypeTest {
         assertThat(dokumentType.erEndringssøknad()).isTrue();
         assertThat(dokumentType.erInntektsmelding()).isFalse();
         assertThat(dokumentType.erUttalelseOmTilbakekreving()).isFalse();
+        assertThat(dokumentType.erKlage()).isFalse();
     }
 
     @Test
@@ -52,5 +56,20 @@ class DokumentTypeTest {
         assertThat(dokumentType.erEndringssøknad()).isFalse();
         assertThat(dokumentType.erInntektsmelding()).isTrue();
         assertThat(dokumentType.erUttalelseOmTilbakekreving()).isFalse();
+        assertThat(dokumentType.erKlage()).isFalse();
+    }
+
+    @Test
+    void fraTittelTilKlage() {
+        var dokumentType = DokumentType.fraTittel(I000027.getTittel());
+        var dokumentTypeKlage = DokumentType.fraTittel("Klage");
+        var dokumentTypeAnke = DokumentType.fraTittel("Anke");
+        assertThat(dokumentType).isEqualTo(dokumentTypeKlage).isEqualTo(dokumentTypeAnke).isEqualTo(I000027);
+        assertThat(dokumentType.erVedlegg()).isFalse();
+        assertThat(dokumentType.erFørstegangssøknad()).isFalse();
+        assertThat(dokumentType.erEndringssøknad()).isFalse();
+        assertThat(dokumentType.erInntektsmelding()).isFalse();
+        assertThat(dokumentType.erUttalelseOmTilbakekreving()).isFalse();
+        assertThat(dokumentType.erKlage()).isTrue();
     }
 }

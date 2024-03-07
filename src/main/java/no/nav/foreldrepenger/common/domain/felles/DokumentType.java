@@ -1,6 +1,8 @@
 package no.nav.foreldrepenger.common.domain.felles;
 
 import java.util.Arrays;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 public enum DokumentType {
@@ -14,6 +16,7 @@ public enum DokumentType {
 
     // Klage
     I000027("Klage/anke"),
+    I500027("Ettersendelse til klage/anke"),
 
     // Tilbakekreving
     I000114("Uttalelse tilbakekreving"),
@@ -135,6 +138,27 @@ public enum DokumentType {
 
     public static final Set<DokumentType> ENDRINGSSØKNAD_TYPER = Set.of(I000050);
 
+    public static final Set<DokumentType> KLAGE_TYPER = Set.of(I000027, I500027);
+
+    // Ulike titler er brukt i selvbetjening, fordel, sak og kodeverk
+    private static final Map<String, DokumentType> ALT_TITLER = Map.ofEntries(
+            Map.entry("Søknad om svangerskapspenger til selvstendig næringsdrivende og frilanser", I000001),
+            Map.entry("Søknad om svangerskapspenger for selvstendig", I000001),
+            Map.entry("Bekreftelse på avtalt ferie", I000036),
+            Map.entry("Mor er innlagt i helseinstitusjon", I000037),
+            Map.entry("Mor er i arbeid, tar utdanning eller er for syk til å ta seg av barnet", I000038),
+            Map.entry("Dokumentasjon av termindato, fødsel eller dato for omsorgsovertakelse", I000041),
+            Map.entry("Tjenestebevis", I000039),
+            Map.entry("Dokumentasjon av overtakelse av omsorg", I000042),
+            Map.entry("Dokumentasjon av etterlønn eller sluttvederlag", I000044),
+            Map.entry("Beskrivelse/Dokumentasjon funksjonsnedsettelse", I000045),
+            Map.entry("Mor deltar i kvalifiseringsprogrammet", I000051),
+            Map.entry("Mor tar utdanning på heltid", I000061),
+            Map.entry("Kopi av skattemelding", I000066),
+            Map.entry("Svar på varsel om tilbakebetaling", I000114),
+            Map.entry("Klage", I000027),
+            Map.entry("Anke", I000027),
+            Map.entry("Rettskjennelse fra Trygderetten", I000027));
 
     private final String tittel;
 
@@ -149,7 +173,8 @@ public enum DokumentType {
     public static DokumentType fraTittel(String tittel) {
         return Arrays.stream(values())
                 .filter(dokumentTypeId -> dokumentTypeId.getTittel().equals(tittel))
-                .findFirst()
+                .findAny()
+                .or(() -> Optional.ofNullable(ALT_TITLER.get(tittel)))
                 .orElseThrow();
     }
 
@@ -159,6 +184,10 @@ public enum DokumentType {
 
     public boolean erEndringssøknad() {
         return ENDRINGSSØKNAD_TYPER.contains(this);
+    }
+
+    public boolean erKlage() {
+        return KLAGE_TYPER.contains(this);
     }
 
     public boolean erVedlegg() {
