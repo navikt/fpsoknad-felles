@@ -14,6 +14,7 @@ public enum DokumentType {
 
     // Klage
     I000027("Klage/anke"),
+    I500027("Ettersendelse til klage/anke"),
 
     // Tilbakekreving
     I000114("Uttalelse tilbakekreving"),
@@ -120,7 +121,8 @@ public enum DokumentType {
             I000132,
             I000133,
             I000140,
-            I000141
+            I000141,
+            I500027
     );
 
     public static final Set<DokumentType> FØRSTEGANGSSØKNAD_TYPER = Set.of(
@@ -163,6 +165,10 @@ public enum DokumentType {
 
     public boolean erVedlegg() {
         return VEDLEGG_TYPER.contains(this);
+    }
+
+    public boolean erKlage() {
+        return I000027.equals(this);
     }
 
     public boolean erInntektsmelding() {
