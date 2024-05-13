@@ -38,11 +38,11 @@
         <jaxb-runtime.version>4.0.5</jaxb-runtime.version>
         <nv-i18n.version>1.29</nv-i18n.version>
         <slf4j-api.version>2.0.13</slf4j-api.version>
-        <micrometer-registry-prometheus.version>1.12.5</micrometer-registry-prometheus.version>
+        <micrometer-registry-prometheus.version>1.12.6</micrometer-registry-prometheus.version>
 
         <!-- Testavhengigheter -->
         <junit-bom.version>5.10.2</junit-bom.version>
-        <mockito-bom.version>5.11.0</mockito-bom.version>
+        <mockito-bom.version>5.12.0</mockito-bom.version>
         <assertj-core.version>3.25.3</assertj-core.version>
         <logback-classic.version>1.5.6</logback-classic.version>
     </properties>
