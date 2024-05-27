@@ -27,9 +27,7 @@
         <sonar.projectName>fp-soknad-felles</sonar.projectName>
         <sonar.projectKey>navikt_fpsoknad-felles</sonar.projectKey>
 
-
         <fp-kontrakter.version>9.1.12</fp-kontrakter.version>
-        <token-support.version>3.1.5</token-support.version>
 
         <hibernate-validator.version>8.0.1.Final</hibernate-validator.version>
         <jakarta.jakartaee-bom.version>10.0.0</jakarta.jakartaee-bom.version>
@@ -161,18 +159,6 @@
             <artifactId>micrometer-registry-prometheus</artifactId>
             <version>${micrometer-registry-prometheus.version}</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.security</groupId>
-            <artifactId>token-validation-core</artifactId>
-            <version>${token-support.version}</version>
-            <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.jetbrains.kotlin</groupId>
-                    <artifactId>kotlin-stdlib-jdk8</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.hibernate.validator</groupId>
