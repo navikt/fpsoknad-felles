@@ -27,7 +27,7 @@
         <sonar.projectName>fp-soknad-felles</sonar.projectName>
         <sonar.projectKey>navikt_fpsoknad-felles</sonar.projectKey>
 
-        <fp-kontrakter.version>9.1.15</fp-kontrakter.version>
+        <fp-kontrakter.version>9.1.19</fp-kontrakter.version>
 
         <hibernate-validator.version>8.0.1.Final</hibernate-validator.version>
         <jakarta.jakartaee-bom.version>10.0.0</jakarta.jakartaee-bom.version>
