@@ -35,7 +35,7 @@
         <jakarta.el.version>4.0.2</jakarta.el.version>
         <jaxb-runtime.version>4.0.5</jaxb-runtime.version>
         <nv-i18n.version>1.29</nv-i18n.version>
-        <slf4j-api.version>2.0.15</slf4j-api.version>
+        <slf4j-api.version>2.0.16</slf4j-api.version>
         <micrometer-registry-prometheus.version>1.13.2</micrometer-registry-prometheus.version>
 
         <!-- Testavhengigheter -->
