@@ -182,8 +182,10 @@ public class ForeldrepengerTestUtils {
     }
 
     private static List<Tilrettelegging> tilrettelegging(VedleggReferanse... vedleggRefs) {
-        return Stream.of(helTilrettelegging(vedleggRefs), helTilrettelegging(vedleggRefs),
-                        delvisTilrettelegging(vedleggRefs), ingenTilrettelegging(vedleggRefs))
+        return Stream.of(helTilrettelegging(vedleggRefs),
+                        helTilrettelegging(vedleggRefs),
+                        delvisTilrettelegging(vedleggRefs),
+                        ingenTilrettelegging(vedleggRefs))
                 .collect(Collectors.toList());
     }
 
