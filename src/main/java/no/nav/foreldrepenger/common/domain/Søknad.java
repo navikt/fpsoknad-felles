@@ -1,25 +1,26 @@
 package no.nav.foreldrepenger.common.domain;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import no.nav.foreldrepenger.common.domain.felles.PåkrevdVedlegg;
-import no.nav.foreldrepenger.common.domain.felles.ValgfrittVedlegg;
-import no.nav.foreldrepenger.common.domain.felles.Vedlegg;
-import no.nav.foreldrepenger.common.domain.foreldrepenger.Foreldrepenger;
-import org.hibernate.validator.constraints.Length;
+import static java.util.Collections.emptyList;
+import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
+import static no.nav.foreldrepenger.common.util.StreamUtil.safeStream;
 
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import static java.util.Collections.emptyList;
-import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
-import static no.nav.foreldrepenger.common.util.StreamUtil.safeStream;
+import org.hibernate.validator.constraints.Length;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import no.nav.foreldrepenger.common.domain.felles.PåkrevdVedlegg;
+import no.nav.foreldrepenger.common.domain.felles.ValgfrittVedlegg;
+import no.nav.foreldrepenger.common.domain.felles.Vedlegg;
 
 @JsonPropertyOrder({ "mottattdato", "søker", "ytelse", "begrunnelseForSenSøknad", "tilleggsopplysninger", "vedlegg" })
 public class Søknad {
@@ -80,21 +81,6 @@ public class Søknad {
                 .filter(ValgfrittVedlegg.class::isInstance)
                 .map(ValgfrittVedlegg.class::cast)
                 .toList();
-    }
-
-    @JsonIgnore
-    public LocalDate getFørsteUttaksdag() {
-        if (ytelse instanceof Foreldrepenger fp) {
-            return fp.fordeling().getFørsteUttaksdag();
-        }
-        return null;
-    }
-
-    @JsonIgnore
-    public LocalDate getFørsteInntektsmeldingDag() {
-        return Optional.ofNullable(getFørsteUttaksdag())
-                .map(d -> d.minusWeeks(4))
-                .orElse(null);
     }
 
     @Override

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.validation.Valid;
 import no.nav.foreldrepenger.common.domain.Ytelse;
@@ -22,5 +23,13 @@ public record Svangerskapspenger(LocalDate termindato,
     @JsonCreator
     public Svangerskapspenger {
         tilrettelegging = Optional.ofNullable(tilrettelegging).orElse(emptyList());
+    }
+
+    @JsonIgnore
+    public LocalDate getTidligstDatoForTilrettelegging() {
+        return tilrettelegging.stream()
+                .map(Tilrettelegging::getBehovForTilretteleggingFom)
+                .min(LocalDate::compareTo)
+                .orElse(Optional.ofNullable(fødselsdato).orElse(termindato));
     }
 }
