@@ -19,7 +19,8 @@ public record Svangerskapspenger(LocalDate termindato,
                                  /*@Nullable*/ LocalDate fødselsdato,
                                  @Valid Utenlandsopphold utenlandsopphold,
                                  @Valid Opptjening opptjening,
-                                 List<@Valid Tilrettelegging> tilrettelegging) implements Ytelse {
+                                 List<@Valid Tilrettelegging> tilrettelegging,
+                                 List<@Valid AvtaltFerie> avtaltFerie) implements Ytelse {
     @JsonCreator
     public Svangerskapspenger {
         tilrettelegging = Optional.ofNullable(tilrettelegging).orElse(emptyList());

@@ -33,7 +33,7 @@ class SøknadValidatorTest {
         var svp = svp();
         assertThat(svp.getYtelse()).isInstanceOf(Svangerskapspenger.class);
         assertThat(((Svangerskapspenger) svp.getYtelse()).fødselsdato()).isNull();
-        assertThat(validator.validate(svp())).isEmpty();
+        assertThat(validator.validate(svp)).isEmpty();
     }
 
 }

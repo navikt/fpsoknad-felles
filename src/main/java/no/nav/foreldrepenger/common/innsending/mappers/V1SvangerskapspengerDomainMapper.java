@@ -28,6 +28,9 @@ import no.nav.foreldrepenger.common.error.UnexpectedInputException;
 import no.nav.foreldrepenger.common.innsending.SøknadEgenskap;
 import no.nav.foreldrepenger.common.innsending.mappers.jaxb.SVPV1JAXBUtil;
 import no.nav.vedtak.felles.xml.soeknad.svangerskapspenger.v1.Arbeidsforhold;
+import no.nav.vedtak.felles.xml.soeknad.svangerskapspenger.v1.Arbeidsgiver;
+import no.nav.vedtak.felles.xml.soeknad.svangerskapspenger.v1.AvtaltFerie;
+import no.nav.vedtak.felles.xml.soeknad.svangerskapspenger.v1.AvtaltFerieListe;
 import no.nav.vedtak.felles.xml.soeknad.svangerskapspenger.v1.DelvisTilrettelegging;
 import no.nav.vedtak.felles.xml.soeknad.svangerskapspenger.v1.Frilanser;
 import no.nav.vedtak.felles.xml.soeknad.svangerskapspenger.v1.HelTilrettelegging;
@@ -86,9 +89,52 @@ public class V1SvangerskapspengerDomainMapper implements DomainMapper {
         svangerskapspenger.setTermindato(ytelse.termindato());
         svangerskapspenger.setFødselsdato(ytelse.fødselsdato());
         svangerskapspenger.setOpptjening(opptjeningFra(ytelse.opptjening()));
+        svangerskapspenger.setAvtaltFerieListe(opprettAvtaltFerieListe(ytelse));
         svangerskapspenger.setTilretteleggingListe(tilretteleggingFra(ytelse.tilrettelegging()));
         svangerskapspenger.setMedlemskap(medlemsskapFra(ytelse.utenlandsopphold(), relasjonsDatoFra(ytelse.termindato(), ytelse.fødselsdato())));
         return SVP_FACTORY_V1.createSvangerskapspenger(svangerskapspenger);
+    }
+
+    public static void main(String[] args) {
+        var soeknad = new Svangerskapspenger();
+        var avtaltFerieListe = new AvtaltFerieListe();
+        avtaltFerieListe.getAvtaltFerie().addAll(List.of());
+        soeknad.setAvtaltFerieListe(avtaltFerieListe);
+        System.out.println(soeknad);
+    }
+
+    private static AvtaltFerieListe opprettAvtaltFerieListe(no.nav.foreldrepenger.common.domain.svangerskapspenger.Svangerskapspenger ytelse) {
+        var mappetFerieListe = safeStream(ytelse.avtaltFerie())
+                .map(af -> {
+                    var avtaltFerie = new AvtaltFerie();
+                    Arbeidsgiver arbeidsgiver = mapArbeidsgiver(af);
+                    avtaltFerie.setArbeidsgiver(arbeidsgiver);
+                    avtaltFerie.setAvtaltFerieTom(af.ferieFom());
+                    avtaltFerie.setAvtaltFerieTom(af.ferieTom());
+                    return avtaltFerie;
+                }).toList();
+        var avtaltFerieListe = new AvtaltFerieListe();
+        avtaltFerieListe.getAvtaltFerie().addAll(mappetFerieListe);
+        return avtaltFerieListe;
+    }
+
+    private static Arbeidsgiver mapArbeidsgiver(no.nav.foreldrepenger.common.domain.svangerskapspenger.AvtaltFerie af) {
+        return switch (af.arbeidsforhold()) {
+            case no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.Virksomhet(var orgnr) -> {
+                var virksomhetXml = new Virksomhet();
+                virksomhetXml.setIdentifikator(orgnr.value());
+                yield virksomhetXml;
+            }
+            case no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.PrivatArbeidsgiver(var fnr) -> {
+                var privatArbeidsgiverXml = new PrivatArbeidsgiver();
+                privatArbeidsgiverXml.setIdentifikator(fnr.value());
+                yield privatArbeidsgiverXml;
+            }
+            case no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.SelvstendigNæringsdrivende ignored ->
+                    throw new IllegalStateException("Oppgitt ferie er ikke støttet for selvstendig næringsdrivende eller frilansere");
+            case no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.Frilanser frilanserIgnored ->
+                    throw new IllegalStateException("Oppgitt ferie er ikke støttet for selvstendig næringsdrivende eller frilansere");
+        };
     }
 
     private static TilretteleggingListe tilretteleggingFra(List<no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.Tilrettelegging> tilrettelegginger) {

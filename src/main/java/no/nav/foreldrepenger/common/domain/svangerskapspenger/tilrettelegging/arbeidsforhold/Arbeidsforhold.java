@@ -13,5 +13,5 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         @JsonSubTypes.Type(value = SelvstendigNæringsdrivende.class, name = "selvstendig"),
         @JsonSubTypes.Type(value = Frilanser.class, name = "frilanser")
 })
-public interface Arbeidsforhold {
+public sealed interface Arbeidsforhold permits Frilanser, PrivatArbeidsgiver, SelvstendigNæringsdrivende, Virksomhet {
 }
