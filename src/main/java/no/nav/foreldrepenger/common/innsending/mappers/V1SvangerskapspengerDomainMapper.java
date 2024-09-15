@@ -78,13 +78,16 @@ public class V1SvangerskapspengerDomainMapper implements DomainMapper {
 
     private OmYtelse ytelseFra(Søknad søknad) {
         var ytelse = (no.nav.foreldrepenger.common.domain.svangerskapspenger.Svangerskapspenger) søknad.getYtelse();
-
         var omYtelse = new OmYtelse();
         omYtelse.getAny().add(jaxb.marshalToElement(svangerskapspengerFra(ytelse)));
         return omYtelse;
     }
 
     private static JAXBElement<Svangerskapspenger> svangerskapspengerFra(no.nav.foreldrepenger.common.domain.svangerskapspenger.Svangerskapspenger ytelse) {
+        return SVP_FACTORY_V1.createSvangerskapspenger(tilSvangerskapspenger(ytelse));
+    }
+
+    protected static Svangerskapspenger tilSvangerskapspenger(no.nav.foreldrepenger.common.domain.svangerskapspenger.Svangerskapspenger ytelse) {
         var svangerskapspenger = new Svangerskapspenger();
         svangerskapspenger.setTermindato(ytelse.termindato());
         svangerskapspenger.setFødselsdato(ytelse.fødselsdato());
@@ -92,15 +95,7 @@ public class V1SvangerskapspengerDomainMapper implements DomainMapper {
         svangerskapspenger.setAvtaltFerieListe(opprettAvtaltFerieListe(ytelse));
         svangerskapspenger.setTilretteleggingListe(tilretteleggingFra(ytelse.tilrettelegging()));
         svangerskapspenger.setMedlemskap(medlemsskapFra(ytelse.utenlandsopphold(), relasjonsDatoFra(ytelse.termindato(), ytelse.fødselsdato())));
-        return SVP_FACTORY_V1.createSvangerskapspenger(svangerskapspenger);
-    }
-
-    public static void main(String[] args) {
-        var soeknad = new Svangerskapspenger();
-        var avtaltFerieListe = new AvtaltFerieListe();
-        avtaltFerieListe.getAvtaltFerie().addAll(List.of());
-        soeknad.setAvtaltFerieListe(avtaltFerieListe);
-        System.out.println(soeknad);
+        return svangerskapspenger;
     }
 
     private static AvtaltFerieListe opprettAvtaltFerieListe(no.nav.foreldrepenger.common.domain.svangerskapspenger.Svangerskapspenger ytelse) {
@@ -109,7 +104,7 @@ public class V1SvangerskapspengerDomainMapper implements DomainMapper {
                     var avtaltFerie = new AvtaltFerie();
                     Arbeidsgiver arbeidsgiver = mapArbeidsgiver(af);
                     avtaltFerie.setArbeidsgiver(arbeidsgiver);
-                    avtaltFerie.setAvtaltFerieTom(af.ferieFom());
+                    avtaltFerie.setAvtaltFerieFom(af.ferieFom());
                     avtaltFerie.setAvtaltFerieTom(af.ferieTom());
                     return avtaltFerie;
                 }).toList();
