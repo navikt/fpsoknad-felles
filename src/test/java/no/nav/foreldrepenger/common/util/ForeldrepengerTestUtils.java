@@ -68,6 +68,7 @@ import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.Stønadskont
 import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.UtsettelsesPeriode;
 import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.UtsettelsesÅrsak;
 import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.UttaksPeriode;
+import no.nav.foreldrepenger.common.domain.svangerskapspenger.AvtaltFerie;
 import no.nav.foreldrepenger.common.domain.svangerskapspenger.Svangerskapspenger;
 import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.DelvisTilrettelegging;
 import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.HelTilrettelegging;
@@ -137,12 +138,14 @@ public class ForeldrepengerTestUtils {
     }
 
     public static Svangerskapspenger svangerskapspenger(VedleggReferanse... vedleggRefs) {
+        var ferie = new AvtaltFerie(virksomhet(), LocalDate.now().plusDays(10), LocalDate.now().plusDays(20));
         return new Svangerskapspenger(
                 LocalDate.now().plusMonths(1),
                 null,
                 opphold(),
                 opptjening(),
-                tilrettelegging(vedleggRefs)
+                tilrettelegging(vedleggRefs),
+                List.of(ferie)
         );
     }
 

@@ -26,7 +26,8 @@ class SvangerskapspengerTest {
                 null,
                 opphold(),
                 null,
-                tilrettelegging
+                tilrettelegging,
+                List.of()
         );
         assertThat(svp.getTidligstDatoForTilrettelegging()).isEqualTo(tidligstDato);
     }
