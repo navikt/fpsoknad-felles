@@ -1,7 +1,18 @@
 package no.nav.foreldrepenger.common.innsending.mappers;
 
+import static no.nav.foreldrepenger.common.domain.felles.TestUtils.opphold;
 import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.NORSK_FORELDER_FNR;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.VEDLEGG1;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.delTilrettelegging;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.helTilrettelegging;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.ingenTilrettelegging;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.opptjening;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.vedleggRefs;
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.virksomhet;
 import static org.assertj.core.api.Assertions.assertThat;
+
+import java.time.LocalDate;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
@@ -9,6 +20,9 @@ import no.nav.foreldrepenger.common.domain.AktørId;
 import no.nav.foreldrepenger.common.domain.felles.ValgfrittVedlegg;
 import no.nav.foreldrepenger.common.domain.felles.annenforelder.NorskForelder;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.FremtidigFødsel;
+import no.nav.foreldrepenger.common.domain.foreldrepenger.Foreldrepenger;
+import no.nav.foreldrepenger.common.domain.svangerskapspenger.Svangerskapspenger;
+import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilretteleggingsbehov.Tilretteleggingbehov;
 import no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils;
 import no.nav.vedtak.felles.xml.soeknad.felles.v3.AnnenForelderMedNorskIdent;
 import no.nav.vedtak.felles.xml.soeknad.felles.v3.Termin;
@@ -39,7 +53,7 @@ class V3ForeldrepengerDomainMapperTests {
         assertThat(søknadXML.getPaakrevdeVedlegg()).isEmpty();
 
         // Foreldrepenger ytelse
-        var foreldrepenger = (no.nav.foreldrepenger.common.domain.foreldrepenger.Foreldrepenger) søknad.getYtelse();
+        var foreldrepenger = (Foreldrepenger) søknad.getYtelse();
         var foreldrepengerXMLO = mapper.tilForeldrepenger(foreldrepenger);
 
         var rettigheterJSON = foreldrepenger.rettigheter();
@@ -97,5 +111,37 @@ class V3ForeldrepengerDomainMapperTests {
         // Medlemsskap
         assertThat(foreldrepengerXMLO.getMedlemskap().getOppholdUtlandet()).hasSize(foreldrepenger.utenlandsopphold().opphold().size());
         assertThat(foreldrepengerXMLO.getMedlemskap().isINorgeVedFoedselstidspunkt()).isTrue();
+    }
+
+    @Test
+    void svpMappingGammelTilrettelegging() {
+        var svp = ((Svangerskapspenger) ForeldrepengerTestUtils.svp().getYtelse());
+        var svpXml = V1SvangerskapspengerDomainMapper.tilSvangerskapspenger(svp);
+        assertThat(svpXml.getTilretteleggingListe().getTilrettelegging()).hasSize(3);
+    }
+
+    @Test
+    void svpMappingTilretteleggingbehov() {
+        var tilretteleggingbehov = new Tilretteleggingbehov(
+                virksomhet(),
+                LocalDate.now().minusMonths(3),
+                List.of(helTilrettelegging(), delTilrettelegging(), ingenTilrettelegging()),
+                List.of(vedleggRefs(VEDLEGG1))
+        );
+        var svp = new Svangerskapspenger(
+                LocalDate.now().plusMonths(1),
+                null,
+                opphold(),
+                opptjening(),
+                null,
+                List.of(tilretteleggingbehov),
+                List.of()
+        );
+
+        var svpXml = V1SvangerskapspengerDomainMapper.tilSvangerskapspenger(svp);
+        assertThat(svpXml.getTilretteleggingListe().getTilrettelegging()).hasSize(1);
+        assertThat(svpXml.getTilretteleggingListe().getTilrettelegging().get(0).getIngenTilrettelegging()).hasSize(1);
+        assertThat(svpXml.getTilretteleggingListe().getTilrettelegging().get(0).getDelvisTilrettelegging()).hasSize(1);
+        assertThat(svpXml.getTilretteleggingListe().getTilrettelegging().get(0).getHelTilrettelegging()).hasSize(1);
     }
 }
