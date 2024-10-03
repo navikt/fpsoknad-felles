@@ -1,42 +1,50 @@
 package no.nav.foreldrepenger.common.domain.validation;
 
-import static no.nav.foreldrepenger.common.domain.Orgnummer.MAGIC;
-
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-
 import no.nav.foreldrepenger.common.domain.validation.annotations.Orgnr;
 
 public class OrgnrValidator implements ConstraintValidator<Orgnr, String> {
 
     @Override
     public boolean isValid(String orgnr, ConstraintValidatorContext context) {
-        if (orgnr == null) {
-            return true;
-        }
-
-        if (orgnr.length() != 9) {
-            return false;
-        }
-
-        if (orgnr.equals(MAGIC)) {
-            return true;
-        }
-        if (!(orgnr.startsWith("8") || orgnr.startsWith("9"))) {
-            return false;
-        }
-
-        int value = mod11OfNumberWithControlDigit(orgnr.substring(0, 8));
-        return orgnr.charAt(8) - 48 == value;
+        return erGyldig(orgnr);
     }
 
-    private static int mod11OfNumberWithControlDigit(String orgnr) {
-        int[] weights = new int[] { 3, 2, 7, 6, 5, 4, 3, 2 };
-        int sumForMod = 0;
-        for (int i = 0; i < orgnr.length(); i++) {
-            sumForMod += (orgnr.charAt(i) - 48) * weights[i];
+    // Hente fra OrganisasjonsNummerValidator i fpsak
+    public static boolean erGyldig(String orgnummer) {
+        // Skal inneholde 9 siffer og kun tall
+        if (orgnummer == null || orgnummer.length() != 9) {
+            return false;
         }
-        int result = 11 - sumForMod % 11;
-        return result == 11 ? 0 : result;
+
+        var sisteSiffer = Character.getNumericValue(orgnummer.charAt(orgnummer.length() - 1));
+
+        return getKontrollSiffer(orgnummer) == sisteSiffer;
+    }
+
+    private static int getKontrollSiffer(String number) {
+        var lastIndex = number.length() - 1;
+        var sum = 0;
+
+        for (var i = 0; i < lastIndex; i++) {
+            sum += Character.getNumericValue(number.charAt(i)) * getVektTall(i);
+        }
+
+        var rest = sum % 11;
+
+        return getKontrollSifferFraRest(rest);
+    }
+
+    private static int getVektTall(int i) {
+        var vekttall = new int[]{3, 2, 7, 6, 5, 4, 3, 2};
+        return vekttall[i];
+    }
+
+    private static int getKontrollSifferFraRest(int rest) {
+        if (rest == 0) {
+            return 0;
+        }
+        return 11 - rest;
     }
 }

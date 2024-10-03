@@ -6,12 +6,12 @@ import static no.nav.foreldrepenger.common.util.StringUtil.mask;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import no.nav.foreldrepenger.common.domain.validation.annotations.Orgnr;
 
-public record Orgnummer(@JsonValue @Pattern(regexp = FRITEKST) @Orgnr String value) implements ArbeidsgiverIdentifikator {
-    public static final String MAGIC = "342352362";
-    public static final Orgnummer MAGIC_ORG = new Orgnummer(MAGIC);
+public record Orgnummer(@JsonValue @Pattern(regexp = FRITEKST) @NotNull @Orgnr String value) implements ArbeidsgiverIdentifikator {
+    public static final Orgnummer MAGIC_ORG = new Orgnummer("889640782");
 
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
     public Orgnummer { // NOSONAR

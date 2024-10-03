@@ -3,12 +3,11 @@ package no.nav.foreldrepenger.common.domain.validation;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
 import no.nav.foreldrepenger.common.domain.Orgnummer;
 
 class OrgnrValidatorTest {
@@ -28,7 +27,7 @@ class OrgnrValidatorTest {
 
     @Test
     void testOKbutWrongFirstDigit() {
-        assertFalse(validator.validate(new Orgnummer("123456785")).isEmpty());
+        assertTrue(validator.validate(new Orgnummer("123456785")).isEmpty());
     }
 
     @Test
@@ -36,10 +35,6 @@ class OrgnrValidatorTest {
         assertTrue(validator.validate(new Orgnummer("999999999")).isEmpty());
     }
 
-    @Test
-    void testNull() {
-        assertTrue(validator.validate(new Orgnummer(null)).isEmpty());
-    }
 
     @Test
     void testLength() {
