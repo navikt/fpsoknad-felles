@@ -224,11 +224,11 @@ public class ForeldrepengerTestUtils {
         return new Virksomhet(MAGIC_ORG);
     }
 
-    private static Arbeidsforhold privat() {
+    public static Arbeidsforhold privat() {
         return new PrivatArbeidsgiver(NORSK_FORELDER_FNR);
     }
 
-    private static Arbeidsforhold frilanser() {
+    public static Arbeidsforhold frilanser() {
         return new Frilanser("risiko", "tiltak");
     }
 
