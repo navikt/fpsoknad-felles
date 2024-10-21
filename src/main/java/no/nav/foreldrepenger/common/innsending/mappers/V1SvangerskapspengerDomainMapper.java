@@ -103,6 +103,7 @@ public class V1SvangerskapspengerDomainMapper implements DomainMapper {
             LOG.info("Mottok tilrettelegging på nytt format!");
             svangerskapspenger.setTilretteleggingListe(tilretteleggingListeFra(ytelse.tilretteleggingbehov()));
         } else {
+            LOG.info("Mottok tilrettelegging på gammelt format!");
             svangerskapspenger.setTilretteleggingListe(tilretteleggingFra(ytelse.tilrettelegging()));
         }
         svangerskapspenger.setMedlemskap(medlemsskapFra(ytelse.utenlandsopphold(), relasjonsDatoFra(ytelse.termindato(), ytelse.fødselsdato())));
@@ -159,11 +160,11 @@ public class V1SvangerskapspengerDomainMapper implements DomainMapper {
         tilrettelegging.getVedlegg().addAll(tilretteleggingVedleggFraIDs(tilretteleggingbehov.vedlegg()));
 
         for (var t : tilretteleggingbehov.tilrettelegginger()) {
-            if (t instanceof Tilretteleggingbehov.HelTilrettelegging hel) {
+            if (t instanceof Tilretteleggingbehov.Tilrettelegging.Hel hel) {
                 tilrettelegging.getHelTilrettelegging().add(tilHelTilrettelegging(hel));
-            } else if (t instanceof Tilretteleggingbehov.DelvisTilrettelegging del) {
+            } else if (t instanceof Tilretteleggingbehov.Tilrettelegging.Delvis del) {
                 tilrettelegging.getDelvisTilrettelegging().add(tilDelTilrettelegging(del));
-            } else if (t instanceof Tilretteleggingbehov.IngenTilrettelegging ingen) {
+            } else if (t instanceof Tilretteleggingbehov.Tilrettelegging.Ingen ingen) {
                 tilrettelegging.getIngenTilrettelegging().add(tilIngenTilrettelegging(ingen));
             } else {
                 throw new UnexpectedInputException("Ukjent tilrettelegging %s", tilrettelegging.getClass().getSimpleName());
@@ -172,22 +173,22 @@ public class V1SvangerskapspengerDomainMapper implements DomainMapper {
         return tilrettelegging;
     }
 
-    private static IngenTilrettelegging tilIngenTilrettelegging(Tilretteleggingbehov.IngenTilrettelegging ingen) {
+    private static IngenTilrettelegging tilIngenTilrettelegging(Tilretteleggingbehov.Tilrettelegging.Ingen ingen) {
         var ingenTilrettelegging = new IngenTilrettelegging();
-        ingenTilrettelegging.setSlutteArbeidFom(ingen.slutteArbeidFom());
+        ingenTilrettelegging.setSlutteArbeidFom(ingen.fom());
         return ingenTilrettelegging;
     }
 
-    private static DelvisTilrettelegging tilDelTilrettelegging(Tilretteleggingbehov.DelvisTilrettelegging del) {
+    private static DelvisTilrettelegging tilDelTilrettelegging(Tilretteleggingbehov.Tilrettelegging.Delvis del) {
         var delvisTilrettelegging = new DelvisTilrettelegging();
-        delvisTilrettelegging.setTilrettelagtArbeidFom(del.tilrettelagtArbeidFom());
+        delvisTilrettelegging.setTilrettelagtArbeidFom(del.fom());
         delvisTilrettelegging.setStillingsprosent(BigDecimal.valueOf(del.stillingsprosent()));
         return delvisTilrettelegging;
     }
 
-    private static HelTilrettelegging tilHelTilrettelegging(Tilretteleggingbehov.HelTilrettelegging hel) {
+    private static HelTilrettelegging tilHelTilrettelegging(Tilretteleggingbehov.Tilrettelegging.Hel hel) {
         var helTilrettelegging = new HelTilrettelegging();
-        helTilrettelegging.setTilrettelagtArbeidFom(hel.tilrettelagtArbeidFom());
+        helTilrettelegging.setTilrettelagtArbeidFom(hel.fom());
         return helTilrettelegging;
     }
 

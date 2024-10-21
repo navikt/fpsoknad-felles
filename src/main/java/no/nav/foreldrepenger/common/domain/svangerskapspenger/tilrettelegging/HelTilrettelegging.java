@@ -1,12 +1,12 @@
 package no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging;
 
-import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
-import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.Arbeidsforhold;
-
-import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
+
+import jakarta.validation.constraints.NotNull;
+import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
+import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.Arbeidsforhold;
 
 public final class HelTilrettelegging extends Tilrettelegging {
 

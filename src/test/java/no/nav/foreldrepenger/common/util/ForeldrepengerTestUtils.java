@@ -200,15 +200,15 @@ public class ForeldrepengerTestUtils {
     }
 
     public static Tilretteleggingbehov.Tilrettelegging helTilrettelegging() {
-        return new Tilretteleggingbehov.HelTilrettelegging(LocalDate.now().plusMonths(1));
+        return new Tilretteleggingbehov.Tilrettelegging.Hel(LocalDate.now().plusMonths(1));
     }
 
     public static Tilretteleggingbehov.Tilrettelegging delTilrettelegging() {
-        return new Tilretteleggingbehov.DelvisTilrettelegging(LocalDate.now().plusMonths(2), 77.0);
+        return new Tilretteleggingbehov.Tilrettelegging.Delvis(LocalDate.now().plusMonths(2), 77.0);
     }
 
     public static Tilretteleggingbehov.Tilrettelegging ingenTilrettelegging() {
-        return new Tilretteleggingbehov.IngenTilrettelegging(LocalDate.now().plusMonths(2));
+        return new Tilretteleggingbehov.Tilrettelegging.Ingen(LocalDate.now().plusMonths(2));
     }
 
     public static Tilrettelegging delvisTilrettelegging(VedleggReferanse... vedleggRefs) {
