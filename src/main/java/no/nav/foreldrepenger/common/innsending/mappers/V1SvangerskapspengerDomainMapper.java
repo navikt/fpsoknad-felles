@@ -146,14 +146,11 @@ public class V1SvangerskapspengerDomainMapper implements DomainMapper {
         tilrettelegging.getVedlegg().addAll(tilretteleggingVedleggFraIDs(tilretteleggingbehov.vedlegg()));
 
         for (var t : tilretteleggingbehov.tilrettelegginger()) {
-            if (t instanceof Tilretteleggingbehov.Tilrettelegging.Hel hel) {
-                tilrettelegging.getHelTilrettelegging().add(tilHelTilrettelegging(hel));
-            } else if (t instanceof Tilretteleggingbehov.Tilrettelegging.Delvis del) {
-                tilrettelegging.getDelvisTilrettelegging().add(tilDelTilrettelegging(del));
-            } else if (t instanceof Tilretteleggingbehov.Tilrettelegging.Ingen ingen) {
-                tilrettelegging.getIngenTilrettelegging().add(tilIngenTilrettelegging(ingen));
-            } else {
-                throw new UnexpectedInputException("Ukjent tilrettelegging %s", tilrettelegging.getClass().getSimpleName());
+            switch (t) {
+                case Tilretteleggingbehov.Tilrettelegging.Hel hel -> tilrettelegging.getHelTilrettelegging().add(tilHelTilrettelegging(hel));
+                case Tilretteleggingbehov.Tilrettelegging.Delvis del -> tilrettelegging.getDelvisTilrettelegging().add(tilDelTilrettelegging(del));
+                case Tilretteleggingbehov.Tilrettelegging.Ingen ingen -> tilrettelegging.getIngenTilrettelegging().add(tilIngenTilrettelegging(ingen));
+                default -> throw new UnexpectedInputException("Ukjent tilrettelegging %s", tilrettelegging.getClass().getSimpleName());
             }
         }
         return tilrettelegging;
@@ -188,28 +185,28 @@ public class V1SvangerskapspengerDomainMapper implements DomainMapper {
 
     private static Arbeidsforhold arbeidsforholdFra(no.nav.foreldrepenger.common.domain.svangerskapspenger.arbeidsforhold.Arbeidsforhold forhold) {
 
-        if (forhold instanceof no.nav.foreldrepenger.common.domain.svangerskapspenger.arbeidsforhold.Virksomhet v) {
+        if (forhold instanceof no.nav.foreldrepenger.common.domain.svangerskapspenger.arbeidsforhold.Virksomhet(var orgnr)) {
             var virksomhet = new Virksomhet();
-            virksomhet.setIdentifikator(v.orgnr().value());
+            virksomhet.setIdentifikator(orgnr.value());
             return virksomhet;
         }
-        if (forhold instanceof no.nav.foreldrepenger.common.domain.svangerskapspenger.arbeidsforhold.PrivatArbeidsgiver p) {
+        if (forhold instanceof no.nav.foreldrepenger.common.domain.svangerskapspenger.arbeidsforhold.PrivatArbeidsgiver(var fnr)) {
             var privatArbeidsgiver = new PrivatArbeidsgiver();
-            privatArbeidsgiver.setIdentifikator(p.fnr().value());
+            privatArbeidsgiver.setIdentifikator(fnr.value());
             return privatArbeidsgiver;
         }
 
-        if (forhold instanceof no.nav.foreldrepenger.common.domain.svangerskapspenger.arbeidsforhold.Frilanser f) {
+        if (forhold instanceof no.nav.foreldrepenger.common.domain.svangerskapspenger.arbeidsforhold.Frilanser(var risikoFaktorer, var tilretteleggingstiltak)) {
             var frilanser = new Frilanser();
-            frilanser.setOpplysningerOmTilretteleggingstiltak(f.tilretteleggingstiltak());
-            frilanser.setOpplysningerOmRisikofaktorer(f.risikoFaktorer());
+            frilanser.setOpplysningerOmTilretteleggingstiltak(tilretteleggingstiltak);
+            frilanser.setOpplysningerOmRisikofaktorer(risikoFaktorer);
             return frilanser;
         }
 
-        if (forhold instanceof no.nav.foreldrepenger.common.domain.svangerskapspenger.arbeidsforhold.SelvstendigNæringsdrivende s) {
+        if (forhold instanceof no.nav.foreldrepenger.common.domain.svangerskapspenger.arbeidsforhold.SelvstendigNæringsdrivende(var risikoFaktorer, var tilretteleggingstiltak)) {
             var selvstendigNæringsdrivende = new SelvstendigNæringsdrivende();
-            selvstendigNæringsdrivende.setOpplysningerOmTilretteleggingstiltak(s.tilretteleggingstiltak());
-            selvstendigNæringsdrivende.setOpplysningerOmRisikofaktorer(s.risikoFaktorer());
+            selvstendigNæringsdrivende.setOpplysningerOmTilretteleggingstiltak(tilretteleggingstiltak);
+            selvstendigNæringsdrivende.setOpplysningerOmRisikofaktorer(risikoFaktorer);
             return selvstendigNæringsdrivende;
         }
 
