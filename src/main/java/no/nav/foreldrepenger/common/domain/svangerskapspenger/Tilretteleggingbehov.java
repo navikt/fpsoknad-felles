@@ -20,7 +20,7 @@ import no.nav.foreldrepenger.common.domain.svangerskapspenger.arbeidsforhold.Arb
 public record Tilretteleggingbehov(@Valid @NotNull Arbeidsforhold arbeidsforhold,
                                    @NotNull LocalDate behovForTilretteleggingFom,
                                    @Size(min = 1, max = 20) List<@Valid @NotNull Tilrettelegging> tilrettelegginger,
-                                   @Size(min = 1) List<@Valid @NotNull VedleggReferanse> vedlegg) {
+                                   @Size(min = 1, max = 20) List<@Valid @NotNull VedleggReferanse> vedlegg) {
 
     @JsonTypeInfo(use = NAME, include = PROPERTY, property = "type")
     @JsonSubTypes({

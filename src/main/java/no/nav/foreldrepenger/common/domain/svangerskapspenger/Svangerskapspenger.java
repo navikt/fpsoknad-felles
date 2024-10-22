@@ -25,7 +25,7 @@ public record Svangerskapspenger(@NotNull LocalDate termindato,
 
     @JsonCreator
     public Svangerskapspenger {
-        tilretteleggingbehov = Optional.ofNullable(tilretteleggingbehov).orElse(emptyList());
+        avtaltFerie = Optional.ofNullable(avtaltFerie).orElse(emptyList());
     }
 
     @JsonIgnore
