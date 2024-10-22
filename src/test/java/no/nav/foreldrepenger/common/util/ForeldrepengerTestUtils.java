@@ -78,6 +78,7 @@ import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.ar
 import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.Frilanser;
 import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.PrivatArbeidsgiver;
 import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.Virksomhet;
+import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilretteleggingsbehov.Tilretteleggingbehov;
 
 public class ForeldrepengerTestUtils {
 
@@ -145,6 +146,7 @@ public class ForeldrepengerTestUtils {
                 opphold(),
                 opptjening(),
                 tilrettelegging(vedleggRefs),
+                null,
                 List.of(ferie)
         );
     }
@@ -173,7 +175,7 @@ public class ForeldrepengerTestUtils {
         return new Søknad(LocalDate.now(), TestUtils.søker(), ytelse, "Opplysninger av den kjente tilleggtypen", List.of(vedlegg));
     }
 
-    private static VedleggReferanse[] vedleggRefs(Vedlegg... vedlegg) {
+    public static VedleggReferanse[] vedleggRefs(Vedlegg... vedlegg) {
         return Arrays.stream(vedlegg)
                 .map(Vedlegg::getMetadata)
                 .map(VedleggMetaData::id)
@@ -195,7 +197,18 @@ public class ForeldrepengerTestUtils {
     private static Tilrettelegging ingenTilrettelegging(VedleggReferanse... vedleggRefs) {
         return new IngenTilrettelegging(frilanser(), LocalDate.now().plusMonths(2), LocalDate.now().plusMonths(2),
                 List.of(vedleggRefs));
+    }
 
+    public static Tilretteleggingbehov.Tilrettelegging helTilrettelegging() {
+        return new Tilretteleggingbehov.Tilrettelegging.Hel(LocalDate.now().plusMonths(1));
+    }
+
+    public static Tilretteleggingbehov.Tilrettelegging delTilrettelegging() {
+        return new Tilretteleggingbehov.Tilrettelegging.Delvis(LocalDate.now().plusMonths(2), 77.0);
+    }
+
+    public static Tilretteleggingbehov.Tilrettelegging ingenTilrettelegging() {
+        return new Tilretteleggingbehov.Tilrettelegging.Ingen(LocalDate.now().plusMonths(2));
     }
 
     public static Tilrettelegging delvisTilrettelegging(VedleggReferanse... vedleggRefs) {
@@ -207,15 +220,15 @@ public class ForeldrepengerTestUtils {
         return new HelTilrettelegging(virksomhet(), LocalDate.now().plusMonths(1), LocalDate.now().plusMonths(2), List.of(vedleggRefs));
     }
 
-    private static Arbeidsforhold virksomhet() {
+    public static Arbeidsforhold virksomhet() {
         return new Virksomhet(MAGIC_ORG);
     }
 
-    private static Arbeidsforhold privat() {
+    public static Arbeidsforhold privat() {
         return new PrivatArbeidsgiver(NORSK_FORELDER_FNR);
     }
 
-    private static Arbeidsforhold frilanser() {
+    public static Arbeidsforhold frilanser() {
         return new Frilanser("risiko", "tiltak");
     }
 
