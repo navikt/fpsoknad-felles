@@ -2,8 +2,6 @@ package no.nav.foreldrepenger.common.innsyn.inntektsmelding;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import no.nav.foreldrepenger.common.domain.ArbeidsgiverIdentifikator;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
