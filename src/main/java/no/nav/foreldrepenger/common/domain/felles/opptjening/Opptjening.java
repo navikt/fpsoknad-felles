@@ -8,10 +8,12 @@ import java.util.Optional;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
-public record Opptjening(@Valid List<UtenlandskArbeidsforhold> utenlandskArbeidsforhold,
-                         @Valid List<EgenNæring> egenNæring,
-                         @Valid List<AnnenOpptjening> annenOpptjening,
+public record Opptjening(@Valid @Size(max = 20) List<@Valid @NotNull UtenlandskArbeidsforhold> utenlandskArbeidsforhold,
+                         @Valid @Size(max = 20) List<@Valid @NotNull EgenNæring> egenNæring,
+                         @Valid @Size(max = 20) List<@Valid @NotNull AnnenOpptjening> annenOpptjening,
                          @Valid Frilans frilans) {
 
     @JsonCreator

@@ -17,11 +17,11 @@ import no.nav.foreldrepenger.common.domain.felles.medlemskap.Utenlandsopphold;
 import no.nav.foreldrepenger.common.domain.felles.opptjening.Opptjening;
 
 public record Svangerskapspenger(@NotNull LocalDate termindato,
-                                 /*@Nullable*/ LocalDate fødselsdato,
+                                 LocalDate fødselsdato,
                                  @Valid Utenlandsopphold utenlandsopphold,
                                  @Valid Opptjening opptjening,
                                  @Valid @Size(min = 1, max = 20) List<@Valid @NotNull Tilretteleggingbehov> tilretteleggingbehov,
-                                 List<@Valid AvtaltFerie> avtaltFerie) implements Ytelse {
+                                 @Valid @Size(max = 20) List<@Valid @NotNull AvtaltFerie> avtaltFerie) implements Ytelse {
 
     @JsonCreator
     public Svangerskapspenger {
