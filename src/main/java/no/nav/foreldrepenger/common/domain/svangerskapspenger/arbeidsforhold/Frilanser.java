@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold;
+package no.nav.foreldrepenger.common.domain.svangerskapspenger.arbeidsforhold;
 
 import static no.nav.foreldrepenger.common.domain.validation.InputValideringRegex.FRITEKST;
 

@@ -11,23 +11,16 @@ import static no.nav.foreldrepenger.common.util.StreamUtil.safeStream;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import jakarta.xml.bind.JAXBElement;
 import no.nav.foreldrepenger.common.domain.AktørId;
 import no.nav.foreldrepenger.common.domain.Søknad;
-import no.nav.foreldrepenger.common.domain.felles.ProsentAndel;
 import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
 import no.nav.foreldrepenger.common.domain.foreldrepenger.Endringssøknad;
-import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilretteleggingsbehov.Tilretteleggingbehov;
+import no.nav.foreldrepenger.common.domain.svangerskapspenger.Tilretteleggingbehov;
 import no.nav.foreldrepenger.common.error.UnexpectedInputException;
 import no.nav.foreldrepenger.common.innsending.SøknadEgenskap;
 import no.nav.foreldrepenger.common.innsending.mappers.jaxb.SVPV1JAXBUtil;
@@ -49,7 +42,6 @@ import no.nav.vedtak.felles.xml.soeknad.v3.OmYtelse;
 import no.nav.vedtak.felles.xml.soeknad.v3.Soeknad;
 
 public class V1SvangerskapspengerDomainMapper implements DomainMapper {
-    private static final Logger LOG = LoggerFactory.getLogger(V1SvangerskapspengerDomainMapper.class);
     private static final SVPV1JAXBUtil jaxb = new SVPV1JAXBUtil();
     private static final no.nav.vedtak.felles.xml.soeknad.svangerskapspenger.v1.ObjectFactory SVP_FACTORY_V1 = new no.nav.vedtak.felles.xml.soeknad.svangerskapspenger.v1.ObjectFactory();
     private static final no.nav.vedtak.felles.xml.soeknad.v3.ObjectFactory SØKNAD_FACTORY_V3 = new no.nav.vedtak.felles.xml.soeknad.v3.ObjectFactory();
@@ -99,13 +91,7 @@ public class V1SvangerskapspengerDomainMapper implements DomainMapper {
         svangerskapspenger.setFødselsdato(ytelse.fødselsdato());
         svangerskapspenger.setOpptjening(opptjeningFra(ytelse.opptjening()));
         svangerskapspenger.setAvtaltFerieListe(opprettAvtaltFerieListe(ytelse));
-        if (!ytelse.tilretteleggingbehov().isEmpty()) {
-            LOG.info("Mottok tilrettelegging på nytt format!");
-            svangerskapspenger.setTilretteleggingListe(tilretteleggingListeFra(ytelse.tilretteleggingbehov()));
-        } else {
-            LOG.info("Mottok tilrettelegging på gammelt format!");
-            svangerskapspenger.setTilretteleggingListe(tilretteleggingFra(ytelse.tilrettelegging()));
-        }
+        svangerskapspenger.setTilretteleggingListe(tilretteleggingListeFra(ytelse.tilretteleggingbehov()));
         svangerskapspenger.setMedlemskap(medlemsskapFra(ytelse.utenlandsopphold(), relasjonsDatoFra(ytelse.termindato(), ytelse.fødselsdato())));
         return svangerskapspenger;
     }
@@ -127,19 +113,19 @@ public class V1SvangerskapspengerDomainMapper implements DomainMapper {
 
     private static Arbeidsgiver mapArbeidsgiver(no.nav.foreldrepenger.common.domain.svangerskapspenger.AvtaltFerie af) {
         return switch (af.arbeidsforhold()) {
-            case no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.Virksomhet(var orgnr) -> {
+            case no.nav.foreldrepenger.common.domain.svangerskapspenger.arbeidsforhold.Virksomhet(var orgnr) -> {
                 var virksomhetXml = new Virksomhet();
                 virksomhetXml.setIdentifikator(orgnr.value());
                 yield virksomhetXml;
             }
-            case no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.PrivatArbeidsgiver(var fnr) -> {
+            case no.nav.foreldrepenger.common.domain.svangerskapspenger.arbeidsforhold.PrivatArbeidsgiver(var fnr) -> {
                 var privatArbeidsgiverXml = new PrivatArbeidsgiver();
                 privatArbeidsgiverXml.setIdentifikator(fnr.value());
                 yield privatArbeidsgiverXml;
             }
-            case no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.SelvstendigNæringsdrivende ignored ->
+            case no.nav.foreldrepenger.common.domain.svangerskapspenger.arbeidsforhold.SelvstendigNæringsdrivende ignored ->
                     throw new IllegalStateException("Oppgitt ferie er ikke støttet for selvstendig næringsdrivende eller frilansere");
-            case no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.Frilanser frilanserIgnored ->
+            case no.nav.foreldrepenger.common.domain.svangerskapspenger.arbeidsforhold.Frilanser frilanserIgnored ->
                     throw new IllegalStateException("Oppgitt ferie er ikke støttet for selvstendig næringsdrivende eller frilansere");
         };
     }
@@ -192,73 +178,6 @@ public class V1SvangerskapspengerDomainMapper implements DomainMapper {
         return helTilrettelegging;
     }
 
-    @Deprecated
-    private static TilretteleggingListe tilretteleggingFra(List<no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.Tilrettelegging> tilrettelegginger) {
-        var tilretteleggingListe = new TilretteleggingListe();
-        tilretteleggingListe.getTilrettelegging().addAll(
-                tilretteleggingByArbeidsforhold(tilrettelegginger)
-                        .values().stream()
-                        .map(V1SvangerskapspengerDomainMapper::create)
-                        .toList()
-        );
-        return tilretteleggingListe;
-    }
-
-    @Deprecated
-    private static Tilrettelegging create(List<no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.Tilrettelegging> tiltakListe) {
-        var tilrettelegging = new Tilrettelegging();
-
-        for (no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.Tilrettelegging t : tiltakListe) {
-            if (t instanceof no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.IngenTilrettelegging i) {
-                tilrettelegging.getIngenTilrettelegging().add(ingenTilretteleggingFra(i));
-            } else if (t instanceof no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.DelvisTilrettelegging d) {
-                tilrettelegging.getDelvisTilrettelegging().add(delvisTilretteleggingFra(d));
-            } else if (t instanceof no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.HelTilrettelegging h) {
-                tilrettelegging.getHelTilrettelegging().add(helTilretteleggingFra(h));
-            } else {
-                throw new UnexpectedInputException("Ukjent tilrettelegging %s", tilrettelegging.getClass().getSimpleName());
-            }
-        }
-
-        tiltakListe.stream()
-                .findAny()
-                .ifPresent(b -> {
-                    tilrettelegging.setBehovForTilretteleggingFom(b.getBehovForTilretteleggingFom());
-                    tilrettelegging.getVedlegg().addAll(tilretteleggingVedleggFraIDs(b.getVedlegg()));
-                    tilrettelegging.setArbeidsforhold(arbeidsforholdFra(b.getArbeidsforhold()));
-                });
-
-        return tilrettelegging;
-    }
-
-    @Deprecated
-    private static IngenTilrettelegging ingenTilretteleggingFra(no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.IngenTilrettelegging ingen) {
-        var ingenTilrettelegging = new IngenTilrettelegging();
-        ingenTilrettelegging.setSlutteArbeidFom(ingen.getSlutteArbeidFom());
-        return ingenTilrettelegging;
-    }
-
-    @Deprecated
-    private static DelvisTilrettelegging delvisTilretteleggingFra(no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.DelvisTilrettelegging delvis) {
-        var delvisTilrettelegging = new DelvisTilrettelegging();
-        delvisTilrettelegging.setTilrettelagtArbeidFom(delvis.getTilrettelagtArbeidFom());
-        delvisTilrettelegging.setStillingsprosent(BigDecimal.valueOf(prosentFra(delvis.getStillingsprosent())));
-        return delvisTilrettelegging;
-    }
-
-    @Deprecated
-    private static HelTilrettelegging helTilretteleggingFra(no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.HelTilrettelegging hel) {
-        var helTilrettelegging = new HelTilrettelegging();
-        helTilrettelegging.setTilrettelagtArbeidFom(hel.getTilrettelagtArbeidFom());
-        return helTilrettelegging;
-    }
-
-    private static double prosentFra(ProsentAndel prosent) {
-        return Optional.ofNullable(prosent)
-                .map(ProsentAndel::prosent)
-                .orElse(0d);
-    }
-
     private static List<JAXBElement<Object>> tilretteleggingVedleggFraIDs(List<VedleggReferanse> vedlegg) {
         return safeStream(vedlegg)
                 .filter(Objects::nonNull)
@@ -267,27 +186,27 @@ public class V1SvangerskapspengerDomainMapper implements DomainMapper {
                 .toList();
     }
 
-    private static Arbeidsforhold arbeidsforholdFra(no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.Arbeidsforhold forhold) {
+    private static Arbeidsforhold arbeidsforholdFra(no.nav.foreldrepenger.common.domain.svangerskapspenger.arbeidsforhold.Arbeidsforhold forhold) {
 
-        if (forhold instanceof no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.Virksomhet v) {
+        if (forhold instanceof no.nav.foreldrepenger.common.domain.svangerskapspenger.arbeidsforhold.Virksomhet v) {
             var virksomhet = new Virksomhet();
             virksomhet.setIdentifikator(v.orgnr().value());
             return virksomhet;
         }
-        if (forhold instanceof no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.PrivatArbeidsgiver p) {
+        if (forhold instanceof no.nav.foreldrepenger.common.domain.svangerskapspenger.arbeidsforhold.PrivatArbeidsgiver p) {
             var privatArbeidsgiver = new PrivatArbeidsgiver();
             privatArbeidsgiver.setIdentifikator(p.fnr().value());
             return privatArbeidsgiver;
         }
 
-        if (forhold instanceof no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.Frilanser f) {
+        if (forhold instanceof no.nav.foreldrepenger.common.domain.svangerskapspenger.arbeidsforhold.Frilanser f) {
             var frilanser = new Frilanser();
             frilanser.setOpplysningerOmTilretteleggingstiltak(f.tilretteleggingstiltak());
             frilanser.setOpplysningerOmRisikofaktorer(f.risikoFaktorer());
             return frilanser;
         }
 
-        if (forhold instanceof no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.SelvstendigNæringsdrivende s) {
+        if (forhold instanceof no.nav.foreldrepenger.common.domain.svangerskapspenger.arbeidsforhold.SelvstendigNæringsdrivende s) {
             var selvstendigNæringsdrivende = new SelvstendigNæringsdrivende();
             selvstendigNæringsdrivende.setOpplysningerOmTilretteleggingstiltak(s.tilretteleggingstiltak());
             selvstendigNæringsdrivende.setOpplysningerOmRisikofaktorer(s.risikoFaktorer());
@@ -300,16 +219,6 @@ public class V1SvangerskapspengerDomainMapper implements DomainMapper {
     private static LocalDate relasjonsDatoFra(LocalDate termindato, LocalDate fødselsdato) {
         return Optional.ofNullable(fødselsdato)
                 .orElse(termindato);
-    }
-
-    @Deprecated
-    private static Map<no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.Arbeidsforhold, List<no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.Tilrettelegging>> tilretteleggingByArbeidsforhold(
-            List<no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.Tilrettelegging> tilretteleggingsPerioder) {
-        Map<no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.Arbeidsforhold, List<no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.Tilrettelegging>> tilretteleggingByArbeidsforhold = new HashMap<>();
-        tilretteleggingsPerioder.forEach(tp -> tilretteleggingByArbeidsforhold
-                .computeIfAbsent(tp.getArbeidsforhold(), key -> new ArrayList<>())
-                .add(tp));
-        return tilretteleggingByArbeidsforhold;
     }
 
     @Override
