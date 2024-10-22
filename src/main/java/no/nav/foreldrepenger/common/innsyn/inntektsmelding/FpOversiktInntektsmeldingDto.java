@@ -17,7 +17,7 @@ public record FpOversiktInntektsmeldingDto(
         BigDecimal inntektPrMnd,
         BigDecimal refusjonPrMnd,
         String arbeidsgiverNavn,
-        ArbeidsgiverIdentifikator arbeidsgiverIdent,
+        String arbeidsgiverIdent,
         String journalpostId,
         LocalDateTime mottattTidspunkt,
         LocalDate startDatoPermisjon,
