@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.common.domain.svangerskapspenger.tilretteleggingsbehov;
+package no.nav.foreldrepenger.common.domain.svangerskapspenger;
 
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY;
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
@@ -15,12 +15,12 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import no.nav.foreldrepenger.common.domain.felles.VedleggReferanse;
-import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.Arbeidsforhold;
+import no.nav.foreldrepenger.common.domain.svangerskapspenger.arbeidsforhold.Arbeidsforhold;
 
 public record Tilretteleggingbehov(@Valid @NotNull Arbeidsforhold arbeidsforhold,
                                    @NotNull LocalDate behovForTilretteleggingFom,
-                                   @Size(max = 20) List<@Valid @NotNull Tilrettelegging> tilrettelegginger,
-                                   List<VedleggReferanse> vedlegg) {
+                                   @Size(min = 1, max = 20) List<@Valid @NotNull Tilrettelegging> tilrettelegginger,
+                                   @Size(min = 1, max = 20) List<@Valid @NotNull VedleggReferanse> vedlegg) {
 
     @JsonTypeInfo(use = NAME, include = PROPERTY, property = "type")
     @JsonSubTypes({

@@ -70,15 +70,11 @@ import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.Utsettelses√
 import no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.UttaksPeriode;
 import no.nav.foreldrepenger.common.domain.svangerskapspenger.AvtaltFerie;
 import no.nav.foreldrepenger.common.domain.svangerskapspenger.Svangerskapspenger;
-import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.DelvisTilrettelegging;
-import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.HelTilrettelegging;
-import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.IngenTilrettelegging;
-import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.Tilrettelegging;
-import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.Arbeidsforhold;
-import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.Frilanser;
-import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.PrivatArbeidsgiver;
-import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold.Virksomhet;
-import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilretteleggingsbehov.Tilretteleggingbehov;
+import no.nav.foreldrepenger.common.domain.svangerskapspenger.Tilretteleggingbehov;
+import no.nav.foreldrepenger.common.domain.svangerskapspenger.arbeidsforhold.Arbeidsforhold;
+import no.nav.foreldrepenger.common.domain.svangerskapspenger.arbeidsforhold.Frilanser;
+import no.nav.foreldrepenger.common.domain.svangerskapspenger.arbeidsforhold.PrivatArbeidsgiver;
+import no.nav.foreldrepenger.common.domain.svangerskapspenger.arbeidsforhold.Virksomhet;
 
 public class ForeldrepengerTestUtils {
 
@@ -146,7 +142,6 @@ public class ForeldrepengerTestUtils {
                 opphold(),
                 opptjening(),
                 tilrettelegging(vedleggRefs),
-                null,
                 List.of(ferie)
         );
     }
@@ -186,18 +181,14 @@ public class ForeldrepengerTestUtils {
         return new Ettersending(new Saksnummer("42"), EttersendingsType.FORELDREPENGER, TO_VEDLEGG, null);
     }
 
-    private static List<Tilrettelegging> tilrettelegging(VedleggReferanse... vedleggRefs) {
-        return Stream.of(helTilrettelegging(vedleggRefs),
-                        helTilrettelegging(vedleggRefs),
-                        delvisTilrettelegging(vedleggRefs),
-                        ingenTilrettelegging(vedleggRefs))
-                .collect(Collectors.toList());
+    private static List<Tilretteleggingbehov> tilrettelegging(VedleggReferanse... vedleggRefs) {
+        return List.of(
+                tilretteleggingbehovPrivat(List.of(helTilrettelegging(), delTilrettelegging()), vedleggRefs),
+                tilretteleggingbehovFrilanser(List.of(delTilrettelegging()), vedleggRefs),
+                tilretteleggingbehovVirksomhet(List.of(ingenTilrettelegging()), vedleggRefs)
+        );
     }
 
-    private static Tilrettelegging ingenTilrettelegging(VedleggReferanse... vedleggRefs) {
-        return new IngenTilrettelegging(frilanser(), LocalDate.now().plusMonths(2), LocalDate.now().plusMonths(2),
-                List.of(vedleggRefs));
-    }
 
     public static Tilretteleggingbehov.Tilrettelegging helTilrettelegging() {
         return new Tilretteleggingbehov.Tilrettelegging.Hel(LocalDate.now().plusMonths(1));
@@ -211,13 +202,17 @@ public class ForeldrepengerTestUtils {
         return new Tilretteleggingbehov.Tilrettelegging.Ingen(LocalDate.now().plusMonths(2));
     }
 
-    public static Tilrettelegging delvisTilrettelegging(VedleggReferanse... vedleggRefs) {
-        return new DelvisTilrettelegging(privat(), LocalDate.now().plusMonths(1), LocalDate.now().plusMonths(2),
-                new ProsentAndel(77d), List.of(vedleggRefs));
+
+    public static Tilretteleggingbehov tilretteleggingbehovPrivat(List<Tilretteleggingbehov.Tilrettelegging> tilrettelegginger, VedleggReferanse... vedleggRefs) {
+        return new Tilretteleggingbehov(privat(), LocalDate.now().plusMonths(1), tilrettelegginger, List.of(vedleggRefs));
     }
 
-    private static Tilrettelegging helTilrettelegging(VedleggReferanse... vedleggRefs) {
-        return new HelTilrettelegging(virksomhet(), LocalDate.now().plusMonths(1), LocalDate.now().plusMonths(2), List.of(vedleggRefs));
+    private static Tilretteleggingbehov tilretteleggingbehovFrilanser(List<Tilretteleggingbehov.Tilrettelegging> tilrettelegginger, VedleggReferanse... vedleggRefs) {
+        return new Tilretteleggingbehov(frilanser(), LocalDate.now().plusMonths(2), tilrettelegginger, List.of(vedleggRefs));
+    }
+
+    private static Tilretteleggingbehov tilretteleggingbehovVirksomhet(List<Tilretteleggingbehov.Tilrettelegging> tilrettelegginger, VedleggReferanse... vedleggRefs) {
+        return new Tilretteleggingbehov(virksomhet(), LocalDate.now().plusMonths(1), tilrettelegginger, List.of(vedleggRefs));
     }
 
     public static Arbeidsforhold virksomhet() {

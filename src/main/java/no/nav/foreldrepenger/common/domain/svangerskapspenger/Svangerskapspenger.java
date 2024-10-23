@@ -15,35 +15,24 @@ import jakarta.validation.constraints.Size;
 import no.nav.foreldrepenger.common.domain.Ytelse;
 import no.nav.foreldrepenger.common.domain.felles.medlemskap.Utenlandsopphold;
 import no.nav.foreldrepenger.common.domain.felles.opptjening.Opptjening;
-import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.Tilrettelegging;
-import no.nav.foreldrepenger.common.domain.svangerskapspenger.tilretteleggingsbehov.Tilretteleggingbehov;
 
-public record Svangerskapspenger(LocalDate termindato,
-                                 /*@Nullable*/ LocalDate fødselsdato,
+public record Svangerskapspenger(@NotNull LocalDate termindato,
+                                 LocalDate fødselsdato,
                                  @Valid Utenlandsopphold utenlandsopphold,
                                  @Valid Opptjening opptjening,
-                                 List<@Valid Tilrettelegging> tilrettelegging,
-                                 @Valid @Size(max = 20) List<@Valid @NotNull Tilretteleggingbehov> tilretteleggingbehov,
-                                 List<@Valid AvtaltFerie> avtaltFerie) implements Ytelse {
+                                 @Valid @Size(min = 1, max = 20) List<@Valid @NotNull Tilretteleggingbehov> tilretteleggingbehov,
+                                 @Valid @Size(max = 20) List<@Valid @NotNull AvtaltFerie> avtaltFerie) implements Ytelse {
 
     @JsonCreator
     public Svangerskapspenger {
-        tilrettelegging = Optional.ofNullable(tilrettelegging).orElse(emptyList());
-        tilretteleggingbehov = Optional.ofNullable(tilretteleggingbehov).orElse(emptyList());
+        avtaltFerie = Optional.ofNullable(avtaltFerie).orElse(emptyList());
     }
 
     @JsonIgnore
     public LocalDate getTidligstDatoForTilrettelegging() {
-        if (!tilretteleggingbehov.isEmpty()) {
-            return tilretteleggingbehov.stream()
-                    .map(Tilretteleggingbehov::behovForTilretteleggingFom)
-                    .min(LocalDate::compareTo)
-                    .orElse(Optional.ofNullable(fødselsdato).orElse(termindato));
-        } else {
-            return tilrettelegging.stream()
-                    .map(Tilrettelegging::getBehovForTilretteleggingFom)
-                    .min(LocalDate::compareTo)
-                    .orElse(Optional.ofNullable(fødselsdato).orElse(termindato));
-        }
+        return tilretteleggingbehov.stream()
+                .map(Tilretteleggingbehov::behovForTilretteleggingFom)
+                .min(LocalDate::compareTo)
+                .orElse(Optional.ofNullable(fødselsdato).orElse(termindato));
     }
 }

@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.common.domain.svangerskapspenger.tilrettelegging.arbeidsforhold;
+package no.nav.foreldrepenger.common.domain.svangerskapspenger.arbeidsforhold;
 
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY;
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
