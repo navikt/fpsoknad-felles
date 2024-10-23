@@ -38,7 +38,7 @@ class SakerV2SerialiseringTest extends SerializationTestBase {
     private final ObjectMapper mapper = MAPPER;
 
     @Test
-    void sakerV2ForeldrepengerRoundtripTest() throws Exception {
+    void sakerV2ForeldrepengerRoundtripTest() {
         var saksnummer = new Saksnummer("123");
         var familieHendelse = new Familiehendelse(of(2021, 12, 6),
                 of(2021, 12, 5), 1, of(2021, 12, 12));
@@ -53,16 +53,16 @@ class SakerV2SerialiseringTest extends SerializationTestBase {
                         new Arbeidsgiver("123", Arbeidsgiver.ArbeidsgiverType.ORGANISASJON))),
                 MorsAktivitet.INNLAGT,
                 new SamtidigUttak(BigDecimal.valueOf(30L)),
-                false);
+                false, BrukerRolle.MOR);
         var åpenBehandling = new FpÅpenBehandling(BehandlingTilstand.UNDER_BEHANDLING, List.of(new no.nav.foreldrepenger.common.innsyn.UttakPeriode(of(2021, 11, 1),
                 of(2021, 11, 13), KontoType.FORELDREPENGER, null, UtsettelseÅrsak.FRI, OppholdÅrsak.FEDREKVOTE_ANNEN_FORELDER,
                 OverføringÅrsak.SYKDOM_ANNEN_FORELDER, new Gradering(BigDecimal.valueOf(10), new Aktivitet(Aktivitet.Type.ORDINÆRT_ARBEID,
                 new Arbeidsgiver("123", Arbeidsgiver.ArbeidsgiverType.ORGANISASJON))), MorsAktivitet.ARBEID,
-                new SamtidigUttak(BigDecimal.valueOf(10)), true)));
+                new SamtidigUttak(BigDecimal.valueOf(10)), true, BrukerRolle.MOR)));
         var fpVedtak = new FpVedtak(List.of(vedtakPerioder));
         var fpSak = new FpSak(saksnummer, false,false, false, false, false, false, true,
                 RettighetType.ALENEOMSORG, new Person(new Fødselsnummer("42"), null), familieHendelse, fpVedtak, åpenBehandling, Set.of(new Person(new Fødselsnummer("1"), new AktørId("2"))),
-                Dekningsgrad.ÅTTI, LocalDateTime.now());
+                Dekningsgrad.ÅTTI, LocalDateTime.now(), BrukerRolle.FAR_MEDMOR);
         var saker = new Saker(Set.of(fpSak), Set.of(), Set.of());
 
         test(saker, true);
