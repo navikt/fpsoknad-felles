@@ -7,7 +7,7 @@ import java.util.Set;
 public record FpSak(Saksnummer saksnummer,
                     boolean sakAvsluttet,
                     boolean kanSøkeOmEndring,
-                    boolean sakTilhørerMor,
+                    boolean sakTilhørerMor, //TODO fjern når frontend er over på forelder
                     boolean gjelderAdopsjon,
                     boolean morUføretrygd,
                     boolean harAnnenForelderTilsvarendeRettEØS,
@@ -19,7 +19,8 @@ public record FpSak(Saksnummer saksnummer,
                     FpÅpenBehandling åpenBehandling,
                     Set<Person> barn,
                     Dekningsgrad dekningsgrad,
-                    LocalDateTime oppdatertTidspunkt) implements Sak {
+                    LocalDateTime oppdatertTidspunkt,
+                    BrukerRolle forelder) implements Sak {
 
     @Override
     public boolean equals(Object o) {
@@ -37,13 +38,15 @@ public record FpSak(Saksnummer saksnummer,
                 && rettighetType == fpSak.rettighetType
                 && Objects.equals(annenPart, fpSak.annenPart) && Objects.equals(familiehendelse, fpSak.familiehendelse)
                 && Objects.equals(gjeldendeVedtak, fpSak.gjeldendeVedtak) && Objects.equals(åpenBehandling, fpSak.åpenBehandling)
-                && Objects.equals(barn, fpSak.barn) && dekningsgrad == fpSak.dekningsgrad;
+                && Objects.equals(barn, fpSak.barn) && dekningsgrad == fpSak.dekningsgrad
+                && forelder == fpSak.forelder
+                ;
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(saksnummer, sakAvsluttet, kanSøkeOmEndring, sakTilhørerMor, gjelderAdopsjon,
                 morUføretrygd, harAnnenForelderTilsvarendeRettEØS, ønskerJustertUttakVedFødsel, rettighetType, annenPart,
-                familiehendelse, gjeldendeVedtak, åpenBehandling, barn, dekningsgrad);
+                familiehendelse, gjeldendeVedtak, åpenBehandling, barn, dekningsgrad, forelder);
     }
 }
