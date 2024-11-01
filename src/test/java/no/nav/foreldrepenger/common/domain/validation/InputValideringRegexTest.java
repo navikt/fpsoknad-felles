@@ -19,7 +19,7 @@ class InputValideringRegexTest {
         var tekst = """
                 en helt vanlig tekts med litt linje skift \n
                 litt tab \t og \n andre spesialtegn som ,.-_@41235()?...
-                2+2=4 mens 3-1=2. WOW SO CAPS! öäåØÆÅÉÜéü?«»�""'§´´`
+                2+2=4 mens 3-1=2. WOW SO CAPS! öäåØÆÅÉÜéü?«»""'§´´`
                 """;
         assertThat(verifiser(FRITEKST, tekst)).isTrue();
     }
@@ -28,6 +28,12 @@ class InputValideringRegexTest {
     void verifsierGyldigFritekst() {
         var tekst = "godtar litt forskjellige ´'`´''§€§§";
         assertThat(verifiser(FRITEKST, tekst)).isTrue();
+    }
+
+    @Test
+    void skalValidereFalsVedUgyldigeTegn() {
+        var tekst = "Vi godtar ikke < eller > og andre spesialtegn ";
+        assertThat(verifiser(FRITEKST, tekst)).isFalse();
     }
 
     @Test
