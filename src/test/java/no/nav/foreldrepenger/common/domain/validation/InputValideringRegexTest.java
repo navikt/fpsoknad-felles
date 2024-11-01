@@ -19,7 +19,7 @@ class InputValideringRegexTest {
         var tekst = """
                 en helt vanlig tekts med litt linje skift \n
                 litt tab \t og \n andre spesialtegn som ,.-_@41235()?...
-                2+2=4 mens 3-1=2. WOW SO CAPS! öäåØÆÅÉÜéü?«»�""'§´´`
+                2+2=4 mens 3-1=2. WOW SO CAPS! öäåØÆÅÉÜéü?«»""'§´´`
                 """;
         assertThat(verifiser(FRITEKST, tekst)).isTrue();
     }
