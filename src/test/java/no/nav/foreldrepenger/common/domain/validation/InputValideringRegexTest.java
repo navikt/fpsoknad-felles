@@ -31,6 +31,12 @@ class InputValideringRegexTest {
     }
 
     @Test
+    void skalValidereFalsVedUgyldigeTegn() {
+        var tekst = "Vi godtar ikke < eller > og andre spesialtegn ";
+        assertThat(verifiser(FRITEKST, tekst)).isFalse();
+    }
+
+    @Test
     void orgnummerRegexTillaterBareTallOgSkalHaLengde9() {
         assertThat(verifiser(ORGNUMMER, "123456789")).isTrue();
         assertThat(verifiser(ORGNUMMER, "123456789123")).isFalse();
