@@ -9,6 +9,7 @@ public record OppholdPeriode(LocalDate fom, LocalDate tom, Årsak årsak, Opphol
     }
     public enum OppholdKilde {
         SAKSBEHANDLER,
-        INNTEKTSMELDING
+        INNTEKTSMELDING,
+        SØKNAD
     }
 }
