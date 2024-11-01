@@ -77,7 +77,7 @@ class SakerV2SerialiseringTest extends SerializationTestBase {
         var aktivitet1 = new Aktivitet(Aktivitet.Type.ORDINÆRT_ARBEID, new Arbeidsgiver("1", Arbeidsgiver.ArbeidsgiverType.ORGANISASJON));
         var aktivitet2 = new Aktivitet(Aktivitet.Type.SELVSTENDIG_NÆRINGSDRIVENDE, null);
         var arbeidstidprosent = new Arbeidstidprosent(BigDecimal.valueOf(50));
-        var oppholdPeriode = new OppholdPeriode(now().plusWeeks(1), now().plusWeeks(2), OppholdPeriode.Årsak.FERIE, OppholdPeriode.OppholdKilde.SAKSBEHANDLER);
+        var oppholdPeriode = new OppholdPeriode(now().plusWeeks(1), now().plusWeeks(2), OppholdPeriode.Årsak.FERIE, OppholdPeriode.OppholdKilde.SØKNAD);
         var tilrettelegging1 = new Arbeidsforhold(aktivitet1, now(), "risiko", "tiltak",
                 Set.of(
                         new Tilrettelegging(now(), now(), DELVIS, arbeidstidprosent, null),
