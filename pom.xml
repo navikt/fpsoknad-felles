@@ -41,8 +41,8 @@
         <!-- Testavhengigheter -->
         <junit-bom.version>5.11.3</junit-bom.version>
         <mockito-bom.version>5.14.2</mockito-bom.version>
-        <assertj-core.version>3.26.3</assertj-core.version>
-        <logback-classic.version>1.5.12</logback-classic.version>
+        <assertj-core.version>3.27.0</assertj-core.version>
+        <logback-classic.version>1.5.14</logback-classic.version>
     </properties>
 
     <scm>
@@ -197,7 +197,7 @@
         <dependency>
             <groupId>net.bytebuddy</groupId>
             <artifactId>byte-buddy</artifactId>
-            <version>1.15.10</version>
+            <version>1.15.11</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
