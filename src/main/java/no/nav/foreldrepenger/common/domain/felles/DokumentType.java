@@ -67,6 +67,10 @@ public enum DokumentType {
     I000133("Dokumentasjon av mors deltakelse i kvalifiseringsprogrammet"),
     I000140("Skattemelding"),
     I000141("Terminbekreftelse"),
+    I000143("Dokumentasjon på oppholdstillatelse"),
+    I000144("Dokumentasjon på reiser til og fra Norge"),
+    I000145("Dokumentasjon på oppfølging i svangerskapet"),
+    I000146("Dokumentasjon på inntekt"),
 
     // Identifisering av behandlingstema
     I500001("Ettersendelse til søknad om svangerskapspenger til selvstendig næringsdrivende og frilanser"),
