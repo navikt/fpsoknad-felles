@@ -39,7 +39,7 @@
         <micrometer-registry-prometheus.version>1.14.4</micrometer-registry-prometheus.version>
 
         <!-- Testavhengigheter -->
-        <junit-bom.version>5.11.4</junit-bom.version>
+        <junit-bom.version>5.12.0</junit-bom.version>
         <mockito-bom.version>5.15.2</mockito-bom.version>
         <assertj-core.version>3.27.3</assertj-core.version>
         <logback-classic.version>1.5.16</logback-classic.version>
@@ -208,7 +208,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.13.0</version>
+                    <version>3.14.0</version>
                     <configuration>
                         <parameters>true</parameters>
                         <source>${java.version}</source>
