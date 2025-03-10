@@ -50,14 +50,14 @@ class SakerV2SerialiseringTest extends SerializationTestBase {
                 OppholdÅrsak.MØDREKVOTE_ANNEN_FORELDER,
                 OverføringÅrsak.ALENEOMSORG,
                 new Gradering(BigDecimal.valueOf(50L), new Aktivitet(Aktivitet.Type.ORDINÆRT_ARBEID,
-                        new Arbeidsgiver("123", Arbeidsgiver.ArbeidsgiverType.ORGANISASJON))),
+                        new Arbeidsgiver("123", Arbeidsgiver.ArbeidsgiverType.ORGANISASJON), "Nav")),
                 MorsAktivitet.INNLAGT,
                 new SamtidigUttak(BigDecimal.valueOf(30L)),
                 false, BrukerRolle.MOR);
         var åpenBehandling = new FpÅpenBehandling(BehandlingTilstand.UNDER_BEHANDLING, List.of(new no.nav.foreldrepenger.common.innsyn.UttakPeriode(of(2021, 11, 1),
                 of(2021, 11, 13), KontoType.FORELDREPENGER, null, UtsettelseÅrsak.FRI, OppholdÅrsak.FEDREKVOTE_ANNEN_FORELDER,
                 OverføringÅrsak.SYKDOM_ANNEN_FORELDER, new Gradering(BigDecimal.valueOf(10), new Aktivitet(Aktivitet.Type.ORDINÆRT_ARBEID,
-                new Arbeidsgiver("123", Arbeidsgiver.ArbeidsgiverType.ORGANISASJON))), MorsAktivitet.ARBEID,
+                new Arbeidsgiver("123", Arbeidsgiver.ArbeidsgiverType.ORGANISASJON), "Nav")), MorsAktivitet.ARBEID,
                 new SamtidigUttak(BigDecimal.valueOf(10)), true, BrukerRolle.MOR)));
         var fpVedtak = new FpVedtak(List.of(vedtakPerioder));
         var fpSak = new FpSak(saksnummer, false,false, false, false, false, false, true,
@@ -74,8 +74,8 @@ class SakerV2SerialiseringTest extends SerializationTestBase {
         var fødselsdato = now().plusWeeks(10);
         var familieHendelse = new Familiehendelse(fødselsdato,
                 fødselsdato.plusWeeks(2), 1, null);
-        var aktivitet1 = new Aktivitet(Aktivitet.Type.ORDINÆRT_ARBEID, new Arbeidsgiver("1", Arbeidsgiver.ArbeidsgiverType.ORGANISASJON));
-        var aktivitet2 = new Aktivitet(Aktivitet.Type.SELVSTENDIG_NÆRINGSDRIVENDE, null);
+        var aktivitet1 = new Aktivitet(Aktivitet.Type.ORDINÆRT_ARBEID, new Arbeidsgiver("1", Arbeidsgiver.ArbeidsgiverType.ORGANISASJON), "Nav");
+        var aktivitet2 = new Aktivitet(Aktivitet.Type.SELVSTENDIG_NÆRINGSDRIVENDE, null, "Nav");
         var arbeidstidprosent = new Arbeidstidprosent(BigDecimal.valueOf(50));
         var oppholdPeriode = new OppholdPeriode(now().plusWeeks(1), now().plusWeeks(2), OppholdPeriode.Årsak.FERIE, OppholdPeriode.OppholdKilde.SØKNAD);
         var tilrettelegging1 = new Arbeidsforhold(aktivitet1, now(), "risiko", "tiltak",
