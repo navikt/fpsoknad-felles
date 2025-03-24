@@ -1,5 +1,7 @@
 package no.nav.foreldrepenger.common.innsyn;
 
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
@@ -19,7 +21,7 @@ public record FpSak(Saksnummer saksnummer,
                     FpÅpenBehandling åpenBehandling,
                     Set<Person> barn,
                     Dekningsgrad dekningsgrad,
-                    LocalDateTime oppdatertTidspunkt,
+                    @NotNull LocalDateTime oppdatertTidspunkt,
                     BrukerRolle forelder) implements Sak {
 
     @Override

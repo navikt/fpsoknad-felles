@@ -1,5 +1,7 @@
 package no.nav.foreldrepenger.common.innsyn;
 
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -8,7 +10,7 @@ public record EsSak(Saksnummer saksnummer,
                     boolean sakAvsluttet,
                     EsÅpenBehandling åpenBehandling,
                     boolean gjelderAdopsjon,
-                    LocalDateTime oppdatertTidspunkt) implements Sak {
+                    @NotNull LocalDateTime oppdatertTidspunkt) implements Sak {
 
     @Override
     public boolean equals(Object o) {

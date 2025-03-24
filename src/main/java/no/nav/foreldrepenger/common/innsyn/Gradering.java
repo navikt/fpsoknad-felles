@@ -6,7 +6,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public record Gradering(Arbeidstidprosent arbeidstidprosent, Aktivitet aktivitet) {
+import jakarta.validation.constraints.NotNull;
+
+public record Gradering(@NotNull Arbeidstidprosent arbeidstidprosent, @NotNull Aktivitet aktivitet) {
 
     @JsonCreator
     public Gradering(@JsonProperty("arbeidstidprosent") BigDecimal arbeidstidprosent,
