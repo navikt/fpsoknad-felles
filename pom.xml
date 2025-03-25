@@ -36,11 +36,11 @@
         <jaxb-runtime.version>4.0.5</jaxb-runtime.version>
         <nv-i18n.version>1.29</nv-i18n.version>
         <slf4j-api.version>2.0.17</slf4j-api.version>
-        <micrometer-registry-prometheus.version>1.14.4</micrometer-registry-prometheus.version>
+        <micrometer-registry-prometheus.version>1.14.5</micrometer-registry-prometheus.version>
 
         <!-- Testavhengigheter -->
-        <junit-bom.version>5.12.0</junit-bom.version>
-        <mockito-bom.version>5.16.0</mockito-bom.version>
+        <junit-bom.version>5.12.1</junit-bom.version>
+        <mockito-bom.version>5.16.1</mockito-bom.version>
         <assertj-core.version>3.27.3</assertj-core.version>
         <logback-classic.version>1.5.17</logback-classic.version>
     </properties>
@@ -307,7 +307,7 @@
                 <plugin>
                     <groupId>org.sonarsource.scanner.maven</groupId>
                     <artifactId>sonar-maven-plugin</artifactId>
-                    <version>5.0.0.4389</version>
+                    <version>5.1.0.4751</version>
                 </plugin>
             </plugins>
         </pluginManagement>
