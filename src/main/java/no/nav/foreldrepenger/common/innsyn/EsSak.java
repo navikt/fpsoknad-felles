@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public record EsSak(Saksnummer saksnummer,
+public record EsSak(@NotNull Saksnummer saksnummer,
                     Familiehendelse familiehendelse,
                     boolean sakAvsluttet,
                     EsÅpenBehandling åpenBehandling,

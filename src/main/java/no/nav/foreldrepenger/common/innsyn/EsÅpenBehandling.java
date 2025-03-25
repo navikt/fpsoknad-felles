@@ -1,5 +1,7 @@
 package no.nav.foreldrepenger.common.innsyn;
 
-public record EsÅpenBehandling(BehandlingTilstand tilstand) {
+import jakarta.validation.constraints.NotNull;
+
+public record EsÅpenBehandling(@NotNull BehandlingTilstand tilstand) {
 
 }

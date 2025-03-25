@@ -7,14 +7,14 @@ import java.util.Objects;
 import java.util.Set;
 
 public record FpSak(Saksnummer saksnummer,
-                    boolean sakAvsluttet,
-                    boolean kanSøkeOmEndring,
-                    boolean sakTilhørerMor, //TODO fjern når frontend er over på forelder
-                    boolean gjelderAdopsjon,
-                    boolean morUføretrygd,
+                    @NotNull boolean sakAvsluttet,
+                    @NotNull boolean kanSøkeOmEndring,
+                    @NotNull boolean sakTilhørerMor, //TODO fjern når frontend er over på forelder
+                    @NotNull boolean gjelderAdopsjon,
+                    @NotNull boolean morUføretrygd,
                     boolean harAnnenForelderTilsvarendeRettEØS,
                     boolean ønskerJustertUttakVedFødsel,
-                    RettighetType rettighetType,
+                    @NotNull RettighetType rettighetType,
                     Person annenPart,
                     Familiehendelse familiehendelse,
                     FpVedtak gjeldendeVedtak,

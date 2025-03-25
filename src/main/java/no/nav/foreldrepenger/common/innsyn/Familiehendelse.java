@@ -4,9 +4,11 @@ import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import jakarta.validation.constraints.NotNull;
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record Familiehendelse(LocalDate fødselsdato,
                               LocalDate termindato,
-                              int antallBarn,
+                              @NotNull int antallBarn,
                               LocalDate omsorgsovertakelse) {
 }
