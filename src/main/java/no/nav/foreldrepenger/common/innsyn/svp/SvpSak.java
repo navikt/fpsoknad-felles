@@ -10,7 +10,7 @@ import no.nav.foreldrepenger.common.innsyn.Saksnummer;
 public record SvpSak(@NotNull Saksnummer saksnummer,
                      @NotNull Familiehendelse familiehendelse,
                      @NotNull boolean sakAvsluttet,
-                     ÅpenBehandling åpenBehandling,
+                     SvpÅpenBehandling åpenBehandling,
                      Vedtak gjeldendeVedtak,
                      @NotNull LocalDateTime oppdatertTidspunkt) implements Sak {
 }
