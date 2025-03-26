@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public record EsSak(@NotNull Saksnummer saksnummer,
-                    Familiehendelse familiehendelse,
+                    @NotNull Familiehendelse familiehendelse,
                     boolean sakAvsluttet,
                     EsÅpenBehandling åpenBehandling,
                     boolean gjelderAdopsjon,

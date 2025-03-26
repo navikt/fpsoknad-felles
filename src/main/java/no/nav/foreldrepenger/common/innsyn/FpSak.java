@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
 
-public record FpSak(Saksnummer saksnummer,
+public record FpSak(@NotNull Saksnummer saksnummer,
                     @NotNull boolean sakAvsluttet,
                     @NotNull boolean kanSøkeOmEndring,
                     @NotNull boolean sakTilhørerMor, //TODO fjern når frontend er over på forelder
@@ -16,7 +16,7 @@ public record FpSak(Saksnummer saksnummer,
                     boolean ønskerJustertUttakVedFødsel,
                     @NotNull RettighetType rettighetType,
                     Person annenPart,
-                    Familiehendelse familiehendelse,
+                    @NotNull Familiehendelse familiehendelse,
                     FpVedtak gjeldendeVedtak,
                     FpÅpenBehandling åpenBehandling,
                     Set<Person> barn,

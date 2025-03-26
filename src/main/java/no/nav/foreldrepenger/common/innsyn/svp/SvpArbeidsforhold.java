@@ -3,13 +3,15 @@ package no.nav.foreldrepenger.common.innsyn.svp;
 import java.time.LocalDate;
 import java.util.Set;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import no.nav.foreldrepenger.common.innsyn.Aktivitet;
 
-public record SvpArbeidsforhold(Aktivitet aktivitet,
+public record SvpArbeidsforhold(@NotNull @Valid Aktivitet aktivitet,
                                 LocalDate behovFrom,
                                 String risikofaktorer,
                                 String tiltak,
-                                Set<Tilrettelegging> tilrettelegginger,
-                                Set<OppholdPeriode> oppholdsperioder,
+                                @NotNull Set<@Valid @NotNull Tilrettelegging> tilrettelegginger,
+                                @NotNull Set<@Valid @NotNull OppholdPeriode> oppholdsperioder,
                                 AvslutningÅrsak avslutningÅrsak) {
 }
