@@ -2,14 +2,15 @@ package no.nav.foreldrepenger.common.innsyn.svp;
 
 import java.time.LocalDateTime;
 
+import jakarta.validation.constraints.NotNull;
 import no.nav.foreldrepenger.common.innsyn.Familiehendelse;
 import no.nav.foreldrepenger.common.innsyn.Sak;
 import no.nav.foreldrepenger.common.innsyn.Saksnummer;
 
-public record SvpSak(Saksnummer saksnummer,
-                     Familiehendelse familiehendelse,
-                     boolean sakAvsluttet,
-                     ÅpenBehandling åpenBehandling,
+public record SvpSak(@NotNull Saksnummer saksnummer,
+                     @NotNull Familiehendelse familiehendelse,
+                     @NotNull boolean sakAvsluttet,
+                     SvpÅpenBehandling åpenBehandling,
                      Vedtak gjeldendeVedtak,
-                     LocalDateTime oppdatertTidspunkt) implements Sak {
+                     @NotNull LocalDateTime oppdatertTidspunkt) implements Sak {
 }

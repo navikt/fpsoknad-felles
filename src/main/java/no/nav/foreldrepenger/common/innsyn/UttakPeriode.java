@@ -1,10 +1,12 @@
 package no.nav.foreldrepenger.common.innsyn;
 
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDate;
 import java.util.Objects;
 
-public record UttakPeriode(LocalDate fom,
-                           LocalDate tom,
+public record UttakPeriode(@NotNull LocalDate fom,
+                           @NotNull LocalDate tom,
                            KontoType kontoType,
                            UttakPeriodeResultat resultat,
                            UtsettelseÅrsak utsettelseÅrsak,

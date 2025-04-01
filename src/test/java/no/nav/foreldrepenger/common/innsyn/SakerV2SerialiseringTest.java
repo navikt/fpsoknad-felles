@@ -22,7 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import no.nav.foreldrepenger.common.domain.AktørId;
 import no.nav.foreldrepenger.common.domain.Fødselsnummer;
-import no.nav.foreldrepenger.common.innsyn.svp.Arbeidsforhold;
+import no.nav.foreldrepenger.common.innsyn.svp.SvpArbeidsforhold;
 import no.nav.foreldrepenger.common.innsyn.svp.Tilrettelegging;
 import no.nav.foreldrepenger.common.innsyn.svp.AvslutningÅrsak;
 import no.nav.foreldrepenger.common.innsyn.svp.OppholdPeriode;
@@ -30,7 +30,7 @@ import no.nav.foreldrepenger.common.innsyn.svp.PeriodeResultat;
 import no.nav.foreldrepenger.common.innsyn.svp.SvpSak;
 import no.nav.foreldrepenger.common.innsyn.svp.Søknad;
 import no.nav.foreldrepenger.common.innsyn.svp.Vedtak;
-import no.nav.foreldrepenger.common.innsyn.svp.ÅpenBehandling;
+import no.nav.foreldrepenger.common.innsyn.svp.SvpÅpenBehandling;
 import no.nav.foreldrepenger.common.util.SerializationTestBase;
 
 class SakerV2SerialiseringTest extends SerializationTestBase {
@@ -78,13 +78,13 @@ class SakerV2SerialiseringTest extends SerializationTestBase {
         var aktivitet2 = new Aktivitet(Aktivitet.Type.SELVSTENDIG_NÆRINGSDRIVENDE, null, "Nav");
         var arbeidstidprosent = new Arbeidstidprosent(BigDecimal.valueOf(50));
         var oppholdPeriode = new OppholdPeriode(now().plusWeeks(1), now().plusWeeks(2), OppholdPeriode.Årsak.FERIE, OppholdPeriode.OppholdKilde.SØKNAD);
-        var tilrettelegging1 = new Arbeidsforhold(aktivitet1, now(), "risiko", "tiltak",
+        var tilrettelegging1 = new SvpArbeidsforhold(aktivitet1, now(), "risiko", "tiltak",
                 Set.of(
                         new Tilrettelegging(now(), now(), DELVIS, arbeidstidprosent, null),
                         new Tilrettelegging(now().plusDays(1), now().plusDays(1), HEL, new Arbeidstidprosent(BigDecimal.ZERO), null)
                 ),
                 Set.of(oppholdPeriode), null);
-        var tilrettelegging2 = new Arbeidsforhold(aktivitet2, now(), "sn er farlig", "ingen",
+        var tilrettelegging2 = new SvpArbeidsforhold(aktivitet2, now(), "sn er farlig", "ingen",
                 Set.of(new Tilrettelegging(now().plusWeeks(1), now().plusWeeks(1), HEL, new Arbeidstidprosent(BigDecimal.ZERO), null)),
                 Set.of(), null);
         var søknad = new Søknad(Set.of(tilrettelegging1, tilrettelegging2));
@@ -94,12 +94,12 @@ class SakerV2SerialiseringTest extends SerializationTestBase {
                 new PeriodeResultat(INNVILGET, new PeriodeResultat.Utbetalingsgrad(BigDecimal.valueOf(100))));
         var vedtakPeriode3 = new Tilrettelegging(now(), now().plusWeeks(2), HEL, new Arbeidstidprosent(BigDecimal.ZERO),
                 new PeriodeResultat(INNVILGET, new PeriodeResultat.Utbetalingsgrad(BigDecimal.valueOf(100))));
-        var vedtakArbeidsforhold1 = new Arbeidsforhold(aktivitet1, now(), "risiko", "tiltak", Set.of(vedtakPeriode1, vedtakPeriode2),
+        var vedtakArbeidsforhold1 = new SvpArbeidsforhold(aktivitet1, now(), "risiko", "tiltak", Set.of(vedtakPeriode1, vedtakPeriode2),
                 Set.of(oppholdPeriode), AvslutningÅrsak.AVSLAG_OVERGANG_FORELDREPENGER);
-        var vedtakArbeidsforhold2 = new Arbeidsforhold(aktivitet2, now(), "sn er farlig", "ingen", Set.of(vedtakPeriode3),
+        var vedtakArbeidsforhold2 = new SvpArbeidsforhold(aktivitet2, now(), "sn er farlig", "ingen", Set.of(vedtakPeriode3),
                 Set.of(), AvslutningÅrsak.NORMAL);
         var vedtak = new Vedtak(Set.of(vedtakArbeidsforhold1, vedtakArbeidsforhold2), null);
-        var svpSak = new SvpSak(saksnummer, familieHendelse, true, new ÅpenBehandling(BehandlingTilstand.UNDER_BEHANDLING, søknad),
+        var svpSak = new SvpSak(saksnummer, familieHendelse, true, new SvpÅpenBehandling(BehandlingTilstand.UNDER_BEHANDLING, søknad),
                 vedtak, LocalDateTime.now());
         var saker = new Saker(Set.of(), Set.of(), Set.of(svpSak));
 
