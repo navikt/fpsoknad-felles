@@ -1,21 +1,22 @@
 package no.nav.foreldrepenger.common.domain.felles;
 
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-
 import jakarta.validation.Valid;
 import no.nav.foreldrepenger.common.domain.AktørId;
 import no.nav.foreldrepenger.common.domain.Barn;
 import no.nav.foreldrepenger.common.domain.Fødselsnummer;
 import no.nav.foreldrepenger.common.domain.Navn;
 import no.nav.foreldrepenger.common.oppslag.dkif.Målform;
+
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
 @JsonInclude(NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -33,6 +34,36 @@ public record Person(@Valid AktørId aktørId,
     public Person {
         målform = Optional.ofNullable(målform).orElse(Målform.standard());
         barn = Optional.ofNullable(barn).orElse(List.of());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Person person = (Person) o;
+        return Objects.equals(navn, person.navn) && 
+                kjønn == person.kjønn && 
+                Objects.equals(aktørId, person.aktørId) && 
+                målform == person.målform &&
+                erBarnLikUavhengigAvRekkefølge(person) &&
+                Objects.equals(fnr, person.fnr) && 
+                Objects.equals(bankkonto, person.bankkonto) && 
+                Objects.equals(fødselsdato, person.fødselsdato) && 
+                Objects.equals(sivilstand, person.sivilstand);
+    }
+
+    private boolean erBarnLikUavhengigAvRekkefølge(Person that) {
+        if (Objects.equals(barn, that.barn)) return true;
+        if (barn == null || that.barn == null) return false;
+        if (barn.size() != that.barn.size()) return false;
+
+        return barn.stream().allMatch(b ->
+                Collections.frequency(barn, b) == Collections.frequency(that.barn, b)
+        );
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(aktørId, fnr, fødselsdato, navn, kjønn, målform, bankkonto, barn, sivilstand);
     }
 
     public static Builder builder() {
