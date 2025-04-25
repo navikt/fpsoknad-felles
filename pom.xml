@@ -30,17 +30,17 @@
         <fp-kontrakter.version>9.2.2</fp-kontrakter.version>
 
         <hibernate-validator.version>8.0.2.Final</hibernate-validator.version>
-        <jakarta.jakartaee-bom.version>10.0.0</jakarta.jakartaee-bom.version>
-        <jackson-bom.version>2.18.3</jackson-bom.version>
+        <jakarta.jakartaee-bom.version>11.0.0</jakarta.jakartaee-bom.version>
+        <jackson-bom.version>2.19.0</jackson-bom.version>
         <jakarta.el.version>4.0.2</jakarta.el.version>
         <jaxb-runtime.version>4.0.5</jaxb-runtime.version>
         <nv-i18n.version>1.29</nv-i18n.version>
         <slf4j-api.version>2.0.17</slf4j-api.version>
-        <micrometer-registry-prometheus.version>1.14.5</micrometer-registry-prometheus.version>
+        <micrometer-registry-prometheus.version>1.14.6</micrometer-registry-prometheus.version>
 
         <!-- Testavhengigheter -->
-        <junit-bom.version>5.12.1</junit-bom.version>
-        <mockito-bom.version>5.16.1</mockito-bom.version>
+        <junit-bom.version>5.12.2</junit-bom.version>
+        <mockito-bom.version>5.17.0</mockito-bom.version>
         <assertj-core.version>3.27.3</assertj-core.version>
         <logback-classic.version>1.5.18</logback-classic.version>
     </properties>
