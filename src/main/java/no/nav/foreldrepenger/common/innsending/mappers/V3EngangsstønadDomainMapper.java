@@ -1,15 +1,5 @@
 package no.nav.foreldrepenger.common.innsending.mappers;
 
-import static no.nav.foreldrepenger.common.innsending.mappers.MapperEgenskaper.ENGANGSSTØNAD;
-import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.medlemsskapFra;
-import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.målformFra;
-import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.søkerFra;
-import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.tilVedlegg;
-import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.vedleggFra;
-import static no.nav.foreldrepenger.common.util.StreamUtil.safeStream;
-
-import java.util.List;
-
 import jakarta.xml.bind.JAXBElement;
 import no.nav.foreldrepenger.common.domain.AktørId;
 import no.nav.foreldrepenger.common.domain.Søknad;
@@ -29,16 +19,23 @@ import no.nav.vedtak.felles.xml.soeknad.felles.v3.Termin;
 import no.nav.vedtak.felles.xml.soeknad.v3.OmYtelse;
 import no.nav.vedtak.felles.xml.soeknad.v3.Soeknad;
 
+import java.util.List;
+
+import static no.nav.foreldrepenger.common.innsending.mappers.MapperEgenskaper.ENGANGSSTØNAD;
+import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.medlemsskapFra;
+import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.målformFra;
+import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.søkerFra;
+import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.tilVedlegg;
+import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.vedleggFra;
+import static no.nav.foreldrepenger.common.util.StreamUtil.safeStream;
+
 public class V3EngangsstønadDomainMapper implements DomainMapper {
     private static final ESV3JAXBUtil JAXB = new ESV3JAXBUtil();
     private static final no.nav.vedtak.felles.xml.soeknad.engangsstoenad.v3.ObjectFactory ES_FACTORY_V3 = new no.nav.vedtak.felles.xml.soeknad.engangsstoenad.v3.ObjectFactory();
     private static final no.nav.vedtak.felles.xml.soeknad.v3.ObjectFactory SØKNAD_FACTORY_V3 = new no.nav.vedtak.felles.xml.soeknad.v3.ObjectFactory();
     private static final no.nav.vedtak.felles.xml.soeknad.felles.v3.ObjectFactory FELLES_FACTORY_V3 = new no.nav.vedtak.felles.xml.soeknad.felles.v3.ObjectFactory();
 
-    private final AktørIdTilFnrConverter aktørIdTilFnrConverter;
-
-    public V3EngangsstønadDomainMapper(AktørIdTilFnrConverter aktørIdTilFnrConverter) {
-        this.aktørIdTilFnrConverter = aktørIdTilFnrConverter;
+    public V3EngangsstønadDomainMapper() {
     }
 
     @Override
@@ -131,6 +128,6 @@ public class V3EngangsstønadDomainMapper implements DomainMapper {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + " [oppslag=" + aktørIdTilFnrConverter + ", mapperEgenskaper=" + mapperEgenskaper() + "]";
+        return getClass().getSimpleName() + " [mapperEgenskaper=" + mapperEgenskaper() + "]";
     }
 }

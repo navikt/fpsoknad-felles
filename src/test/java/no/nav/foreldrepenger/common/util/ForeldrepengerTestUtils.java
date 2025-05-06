@@ -1,29 +1,7 @@
 package no.nav.foreldrepenger.common.util;
 
-import static java.time.DayOfWeek.SATURDAY;
-import static java.time.DayOfWeek.SUNDAY;
-import static java.util.Collections.singletonList;
-import static no.nav.foreldrepenger.common.domain.Orgnummer.MAGIC_ORG;
-import static no.nav.foreldrepenger.common.domain.felles.DokumentType.I000062;
-import static no.nav.foreldrepenger.common.domain.felles.DokumentType.I000063;
-import static no.nav.foreldrepenger.common.domain.felles.DokumentType.I000065;
-import static no.nav.foreldrepenger.common.domain.felles.DokumentType.I000108;
-import static no.nav.foreldrepenger.common.domain.felles.TestUtils.opphold;
-import static no.nav.foreldrepenger.common.domain.felles.TestUtils.søker;
-import static no.nav.foreldrepenger.common.domain.felles.TestUtils.valgfrittVedlegg;
-import static no.nav.foreldrepenger.common.domain.felles.opptjening.Virksomhetstype.FISKE;
-import static no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.StønadskontoType.FEDREKVOTE;
-import static no.nav.foreldrepenger.common.util.ResourceHandleUtil.bytesFra;
-
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import com.neovisionaries.i18n.CountryCode;
-
+import no.nav.foreldrepenger.common.domain.AktørId;
 import no.nav.foreldrepenger.common.domain.Fødselsnummer;
 import no.nav.foreldrepenger.common.domain.Saksnummer;
 import no.nav.foreldrepenger.common.domain.Søknad;
@@ -75,6 +53,28 @@ import no.nav.foreldrepenger.common.domain.svangerskapspenger.arbeidsforhold.Arb
 import no.nav.foreldrepenger.common.domain.svangerskapspenger.arbeidsforhold.Frilanser;
 import no.nav.foreldrepenger.common.domain.svangerskapspenger.arbeidsforhold.PrivatArbeidsgiver;
 import no.nav.foreldrepenger.common.domain.svangerskapspenger.arbeidsforhold.Virksomhet;
+
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static java.time.DayOfWeek.SATURDAY;
+import static java.time.DayOfWeek.SUNDAY;
+import static java.util.Collections.singletonList;
+import static no.nav.foreldrepenger.common.domain.Orgnummer.MAGIC_ORG;
+import static no.nav.foreldrepenger.common.domain.felles.DokumentType.I000062;
+import static no.nav.foreldrepenger.common.domain.felles.DokumentType.I000063;
+import static no.nav.foreldrepenger.common.domain.felles.DokumentType.I000065;
+import static no.nav.foreldrepenger.common.domain.felles.DokumentType.I000108;
+import static no.nav.foreldrepenger.common.domain.felles.TestUtils.opphold;
+import static no.nav.foreldrepenger.common.domain.felles.TestUtils.søker;
+import static no.nav.foreldrepenger.common.domain.felles.TestUtils.valgfrittVedlegg;
+import static no.nav.foreldrepenger.common.domain.felles.opptjening.Virksomhetstype.FISKE;
+import static no.nav.foreldrepenger.common.domain.foreldrepenger.fordeling.StønadskontoType.FEDREKVOTE;
+import static no.nav.foreldrepenger.common.util.ResourceHandleUtil.bytesFra;
 
 public class ForeldrepengerTestUtils {
 
@@ -262,7 +262,7 @@ public class ForeldrepengerTestUtils {
     }
 
     public static NorskForelder norskForelder() {
-        return new NorskForelder(NORSK_FORELDER_FNR, "Åge Mañana Pålsen");
+        return new NorskForelder(NORSK_FORELDER_FNR, new AktørId("1111111111"), "Åge Mañana Pålsen");
     }
 
     public static Adopsjon adopsjon() {

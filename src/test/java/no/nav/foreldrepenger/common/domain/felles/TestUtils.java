@@ -1,19 +1,8 @@
 package no.nav.foreldrepenger.common.domain.felles;
 
-import static java.util.Collections.emptyList;
-import static java.util.Collections.singletonList;
-import static no.nav.foreldrepenger.common.util.ResourceHandleUtil.bytesFra;
-
-import java.time.LocalDate;
-import java.time.Period;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Stream;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.neovisionaries.i18n.CountryCode;
-
 import no.nav.foreldrepenger.common.domain.AktørId;
 import no.nav.foreldrepenger.common.domain.BrukerRolle;
 import no.nav.foreldrepenger.common.domain.Fødselsnummer;
@@ -32,6 +21,16 @@ import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.Fødsel;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.Omsorgsovertakelse;
 import no.nav.foreldrepenger.common.domain.felles.relasjontilbarn.RelasjonTilBarn;
 import no.nav.foreldrepenger.common.oppslag.dkif.Målform;
+
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
+
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+import static no.nav.foreldrepenger.common.util.ResourceHandleUtil.bytesFra;
 
 public class TestUtils {
     public static boolean hasPdfSignature(byte[] bytes) {
@@ -70,7 +69,7 @@ public class TestUtils {
     }
 
     public static NorskForelder norskForelder() {
-        return new NorskForelder(fnr(), "Far Farsen");
+        return new NorskForelder(fnr(), aktoer(), "Far Farsen");
     }
 
     public static UtenlandskForelder utenlandskForelder() {

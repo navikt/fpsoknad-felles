@@ -1,10 +1,5 @@
 package no.nav.foreldrepenger.common.innsending.mappers;
 
-import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.NORSK_FORELDER_FNR;
-import static org.assertj.core.api.Assertions.assertThat;
-
-import org.junit.jupiter.api.Test;
-
 import no.nav.foreldrepenger.common.domain.AktørId;
 import no.nav.foreldrepenger.common.domain.felles.ValgfrittVedlegg;
 import no.nav.foreldrepenger.common.domain.felles.annenforelder.NorskForelder;
@@ -19,14 +14,17 @@ import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Oppholdsperiode;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Overfoeringsperiode;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Utsettelsesperiode;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Uttaksperiode;
+import org.junit.jupiter.api.Test;
+
+import static no.nav.foreldrepenger.common.util.ForeldrepengerTestUtils.NORSK_FORELDER_FNR;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class V3ForeldrepengerDomainMapperTests {
 
     @Test
     void sjekkerKorrektMappingFraJsonTilXmlObjekt() {
         var aktørIdSøker = new AktørId("123456789");
-        var aktørIdAnnenpart = new AktørId("123456789");
-        var mapper = new V3ForeldrepengerDomainMapper(fnr -> aktørIdAnnenpart);
+        var mapper = new V3ForeldrepengerDomainMapper();
 
         var søknad = ForeldrepengerTestUtils.foreldrepengesøknad();
         var søknadXML = mapper.tilModell(søknad, aktørIdSøker);
@@ -56,7 +54,7 @@ class V3ForeldrepengerDomainMapperTests {
         assertThat(foreldrepenger.annenForelder()).isInstanceOf(NorskForelder.class);
         assertThat(foreldrepengerXMLO.getAnnenForelder()).isInstanceOf(AnnenForelderMedNorskIdent.class);
         assertThat(((NorskForelder) foreldrepenger.annenForelder()).fnr()).isEqualTo(NORSK_FORELDER_FNR);
-        assertThat(((AnnenForelderMedNorskIdent) foreldrepengerXMLO.getAnnenForelder()).getAktoerId()).isEqualTo(aktørIdAnnenpart.value());
+        assertThat(((AnnenForelderMedNorskIdent) foreldrepengerXMLO.getAnnenForelder()).getAktoerId()).isEqualTo(((NorskForelder) foreldrepenger.annenForelder()).aktørId().value());
 
         // RelasjonTilBarn
         var fremtidigFødselJSON = (FremtidigFødsel) foreldrepenger.relasjonTilBarn();

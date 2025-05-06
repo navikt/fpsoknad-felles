@@ -1,20 +1,5 @@
 package no.nav.foreldrepenger.common.innsending.mappers;
 
-import static no.nav.foreldrepenger.common.innsending.mappers.MapperEgenskaper.FORELDREPENGER;
-import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.landFra;
-import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.medlemsskapFra;
-import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.målformFra;
-import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.opptjeningFra;
-import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.søkerFra;
-import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.tilVedlegg;
-import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.vedleggFra;
-import static no.nav.foreldrepenger.common.util.LangUtil.toBoolean;
-import static no.nav.foreldrepenger.common.util.StreamUtil.safeStream;
-
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-
 import jakarta.xml.bind.JAXBElement;
 import no.nav.foreldrepenger.common.domain.AktørId;
 import no.nav.foreldrepenger.common.domain.Søknad;
@@ -73,6 +58,21 @@ import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Virksomhet;
 import no.nav.vedtak.felles.xml.soeknad.v3.OmYtelse;
 import no.nav.vedtak.felles.xml.soeknad.v3.Soeknad;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
+import static no.nav.foreldrepenger.common.innsending.mappers.MapperEgenskaper.FORELDREPENGER;
+import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.landFra;
+import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.medlemsskapFra;
+import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.målformFra;
+import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.opptjeningFra;
+import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.søkerFra;
+import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.tilVedlegg;
+import static no.nav.foreldrepenger.common.innsending.mappers.V3DomainMapperCommon.vedleggFra;
+import static no.nav.foreldrepenger.common.util.LangUtil.toBoolean;
+import static no.nav.foreldrepenger.common.util.StreamUtil.safeStream;
+
 public class V3ForeldrepengerDomainMapper implements DomainMapper {
     private static final FPV3JAXBUtil JAXB = new FPV3JAXBUtil();
     private static final String UKJENT_KODEVERKSVERDI = "-";
@@ -82,10 +82,7 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
     private static final no.nav.vedtak.felles.xml.soeknad.uttak.v3.ObjectFactory UTTAK_FACTORY_V3 = new no.nav.vedtak.felles.xml.soeknad.uttak.v3.ObjectFactory();
     private static final no.nav.vedtak.felles.xml.soeknad.endringssoeknad.v3.ObjectFactory ENDRING_FACTORY_V3 = new no.nav.vedtak.felles.xml.soeknad.endringssoeknad.v3.ObjectFactory();
 
-    private final AktørIdTilFnrConverter aktørIdTilFnrConverter;
-
-    public V3ForeldrepengerDomainMapper(AktørIdTilFnrConverter aktørIdTilFnrConverter) {
-        this.aktørIdTilFnrConverter = aktørIdTilFnrConverter;
+    public V3ForeldrepengerDomainMapper() {
     }
 
     @Override
@@ -494,7 +491,7 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
 
     private AnnenForelderMedNorskIdent norskForelder(NorskForelder norskForelder) {
         var annenForelderMedNorskIdent = new AnnenForelderMedNorskIdent();
-        annenForelderMedNorskIdent.setAktoerId(aktørIdTilFnrConverter.konverter(norskForelder.fnr()).value());
+        annenForelderMedNorskIdent.setAktoerId(norskForelder.aktørId().value());
         return annenForelderMedNorskIdent;
     }
 
@@ -573,6 +570,6 @@ public class V3ForeldrepengerDomainMapper implements DomainMapper {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + " [oppslag=" + aktørIdTilFnrConverter + ", mapperEgenskaper=" + mapperEgenskaper() + "]";
+        return getClass().getSimpleName() + " [mapperEgenskaper=" + mapperEgenskaper() + "]";
     }
 }

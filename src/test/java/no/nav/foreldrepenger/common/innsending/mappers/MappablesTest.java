@@ -1,13 +1,12 @@
 package no.nav.foreldrepenger.common.innsending.mappers;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.List;
-
+import no.nav.foreldrepenger.common.innsending.SøknadEgenskap;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import no.nav.foreldrepenger.common.innsending.SøknadEgenskap;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class MappablesTest {
 
@@ -17,8 +16,8 @@ class MappablesTest {
     void setUp() {
         mappers = List.of(
                 new V1SvangerskapspengerDomainMapper(),
-                new V3EngangsstønadDomainMapper(fnr -> null),
-                new V3ForeldrepengerDomainMapper(fnr -> null)
+                new V3EngangsstønadDomainMapper(),
+                new V3ForeldrepengerDomainMapper()
         );
     }
 
