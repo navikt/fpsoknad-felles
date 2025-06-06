@@ -108,7 +108,8 @@ public class V3EngangsstønadDomainMapper implements DomainMapper {
     private static SoekersRelasjonTilBarnet create(Fødsel fødsel, List<Vedlegg> vedlegg) {
         var foedsel = new Foedsel();
         foedsel.getVedlegg().addAll(relasjonTilBarnVedleggFra(vedlegg));
-        foedsel.setFoedselsdato(fødsel.getFødselsdato().get(0));
+        foedsel.setFoedselsdato(fødsel.getFødselsdato().getFirst());
+        foedsel.setTermindato(fødsel.getTermindato());
         foedsel.setAntallBarn(fødsel.getAntallBarn());
         return foedsel;
     }
