@@ -22,15 +22,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import no.nav.foreldrepenger.common.domain.AktørId;
 import no.nav.foreldrepenger.common.domain.Fødselsnummer;
-import no.nav.foreldrepenger.common.innsyn.svp.SvpArbeidsforhold;
-import no.nav.foreldrepenger.common.innsyn.svp.Tilrettelegging;
 import no.nav.foreldrepenger.common.innsyn.svp.AvslutningÅrsak;
 import no.nav.foreldrepenger.common.innsyn.svp.OppholdPeriode;
 import no.nav.foreldrepenger.common.innsyn.svp.PeriodeResultat;
+import no.nav.foreldrepenger.common.innsyn.svp.SvpArbeidsforhold;
 import no.nav.foreldrepenger.common.innsyn.svp.SvpSak;
-import no.nav.foreldrepenger.common.innsyn.svp.Søknad;
-import no.nav.foreldrepenger.common.innsyn.svp.Vedtak;
 import no.nav.foreldrepenger.common.innsyn.svp.SvpÅpenBehandling;
+import no.nav.foreldrepenger.common.innsyn.svp.Søknad;
+import no.nav.foreldrepenger.common.innsyn.svp.Tilrettelegging;
+import no.nav.foreldrepenger.common.innsyn.svp.Vedtak;
 import no.nav.foreldrepenger.common.util.SerializationTestBase;
 
 class SakerV2SerialiseringTest extends SerializationTestBase {
@@ -49,14 +49,15 @@ class SakerV2SerialiseringTest extends SerializationTestBase {
                 UtsettelseÅrsak.BARN_INNLAGT,
                 OppholdÅrsak.MØDREKVOTE_ANNEN_FORELDER,
                 OverføringÅrsak.ALENEOMSORG,
-                new Gradering(BigDecimal.valueOf(50L), new Aktivitet(Aktivitet.Type.ORDINÆRT_ARBEID,
-                        new Arbeidsgiver("123", Arbeidsgiver.ArbeidsgiverType.ORGANISASJON), "Nav")),
+                new Gradering(BigDecimal.valueOf(50L), new Aktivitet(Aktivitet.AktivitetType.ORDINÆRT_ARBEID,
+                                                                     new Arbeidsgiver("123", Arbeidsgiver.ArbeidsgiverType.ORGANISASJON), "Nav")),
                 MorsAktivitet.INNLAGT,
                 new SamtidigUttak(BigDecimal.valueOf(30L)),
                 false, BrukerRolle.MOR);
         var åpenBehandling = new FpÅpenBehandling(BehandlingTilstand.UNDER_BEHANDLING, List.of(new no.nav.foreldrepenger.common.innsyn.UttakPeriode(of(2021, 11, 1),
                 of(2021, 11, 13), KontoType.FORELDREPENGER, null, UtsettelseÅrsak.FRI, OppholdÅrsak.FEDREKVOTE_ANNEN_FORELDER,
-                OverføringÅrsak.SYKDOM_ANNEN_FORELDER, new Gradering(BigDecimal.valueOf(10), new Aktivitet(Aktivitet.Type.ORDINÆRT_ARBEID,
+                OverføringÅrsak.SYKDOM_ANNEN_FORELDER, new Gradering(BigDecimal.valueOf(10), new Aktivitet(
+                Aktivitet.AktivitetType.ORDINÆRT_ARBEID,
                 new Arbeidsgiver("123", Arbeidsgiver.ArbeidsgiverType.ORGANISASJON), "Nav")), MorsAktivitet.ARBEID,
                 new SamtidigUttak(BigDecimal.valueOf(10)), true, BrukerRolle.MOR)));
         var fpVedtak = new FpVedtak(List.of(vedtakPerioder));
@@ -74,8 +75,8 @@ class SakerV2SerialiseringTest extends SerializationTestBase {
         var fødselsdato = now().plusWeeks(10);
         var familieHendelse = new Familiehendelse(fødselsdato,
                 fødselsdato.plusWeeks(2), 1, null);
-        var aktivitet1 = new Aktivitet(Aktivitet.Type.ORDINÆRT_ARBEID, new Arbeidsgiver("1", Arbeidsgiver.ArbeidsgiverType.ORGANISASJON), "Nav");
-        var aktivitet2 = new Aktivitet(Aktivitet.Type.SELVSTENDIG_NÆRINGSDRIVENDE, null, "Nav");
+        var aktivitet1 = new Aktivitet(Aktivitet.AktivitetType.ORDINÆRT_ARBEID, new Arbeidsgiver("1", Arbeidsgiver.ArbeidsgiverType.ORGANISASJON), "Nav");
+        var aktivitet2 = new Aktivitet(Aktivitet.AktivitetType.SELVSTENDIG_NÆRINGSDRIVENDE, null, "Nav");
         var arbeidstidprosent = new Arbeidstidprosent(BigDecimal.valueOf(50));
         var oppholdPeriode = new OppholdPeriode(now().plusWeeks(1), now().plusWeeks(2), OppholdPeriode.Årsak.FERIE, OppholdPeriode.OppholdKilde.SØKNAD);
         var tilrettelegging1 = new SvpArbeidsforhold(aktivitet1, now(), "risiko", "tiltak",
