@@ -1,6 +1,6 @@
 package no.nav.foreldrepenger.common.innsyn;
 
-public enum OppholdÅrsak {
+public enum UttakOppholdÅrsak {
     MØDREKVOTE_ANNEN_FORELDER,
     FEDREKVOTE_ANNEN_FORELDER,
     FELLESPERIODE_ANNEN_FORELDER,
