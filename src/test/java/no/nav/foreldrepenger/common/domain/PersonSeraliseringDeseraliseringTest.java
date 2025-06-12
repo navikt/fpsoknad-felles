@@ -30,7 +30,7 @@ class PersonSeraliseringDeseraliseringTest extends SerializationTestBase {
                 Målform.NB,
                 Bankkonto.UKJENT,
                 List.of(barn),
-                new Sivilstand(Sivilstand.Type.GIFT));
+                new Sivilstand(Sivilstand.SivilstandType.GIFT));
 
         test(person);
     }
