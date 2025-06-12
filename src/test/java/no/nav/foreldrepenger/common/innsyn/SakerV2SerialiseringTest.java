@@ -46,17 +46,17 @@ class SakerV2SerialiseringTest extends SerializationTestBase {
                 of(2022, 3, 31),
                 KontoType.FORELDREPENGER,
                 new UttakPeriodeResultat(true, true, true, UttakPeriodeResultat.UttakPeriodeResultatÅrsak.ANNET),
-                UtsettelseÅrsak.BARN_INNLAGT,
-                no.nav.foreldrepenger.common.innsyn.OppholdÅrsak.MØDREKVOTE_ANNEN_FORELDER,
-                OverføringÅrsak.ALENEOMSORG,
+                UttakUtsettelseÅrsak.BARN_INNLAGT,
+                UttakOppholdÅrsak.MØDREKVOTE_ANNEN_FORELDER,
+                UttakOverføringÅrsak.ALENEOMSORG,
                 new Gradering(BigDecimal.valueOf(50L), new Aktivitet(Aktivitet.AktivitetType.ORDINÆRT_ARBEID,
                                                                      new Arbeidsgiver("123", Arbeidsgiver.ArbeidsgiverType.ORGANISASJON), "Nav")),
                 MorsAktivitet.INNLAGT,
                 new SamtidigUttak(BigDecimal.valueOf(30L)),
                 false, BrukerRolleSak.MOR);
         var åpenBehandling = new FpÅpenBehandling(BehandlingTilstand.UNDER_BEHANDLING, List.of(new no.nav.foreldrepenger.common.innsyn.UttakPeriode(of(2021, 11, 1),
-                of(2021, 11, 13), KontoType.FORELDREPENGER, null, UtsettelseÅrsak.FRI, no.nav.foreldrepenger.common.innsyn.OppholdÅrsak.FEDREKVOTE_ANNEN_FORELDER,
-                OverføringÅrsak.SYKDOM_ANNEN_FORELDER, new Gradering(BigDecimal.valueOf(10), new Aktivitet(
+                of(2021, 11, 13), KontoType.FORELDREPENGER, null, UttakUtsettelseÅrsak.FRI, UttakOppholdÅrsak.FEDREKVOTE_ANNEN_FORELDER,
+                UttakOverføringÅrsak.SYKDOM_ANNEN_FORELDER, new Gradering(BigDecimal.valueOf(10), new Aktivitet(
                 Aktivitet.AktivitetType.ORDINÆRT_ARBEID,
                 new Arbeidsgiver("123", Arbeidsgiver.ArbeidsgiverType.ORGANISASJON), "Nav")), MorsAktivitet.ARBEID,
                 new SamtidigUttak(BigDecimal.valueOf(10)), true, BrukerRolleSak.MOR)));
