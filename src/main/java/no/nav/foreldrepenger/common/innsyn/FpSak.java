@@ -22,7 +22,7 @@ public record FpSak(@NotNull Saksnummer saksnummer,
                     Set<Person> barn,
                     DekningsgradSak dekningsgrad,
                     @NotNull LocalDateTime oppdatertTidspunkt,
-                    BrukerRolle forelder) implements Sak {
+                    BrukerRolleSak forelder) implements Sak {
 
     @Override
     public boolean equals(Object o) {
