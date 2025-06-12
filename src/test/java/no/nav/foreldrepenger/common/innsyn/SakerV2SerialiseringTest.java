@@ -45,25 +45,25 @@ class SakerV2SerialiseringTest extends SerializationTestBase {
         var vedtakPerioder = new no.nav.foreldrepenger.common.innsyn.UttakPeriode(of(2021, 12, 1),
                 of(2022, 3, 31),
                 KontoType.FORELDREPENGER,
-                new UttakPeriodeResultat(true, true, true, UttakPeriodeResultat.Årsak.ANNET),
+                new UttakPeriodeResultat(true, true, true, UttakPeriodeResultat.UttakPeriodeResultatÅrsak.ANNET),
                 UtsettelseÅrsak.BARN_INNLAGT,
-                OppholdÅrsak.MØDREKVOTE_ANNEN_FORELDER,
+                no.nav.foreldrepenger.common.innsyn.OppholdÅrsak.MØDREKVOTE_ANNEN_FORELDER,
                 OverføringÅrsak.ALENEOMSORG,
                 new Gradering(BigDecimal.valueOf(50L), new Aktivitet(Aktivitet.AktivitetType.ORDINÆRT_ARBEID,
                                                                      new Arbeidsgiver("123", Arbeidsgiver.ArbeidsgiverType.ORGANISASJON), "Nav")),
                 MorsAktivitet.INNLAGT,
                 new SamtidigUttak(BigDecimal.valueOf(30L)),
-                false, BrukerRolle.MOR);
+                false, BrukerRolleSak.MOR);
         var åpenBehandling = new FpÅpenBehandling(BehandlingTilstand.UNDER_BEHANDLING, List.of(new no.nav.foreldrepenger.common.innsyn.UttakPeriode(of(2021, 11, 1),
-                of(2021, 11, 13), KontoType.FORELDREPENGER, null, UtsettelseÅrsak.FRI, OppholdÅrsak.FEDREKVOTE_ANNEN_FORELDER,
+                of(2021, 11, 13), KontoType.FORELDREPENGER, null, UtsettelseÅrsak.FRI, no.nav.foreldrepenger.common.innsyn.OppholdÅrsak.FEDREKVOTE_ANNEN_FORELDER,
                 OverføringÅrsak.SYKDOM_ANNEN_FORELDER, new Gradering(BigDecimal.valueOf(10), new Aktivitet(
                 Aktivitet.AktivitetType.ORDINÆRT_ARBEID,
                 new Arbeidsgiver("123", Arbeidsgiver.ArbeidsgiverType.ORGANISASJON), "Nav")), MorsAktivitet.ARBEID,
-                new SamtidigUttak(BigDecimal.valueOf(10)), true, BrukerRolle.MOR)));
+                new SamtidigUttak(BigDecimal.valueOf(10)), true, BrukerRolleSak.MOR)));
         var fpVedtak = new FpVedtak(List.of(vedtakPerioder));
         var fpSak = new FpSak(saksnummer, false,false, false, false, false, false, true,
                 RettighetType.ALENEOMSORG, new Person(new Fødselsnummer("42"), null), familieHendelse, fpVedtak, åpenBehandling, Set.of(new Person(new Fødselsnummer("1"), new AktørId("2"))),
-                DekningsgradSak.ÅTTI, LocalDateTime.now(), BrukerRolle.FAR_MEDMOR);
+                DekningsgradSak.ÅTTI, LocalDateTime.now(), BrukerRolleSak.FAR_MEDMOR);
         var saker = new Saker(Set.of(fpSak), Set.of(), Set.of());
 
         test(saker, true);
@@ -78,7 +78,7 @@ class SakerV2SerialiseringTest extends SerializationTestBase {
         var aktivitet1 = new Aktivitet(Aktivitet.AktivitetType.ORDINÆRT_ARBEID, new Arbeidsgiver("1", Arbeidsgiver.ArbeidsgiverType.ORGANISASJON), "Nav");
         var aktivitet2 = new Aktivitet(Aktivitet.AktivitetType.SELVSTENDIG_NÆRINGSDRIVENDE, null, "Nav");
         var arbeidstidprosent = new Arbeidstidprosent(BigDecimal.valueOf(50));
-        var oppholdPeriode = new OppholdPeriode(now().plusWeeks(1), now().plusWeeks(2), OppholdPeriode.Årsak.FERIE, OppholdPeriode.OppholdKilde.SØKNAD);
+        var oppholdPeriode = new OppholdPeriode(now().plusWeeks(1), now().plusWeeks(2), OppholdPeriode.OppholdÅrsak.FERIE, OppholdPeriode.OppholdKilde.SØKNAD);
         var tilrettelegging1 = new SvpArbeidsforhold(aktivitet1, now(), "risiko", "tiltak",
                 Set.of(
                         new Tilrettelegging(now(), now(), DELVIS, arbeidstidprosent, null),

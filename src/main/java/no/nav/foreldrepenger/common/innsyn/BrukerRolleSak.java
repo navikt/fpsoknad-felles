@@ -1,5 +1,5 @@
 package no.nav.foreldrepenger.common.innsyn;
 
-public enum BrukerRolle {
+public enum BrukerRolleSak {
     MOR, FAR_MEDMOR
 }

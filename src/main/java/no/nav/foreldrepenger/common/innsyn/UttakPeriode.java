@@ -1,9 +1,9 @@
 package no.nav.foreldrepenger.common.innsyn;
 
-import jakarta.validation.constraints.NotNull;
-
 import java.time.LocalDate;
 import java.util.Objects;
+
+import jakarta.validation.constraints.NotNull;
 
 public record UttakPeriode(@NotNull LocalDate fom,
                            @NotNull LocalDate tom,
@@ -16,7 +16,7 @@ public record UttakPeriode(@NotNull LocalDate fom,
                            MorsAktivitet morsAktivitet,
                            SamtidigUttak samtidigUttak,
                            boolean flerbarnsdager,
-                           BrukerRolle forelder) {
+                           BrukerRolleSak forelder) {
 
     public boolean likBortsattFraTidsperiode(UttakPeriode that) { //Brukes for å slå sammen like perioder
         return flerbarnsdager == that.flerbarnsdager && kontoType == that.kontoType && Objects.equals(gradering, that.gradering)
