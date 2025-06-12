@@ -63,7 +63,7 @@ class SakerV2SerialiseringTest extends SerializationTestBase {
         var fpVedtak = new FpVedtak(List.of(vedtakPerioder));
         var fpSak = new FpSak(saksnummer, false,false, false, false, false, false, true,
                 RettighetType.ALENEOMSORG, new Person(new Fødselsnummer("42"), null), familieHendelse, fpVedtak, åpenBehandling, Set.of(new Person(new Fødselsnummer("1"), new AktørId("2"))),
-                Dekningsgrad.ÅTTI, LocalDateTime.now(), BrukerRolle.FAR_MEDMOR);
+                DekningsgradSak.ÅTTI, LocalDateTime.now(), BrukerRolle.FAR_MEDMOR);
         var saker = new Saker(Set.of(fpSak), Set.of(), Set.of());
 
         test(saker, true);

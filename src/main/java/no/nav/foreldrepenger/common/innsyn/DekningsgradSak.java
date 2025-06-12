@@ -1,9 +1,9 @@
 package no.nav.foreldrepenger.common.innsyn;
 
-public enum Dekningsgrad {
+public enum DekningsgradSak {
     ÅTTI, HUNDRE;
 
-    public static Dekningsgrad valueOf(Integer value) {
+    public static DekningsgradSak valueOf(Integer value) {
         if (value == null) {
             return null;
         }

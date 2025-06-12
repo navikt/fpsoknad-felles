@@ -1,10 +1,10 @@
 package no.nav.foreldrepenger.common.innsyn;
 
-import jakarta.validation.constraints.NotNull;
-
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
+
+import jakarta.validation.constraints.NotNull;
 
 public record FpSak(@NotNull Saksnummer saksnummer,
                     @NotNull boolean sakAvsluttet,
@@ -20,7 +20,7 @@ public record FpSak(@NotNull Saksnummer saksnummer,
                     FpVedtak gjeldendeVedtak,
                     FpÅpenBehandling åpenBehandling,
                     Set<Person> barn,
-                    Dekningsgrad dekningsgrad,
+                    DekningsgradSak dekningsgrad,
                     @NotNull LocalDateTime oppdatertTidspunkt,
                     BrukerRolle forelder) implements Sak {
 
