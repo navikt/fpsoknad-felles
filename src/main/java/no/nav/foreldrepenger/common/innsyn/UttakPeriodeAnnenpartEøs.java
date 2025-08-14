@@ -16,6 +16,6 @@ public record UttakPeriodeAnnenpartEøs(@NotNull LocalDate fom,
                                        @NotNull KontoType trekkonto,
                                        @Valid @NotNull Trekkdager trekkdager) {
 
-    public record Trekkdager(@Min(0) @Max(1000) @Digits(integer = 3, fraction = 1) @JsonValue BigDecimal trekkdager) {
+    public record Trekkdager(@Min(0) @Max(1000) @Digits(integer = 3, fraction = 1) @JsonValue BigDecimal verdi) {
     }
 }
