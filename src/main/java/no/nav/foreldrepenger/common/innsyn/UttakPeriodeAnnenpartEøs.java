@@ -10,6 +10,6 @@ import jakarta.validation.constraints.NotNull;
 
 public record UttakPeriodeAnnenpartEøs(@NotNull LocalDate fom,
                                        @NotNull LocalDate tom,
-                                       @NotNull KontoType kontoType,
-                                       @NotNull @Min(0) @Max(1000) @Digits(integer = 3, fraction = 2) BigDecimal trekkdager) {
+                                       @NotNull KontoType trekkonto,
+                                       @NotNull @Min(0) @Max(1000) @Digits(integer = 3, fraction = 1) BigDecimal trekkdager) {
 }
