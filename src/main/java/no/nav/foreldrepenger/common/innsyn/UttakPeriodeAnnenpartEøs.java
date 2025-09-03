@@ -14,6 +14,7 @@ import jakarta.validation.constraints.NotNull;
 public record UttakPeriodeAnnenpartEøs(@NotNull LocalDate fom,
                                        @NotNull LocalDate tom,
                                        @NotNull KontoType trekkonto,
+                                       @NotNull KontoType kontoType,
                                        @Valid @NotNull Trekkdager trekkdager) {
 
     public record Trekkdager(@Min(0) @Max(1000) @Digits(integer = 3, fraction = 1) @JsonValue BigDecimal verdi) {
