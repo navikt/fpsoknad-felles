@@ -42,7 +42,7 @@
         <junit-bom.version>5.12.1</junit-bom.version>
         <mockito-bom.version>5.16.1</mockito-bom.version>
         <assertj-core.version>3.27.6</assertj-core.version>
-        <logback-classic.version>1.5.18</logback-classic.version>
+        <logback-classic.version>1.5.19</logback-classic.version>
     </properties>
 
     <scm>
